@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGS-GOOGL-202606 | Alphabet Inc. Equity Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#4285F4;
+    --accent-dark:#1A56C4;
+    --accent-tint:#EAF1FE;
+    --canvas:#FFFFFF;
+    --section-bg:#F9FAFB;
+    --card-bg:#F3F4F6;
+    --text-main:#111827;
+    --text-muted:#6B7280;
+    --border:#E5E7EB;
+    --green:#16A34A;
+    --green-bg:#F0FDF4;
+    --green-pill-bg:#DCFCE7;
+    --green-pill-text:#15803D;
+    --red:#DC2626;
+    --red-bg:#FEE2E2;
+    --red-header-bg:#FEF2F2;
+    --red-pill-text:#B91C1C;
+    --amber:#D97706;
+    --amber-header-bg:#FFFBEB;
+    --font-display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+    --font-body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+    --font-mono:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--font-body);
+    color:var(--text-main);
+    background:var(--canvas);
+    line-height:1.6;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+
+  .layout{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    min-height:96vh;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar{
+    position:sticky;
+    top:0;
+    align-self:start;
+    height:100vh;
+    overflow-y:auto;
+    background:var(--section-bg);
+    border-right:1px solid var(--border);
+    padding:28px 0 28px 0;
+  }
+  .sidebar-brand{
+    padding:0 22px 18px 22px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:14px;
+  }
+  .sidebar-brand .pgs{
+    font-family:var(--font-display);
+    font-size:1.15rem;
+    font-weight:700;
+    letter-spacing:0.04em;
+    color:var(--text-main);
+  }
+  .sidebar-brand .tagline{
+    font-family:var(--font-mono);
+    font-size:0.62rem;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    margin-top:4px;
+  }
+  .nav-group-label{
+    font-family:var(--font-mono);
+    font-size:0.62rem;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:var(--text-muted);
+    padding:14px 22px 6px 22px;
+  }
+  .nav-link{
+    display:block;
+    padding:7px 22px;
+    font-size:0.84rem;
+    color:var(--text-main);
+    text-decoration:none;
+    border-left:3px solid transparent;
+    transition:background 0.15s ease, border-color 0.15s ease;
+  }
+  .nav-link:hover{
+    background:var(--accent-tint);
+  }
+  .nav-link.active{
+    border-left:3px solid var(--accent);
+    background:var(--accent-tint);
+    color:var(--accent-dark);
+    font-weight:600;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .main-content{padding:0;}
+  section{
+    padding:48px 56px;
+    border-bottom:1px solid var(--border);
+  }
+  section:last-child{border-bottom:none;}
+
+  .animate{
+    opacity:1;
+    animation:fadeUp 0.6s ease forwards;
+  }
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(14px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  h1,h2,h3,h4{
+    font-family:var(--font-display);
+    color:var(--text-main);
+    margin-top:0;
+  }
+  h2{
+    font-size:1.7rem;
+    border-bottom:1px solid var(--border);
+    padding-bottom:12px;
+    margin-bottom:24px;
+  }
+  h3{
+    font-size:1.2rem;
+    margin-bottom:14px;
+    margin-top:32px;
+  }
+  p{margin:0 0 14px 0;}
+  .section-eyebrow{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    color:var(--accent);
+    margin-bottom:6px;
+  }
+
+  /* ===== COVER ===== */
+  #cover{
+    background:var(--section-bg);
+    background-image:radial-gradient(circle, var(--border) 1px, transparent 1.4px);
+    background-size:22px 22px;
+    min-height:96vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .cover-ref{
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    color:var(--text-muted);
+    letter-spacing:0.08em;
+    margin-bottom:18px;
+  }
+  .cover-ref span{color:var(--accent-dark); font-weight:600;}
+  .cover-title{
+    font-family:var(--font-display);
+    font-size:3.4rem;
+    line-height:1.08;
+    font-weight:700;
+    color:var(--text-main);
+    margin-bottom:6px;
+    max-width:780px;
+  }
+  .cover-title .accent{color:var(--accent);}
+  .cover-sub{
+    font-size:1.05rem;
+    color:var(--text-muted);
+    margin-bottom:28px;
+    max-width:680px;
+  }
+  .cover-meta-row{
+    display:flex;
+    gap:32px;
+    flex-wrap:wrap;
+    margin-bottom:34px;
+  }
+  .cover-meta-item .label{
+    font-family:var(--font-mono);
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:var(--text-muted);
+    margin-bottom:4px;
+  }
+  .cover-meta-item .value{
+    font-family:var(--font-mono);
+    font-size:1.05rem;
+    font-weight:600;
+    color:var(--text-main);
+  }
+  .rating-pill{
+    display:inline-block;
+    background:var(--accent);
+    color:#FFFFFF;
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:0.95rem;
+    padding:6px 16px;
+    border-radius:3px;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .stats-strip{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--border);
+    border:1px solid var(--border);
+    max-width:920px;
+  }
+  .stat-cell{
+    background:var(--card-bg);
+    padding:16px 18px;
+  }
+  .stat-cell .stat-label{
+    font-family:var(--font-mono);
+    font-size:0.62rem;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--text-muted);
+    margin-bottom:6px;
+  }
+  .stat-cell .stat-value{
+    font-family:var(--font-mono);
+    font-size:1.18rem;
+    font-weight:700;
+    color:var(--text-main);
+  }
+  .stat-cell .stat-value.pos{color:var(--green);}
+  .stat-cell .stat-value.neg{color:var(--red);}
+
+  /* ===== TABLES ===== */
+  .table-wrap{overflow-x:auto; margin-bottom:6px;}
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:0.86rem;
+    background:var(--canvas);
+    border:1px solid var(--border);
+  }
+  th,td{
+    padding:9px 12px;
+    border:1px solid var(--border);
+    text-align:left;
+    vertical-align:top;
+  }
+  th{
+    background:var(--card-bg);
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:0.76rem;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--text-muted);
+  }
+  tbody tr:nth-child(even){background:var(--section-bg);}
+  tbody tr:hover{background:var(--accent-tint); transition:background 0.15s ease;}
+  td.num, th.num{font-family:var(--font-mono); white-space:nowrap;}
+  td.delta-pos{color:var(--green); font-family:var(--font-mono); font-weight:600;}
+  td.delta-neg{color:var(--red); font-family:var(--font-mono); font-weight:600;}
+  .table-caption{
+    font-family:var(--font-mono);
+    font-size:0.68rem;
+    color:var(--text-muted);
+    margin:6px 0 28px 0;
+  }
+
+  /* ===== QUARTER CARDS ===== */
+  .quarter-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:8px;
+  }
+  .quarter-card{
+    background:var(--canvas);
+    border:1px solid var(--border);
+    border-top:3px solid var(--accent);
+    padding:16px;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .quarter-card .qtr-label{
+    font-family:var(--font-mono);
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--text-muted);
+    margin-bottom:6px;
+  }
+  .quarter-card .qtr-revenue{
+    font-family:var(--font-display);
+    font-size:1.7rem;
+    font-weight:700;
+    color:var(--accent);
+    margin-bottom:2px;
+  }
+  .quarter-card .qtr-revenue-label{
+    font-size:0.72rem;
+    color:var(--text-muted);
+    margin-bottom:10px;
+  }
+  .quarter-card .qtr-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:0.8rem;
+    padding:4px 0;
+    border-top:1px solid var(--border);
+  }
+  .qtr-row .qtr-row-label{color:var(--text-muted);}
+  .qtr-row .qtr-row-value{font-family:var(--font-mono); font-weight:600;}
+  .pill{
+    display:inline-block;
+    font-family:var(--font-mono);
+    font-size:0.66rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    padding:3px 9px;
+    border-radius:3px;
+    margin-top:10px;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .pill.beat{background:var(--green-pill-bg); color:var(--green-pill-text);}
+  .pill.miss{background:var(--red-bg); color:var(--red-pill-text);}
+
+  /* ===== NARRATIVE / EVENT ROWS ===== */
+  .event-row{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:20px;
+    padding:18px 0;
+    border-top:1px solid var(--border);
+  }
+  .event-row:first-of-type{border-top:none;}
+  .event-row .event-qtr{
+    font-family:var(--font-mono);
+    font-weight:700;
+    color:var(--accent-dark);
+    font-size:0.85rem;
+  }
+  .event-row .event-title{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.05rem;
+    margin-bottom:6px;
+  }
+
+  /* ===== RISK BLOCKS ===== */
+  .risk-block{
+    border:1px solid var(--border);
+    border-left:3px solid var(--red);
+    margin-bottom:18px;
+    background:var(--canvas);
+  }
+  .risk-block.medium{border-left-color:var(--amber);}
+  .risk-header{
+    background:var(--red-header-bg);
+    padding:12px 18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .risk-block.medium .risk-header{background:var(--amber-header-bg);}
+  .risk-header .risk-title{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.05rem;
+  }
+  .severity-badge{
+    font-family:var(--font-mono);
+    font-size:0.66rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    padding:3px 10px;
+    border-radius:3px;
+    background:var(--red);
+    color:#FFFFFF;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .risk-block.medium .severity-badge{background:var(--amber);}
+  .risk-body{padding:16px 18px;}
+  .risk-body p{margin-bottom:0;}
+  .risk-meta{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    color:var(--text-muted);
+    margin-top:10px;
+  }
+
+  /* ===== SCENARIO CARDS ===== */
+  .scenario-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-bottom:8px;
+  }
+  .scenario-card{
+    border:1px solid var(--border);
+    background:var(--canvas);
+  }
+  .scenario-card .scenario-header{
+    padding:14px 18px;
+    border-top:3px solid var(--green);
+    background:var(--green-bg);
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .scenario-card.bear .scenario-header{
+    border-top-color:var(--red);
+    background:var(--red-bg);
+  }
+  .scenario-header h4{
+    margin:0;
+    font-family:var(--font-display);
+    font-size:1.15rem;
+  }
+  .scenario-header .scenario-target{
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:1.3rem;
+    margin-top:4px;
+  }
+  .scenario-card.bull .scenario-target{color:var(--green);}
+  .scenario-card.bear .scenario-target{color:var(--red);}
+  .scenario-body{padding:16px 18px;}
+  .scenario-body dl{margin:0;}
+  .scenario-body dt{
+    font-family:var(--font-mono);
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--text-muted);
+    margin-top:12px;
+  }
+  .scenario-body dt:first-child{margin-top:0;}
+  .scenario-body dd{
+    margin:4px 0 0 0;
+    font-size:0.88rem;
+  }
+
+  /* ===== ANALYST GRID ===== */
+  .analyst-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:16px;
+  }
+  .analyst-cell{
+    border:1px solid var(--border);
+    border-top:3px solid var(--accent);
+    padding:16px;
+    background:var(--canvas);
+  }
+  .analyst-cell.neutral{border-top-color:var(--amber);}
+  .analyst-cell.bear{border-top-color:var(--red);}
+  .analyst-cell h4{
+    font-family:var(--font-display);
+    font-size:1.0rem;
+    margin:0 0 10px 0;
+  }
+  .analyst-cell .analyst-item{
+    font-size:0.84rem;
+    padding:6px 0;
+    border-top:1px solid var(--border);
+  }
+  .analyst-cell .analyst-item:first-of-type{border-top:none;}
+  .analyst-cell .analyst-item .firm{font-weight:600;}
+  .analyst-cell .analyst-item .target{
+    font-family:var(--font-mono);
+    color:var(--text-muted);
+    font-size:0.78rem;
+  }
+
+  /* ===== VERDICT ===== */
+  #verdict{background:var(--section-bg);}
+  .verdict-metrics{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--border);
+    border:1px solid var(--border);
+    margin-bottom:32px;
+  }
+  .verdict-metric{
+    background:var(--card-bg);
+    padding:18px;
+    text-align:center;
+  }
+  .verdict-metric .vm-label{
+    font-family:var(--font-mono);
+    font-size:0.66rem;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--text-muted);
+    margin-bottom:8px;
+  }
+  .verdict-metric .vm-value{
+    font-family:var(--font-mono);
+    font-size:1.4rem;
+    font-weight:700;
+  }
+  .verdict-metric.rating .vm-value{color:var(--accent-dark);}
+  .verdict-metric.bull .vm-value{color:var(--green);}
+  .verdict-metric.bear .vm-value{color:var(--red);}
+  .verdict-prose p{font-size:0.96rem; max-width:880px;}
+  .verdict-prose strong{color:var(--accent-dark);}
+
+  /* ===== DISCLAIMER ===== */
+  #disclaimer{
+    background:var(--canvas);
+    font-size:0.82rem;
+    color:var(--text-muted);
+  }
+  #disclaimer p{max-width:900px;}
+  .ref-line{
+    font-family:var(--font-mono);
+    font-size:0.74rem;
+    color:var(--text-muted);
+    margin-top:18px;
+    padding-top:18px;
+    border-top:1px solid var(--border);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:768px){
+    .layout{display:block;}
+    .sidebar{
+      position:sticky;
+      top:0;
+      height:auto;
+      width:100%;
+      display:flex;
+      overflow-x:auto;
+      padding:10px 0;
+      white-space:nowrap;
+      z-index:10;
+    }
+    .sidebar-brand,.nav-group-label{display:none;}
+    .nav-link{
+      display:inline-block;
+      padding:8px 14px;
+      border-left:none;
+      border-bottom:3px solid transparent;
+    }
+    .nav-link.active{border-left:none; border-bottom:3px solid var(--accent);}
+    section{padding:32px 20px;}
+    .cover-title{font-size:2.1rem;}
+    .stats-strip,.quarter-grid,.verdict-metrics{grid-template-columns:repeat(2,1fr);}
+    .scenario-grid,.analyst-grid{grid-template-columns:1fr;}
+    .event-row{grid-template-columns:1fr;}
+  }
+
+  /* ===== PRINT ===== */
+  @media print{
+    .sidebar{display:none !important;}
+    .layout{display:block !important;}
+    .main-content{display:block !important; width:100% !important;}
+    section{page-break-before:always; border-bottom:none !important; background-color:#FFFFFF !important; color:#111827 !important;}
+    section:first-of-type{page-break-before:auto;}
+    #cover{min-height:auto !important; height:auto !important; display:block !important; background-image:none !important;}
+    .animate{opacity:1 !important; transform:none !important; animation:none !important;}
+    .stats-strip,.verdict-metrics{display:grid !important; grid-template-columns:repeat(4,1fr) !important; gap:1px !important;}
+    .quarter-grid{display:grid !important; grid-template-columns:repeat(4,1fr) !important; gap:12px !important;}
+    .scenario-grid{display:grid !important; grid-template-columns:1fr 1fr !important; gap:16px !important;}
+    .analyst-grid{display:grid !important; grid-template-columns:1fr 1fr 1fr !important; gap:12px !important;}
+    .table-wrap{overflow:visible !important;}
+    table{word-break:break-word;}
+    .pill,.severity-badge,.rating-pill,.risk-header,.scenario-header{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    box-shadow:none !important;
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div class="pgs">Polaris Global Strategies</div>
+      <div class="tagline">Internal Equity Research</div>
+    </div>
+    <a class="nav-link active" href="#cover">Cover &amp; Snapshot</a>
+    <div class="nav-group-label">Sec. 1 — Earnings</div>
+    <a class="nav-link" href="#sec1-1">1.1 Quarterly Snapshot</a>
+    <a class="nav-link" href="#sec1-2">1.2 Beat / Miss Detail</a>
+    <a class="nav-link" href="#sec1-3">1.3 Revenue &amp; Margin Trend</a>
+    <a class="nav-link" href="#sec1-4">1.4 Quarter Narratives</a>
+    <a class="nav-link" href="#sec1-5">1.5 Recurring Patterns</a>
+    <a class="nav-link" href="#sec1-6">1.6 KPIs to Monitor</a>
+    <a class="nav-link" href="#sec1-7">1.7 Next Earnings Watch</a>
+    <div class="nav-group-label">Sec. 2 — Institutional</div>
+    <a class="nav-link" href="#sec2-1">2.1 Revenue Architecture</a>
+    <a class="nav-link" href="#sec2-2">2.2 Competitive Moat</a>
+    <a class="nav-link" href="#sec2-3">2.3 Top Risks</a>
+    <a class="nav-link" href="#sec2-4">2.4 Growth Architecture</a>
+    <a class="nav-link" href="#sec2-5">2.5 Bull vs. Bear</a>
+    <a class="nav-link" href="#sec2-6">2.6 Valuation</a>
+    <a class="nav-link" href="#sec2-7">2.7 Analyst Landscape</a>
+    <div class="nav-group-label">Conclusion</div>
+    <a class="nav-link" href="#verdict">PGS Verdict</a>
+    <a class="nav-link" href="#disclaimer">Disclaimer</a>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- ============ COVER ============ -->
+    <section id="cover" class="animate">
+      <div class="cover-ref">Report Reference: <span>PGS-GOOGL-202606</span> &nbsp;·&nbsp; Publication Date: June 14, 2026 &nbsp;·&nbsp; Internal Use Only</div>
+      <div class="cover-title">Alphabet Inc. <span class="accent">(GOOG / GOOGL)</span></div>
+      <div class="cover-sub">NASDAQ Global Select Market — Communication Services / Internet Content &amp; Information. Eleventh consecutive quarter of double-digit revenue growth, an accelerating Cloud re-rating, and a fresh $84.75bn equity raise anchored by Berkshire Hathaway frame the current setup.</div>
+
+      <div class="cover-meta-row">
+        <div class="cover-meta-item">
+          <div class="label">Price (Class A, Jun 11 close)</div>
+          <div class="value">$357.77</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="label">Market Capitalization</div>
+          <div class="value">$4.37T</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="label">Consensus Rating</div>
+          <div class="value">Strong Buy (63 analysts)</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="label">PGS Rating</div>
+          <div class="rating-pill">🟢 BUY</div>
+        </div>
+      </div>
+
+      <div class="stats-strip">
+        <div class="stat-cell">
+          <div class="stat-label">Revenue (TTM)</div>
+          <div class="stat-value">$422.50B</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">EPS (TTM, GAAP)</div>
+          <div class="stat-value">$13.11</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">P/E (TTM)</div>
+          <div class="stat-value">27.30x</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Forward P/E</div>
+          <div class="stat-value">28.62x</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Consensus Target</div>
+          <div class="stat-value pos">$432.83</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">52-Week Range</div>
+          <div class="stat-value">$162.00 – $408.61</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Dividend Yield</div>
+          <div class="stat-value">0.25% ($0.88)</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Next Earnings</div>
+          <div class="stat-value">Jul 22, 2026</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 1.1 ============ -->
+    <section id="sec1-1" class="animate">
+      <div class="section-eyebrow">Section 1 · Earnings Analysis</div>
+      <h2>1.1 Quarter-by-Quarter Snapshot (Q2 2025 → Q1 2026)</h2>
+      <p>
+        Anchor quarter confirmed as <strong>Q1 2026</strong> (quarter ended March 31, 2026; results published April 29, 2026,
+        per Alphabet's Form 8-K Exhibit 99.1). The four-quarter continuous sequence covered below is
+        <strong>Q1 2026 → Q4 2025 → Q3 2025 → Q2 2025</strong>, presented chronologically left to right with no gaps.
+      </p>
+      <div class="quarter-grid">
+        <div class="quarter-card">
+          <div class="qtr-label">Q2 2025 · Ended Jun 30, 2025</div>
+          <div class="qtr-revenue">$96.43B</div>
+          <div class="qtr-revenue-label">Revenue, +14% YoY</div>
+          <div class="qtr-row"><span class="qtr-row-label">EPS (GAAP)</span><span class="qtr-row-value">$2.31</span></div>
+          <div class="qtr-row"><span class="qtr-row-label">Op. Margin</span><span class="qtr-row-value">32.4%</span></div>
+          <div class="qtr-row"><span class="qtr-row-label">Net Income</span><span class="qtr-row-value">$28.2B</span></div>
+          <span class="pill beat">Revenue &amp; EPS Beat</span>
+        </div>
+        <div class="quarter-card">
+          <div class="qtr-label">Q3 2025 · Ended Sep 30, 2025</div>
+          <div class="qtr-revenue">$102.3B</div>
+          <div class="qtr-revenue-label">Revenue, +16% YoY</div>
+          <div class="qtr-row"><span class="qtr-row-label">EPS (GAAP)</span><span class="qtr-row-value">$2.87</span></div>
+          <div class="qtr-row"><span class="qtr-row-label">Op. Margin</span><span class="qtr-row-value">30.5%*</span></div>
+          <div class="qtr-row"><span class="qtr-row-label">Net Income</span><span class="qtr-row-value">$35.0B</span></div>
+          <span class="pill beat">Revenue &amp; EPS Beat</span>
+        </div>
+        <div class="quarter-card">
+          <div class="qtr-label">Q4 2025 · Ended Dec 31, 2025</div>
+          <div class="qtr-revenue">$113.8B</div>
+          <div class="qtr-revenue-label">Revenue, +18% YoY</div>
+          <div class="qtr-row"><span class="qtr-row-label">EPS (GAAP)</span><span class="qtr-row-value">$2.82</span></div>
+          <div class="qtr-row"><span class="qtr-row-label">Op. Margin</span><span class="qtr-row-value">31.6%</span></div>
+          <div class="qtr-row"><span class="qtr-row-label">Net Income</span><span class="qtr-row-value">$34.46B</span></div>
+          <span class="pill beat">Revenue &amp; EPS Beat</span>
+        </div>
+        <div class="quarter-card">
+          <div class="qtr-label">Q1 2026 · Ended Mar 31, 2026</div>
+          <div class="qtr-revenue">$109.9B</div>
+          <div class="qtr-revenue-label">Revenue, +22% YoY</div>
+          <div class="qtr-row"><span class="qtr-row-label">EPS (GAAP)</span><span class="qtr-row-value">$5.11</span></div>
+          <div class="qtr-row"><span class="qtr-row-label">Op. Margin</span><span class="qtr-row-value">36.1%</span></div>
+          <div class="qtr-row"><span class="qtr-row-label">Net Income</span><span class="qtr-row-value">$62.6B</span></div>
+          <span class="pill beat">Revenue &amp; EPS Beat</span>
+        </div>
+      </div>
+      <p class="table-caption">*Q3 2025 operating margin of 30.5% includes a one-time $3.5bn EC antitrust fine; excluding it, operating margin was 33.9%. Source: Alphabet Form 8-K Exhibits 99.1 (Q2 2025–Q1 2026), SEC EDGAR.</p>
+    </section>
+
+    <!-- ============ SECTION 1.2 ============ -->
+    <section id="sec1-2" class="animate">
+      <h2>1.2 Beat / Miss Detail Table</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Quarter</th><th class="num">Revenue (Actual)</th><th class="num">Revenue (Consensus)</th><th class="num">Beat/Miss</th><th class="num">EPS (Actual)</th><th class="num">EPS (Consensus)</th><th class="num">Beat/Miss</th><th>Key Segment vs. Consensus</th><th>Stock Reaction</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Q2 2025</td>
+              <td class="num">$96.43B</td>
+              <td class="num">~$93.7–94.0B</td>
+              <td class="num delta-pos">+2.6% to +2.7%</td>
+              <td class="num">$2.31</td>
+              <td class="num">~$2.12–2.18</td>
+              <td class="num delta-pos">+5.8% to +9.0%</td>
+              <td>Cloud $13.62B vs. $13.11B est. (+3.9%); YouTube ads $9.8B vs. $9.56B est. (+2.5%)</td>
+              <td class="delta-pos">+~3% after-hours</td>
+            </tr>
+            <tr>
+              <td>Q3 2025</td>
+              <td class="num">$102.3B</td>
+              <td class="num">~$99.9B (est.)</td>
+              <td class="num delta-pos">~+2.4% (est.)</td>
+              <td class="num">$2.87</td>
+              <td class="num">~$2.55–2.60 (est.)</td>
+              <td class="num delta-pos">~+10–13% (est.)</td>
+              <td>Cloud $15.2B (+34% YoY); Search &amp; other $56.6B (+15%); first-ever $100bn quarter</td>
+              <td class="delta-pos">+~6% after-hours</td>
+            </tr>
+            <tr>
+              <td>Q4 2025</td>
+              <td class="num">$113.83B</td>
+              <td class="num">$111.43B</td>
+              <td class="num delta-pos">+2.1%</td>
+              <td class="num">$2.82</td>
+              <td class="num">$2.63–2.64</td>
+              <td class="num delta-pos">+6.8%</td>
+              <td>Cloud $17.66B vs. $16.18B est. (+9.1%); YouTube ads $11.38B vs. $11.84B est. (−3.9%, miss)</td>
+              <td class="delta-neg">Down up to 3% in initial after-hours trading</td>
+            </tr>
+            <tr>
+              <td>Q1 2026</td>
+              <td class="num">$109.9B</td>
+              <td class="num">$107.0–107.2B</td>
+              <td class="num delta-pos">+2.5% to +2.7%</td>
+              <td class="num">$5.11 (GAAP)</td>
+              <td class="num">~$2.62–2.67</td>
+              <td class="num delta-pos">+~91% (GAAP)*</td>
+              <td>Cloud $20.03B vs. $18.05B est. (+11.0%); YouTube ads $9.88B vs. $9.99B est. (−1.1%, miss)</td>
+              <td class="delta-pos">+3.3% immediate; +9.96% next session to $384.80</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-caption">*Q1 2026 GAAP EPS beat was driven substantially by a $36.9bn non-marketable equity securities gain (Waymo and Anthropic stake revaluations), adding $2.35 to EPS. On a core/adjusted basis, EPS of ~$2.62 was roughly in line with the ~$2.63 consensus. Sources: CNBC, Yahoo Finance/Zacks, StockStory, Investing.com, Alphabet 8-K filings.</p>
+    </section>
+
+    <!-- ============ SECTION 1.3 ============ -->
+    <section id="sec1-3" class="animate">
+      <h2>1.3 Revenue &amp; Margin Trajectory</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Metric</th><th class="num">Q2 2025</th><th class="num">Q3 2025</th><th class="num">Q4 2025</th><th class="num">Q1 2026</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Total revenue</td><td class="num">$96.43B</td><td class="num">$102.35B</td><td class="num">$113.83B</td><td class="num">$109.9B</td></tr>
+            <tr><td>YoY revenue growth</td><td class="num delta-pos">+14%</td><td class="num delta-pos">+16%</td><td class="num delta-pos">+18%</td><td class="num delta-pos">+22%</td></tr>
+            <tr><td>Google Services revenue</td><td class="num">$82.5B</td><td class="num">$87.1B</td><td class="num">$95.9B</td><td class="num">$89.6B</td></tr>
+            <tr><td>Google Cloud revenue</td><td class="num">$13.62B</td><td class="num">$15.2B</td><td class="num">$17.66B</td><td class="num">$20.03B</td></tr>
+            <tr><td>Google Cloud YoY growth</td><td class="num delta-pos">+32%</td><td class="num delta-pos">+34%</td><td class="num delta-pos">+48%</td><td class="num delta-pos">+63%</td></tr>
+            <tr><td>Operating income</td><td class="num">$31.3B</td><td class="num">$31.2B</td><td class="num">~$36.0B</td><td class="num">$39.7B</td></tr>
+            <tr><td>Operating margin</td><td class="num">32.4%</td><td class="num">30.5% (33.9% ex-fine)</td><td class="num">31.6%</td><td class="num">36.1%</td></tr>
+            <tr><td>Net income</td><td class="num">$28.2B</td><td class="num">$35.0B</td><td class="num">$34.46B</td><td class="num">$62.6B</td></tr>
+            <tr><td>Free cash flow (quarterly)</td><td class="num">(data not found)</td><td class="num">$24.5B</td><td class="num">$24.6B</td><td class="num">~$10.1B (9.2% FCF margin, est.)</td></tr>
+            <tr><td>Capex (quarterly, approx.)</td><td class="num">(data not found)</td><td class="num">(data not found)</td><td class="num">(data not found)</td><td class="num">$35.7B</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-caption">Source: Alphabet Form 8-K Exhibits 99.1 / 99.2 (Q2 2025–Q1 2026), SEC EDGAR; CNBC, Yahoo Finance, StockStory. FCF margin for Q1 2026 of 9.2% (down from 21% YoY) per StockStory; implied FCF approx. $10.1bn (est.).</p>
+    </section>
+
+    <!-- ============ SECTION 1.4 ============ -->
+    <section id="sec1-4" class="animate">
+      <h2>1.4 Quarter-Defining Events — The Story Behind the Numbers</h2>
+
+      <div class="event-row">
+        <div class="event-qtr">Q2 2025</div>
+        <div>
+          <div class="event-title">The Capital Return Inflection</div>
+          <p>For years, the bear case on Alphabet's AI spending cycle was framed as a binary: invest or return cash, not both. Q2 2025 dismantled that framing in a single press release. Alongside a revenue and EPS beat ($96.43bn / $2.31, both ahead of Street), Alphabet declared its first-ever quarterly dividend of $0.21 per share and authorized a $70bn share buyback — while simultaneously raising its 2025 capex guidance by $10bn to approximately $85bn. The market's initial reaction was muted (shares moved roughly flat to slightly positive in after-hours trading), reflecting digestion of the higher spending figure, but the quarter set the template that would recur for the next year: beat-and-raise, with Cloud doing the heavy lifting. Cloud revenue of $13.62bn (+32% YoY) beat estimates by nearly $500mn, and the Cloud backlog climbed to $106bn, up 18% sequentially and 38% year-over-year, with management citing more than 85,000 businesses using Gemini.</p>
+        </div>
+      </div>
+
+      <div class="event-row">
+        <div class="event-qtr">Q3 2025</div>
+        <div>
+          <div class="event-title">The $100 Billion Quarter, Clouded by Brussels</div>
+          <p>Q3 2025 delivered Alphabet's first-ever quarter above $100bn in revenue ($102.3bn, +16% YoY), with EPS of $2.87 up 35% year-over-year — yet the headline operating margin of 30.5% told only part of the story. A $3.5bn European Commission antitrust fine, recognized as a charge within Google Services operating income, mechanically depressed reported profitability; stripping it out, operating margin was a much healthier 33.9% and operating income grew 22% rather than the reported 9%. Investors largely looked through the charge: the stock jumped more than 6% in after-hours trading, part of a rally that had already pushed shares up over 30% in the preceding months. Cloud growth accelerated again to 34% YoY, and management raised full-year 2025 capex guidance to a $91–93bn range — the second consecutive quarter of an upward capex revision.</p>
+        </div>
+      </div>
+
+      <div class="event-row">
+        <div class="event-qtr">Q4 2025</div>
+        <div>
+          <div class="event-title">A Record Year, and Capex Sticker Shock</div>
+          <p>Q4 2025 closed out a year in which Alphabet's annual revenue surpassed $400bn for the first time ($402.84bn, +15.1%), with the Gemini 3 launch cited by CEO Sundar Pichai as a "major milestone" and the Gemini app reaching 750 million monthly active users. Revenue of $113.83bn (+18% YoY) and EPS of $2.82 both beat consensus comfortably. But two threads complicated the picture: YouTube advertising revenue of $11.38bn missed the $11.84bn Street estimate — management attributed part of the softness to advertising headwinds — and operating income absorbed a $2.1bn employee compensation charge tied to Waymo. Most consequentially, Alphabet guided 2026 capital expenditures to $175–185bn, more than double the 2025 level, framed around AI compute demand for Google DeepMind and Cloud customers. Initial after-hours trading saw shares fall as much as 3% as investors digested the scale of the spending commitment, even against an otherwise record quarter.</p>
+        </div>
+      </div>
+
+      <div class="event-row">
+        <div class="event-qtr">Q1 2026</div>
+        <div>
+          <div class="event-title">The AI Payoff Quarter — and a Higher Capex Bill to Match</div>
+          <p>Q1 2026 was the quarter the market concluded "the AI spending is paying off." Revenue accelerated again to $109.9bn (+22% YoY, the highest growth rate since 2022), Google Cloud revenue surged 63% to $20.0bn — its highest growth rate in the dataset — and Cloud operating margin expanded from 17.8% a year earlier to 32.9%, with Cloud operating income reaching $6.6bn. CEO Sundar Pichai told analysts that "enterprise AI solutions have become our primary growth driver for cloud for the first time," while also acknowledging the company remains "compute constrained in the near term" and that "cloud revenue would have been higher if we were able to meet the demand." Headline EPS of $5.11 (+82% YoY) was flattered by a $36.9bn gain on non-marketable equity securities — chiefly revaluations of Alphabet's stakes in Waymo and Anthropic — adding $2.35 to EPS; on a core basis, EPS of roughly $2.62 was approximately in line with consensus. The market reaction was unambiguous: shares rose 3.3% immediately and then surged 9.96% the following session to close at $384.80, even as management raised 2026 capex guidance again, to $180–190bn, and flagged that 2027 capex would "significantly increase" further.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 1.5 ============ -->
+    <section id="sec1-5" class="animate">
+      <h2>1.5 Recurring Earnings Patterns — Five Structural Observations</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:40px;">#</th><th>Observation</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>Revenue growth has accelerated for four consecutive quarters — +14% (Q2 2025) → +16% (Q3 2025) → +18% (Q4 2025) → +22% (Q1 2026) — an unusual trajectory for a company of Alphabet's scale, driven primarily by Google Cloud's re-acceleration from +32% to +63% YoY over the same window.</td></tr>
+            <tr><td class="num">2</td><td>Google Cloud's operating margin has expanded dramatically and consistently, moving from roughly 17.8% in Q1 2025 toward 32.9% in Q1 2026 — converting what was historically a margin drag into a meaningful profit contributor and the single biggest swing factor in consolidated operating margin.</td></tr>
+            <tr><td class="num">3</td><td>Each of the last three quarters has carried a distinct one-time item that materially distorts headline operating income or EPS comparability: a legal settlement charge in Q2 2025, a $3.5bn EC antitrust fine in Q3 2025, a $2.1bn Waymo compensation charge in Q4 2025, and a $36.9bn non-marketable equity gain in Q1 2026. PGS analysts should always reconcile core/adjusted figures before drawing conclusions on margin trends.</td></tr>
+            <tr><td class="num">4</td><td>YouTube advertising has missed Street estimates in two of the last four quarters (Q4 2025 and Q1 2026), even as Search &amp; other has consistently beaten or met expectations (+19% YoY in Q1 2026) — a bifurcation within Google Services worth monitoring as a leading indicator of advertiser budget allocation shifts.</td></tr>
+            <tr><td class="num">5</td><td>Management has raised full-year capex guidance at every single one of the last three earnings calls — to ~$85bn (Q2 2025), to $91–93bn (Q3 2025), to $175–185bn for 2026 (Q4 2025), and to $180–190bn for 2026 (Q1 2026) — a consistent pattern of upward revisions that has directly tracked Cloud demand but increasingly weighs on near-term free cash flow.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 1.6 ============ -->
+    <section id="sec1-6" class="animate">
+      <h2>1.6 Key Metrics the Market Monitors</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Metric</th><th>Latest Reading</th><th>Threshold / Signal</th></tr></thead>
+          <tbody>
+            <tr><td>Google Cloud revenue growth (YoY)</td><td class="num">+63% (Q1 2026)</td><td>Sustained &gt;50% reinforces the AI-infrastructure monetization thesis; deceleration below ~40% would raise questions about the durability of the current re-rating.</td></tr>
+            <tr><td>Google Cloud operating margin</td><td class="num">32.9% (Q1 2026)</td><td>Margin holding above 30% confirms Cloud has crossed a profitability inflection; further expansion toward 35–40% would support multiple expansion on the segment.</td></tr>
+            <tr><td>Cloud backlog (RPO)</td><td class="num">$460B (Q1 2026)</td><td>Backlog growth provides forward revenue visibility; sequential deceleration would be an early warning on demand.</td></tr>
+            <tr><td>YouTube advertising vs. consensus</td><td class="num">−1.1% (Q1 2026 miss)</td><td>A third consecutive miss would reinforce a structural ad-mix concern within Google Services rather than a one-off.</td></tr>
+            <tr><td>Free cash flow margin</td><td class="num">9.2% (Q1 2026, down from ~21% YoY)</td><td>Stabilization above ~15% would ease capex-funding concerns; continued decline toward single digits would intensify scrutiny of the equity-raise-funded capex cycle.</td></tr>
+            <tr><td>Capex guidance revisions</td><td class="num">$180–190B for 2026</td><td>Any further upward revision beyond $190bn, or confirmation that 2027 capex meaningfully exceeds 2026, would pressure the FCF-recovery narrative embedded in current consensus.</td></tr>
+            <tr><td>Search &amp; other revenue growth</td><td class="num">+19% (Q1 2026)</td><td>Sustained mid-to-high-teens growth is the key counter-evidence to the "AI agents will disintermediate Search" bear thesis.</td></tr>
+            <tr><td>Gemini app / Gemini Enterprise adoption</td><td class="num">750M MAU consumer; Enterprise paid MAU +40% QoQ</td><td>Leading indicator for future Cloud and Services monetization; deceleration in MAU growth would be an early signal of competitive share loss to OpenAI/Anthropic-based assistants.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 1.7 ============ -->
+    <section id="sec1-7" class="animate">
+      <h2>1.7 What to Watch — Next Earnings (Q2 2026, expected ~Jul 22, 2026)</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th style="width:40px;">#</th><th>Item</th><th>Direction Signal</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>Google Cloud revenue growth rate — does the Q1 2026 pace of +63% YoY hold, or moderate toward the high-40s/50s as compute constraints persist?</td><td class="delta-neg">Watch for deceleration</td></tr>
+            <tr><td class="num">2</td><td>Cloud backlog progression from the $460bn reported in Q1 2026 — continued sequential growth would validate multi-year AI infrastructure demand.</td><td class="delta-pos">Watch for sequential growth</td></tr>
+            <tr><td class="num">3</td><td>Any quantification of the "significant increase" flagged for 2027 capex beyond the current $180–190bn 2026 range.</td><td class="delta-neg">Negative for near-term FCF if raised again</td></tr>
+            <tr><td class="num">4</td><td>First full-quarter impact of the $84.75bn equity capital raise (including the $10bn Berkshire Hathaway private placement) on share count and per-share metrics.</td><td class="delta-neg">Dilutive; magnitude to be confirmed</td></tr>
+            <tr><td class="num">5</td><td>YouTube advertising performance vs. consensus — a third consecutive miss would reinforce the ad-mix bifurcation flagged in Section 1.5.</td><td class="delta-neg">Watch for further miss</td></tr>
+            <tr><td class="num">6</td><td>Regulatory developments: progress in the US DOJ search-remedies proceedings and the appeal status of the June 2026 ruling finding Google liable over AI Overviews claims.</td><td class="delta-neg">Negative if adverse rulings advance</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 2.1 ============ -->
+    <section id="sec2-1" class="animate">
+      <div class="section-eyebrow">Section 2 · Institutional Analysis</div>
+      <h2>2.1 Business Model &amp; Revenue Architecture (FY2025)</h2>
+      <p>
+        Alphabet reports three segments — Google Services, Google Cloud, and Other Bets — with centralized AI research and
+        development costs allocated to "Alphabet-level activities." FY2025 (calendar year) total revenue reached $402.84bn,
+        up 15.1% year-over-year, the first time the company has crossed the $400bn annual threshold.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Revenue Line</th><th class="num">FY2025</th><th class="num">% of Total</th><th class="num">YoY Growth</th></tr></thead>
+          <tbody>
+            <tr><td>Google Search &amp; other</td><td class="num">$224,532M</td><td class="num">55.7%</td><td class="num delta-pos">+13.3%</td></tr>
+            <tr><td>YouTube ads</td><td class="num">$40,367M</td><td class="num">10.0%</td><td class="num delta-pos">+11.7%</td></tr>
+            <tr><td>Google Network</td><td class="num">$29,792M</td><td class="num">7.4%</td><td class="num delta-neg">−1.9%</td></tr>
+            <tr><td><em>Google advertising subtotal</em></td><td class="num"><em>$294,691M</em></td><td class="num"><em>73.1%</em></td><td class="num delta-pos"><em>+11.4%</em></td></tr>
+            <tr><td>Google subscriptions, platforms &amp; devices</td><td class="num">$48,030M</td><td class="num">11.9%</td><td class="num delta-pos">+19.1%</td></tr>
+            <tr><td><strong>Google Services total</strong></td><td class="num"><strong>$342,721M</strong></td><td class="num"><strong>85.1%</strong></td><td class="num delta-pos"><strong>+12.4%</strong></td></tr>
+            <tr><td><strong>Google Cloud</strong></td><td class="num"><strong>$58,705M</strong></td><td class="num"><strong>14.6%</strong></td><td class="num delta-pos"><strong>+35.8%</strong></td></tr>
+            <tr><td>Other Bets</td><td class="num">$1,537M</td><td class="num">0.4%</td><td class="num delta-neg">−6.7%</td></tr>
+            <tr><td>Hedging gains/(losses)</td><td class="num">($127M)</td><td class="num">—</td><td class="num">—</td></tr>
+            <tr><td><strong>Total revenue</strong></td><td class="num"><strong>$402,836M</strong></td><td class="num"><strong>100%</strong></td><td class="num delta-pos"><strong>+15.1%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-caption">Source: Alphabet Inc. FY2025 Annual Report (Form ARS), SEC EDGAR.</p>
+      <p>
+        The architecture is best understood as a mature, highly cash-generative advertising core (Search &amp; other plus YouTube,
+        together ~65.7% of revenue) cross-subsidizing two newer growth vectors: a subscriptions/platforms/devices bundle
+        (YouTube Premium, YouTube TV, Google One, Pixel hardware, NFL Sunday Ticket) that grew nearly 20% in FY2025, and
+        Google Cloud, which at 14.6% of revenue is now Alphabet's fastest-growing segment by a wide margin and — per the
+        Q1 2026 results — has crossed into structurally improving profitability. Other Bets (Waymo, Verily, and other
+        ventures) remains immaterial to consolidated revenue but is increasingly material to the investment narrative
+        through both its operating trajectory (Waymo's commercial expansion) and its balance-sheet optionality (equity
+        stake revaluations flowing through "other income").
+      </p>
+    </section>
+
+    <!-- ============ SECTION 2.2 ============ -->
+    <section id="sec2-2" class="animate">
+      <h2>2.2 Competitive Moat Assessment</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Moat Pillar</th><th>Strength</th><th>Risk</th><th>PGS Rating</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Search distribution &amp; data network effects</td>
+              <td>Default search placements across Android, Chrome and third-party browsers underpin a query share that remains dominant; Search &amp; other revenue still grew 19% YoY in Q1 2026 despite two years of "AI will kill Search" narratives.</td>
+              <td>The US DOJ search-remedies case could force changes to distribution agreements; AI-native assistants (ChatGPT, Anthropic-based products, Perplexity) increasingly capture query intent before it reaches a search box.</td>
+              <td class="num">★★★★★</td>
+            </tr>
+            <tr>
+              <td>Vertically integrated AI stack (TPU + Gemini + Cloud)</td>
+              <td>Custom silicon (Ironwood TPUs, with a next-generation "Icefish" design reportedly involving Samsung and TSMC) reduces dependence on third-party GPUs; Gemini 3 plus a 750M-MAU consumer app and rapidly improving Cloud margins (17.8% → 32.9% YoY) demonstrate the stack compounding.</td>
+              <td>Sustaining this position requires capex of $180–190bn in 2026 alone, with 2027 guided to rise further; near-term the company describes itself as "compute constrained," capping how fast the advantage can be monetized.</td>
+              <td class="num">★★★★☆</td>
+            </tr>
+            <tr>
+              <td>YouTube network effects &amp; subscription bundle</td>
+              <td>YouTube generated over $60bn across ads and subscriptions in FY2025, with more than 325 million paid subscriptions and a leading position in streaming watch time and podcasts.</td>
+              <td>YouTube advertising has missed consensus in two of the last four quarters, and short-form video competition (TikTok and peers) continues to pressure the ad pricing environment.</td>
+              <td class="num">★★★☆☆</td>
+            </tr>
+            <tr>
+              <td>Strategic equity stakes (Waymo, Anthropic, and other AI ventures)</td>
+              <td>Non-operating value creation has become material — a $36.9bn gain in Q1 2026 alone — while Waymo is commercializing via a new "Premier" subscription tier and national advertising; Berkshire Hathaway's $10bn private placement in June 2026 is an external validation signal.</td>
+              <td>Mark-to-market volatility on these stakes materially distorts GAAP earnings comparability quarter to quarter and is not representative of core operating cash flow.</td>
+              <td class="num">★★★☆☆</td>
+            </tr>
+            <tr>
+              <td>Balance sheet &amp; capital access</td>
+              <td>$126.8bn of cash and marketable securities as of March 31, 2026, $174bn of trailing-twelve-month operating cash flow, and the ability to execute an $84.75bn equity raise (with Berkshire's backing) within days of announcement.</td>
+              <td>2026 consensus free cash flow is estimated to fall to approximately $20.5bn (est.) from $73.3bn in 2025, total debt has risen above $100bn, and the equity raise is dilutive to existing shareholders.</td>
+              <td class="num">★★★☆☆</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 2.3 ============ -->
+    <section id="sec2-3" class="animate">
+      <h2>2.3 Top Risks</h2>
+
+      <div class="risk-block">
+        <div class="risk-header">
+          <div class="risk-title">1. Capex Super-Cycle &amp; Free Cash Flow Compression</div>
+          <span class="severity-badge">High Severity</span>
+        </div>
+        <div class="risk-body">
+          <p>
+            Alphabet has raised its capex guidance at every earnings call for the last four quarters, most recently to
+            $180–190bn for 2026 (more than double the 2025 level), with management explicitly flagging that 2027 capex will
+            "significantly increase" further. Consensus free cash flow estimates have responded accordingly: from an actual
+            $73.3bn in 2025, FCF is projected to fall to approximately $20.5bn in 2026 (est., per TIKR's Actuals and Forward
+            Estimates data) — a roughly 72% decline — before an estimated recovery toward $35.5bn in 2027 and $68.1bn in
+            2028 as depreciation cycles normalize. The company has already moved to fund part of this gap externally,
+            completing an $84.75bn equity capital raise in early June 2026 (including a $10bn Berkshire Hathaway private
+            placement) and pushing total debt above $100bn for the first time. The near-term risk is twofold: that capex
+            continues to escalate beyond the current guidance without a commensurate near-term revenue contribution, and
+            that further dilutive capital raises become necessary, both of which would weigh on per-share value even as
+            the underlying business scales.
+          </p>
+          <div class="risk-meta">Severity: High &nbsp;·&nbsp; Timeline: 2026–2028 &nbsp;·&nbsp; Status: Active, guidance raised most recently Apr 29, 2026</div>
+        </div>
+      </div>
+
+      <div class="risk-block medium">
+        <div class="risk-header">
+          <div class="risk-title">2. Regulatory, Antitrust &amp; AI-Output Liability</div>
+          <span class="severity-badge">Medium-High Severity</span>
+        </div>
+        <div class="risk-body">
+          <p>
+            Alphabet's regulatory overhang has already produced cash consequences: a $3.5bn European Commission antitrust
+            fine was charged against Q3 2025 operating income, and the company's annual report continues to disclose
+            ongoing EU and US antitrust proceedings, including prior Shopping and Android decisions. More recently, a
+            June 10, 2026 ruling found Google liable for false claims generated by its AI Overviews feature — an early
+            instance of legal exposure tied directly to generative AI outputs, a category of risk that is likely to recur
+            as AI Overviews and AI Mode scale across Search. Separately, the US DOJ search-remedies case remains a
+            structural overhang: any requirement to alter default-search distribution agreements (the foundation of the
+            Section 2.2 Search moat) would have first-order implications for Google Services economics. None of these
+            items individually threatens the franchise, but their cumulative direction — more frequent, more
+            AI-output-specific legal exposure layered on top of long-running antitrust matters — represents a structural
+            cost and uncertainty overhang that is not fully resolved.
+          </p>
+          <div class="risk-meta">Severity: Medium-High &nbsp;·&nbsp; Timeline: Ongoing, with the AI Overviews ruling dated Jun 10, 2026 &nbsp;·&nbsp; Status: Active across multiple jurisdictions</div>
+        </div>
+      </div>
+
+      <div class="risk-block medium">
+        <div class="risk-header">
+          <div class="risk-title">3. AI-Driven Disintermediation of Search &amp; Advertising</div>
+          <span class="severity-badge">Medium Severity</span>
+        </div>
+        <div class="risk-body">
+          <p>
+            The bear case that generative AI assistants will divert query volume — and the advertising dollars that follow
+            it — away from traditional Search remains unresolved, even though the data through Q1 2026 has been
+            reassuring: Search &amp; other revenue grew 19% YoY, and queries were described as being at an all-time high.
+            However, two softer data points warrant attention. First, YouTube advertising has missed consensus in two of
+            the last four quarters, which could reflect either advertiser-budget reallocation toward AI-native ad formats
+            or simply normal estimate noise — the pattern is not yet conclusive but bears watching. Second, the competitive
+            field has intensified materially: OpenAI, Anthropic, and others continue to scale consumer AI assistants that
+            increasingly handle tasks (research, shopping comparisons, recommendations) that previously routed through a
+            Google Search query. Alphabet's own Gemini ecosystem (750M MAU) is partly a defensive response to this dynamic.
+            The risk is not imminent revenue impairment — current trends point the other way — but a multi-quarter erosion
+            in query/ad intensity that would not be obvious until it shows up in Search &amp; other growth deceleration.
+          </p>
+          <div class="risk-meta">Severity: Medium &nbsp;·&nbsp; Timeline: 12–24 months &nbsp;·&nbsp; Status: Monitoring; no confirmed deceleration in Search &amp; other as of Q1 2026</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 2.4 ============ -->
+    <section id="sec2-4" class="animate">
+      <h2>2.4 Long-Term Growth Architecture (3–5 Year Drivers)</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Driver</th><th>Timeline</th><th>Current State</th><th>Potential</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Enterprise AI / Google Cloud</td>
+              <td>2026–2028</td>
+              <td>$20.0bn quarterly revenue (Q1 2026, ~$80bn annualized run-rate), +63% YoY, $460bn backlog, 32.9% operating margin</td>
+              <td>Backlog conversion implies multi-year visibility toward a substantially larger annual run-rate; primary growth driver per management commentary</td>
+              <td class="num delta-pos">Accelerating</td>
+            </tr>
+            <tr>
+              <td>Custom AI silicon (TPU roadmap)</td>
+              <td>2026–2027</td>
+              <td>Ironwood TPUs in production; next-generation "Icefish" (10th-gen TPU) reportedly involves Samsung (I/O die) and TSMC (compute die)</td>
+              <td>Structurally lower AI infrastructure unit costs versus GPU-dependent peers; supports Cloud margin trajectory</td>
+              <td class="num delta-pos">In development</td>
+            </tr>
+            <tr>
+              <td>Gemini consumer ecosystem</td>
+              <td>Ongoing</td>
+              <td>Gemini app at 750M MAU; AI Mode/AI Overviews rolled out globally; first-party model tokens processed at 16bn/minute, +60% QoQ</td>
+              <td>Defends Search query share and opens new monetizable surfaces (e.g., the newly launched nationwide home-listings ad carousel)</td>
+              <td class="num delta-pos">Scaling</td>
+            </tr>
+            <tr>
+              <td>Waymo / autonomous mobility</td>
+              <td>2026–2028</td>
+              <td>"Waymo Premier" $29.99/month subscription launched June 2026 in San Francisco, Los Angeles and Phoenix; national advertising campaign tied to the 2026 World Cup</td>
+              <td>Optionality on a large addressable robotaxi/mobility market, though Other Bets remains loss-making (−$2.1bn operating loss in Q1 2026)</td>
+              <td class="num">Early commercialization</td>
+            </tr>
+            <tr>
+              <td>Strategic AI equity portfolio</td>
+              <td>Ongoing</td>
+              <td>Stakes in Waymo and Anthropic produced a combined $36.9bn unrealized gain in Q1 2026; Berkshire Hathaway took a $10bn position in Alphabet itself in June 2026</td>
+              <td>Continued mark-to-market gains and potential future monetization events; primarily a balance-sheet rather than operating driver</td>
+              <td class="num">Value-accruing, non-operational</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 2.5 ============ -->
+    <section id="sec2-5" class="animate">
+      <h2>2.5 Bull Case vs. Bear Case</h2>
+      <div class="scenario-grid">
+        <div class="scenario-card bull">
+          <div class="scenario-header">
+            <h4>🟢 Bull Case</h4>
+            <div class="scenario-target">$480 – $550 (18–24mo)</div>
+          </div>
+          <div class="scenario-body">
+            <dl>
+              <dt>Core Assumptions</dt>
+              <dd>Cloud growth sustains above 50% through 2027 as the $460bn backlog converts to revenue; Search &amp; other holds mid-teens growth despite AI-assistant competition; Cloud operating margin continues expanding toward 35–40%; the 2026–2027 capex peak is confirmed and does not extend materially beyond current guidance, allowing FCF to begin recovering by 2027–2028.</dd>
+              <dt>Revenue Path</dt>
+              <dd>FY2026 revenue of roughly $480–500bn (vs. $422.5bn TTM currently), accelerating toward $580–620bn in FY2027 as Cloud's contribution mix rises.</dd>
+              <dt>EPS Path</dt>
+              <dd>Core (ex one-time items) EPS of approximately $11–12 for FY2026, expanding to $14–16 in FY2027 as Cloud margin gains flow through and capex growth moderates relative to revenue.</dd>
+              <dt>What Has to Be True</dt>
+              <dd>Cloud backlog conversion proceeds on schedule with no major customer churn; no structurally adverse antitrust remedy is imposed on Search distribution; the TPU roadmap (Ironwood/Icefish) delivers the expected unit-cost advantages; and the 2026 capex print of $180–190bn proves to be at or near the cycle peak rather than a new floor.</dd>
+            </dl>
+          </div>
+        </div>
+        <div class="scenario-card bear">
+          <div class="scenario-header">
+            <h4>🔴 Bear Case</h4>
+            <div class="scenario-target">$250 – $290 (18–24mo)</div>
+          </div>
+          <div class="scenario-body">
+            <dl>
+              <dt>Core Assumptions</dt>
+              <dd>Capex continues escalating beyond $190bn into 2027–2028 without a commensurate near-term acceleration in Cloud revenue; free cash flow compresses toward the low end of (or below) the ~$20.5bn 2026 consensus estimate and remains depressed into 2027; AI-native assistants materially divert Search query volume and ad spend over an 18–24 month horizon; and an adverse DOJ or EU regulatory remedy forces structural changes to Search distribution or ad-tech operations.</dd>
+              <dt>Revenue Path</dt>
+              <dd>FY2026 revenue of approximately $430–450bn, below current consensus, with Google Services growth decelerating into single digits during FY2027 as advertising headwinds intensify.</dd>
+              <dt>EPS Path</dt>
+              <dd>Core EPS of roughly $8–9 for FY2026 (margin compression plus a higher share count from the 2026 equity raise), with FY2027 EPS flat to down year-over-year.</dd>
+              <dt>What Would Confirm This Path</dt>
+              <dd>Two consecutive quarters of Cloud growth decelerating below ~30% YoY; FY2026 free cash flow printing materially below $15bn; or a confirmed adverse ruling affecting Search distribution agreements or AI Overviews liability that requires structural product changes.</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 2.6 ============ -->
+    <section id="sec2-6" class="animate">
+      <h2>2.6 Valuation Context</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Metric</th><th class="num">Current</th><th class="num">Forward Estimate</th><th>Historical Range</th><th>Commentary</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>P/E (TTM)</td>
+              <td class="num">27.30x</td>
+              <td class="num">28.62x (fwd)</td>
+              <td>~18x – 30x (last 3 years)</td>
+              <td>Near the upper bound of its recent range, reflecting the post-Q1-2026 AI infrastructure re-rating; forward multiple above trailing reflects expected near-term EPS pressure from the capex cycle.</td>
+            </tr>
+            <tr>
+              <td>EV/EBITDA (NTM)</td>
+              <td class="num">~19.3x</td>
+              <td class="num">—</td>
+              <td>(data not found)</td>
+              <td>Per TIKR's competitor data as of early May 2026, GOOGL traded at approximately 19.26x NTM EV/EBITDA versus Meta Platforms at approximately 10.33x — a meaningful premium attributed to Cloud's acceleration and the vertically integrated AI stack.</td>
+            </tr>
+            <tr>
+              <td>PEG ratio (est.)</td>
+              <td class="num">~0.85x (est.)</td>
+              <td class="num">—</td>
+              <td>(data not found)</td>
+              <td>Derived from the 27.30x trailing P/E against FY2025 net income growth of approximately 32%; below 1x nominally suggests reasonable value relative to growth, though FY2025 growth was partly inflated by non-operating equity gains.</td>
+            </tr>
+            <tr>
+              <td>FCF yield (est.)</td>
+              <td class="num">~0.5% (est., 2026)</td>
+              <td class="num">~1.6% (est., 2028)</td>
+              <td>~1.5% – 2.5% (2023–2025)</td>
+              <td>Near-term compression to roughly 0.5% (2026 consensus FCF of ~$20.5bn against a $4.37T market cap) reflects the capex super-cycle; consensus implies recovery toward ~1.6% by 2028 as depreciation normalizes (est.).</td>
+            </tr>
+            <tr>
+              <td>Dividend yield</td>
+              <td class="num">0.25%</td>
+              <td class="num">—</td>
+              <td>Initiated Q2 2025</td>
+              <td>Modest and recently established; a capital-return signal rather than a primary valuation support, alongside the $70bn buyback authorization announced in Q2 2025.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-caption">Sources: StockAnalysis.com (Jun 11, 2026 close), TIKR Blog (May 2026 competitor data), PGS estimates as marked.</p>
+    </section>
+
+    <!-- ============ SECTION 2.7 ============ -->
+    <section id="sec2-7" class="animate">
+      <h2>2.7 Analyst Landscape</h2>
+      <p>
+        Per StockAnalysis.com, 63 analysts carry an average "Strong Buy" consensus on GOOGL with a 12-month price target of
+        $432.83 (+20.98% from the $357.77 reference price). A separate Benzinga dataset of 35 analysts shows a consensus
+        target of $409.71, with a Street-high of $515 (Citizens, set May 20, 2026) and a Street-low of $310 (DA Davidson,
+        set February 5, 2026). The next earnings date is confirmed for July 22, 2026.
+      </p>
+      <div class="analyst-grid">
+        <div class="analyst-cell">
+          <h4>🟢 Bulls</h4>
+          <div class="analyst-item"><span class="firm">Piper Sandler</span> — Overweight (maintained Jun 1, 2026)<br><span class="target">Price target: $445</span></div>
+          <div class="analyst-item"><span class="firm">Citizens</span> — Street-high price target (May 20, 2026)<br><span class="target">Price target: $515</span></div>
+          <div class="analyst-item"><span class="firm">Broad consensus</span> — 63-analyst average rating of "Strong Buy"<br><span class="target">Consensus target: $432.83</span></div>
+        </div>
+        <div class="analyst-cell neutral">
+          <h4>🟡 Neutrals</h4>
+          <div class="analyst-item"><span class="firm">Bernstein</span> — Hold rating (per TipRanks, Jun 11, 2026)<br><span class="target">Price target: not specified in available sources</span></div>
+          <div class="analyst-item"><span class="firm">Freedom Broker</span> — Price target raised $365 → $400 (May 4, 2026), characterized as a rating change<br><span class="target">Price target: $400</span></div>
+        </div>
+        <div class="analyst-cell bear">
+          <h4>🔴 Bears</h4>
+          <div class="analyst-item"><span class="firm">DA Davidson</span> — Holds the Street-low price target in the consensus set (Feb 5, 2026); specific rating label not confirmed in available sources<br><span class="target">Price target: $310</span></div>
+          <div class="analyst-item">No outright Sell-rated coverage was identified in currently available sources; the 63-analyst consensus skews heavily toward Buy/Strong Buy, with Hold ratings (e.g., Bernstein) representing the most cautious confirmed stance.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VERDICT ============ -->
+    <section id="verdict" class="animate">
+      <div class="section-eyebrow">PGS Internal Verdict</div>
+      <h2>Verdict Block</h2>
+      <div class="verdict-metrics">
+        <div class="verdict-metric rating">
+          <div class="vm-label">PGS Rating</div>
+          <div class="vm-value">🟢 BUY</div>
+        </div>
+        <div class="verdict-metric bull">
+          <div class="vm-label">Bull Target (18–24mo)</div>
+          <div class="vm-value">$480–550</div>
+        </div>
+        <div class="verdict-metric bear">
+          <div class="vm-label">Bear Downside</div>
+          <div class="vm-value">$250–290</div>
+        </div>
+        <div class="verdict-metric">
+          <div class="vm-label">Risk/Reward</div>
+          <div class="vm-value" style="font-size:1.05rem;">Favourable, Capex-Dependent</div>
+        </div>
+      </div>
+      <div class="verdict-prose">
+        <p>
+          <strong>Price dislocation thesis.</strong> GOOGL closed at $357.77 on June 11, 2026, roughly 12% below its
+          52-week high of $408.61 reached earlier in the period, with the recent pullback occurring against the backdrop
+          of the $84.75bn equity capital raise announced in early June. Against a 63-analyst consensus price target of
+          $432.83 — itself set largely before the equity raise's dilutive impact was fully digested — the current level
+          implies approximately 21% upside to consensus, a gap that appears to reflect near-term digestion of dilution and
+          capex-guidance shock rather than a reassessment of the underlying earnings trajectory, which has continued to
+          accelerate through Q1 2026.
+        </p>
+        <p>
+          <strong>Fundamental quality assessment.</strong> The four-quarter sequence reviewed in Section 1 shows revenue
+          growth accelerating in every quarter — from +14% to +22% YoY — driven by Google Cloud's transformation from a
+          32%-growth, margin-dilutive segment a year ago to a 63%-growth segment now posting a 32.9% operating margin.
+          Search &amp; other, the core of the franchise, has shown no visible deceleration (+19% YoY in Q1 2026) despite
+          two years of AI-disruption commentary. The $460bn Cloud backlog provides multi-quarter revenue visibility that
+          is unusually concrete for a company of this scale, and the FY2025 segment mix (Section 2.1) confirms that Cloud,
+          while still only 14.6% of revenue, is now the primary marginal driver of both growth and margin expansion.
+        </p>
+        <p>
+          <strong>Primary risk acknowledgement.</strong> The dominant risk to this thesis is not competitive or
+          regulatory in the near term — though both remain live, per Section 2.3 — but financial: the capex super-cycle
+          to $180–190bn in 2026, with 2027 guided higher still, is projected to compress free cash flow from $73.3bn in
+          2025 to roughly $20.5bn in 2026 (est.), a decline the company has already begun funding through dilutive equity
+          issuance and a sharply expanded debt load (now exceeding $100bn). Should the capex trajectory extend further
+          without Cloud revenue realization keeping pace, or should the regulatory overhang (the DOJ search case, the
+          June 2026 AI Overviews liability ruling, and ongoing EU antitrust matters) crystallize into structural remedies,
+          the bear case in Section 2.5 becomes the operative scenario.
+        </p>
+        <p>
+          <strong>Near-term catalysts.</strong> The next reporting date of July 22, 2026 will be the first opportunity to
+          observe (a) whether Cloud's 63% growth rate and $460bn backlog continue to build or begin normalizing, (b) the
+          initial per-share impact of the June 2026 equity raise, (c) whether YouTube advertising returns to beating
+          consensus after two consecutive misses, and (d) any further commentary on the TPU roadmap (Ironwood/Icefish)
+          that underpins the long-term cost-structure argument for Cloud margins. Progress on Waymo's commercial rollout
+          (the new Premier subscription tier and its 2026 World Cup advertising campaign) offers an additional, lower-weight
+          catalyst on the Other Bets optionality embedded in the moat assessment.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ DISCLAIMER ============ -->
+    <section id="disclaimer" class="animate">
+      <div class="section-eyebrow">Legal</div>
+      <h2>Disclaimer</h2>
+      <p>
+        This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company
+        incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and
+        analysis on behalf of its partners. This document does not constitute an investment recommendation for any third
+        party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset
+        management, advisory or investment consulting services to any external client, has no client base, and offers no
+        products or services to third parties. Any eventual access to this document by unauthorised parties does not
+        confer validity as investment advice or recommendation. The information and analysis contained herein are based on
+        public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in
+        variable income instruments involve risks, including the possibility of total loss of invested capital. The
+        opinions expressed reflect internal analytical judgement as of the publication date and are subject to change
+        without notice.
+      </p>
+      <div class="ref-line">
+        Report Reference: PGS-GOOGL-202606 · Date: June 14, 2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: GOOG / GOOGL · Exchange: NASDAQ Global Select Market
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Page-load animation: JS sets initial hidden state, observer reveals on scroll.
+  document.addEventListener('DOMContentLoaded', function () {
+    var animatedEls = document.querySelectorAll('.animate');
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.animationPlayState = 'running';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    animatedEls.forEach(function (el, idx) {
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      el.style.animationDelay = (idx * 0.05) + 's';
+      observer.observe(el);
+    });
+
+    // Fallback: force everything visible after 2s regardless of scroll/observer state
+    setTimeout(function () {
+      animatedEls.forEach(function (el) {
+        el.style.opacity = '1';
+        el.style.animationPlayState = 'running';
+      });
+    }, 2000);
+
+    // Sidebar active-state on scroll
+    var sections = document.querySelectorAll('main section[id]');
+    var navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+    function onScroll() {
+      var scrollPos = window.scrollY + 140;
+      var currentId = sections[0] ? sections[0].id : null;
+      sections.forEach(function (sec) {
+        if (sec.offsetTop <= scrollPos) {
+          currentId = sec.id;
+        }
+      });
+      navLinks.forEach(function (link) {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + currentId);
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  });
+</script>
+</body>
+</html>

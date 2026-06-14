@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGS-BRKB-202606 | Berkshire Hathaway Inc. (BRK.B) | Polaris Global Strategies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#1B4332;
+    --accent-soft:#E7F0EB;
+    --bg:#FFFFFF;
+    --bg-section:#F9FAFB;
+    --bg-card:#F3F4F6;
+    --text:#111827;
+    --text-muted:#6B7280;
+    --border:#E5E7EB;
+    --green:#16A34A;
+    --green-bg:#DCFCE7;
+    --green-text:#15803D;
+    --red:#DC2626;
+    --red-bg:#FEE2E2;
+    --red-text:#B91C1C;
+    --amber:#D97706;
+    --amber-bg:#FFFBEB;
+    --display: 'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+    --body: 'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+    --mono: 'JetBrains Mono','Roboto Mono','Courier New',monospace;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family: var(--body);
+    color: var(--text);
+    background: var(--bg);
+    font-size:15px;
+    line-height:1.65;
+  }
+
+  .layout{
+    display:grid;
+    grid-template-columns: 220px 1fr;
+    min-height:96vh;
+  }
+
+  /* SIDEBAR */
+  .sidebar{
+    position:sticky;
+    top:0;
+    align-self:start;
+    height:100vh;
+    overflow-y:auto;
+    background: var(--bg-section);
+    border-right:1px solid var(--border);
+    padding:28px 18px;
+  }
+  .sidebar .brand{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:1.05rem;
+    color:var(--accent);
+    letter-spacing:0.02em;
+    margin-bottom:2px;
+  }
+  .sidebar .brand-sub{
+    font-family:var(--mono);
+    font-size:0.68rem;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    margin-bottom:24px;
+  }
+  .sidebar nav a{
+    display:block;
+    font-size:0.82rem;
+    color:var(--text);
+    text-decoration:none;
+    padding:7px 10px;
+    border-left:3px solid transparent;
+    border-radius:0 4px 4px 0;
+    margin-bottom:2px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .sidebar nav a:hover{
+    background: var(--accent-soft);
+  }
+  .sidebar nav a.active{
+    border-left-color: var(--accent);
+    background: var(--accent-soft);
+    font-weight:500;
+    color:var(--accent);
+  }
+  .sidebar nav .group-label{
+    font-family:var(--mono);
+    font-size:0.65rem;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--text-muted);
+    margin:16px 0 4px 10px;
+  }
+
+  /* MAIN CONTENT */
+  .main-content{
+    width:100%;
+    min-width:0;
+  }
+
+  /* COVER */
+  .cover{
+    min-height:96vh;
+    background: var(--bg-section);
+    background-image: radial-gradient(circle, #E5E7EB 1px, transparent 1px);
+    background-size: 22px 22px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:64px 64px;
+    border-bottom:1px solid var(--border);
+  }
+  .cover .eyebrow{
+    font-family:var(--mono);
+    font-size:0.78rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:18px;
+  }
+  .cover h1{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:3.4rem;
+    color:var(--text);
+    line-height:1.1;
+    margin-bottom:6px;
+  }
+  .cover .ticker-line{
+    font-family:var(--mono);
+    font-size:1.1rem;
+    color:var(--text-muted);
+    margin-bottom:28px;
+  }
+  .cover .ticker-line strong{ color:var(--accent); }
+  .cover .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:32px;
+    margin-bottom:36px;
+    font-size:0.88rem;
+    color:var(--text-muted);
+  }
+  .cover .meta-row b{ color:var(--text); font-family:var(--mono); font-weight:500;}
+  .stats-strip{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:1px;
+    background: var(--border);
+    border:1px solid var(--border);
+    max-width:920px;
+  }
+  .stat-cell{
+    background:#FFFFFF;
+    padding:16px 18px;
+  }
+  .stat-cell .label{
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--text-muted);
+    margin-bottom:6px;
+  }
+  .stat-cell .value{
+    font-family:var(--mono);
+    font-size:1.2rem;
+    font-weight:700;
+    color:var(--text);
+  }
+  .stat-cell .value.accent{ color:var(--accent); }
+  .stat-cell .value.pos{ color:var(--green-text); }
+  .stat-cell .value.neg{ color:var(--red-text); }
+
+  /* SECTIONS */
+  .section{
+    padding:56px 64px;
+    border-bottom:1px solid var(--border);
+    page-break-before: always;
+  }
+  .section:first-of-type{ page-break-before: auto; }
+  .section-label{
+    font-family:var(--mono);
+    font-size:0.74rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:8px;
+  }
+  .section h2{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:2.1rem;
+    margin-bottom:8px;
+    border-bottom:3px solid var(--accent);
+    padding-bottom:14px;
+    display:inline-block;
+  }
+  .section .section-intro{
+    color:var(--text-muted);
+    max-width:760px;
+    margin:14px 0 32px;
+  }
+  h3.sub{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:1.35rem;
+    margin:40px 0 14px;
+    color:var(--text);
+  }
+  h3.sub:first-of-type{ margin-top:0; }
+  p{ margin-bottom:14px; max-width:820px; }
+  p.narrow{ max-width:760px; }
+
+  /* QUARTER CARDS */
+  .quarter-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:16px;
+    margin-bottom:8px;
+  }
+  .quarter-card{
+    background:#FFFFFF;
+    border:1px solid var(--border);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .quarter-card .bar{ height:3px; background: var(--accent); }
+  .quarter-card .body{ padding:16px; }
+  .quarter-card .qlabel{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:10px;
+  }
+  .quarter-card .rev{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:1.7rem;
+    color:var(--accent);
+    margin-bottom:2px;
+  }
+  .quarter-card .rev-label{
+    font-size:0.72rem;
+    color:var(--text-muted);
+    margin-bottom:12px;
+  }
+  .quarter-card .row{
+    display:flex;
+    justify-content:space-between;
+    font-size:0.82rem;
+    border-top:1px solid var(--border);
+    padding:7px 0;
+  }
+  .quarter-card .row .v{ font-family:var(--mono); font-weight:500; }
+  .pill{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:0.7rem;
+    font-weight:700;
+    padding:3px 9px;
+    border-radius:999px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .pill.beat{ background: var(--green-bg); color: var(--green-text); }
+  .pill.miss{ background: var(--red-bg); color: var(--red-text); }
+
+  /* TABLES */
+  .table-wrap{ overflow-x:auto; margin-bottom:6px; }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background: var(--bg-card);
+    font-size:0.86rem;
+  }
+  caption{
+    text-align:left;
+    font-family:var(--mono);
+    font-size:0.7rem;
+    color:var(--text-muted);
+    margin-top:8px;
+    caption-side:bottom;
+    padding-top:6px;
+  }
+  th, td{
+    border:1px solid var(--border);
+    padding:9px 12px;
+    text-align:left;
+  }
+  th{
+    background:#EEF1F0;
+    font-weight:700;
+    font-size:0.74rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--text-muted);
+  }
+  tbody tr:nth-child(odd){ background:#FFFFFF; }
+  tbody tr:nth-child(even){ background:#F9FAFB; }
+  tbody tr:hover{ background: var(--accent-soft); transition: background 0.15s; }
+  td.num, th.num{ font-family:var(--mono); }
+  td.pos{ color:var(--green-text); font-family:var(--mono); }
+  td.neg{ color:var(--red-text); font-family:var(--mono); }
+  td.neutral{ color:var(--amber); font-family:var(--mono); }
+
+  /* RISK BLOCKS */
+  .risk-block{
+    border:1px solid var(--border);
+    border-left:3px solid var(--red);
+    border-radius:4px;
+    margin-bottom:18px;
+    background:#FFFFFF;
+  }
+  .risk-block.medium{ border-left-color: var(--amber); }
+  .risk-block .risk-header{
+    background: var(--red-bg);
+    padding:12px 18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .risk-block.medium .risk-header{ background: var(--amber-bg); }
+  .risk-block .risk-header h4{
+    font-family:var(--display);
+    font-size:1.05rem;
+    font-weight:600;
+  }
+  .severity{
+    font-family:var(--mono);
+    font-size:0.7rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    padding:3px 10px;
+    border-radius:999px;
+    background:var(--red);
+    color:#fff;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .risk-block.medium .severity{ background: var(--amber); }
+  .risk-block .risk-body{ padding:16px 18px; }
+  .risk-block .risk-body p{ margin-bottom:8px; max-width:none; }
+  .risk-block .timeline{
+    font-family:var(--mono);
+    font-size:0.74rem;
+    color:var(--text-muted);
+    margin-top:6px;
+  }
+
+  /* MOAT TABLE STARS */
+  .stars{ font-family:var(--mono); letter-spacing:2px; color: var(--accent); white-space:nowrap; }
+  .stars .dim{ color:#D1D5DB; }
+
+  /* SCENARIO CARDS */
+  .scenario-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:18px;
+    margin-bottom:8px;
+  }
+  .scenario-card{
+    border:1px solid var(--border);
+    border-radius:4px;
+    overflow:hidden;
+    background:#FFFFFF;
+  }
+  .scenario-card .head{
+    padding:14px 18px;
+    border-top:3px solid var(--green);
+    background: #F0FDF4;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .scenario-card.bear .head{
+    border-top-color: var(--red);
+    background: #FEE2E2;
+  }
+  .scenario-card .head h4{
+    font-family:var(--display);
+    font-size:1.2rem;
+    font-weight:600;
+  }
+  .scenario-card .head .target{
+    font-family:var(--mono);
+    font-size:1.5rem;
+    font-weight:700;
+    margin-top:4px;
+  }
+  .scenario-card.bull .head .target{ color:var(--green-text); }
+  .scenario-card.bear .head .target{ color:var(--red-text); }
+  .scenario-card .body{ padding:16px 18px; background:#FFFFFF; }
+  .scenario-card .body p{ margin-bottom:8px; max-width:none; font-size:0.88rem;}
+  .scenario-card .body ul{ padding-left:20px; margin-bottom:10px; font-size:0.88rem; }
+  .scenario-card .body li{ margin-bottom:4px; }
+  .scenario-card .body .lbl{
+    font-family:var(--mono);
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--text-muted);
+    margin-top:10px;
+    margin-bottom:4px;
+  }
+
+  /* ANALYST GRID */
+  .analyst-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:16px;
+    margin-bottom:8px;
+  }
+  .analyst-cell{
+    border:1px solid var(--border);
+    border-radius:4px;
+    padding:16px 18px;
+    background:#FFFFFF;
+  }
+  .analyst-cell h4{
+    font-family:var(--display);
+    font-size:1.1rem;
+    margin-bottom:8px;
+  }
+  .analyst-cell.bulls{ border-top:3px solid var(--green); }
+  .analyst-cell.neutrals{ border-top:3px solid var(--amber); }
+  .analyst-cell.bears{ border-top:3px solid var(--red); }
+  .analyst-cell ul{ padding-left:18px; font-size:0.85rem; }
+  .analyst-cell li{ margin-bottom:6px; }
+
+  /* VERDICT */
+  .verdict{
+    background: var(--bg-section);
+    padding:56px 64px;
+    page-break-before: always;
+  }
+  .verdict-header{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+    margin-bottom:28px;
+  }
+  .rating-pill{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:1.3rem;
+    padding:10px 24px;
+    border-radius:6px;
+    background: var(--accent);
+    color:#fff;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .verdict-metrics{
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    gap:1px;
+    background: var(--border);
+    border:1px solid var(--border);
+    max-width:920px;
+    margin-bottom:32px;
+  }
+  .verdict-metrics .cell{
+    background: var(--bg-card);
+    padding:16px 18px;
+  }
+  .verdict-metrics .cell .label{
+    font-size:0.7rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--text-muted);
+    margin-bottom:6px;
+  }
+  .verdict-metrics .cell .value{
+    font-family:var(--mono);
+    font-size:1.25rem;
+    font-weight:700;
+  }
+  .verdict-metrics .cell .value.pos{ color:var(--green-text); }
+  .verdict-metrics .cell .value.neg{ color:var(--red-text); }
+  .verdict .prose p{ max-width:840px; margin-bottom:16px; }
+
+  /* DISCLAIMER */
+  .disclaimer{
+    padding:48px 64px;
+    background:#FFFFFF;
+  }
+  .disclaimer h3{
+    font-family:var(--display);
+    font-size:1.1rem;
+    margin-bottom:14px;
+    color: var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    font-weight:600;
+  }
+  .disclaimer p{
+    font-size:0.8rem;
+    color:var(--text-muted);
+    max-width:none;
+    line-height:1.7;
+  }
+  .disclaimer .ref-line{
+    font-family:var(--mono);
+    font-size:0.75rem;
+    color:var(--text-muted);
+    margin-top:18px;
+    border-top:1px solid var(--border);
+    padding-top:14px;
+  }
+
+  /* ANIMATIONS */
+  .animate{
+    opacity:1;
+    animation: fadeUp 0.6s ease forwards;
+  }
+  @keyframes fadeUp{
+    from{ opacity:0; transform: translateY(14px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px){
+    .layout{ grid-template-columns: 1fr; }
+    .sidebar{
+      position:static;
+      height:auto;
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      overflow-x:auto;
+    }
+    .sidebar nav{
+      display:flex;
+      overflow-x:auto;
+      gap:4px;
+    }
+    .sidebar nav a{ white-space:nowrap; }
+    .sidebar nav .group-label{ display:none; }
+    .cover{ padding:40px 24px; }
+    .cover h1{ font-size:2.2rem; }
+    .section, .verdict, .disclaimer{ padding:36px 22px; }
+    .stats-strip, .verdict-metrics{ grid-template-columns: repeat(2,1fr); }
+    .quarter-grid, .scenario-grid, .analyst-grid{ grid-template-columns: 1fr; }
+  }
+
+  /* PRINT */
+  @media print{
+    .sidebar{ display:none !important; }
+    .layout{ display:block !important; }
+    .main-content{ display:block !important; width:100% !important; }
+    .section{ page-break-before: always !important; background-color:#FFFFFF !important; color:#111827 !important; }
+    .cover{ min-height:auto !important; height:auto !important; display:block !important; padding:36px !important; }
+    .verdict{ page-break-before: always !important; background-color:#F9FAFB !important; }
+    .stats-strip, .verdict-metrics{ display:grid !important; grid-template-columns: repeat(4,1fr) !important; gap:1px !important; }
+    .quarter-grid{ display:grid !important; grid-template-columns: repeat(4,1fr) !important; gap:12px !important; }
+    .scenario-grid{ display:grid !important; grid-template-columns: 1fr 1fr !important; gap:12px !important; }
+    .analyst-grid{ display:grid !important; grid-template-columns: repeat(3,1fr) !important; gap:12px !important; }
+    .table-wrap{ overflow:visible !important; }
+    table{ word-break:break-word; }
+    .nav-link, .scroll-indicator{ display:none !important; }
+    .animate{ opacity:1 !important; transform:none !important; animation:none !important; }
+    .pill, .severity, .rating-pill, .risk-header, .scenario-card .head{ print-color-adjust: exact !important; -webkit-print-color-adjust: exact !important; }
+    a{ text-decoration:none; color:inherit; }
+    box-shadow:none !important;
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">Polaris Global Strategies</div>
+    <div class="brand-sub">Equity Research · PGS-BRKB-202606</div>
+    <nav>
+      <a href="#cover" class="nav-link">Cover &amp; Snapshot</a>
+      <div class="group-label">Section 1 — Earnings</div>
+      <a href="#s1-1" class="nav-link">1.1 Quarterly Snapshot</a>
+      <a href="#s1-2" class="nav-link">1.2 Beat / Miss Detail</a>
+      <a href="#s1-3" class="nav-link">1.3 Revenue &amp; Margin Trajectory</a>
+      <a href="#s1-4" class="nav-link">1.4 Quarter-Defining Events</a>
+      <a href="#s1-5" class="nav-link">1.5 Recurring Patterns</a>
+      <a href="#s1-6" class="nav-link">1.6 Key Metrics Monitored</a>
+      <a href="#s1-7" class="nav-link">1.7 What to Watch Next</a>
+      <div class="group-label">Section 2 — Institutional</div>
+      <a href="#s2-1" class="nav-link">2.1 Business &amp; Revenue</a>
+      <a href="#s2-2" class="nav-link">2.2 Competitive Moat</a>
+      <a href="#s2-3" class="nav-link">2.3 Top 3 Risks</a>
+      <a href="#s2-4" class="nav-link">2.4 Growth Architecture</a>
+      <a href="#s2-5" class="nav-link">2.5 Bull vs. Bear</a>
+      <a href="#s2-6" class="nav-link">2.6 Valuation Context</a>
+      <a href="#s2-7" class="nav-link">2.7 Analyst Landscape</a>
+      <div class="group-label">Conclusion</div>
+      <a href="#verdict" class="nav-link">PGS Verdict</a>
+      <a href="#disclaimer" class="nav-link">Disclaimer</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- COVER -->
+    <section class="cover animate" id="cover">
+      <div class="eyebrow">Polaris Global Strategies Ltd. · Internal Research · NYSE: BRK.B / BRK.A</div>
+      <h1>Berkshire Hathaway Inc.</h1>
+      <div class="ticker-line"><strong>BRK.B</strong> · NYSE · Report Ref. PGS-BRKB-202606 · Published June 14, 2026</div>
+      <div class="meta-row">
+        <div>Price at analysis: <b>$487.00</b></div>
+        <div>Market cap: <b>≈ $1.05T</b></div>
+        <div>Consensus rating: <b>Buy (3 Buy / 1 Hold)</b></div>
+        <div>52-week range: <b>$455.19 – $516.85</b></div>
+      </div>
+      <div class="stats-strip">
+        <div class="stat-cell"><div class="label">Revenue (TTM)</div><div class="value">$375.4B</div></div>
+        <div class="stat-cell"><div class="label">Net Income (TTM)</div><div class="value">$72.5B</div></div>
+        <div class="stat-cell"><div class="label">P/E (TTM)</div><div class="value accent">14.2x</div></div>
+        <div class="stat-cell"><div class="label">Forward P/E</div><div class="value">23.2x</div></div>
+        <div class="stat-cell"><div class="label">P/B Ratio</div><div class="value">1.40x</div></div>
+        <div class="stat-cell"><div class="label">Avg. Price Target</div><div class="value pos">$520.33</div></div>
+        <div class="stat-cell"><div class="label">Cash &amp; Equiv.</div><div class="value accent">$397.4B</div></div>
+        <div class="stat-cell"><div class="label">Next Earnings</div><div class="value">Aug 3, 2026</div></div>
+      </div>
+    </section>
+
+    <!-- SECTION 1 -->
+    <section class="section animate" id="s1-1">
+      <div class="section-label">Section 1 · Earnings Analysis</div>
+      <h2>1. Last Four Quarters</h2>
+      <p class="section-intro">Anchor quarter: <strong>Q1 2026</strong>, published May 2, 2026 (Berkshire reports on an after-tax, GAAP basis and emphasizes "operating earnings" — i.e., earnings excluding investment gains/losses — as the better measure of underlying business performance). Coverage sequence runs Q2 2025 → Q3 2025 → Q4 2025 → Q1 2026, a continuous four-quarter window with no gaps.</p>
+
+      <h3 class="sub" id="s1-1b">1.1 Quarter-by-Quarter Snapshot</h3>
+      <div class="quarter-grid">
+        <div class="quarter-card">
+          <div class="bar"></div>
+          <div class="body">
+            <div class="qlabel">Q2 2025 · Jun 30, 2025</div>
+            <div class="rev">$92.5B</div>
+            <div class="rev-label">Total revenue (-1.2% YoY)</div>
+            <div class="row"><span>Operating EPS (Class A)</span><span class="v">$7,759.58</span></div>
+            <div class="row"><span>Operating earnings</span><span class="v">$11.16B (-3.8% YoY)</span></div>
+            <div class="row"><span>vs. Consensus</span><span class="pill beat">Beat</span></div>
+          </div>
+        </div>
+        <div class="quarter-card">
+          <div class="bar"></div>
+          <div class="body">
+            <div class="qlabel">Q3 2025 · Sep 30, 2025</div>
+            <div class="rev">$92.5B</div>
+            <div class="rev-label">Total revenue (+2.2% YoY)</div>
+            <div class="row"><span>Operating EPS (Class B)</span><span class="v">$6.26</span></div>
+            <div class="row"><span>Operating earnings</span><span class="v">$13.49B (+33.6% YoY)</span></div>
+            <div class="row"><span>vs. Consensus</span><span class="pill beat">Beat</span></div>
+          </div>
+        </div>
+        <div class="quarter-card">
+          <div class="bar"></div>
+          <div class="body">
+            <div class="qlabel">Q4 2025 · Dec 31, 2025</div>
+            <div class="rev">$94.2B</div>
+            <div class="rev-label">Total revenue (-0.7% YoY)</div>
+            <div class="row"><span>Operating EPS (Class B)</span><span class="v">$4.73</span></div>
+            <div class="row"><span>Operating EPS YoY</span><span class="v">-27.7%</span></div>
+            <div class="row"><span>vs. Consensus</span><span class="pill miss">Miss</span></div>
+          </div>
+        </div>
+        <div class="quarter-card">
+          <div class="bar"></div>
+          <div class="body">
+            <div class="qlabel">Q1 2026 · Mar 31, 2026 (Anchor)</div>
+            <div class="rev">$93.7B</div>
+            <div class="rev-label">Total revenue (+4.5% YoY)</div>
+            <div class="row"><span>Operating EPS (Class B)</span><span class="v">$4.68 (net)</span></div>
+            <div class="row"><span>Operating earnings</span><span class="v">$11.35B (+17.7% YoY)</span></div>
+            <div class="row"><span>vs. Consensus</span><span class="pill miss">Miss</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="narrow" style="font-family:var(--mono); font-size:0.7rem; color:var(--text-muted);">Source: Berkshire Hathaway Inc. 8-K earnings releases (SEC EDGAR); Zacks Equity Research; CNBC; Yahoo Finance; Seeking Alpha.</p>
+    </section>
+
+    <section class="section animate" id="s1-2">
+      <h3 class="sub">1.2 Beat / Miss Detail</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Quarter</th><th>Revenue</th><th>Revenue vs. Cons.</th><th>Operating EPS</th><th>EPS vs. Cons.</th><th>Key Segment Signal</th><th>Stock Reaction</th></tr></thead>
+          <tbody>
+            <tr><td>Q2 2025</td><td class="num">$92.52B</td><td class="num">Op. revenue ~in-line; total rev -1.2% YoY</td><td class="num">$7,759.58 (A) / $5.17 (B)*</td><td class="pos">+3.9% (Class A vs. $7,468.18 est.)</td><td>Insurance underwriting -12% YoY ($1.99B); BNSF +19.5%; Kraft Heinz writedown -$3.8B</td><td class="num">Stock ~flat into print; +4.8% YTD through Aug 1</td></tr>
+            <tr><td>Q3 2025</td><td class="num">$92.5B–$95.0B**</td><td class="neutral">Revenue missed cons. by ~0.1%</td><td class="num">$6.26 (B) / $21,413 (A)</td><td class="pos">+33.2% vs. Zacks consensus</td><td>Insurance underwriting +200%+ to $2.37B; cash hoard hits record $381.7B</td><td class="pos">+2.1% over two sessions post-release</td></tr>
+            <tr><td>Q4 2025</td><td class="num">$94.2B</td><td class="neg">Missed consensus by ~8.4%</td><td class="num">$4.73 (B)</td><td class="neg">-8.9% vs. Zacks consensus ($5.19)</td><td>FY insurance underwriting profit -19.5% to $7.26B; Insurance &amp; Other operating earnings -12.9% (FY)</td><td class="neg">-4.9% in the session following the release</td></tr>
+            <tr><td>Q1 2026 (Anchor)</td><td class="num">$93.7B</td><td class="num">No formal top-line consensus cited</td><td class="num">$4.68 (B, net) / $7,027 (A, net)</td><td class="neg">Operating earnings $11.35B vs. $11.56B FactSet est. (-1.8%)</td><td>Geico earnings -34% YoY; insurance underwriting pre-tax +to $2.3B; cash hits record $397.4B</td><td class="num">No discrete reaction figure confirmed; shares range-bound through May</td></tr>
+          </tbody>
+          <caption>* Q2 2025 Class B EPS derived pro-rata from Class A figure (1,500:1 ratio). ** Total revenue figures vary by source depending on inclusion of investment income; operating revenue basis was $92.5B (Zacks), total revenue basis $94.97B (Seeking Alpha, SEC-sourced). Source: Berkshire 8-K filings; Zacks; CNBC; Seeking Alpha; CNN.</caption>
+        </table>
+      </div>
+    </section>
+
+    <section class="section animate" id="s1-3">
+      <h3 class="sub">1.3 Revenue &amp; Margin Trajectory</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Metric</th><th>Q2 2025</th><th>Q3 2025</th><th>Q4 2025</th><th>Q1 2026</th></tr></thead>
+          <tbody>
+            <tr><td>Total / operating revenue</td><td class="num">$92.52B</td><td class="num">$92.5B – $95.0B</td><td class="num">$94.2B</td><td class="num">$93.7B</td></tr>
+            <tr><td>Operating earnings (after-tax)</td><td class="num">$11.16B</td><td class="num">$13.49B</td><td class="num">~$13.9B (implied)*</td><td class="num">$11.35B</td></tr>
+            <tr><td>Net earnings to shareholders</td><td class="num">~$10.0B (H1: $20.8B - Q1's $4.6B)</td><td class="num">Not separately disclosed</td><td class="num">$19.20B</td><td class="num">$10.1B</td></tr>
+            <tr><td>Insurance underwriting (op.)</td><td class="num">$1.99B</td><td class="num">$2.37B</td><td class="num">FY: $7.26B</td><td class="num">~$2.3B (pre-tax)</td></tr>
+            <tr><td>Insurance investment income</td><td class="num">$3.37B</td><td class="num">Not isolated</td><td class="num">FY: $12.51B</td><td class="num">$2.68B</td></tr>
+            <tr><td>BNSF (railroad) earnings</td><td class="num">$1.47B</td><td class="num">Pre-tax $2.9B (-2.5% YoY)</td><td class="num">FY: part of $9.4B RUE pre-tax</td><td class="num">$1.38B</td></tr>
+            <tr><td>BHE (energy) earnings</td><td class="num">$0.70B</td><td class="num">Included in RUE figure above</td><td class="num">FY RUE pre-tax: $9.4B (+7.9%)</td><td class="num">$1.11B</td></tr>
+            <tr><td>Cash &amp; equivalents (period-end)</td><td class="num">$344.1B</td><td class="num">$381.7B</td><td class="num">$373.3B</td><td class="num">$397.4B</td></tr>
+          </tbody>
+          <caption>* Q4 2025 operating earnings figure is contested across sources: Zacks cites $19.2B (+2.5% YoY) for what appears to be net earnings, while per-share operating EPS of $4.73 implies a YoY decline of ~27.7%; Stansberry Research independently calculates a ~30% YoY operating earnings decline for the quarter. PGS uses the per-share decline as the more internally consistent figure and flags the $19.2B figure as likely representing net earnings ($19.20B per CNBC/Insurance Business). Source: Berkshire 8-K filings; Zacks; Stansberry Research; Insurance Business Magazine.</caption>
+        </table>
+      </div>
+    </section>
+
+    <section class="section animate" id="s1-4">
+      <h3 class="sub">1.4 Quarter-Defining Events</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Quarter</th><th>The Story Behind the Numbers</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Q2 2025</strong></td><td>The quarter that confirmed the succession era had begun. Reported days after Buffett's May 3 announcement that he would step down as CEO at year-end, the print showed Berkshire's first headline operating-earnings decline in several quarters (-3.8%), driven by a 12% drop in insurance underwriting and a $3.8B writedown on the long-troubled Kraft Heinz stake. Management used the release to issue one of its starkest tariff warnings yet, while the cash pile dipped slightly to $344.1B as Berkshire continued selling equities for an eleventh straight quarter. The stock, already down more than 10% from its post-announcement high, closed at $472.84 the day before the print.</td></tr>
+            <tr><td><strong>Q3 2025</strong></td><td>A sharp rebound that masked a structural transition. Operating earnings jumped 34% YoY to $13.49B, powered by an insurance underwriting recovery (more than tripling to $2.37B) after a catastrophe-heavy stretch, plus a currency tailwind on non-USD debt. The cash hoard hit a fresh record of $381.7B with zero buybacks through nine months — even as the stock pulled back double digits from its highs, a move analysts attributed to the fading "Buffett premium" ahead of the CEO handover. The quarter also confirmed the $9.7B OxyChem acquisition announcement, Berkshire's first sizeable deal in years.</td></tr>
+            <tr><td><strong>Q4 2025</strong></td><td>Greg Abel's inheritance, quantified. The annual report (Berkshire's first under Abel's authored shareholder letter) revealed a full-year operating earnings decline of roughly 6% to $44.49B, with insurance underwriting profit down nearly 20% to $7.26B and the Insurance &amp; Other segment's operating earnings falling 12.9% for the year. Per-share operating earnings of $4.73 missed consensus by 8.9%, and the stock fell almost 5% in the next session — Berkshire's worst single-day reaction in years. Full-year net earnings of $66.97B (down from $89B) and a 10% share-price gain in 2025 (versus the S&P 500's 16.4%) framed a year of underperformance heading into the leadership change.</td></tr>
+            <tr><td><strong>Q1 2026</strong></td><td>The first quarter with Abel fully at the controls — and the first signs of a different playbook. Operating earnings rose 18% YoY to $11.35B (still missing the $11.56B FactSet estimate), with Geico underwriting earnings down 34% even as overall insurance underwriting improved to $2.3B pre-tax on the absence of large catastrophes. The headline event was capital allocation: Berkshire closed the $9.5B OxyChem acquisition on January 2, resumed buybacks ($234M, the first since May 2024) and — as later confirmed via 13F — tripled its Alphabet stake to roughly $22.5B, making it the fifth-largest equity position. Cash nonetheless grew to a record $397.4B, underscoring that deployment remains incremental relative to the size of the hoard. PacifiCorp wildfire liabilities (cumulative ~$2.9B, ~$577M unpaid) remained a live overhang following an adverse Oregon appellate ruling.</td></tr>
+          </tbody>
+          <caption>Source: Berkshire Hathaway 8-K earnings releases; CNBC; Barron's; Motley Fool; Stansberry Research; Global Finance Magazine.</caption>
+        </table>
+      </div>
+    </section>
+
+    <section class="section animate" id="s1-5">
+      <h3 class="sub">1.5 Recurring Earnings Patterns</h3>
+      <p class="narrow"><strong>1. Operating earnings remain volatile quarter-to-quarter despite the "steady conglomerate" narrative.</strong> The four-quarter sequence ranges from a 27.7% per-share decline (Q4 2025) to a 33.6% increase (Q3 2025), driven largely by insurance underwriting swings tied to catastrophe timing rather than any structural change in the underlying businesses.</p>
+      <p class="narrow"><strong>2. The cash hoard has grown in three of the last four quarters, breaking $397B by Q1 2026.</strong> Even with the OxyChem deal, GOOGL stake build, and resumed buybacks, net cash generation continues to outpace deployment — Berkshire has now been a net seller of equities for 14 consecutive quarters as of Q1 2026.</p>
+      <p class="narrow"><strong>3. Insurance underwriting is the single largest swing factor in quarterly results.</strong> From a 12% decline (Q2 2025) to a >200% surge (Q3 2025) to a near-20% full-year decline (FY2025) to a partial Q1 2026 recovery offset by a 34% Geico drop, underwriting volatility — not the railroad, energy, or manufacturing operations — explains most of the headline beat/miss outcomes.</p>
+      <p class="narrow"><strong>4. Capital allocation signals are accelerating under Abel.</strong> Four consecutive quarters of inaction (no buybacks, continued net equity sales) gave way in Q1 2026 to the first buyback in nearly two years, the largest acquisition since 2022 (OxyChem), and a tripling of the Alphabet position — a meaningfully different cadence than the prior several years.</p>
+      <p class="narrow"><strong>5. Stock price reaction has been increasingly tied to "Buffett premium" sentiment rather than fundamentals alone.</strong> The Q3 2025 beat produced only a modest +2.1% reaction amid broader share weakness tied to the succession announcement, while the Q4 2025 miss triggered a outsized -4.9% drop — evidence that the market is now pricing execution risk around the leadership transition as much as the reported numbers themselves.</p>
+    </section>
+
+    <section class="section animate" id="s1-6">
+      <h3 class="sub">1.6 Key Metrics the Market Monitors</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Metric</th><th>Latest Reading (Q1 2026)</th><th>Threshold / Signal</th></tr></thead>
+          <tbody>
+            <tr><td>Cash &amp; equivalents</td><td class="num">$397.4B</td><td>Further increases without a major deployment reinforce the "cash drag" bear narrative; a step-down via acquisition signals Abel-era capital allocation is accelerating</td></tr>
+            <tr><td>Insurance underwriting (op., pre-tax)</td><td class="num">~$2.3B</td><td>Sustained improvement above $2B/quarter would mark a recovery from the FY2025 ~20% decline; a return to losses would reignite concerns about Geico and catastrophe exposure</td></tr>
+            <tr><td>Geico segment earnings</td><td class="num">-34% YoY</td><td>Two consecutive quarters of decline would suggest a structural (not cyclical) competitive issue in auto insurance pricing/retention</td></tr>
+            <tr><td>Net equity sales (consecutive quarters)</td><td class="num">14 quarters</td><td>A reversal to net buying would be a strong signal that Abel sees attractive valuations re-emerging</td></tr>
+            <tr><td>Share buybacks</td><td class="num">$234M (Q1 2026)</td><td>A meaningful step-up (multi-billion dollar quarters) would indicate management views the stock as undervalued relative to intrinsic value</td></tr>
+            <tr><td>PacifiCorp wildfire liability (cumulative)</td><td class="num">~$2.9B est. / $577M unpaid</td><td>Any material increase tied to the Oregon appellate ruling would pressure BHE segment earnings and could trigger additional reserve charges</td></tr>
+            <tr><td>Insurance float</td><td class="num">$176.9B</td><td>Float growth funds investment activity at near-zero cost; stagnation would modestly reduce Berkshire's structural funding advantage</td></tr>
+          </tbody>
+          <caption>Source: Berkshire Hathaway Q1 2026 8-K (May 2, 2026); Yahoo Finance; StockTitan; Insurance Business Magazine.</caption>
+        </table>
+      </div>
+    </section>
+
+    <section class="section animate" id="s1-7">
+      <h3 class="sub">1.7 What to Watch — Next Earnings (Q2 2026, expected Aug 3, 2026)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Item</th><th>What to Watch</th><th>Directional Signal</th></tr></thead>
+          <tbody>
+            <tr><td>Operating earnings vs. consensus</td><td>Whether Berkshire can post a second consecutive beat on operating earnings after the Q1 2026 miss</td><td class="num">Beat = constructive; another miss raises questions about underwriting normalization</td></tr>
+            <tr><td>Cash balance trajectory</td><td>Whether the record $397.4B cash pile continues growing or shows the first sequential decline of the Abel era</td><td class="num">Decline = deployment accelerating (positive); further record highs = deployment concerns persist</td></tr>
+            <tr><td>Geico underwriting trend</td><td>Whether the 34% Q1 2026 earnings decline at Geico stabilizes or worsens</td><td class="num">Stabilization = positive; continued deterioration = structural concern</td></tr>
+            <tr><td>Buyback cadence</td><td>Whether the $234M Q1 2026 repurchase was a one-off or the start of a sustained program</td><td class="num">Step-up in size = signals management views shares as undervalued</td></tr>
+            <tr><td>13F equity portfolio shifts</td><td>Continuation of the Alphabet build-out and any further reduction in Bank of America or Kraft Heinz exposure</td><td class="num">Further tech/quality reallocation = signals Abel's evolving investment philosophy</td></tr>
+            <tr><td>PacifiCorp wildfire developments</td><td>Updates on the Oregon Court of Appeals remand and any incremental reserve charges</td><td class="num">Adverse rulings or reserve increases = negative for BHE segment earnings</td></tr>
+          </tbody>
+          <caption>Source: PGS analysis based on Berkshire Hathaway Q1 2026 earnings release and subsequent coverage (Motley Fool, Barron's, GuruFocus, TipRanks).</caption>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section class="section animate" id="s2-1">
+      <div class="section-label">Section 2 · Institutional Analysis</div>
+      <h2>2. Institutional Analysis</h2>
+
+      <h3 class="sub" id="s2-1b">2.1 Business Model &amp; Revenue Architecture</h3>
+      <p class="narrow">Berkshire Hathaway is a diversified holding company combining (i) a large insurance and reinsurance operation (GEICO, Berkshire Hathaway Primary Group, Berkshire Hathaway Reinsurance Group) that generates investable float at near-zero cost, (ii) a portfolio of large, wholly-owned operating businesses spanning rail (BNSF), regulated utilities and energy (BHE), manufacturing, wholesale distribution (McLane), fuel/travel retail (Pilot), and a broad services and retailing segment, and (iii) a roughly $280–290B marketable equity securities portfolio managed historically by Buffett and now by Greg Abel alongside long-time investment managers Todd Combs and Ted Weschler. The float-funded balance sheet — combined with a culture of decentralized operating management and centralized capital allocation — is the structural core of the business model.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Segment</th><th>FY2025 Revenue</th><th>% of Total</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Insurance Group (GEICO, Primary, Reinsurance)</td><td class="num">≈ $105.0B</td><td class="num">28.3%</td><td>Largest segment; underwriting profit fell ~20% in FY2025 to $7.26B</td></tr>
+            <tr><td>Manufacturing</td><td class="num">≈ $79.1B</td><td class="num">21.3%</td><td>Includes Precision Castparts, Marmon, industrial and consumer products</td></tr>
+            <tr><td>McLane Company</td><td class="num">≈ $51.4B</td><td class="num">13.8%</td><td>Wholesale grocery/foodservice distribution; thin margins, high volume</td></tr>
+            <tr><td>Service &amp; Retailing</td><td class="num">≈ $43.0B</td><td class="num">11.6%</td><td>NetJets, FlightSafety, auto dealers, electronics distribution, leasing</td></tr>
+            <tr><td>Pilot Travel Centers</td><td class="num">≈ $42.6B</td><td class="num">11.5%</td><td>Fuel and travel-center retail; consolidated since 2023</td></tr>
+            <tr><td>Berkshire Hathaway Energy</td><td class="num">≈ $26.5B</td><td class="num">7.1%</td><td>Regulated utilities, natural gas pipelines, renewables; PacifiCorp wildfire exposure</td></tr>
+            <tr><td>BNSF (Railroad)</td><td class="num">≈ $23.7B</td><td class="num">6.4%</td><td>Pre-tax earnings ~$2.9B/quarter; benefiting from operating-efficiency gains</td></tr>
+          </tbody>
+          <caption>FY2025 total revenue ≈ $371.4B. Source: Bullfincher segment analysis (Berkshire 10-K data); Zacks Equity Research; SEC EDGAR segment disclosures (edgar.tools).</caption>
+        </table>
+      </div>
+    </section>
+
+    <section class="section animate" id="s2-2">
+      <h3 class="sub">2.2 Competitive Moat Assessment</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Moat Pillar</th><th>Strength</th><th>Risk to Durability</th><th>PGS Rating</th></tr></thead>
+          <tbody>
+            <tr><td>Insurance float (low-cost leverage)</td><td>~$176.9B of float invested at near-zero explicit cost, funding the equity and operating-business portfolios</td><td>Float growth has slowed (+$0.5B in Q1 2026); underwriting losses would turn float cost positive</td><td class="stars">★★★★<span class="dim">★</span></td></tr>
+            <tr><td>Balance sheet / "AAA-like" optionality</td><td>$397.4B cash and short-term Treasuries provides unmatched dry powder during dislocations</td><td>Opportunity cost is real — 14 straight quarters of net equity selling with limited large deployments</td><td class="stars">★★★★<span class="dim">★</span></td></tr>
+            <tr><td>Decentralized operating culture</td><td>Operating subsidiaries (BNSF, BHE, GEICO, manufacturing units) run autonomously with minimal corporate overhead</td><td>Culture continuity depends on retaining subsidiary CEOs through the leadership transition</td><td class="stars">★★★★<span class="dim">★</span></td></tr>
+            <tr><td>Capital allocation reputation ("Buffett premium")</td><td>Six decades of compounding at ~18% book-value CAGR vs. ~10.5% for the S&amp;P 500 TR underpins the valuation premium to book</td><td>Premium is actively eroding post-transition; CFRA and other analysts flag Abel's lack of public investment-management track record</td><td class="stars">★★★<span class="dim">★★</span></td></tr>
+            <tr><td>Scale in reinsurance &amp; large-loss capacity</td><td>Among the largest global reinsurance balance sheets, able to write policies few competitors can match</td><td>Catastrophe exposure (wildfire, hurricane) remains a recurring source of earnings volatility</td><td class="stars">★★★★<span class="dim">★</span></td></tr>
+          </tbody>
+          <caption>Source: PGS analysis based on Berkshire Hathaway 2025 Annual Report (berkshirehathaway.com); GuruFocus; CFRA Research commentary via BigGo Finance.</caption>
+        </table>
+      </div>
+    </section>
+
+    <section class="section animate" id="s2-3">
+      <h3 class="sub">2.3 Top 3 Risks</h3>
+      <div class="risk-block">
+        <div class="risk-header"><h4>1. Post-Buffett Succession &amp; "Oracle Premium" Erosion</h4><span class="severity">High Severity</span></div>
+        <div class="risk-body">
+          <p>Greg Abel formally became CEO on January 1, 2026, ending six decades of Buffett leadership. While Abel built BHE into the largest U.S. wind producer and has decades of internal experience, CFRA analyst Cathy Seifert has publicly noted that he has "never professionally managed investment funds" — precisely the capital-allocation role most associated with Berkshire's historical outperformance. The stock has underperformed the S&amp;P 500 by roughly 22 percentage points since Buffett's May 2025 succession announcement, and the Q4 2025 earnings miss triggered the steepest single-day decline in years, evidence that the market is actively re-rating the "Buffett premium" embedded in Berkshire's historical book-value multiple.</p>
+          <div class="timeline">Timeline: Ongoing — re-rating risk persists through Abel's first 12-24 months as CEO, with the August 2026 and subsequent earnings reports serving as key trust-building (or trust-eroding) events.</div>
+        </div>
+      </div>
+      <div class="risk-block">
+        <div class="risk-header"><h4>2. Cash Deployment / Opportunity-Cost Drag</h4><span class="severity">High Severity</span></div>
+        <div class="risk-body">
+          <p>The $397.4B cash and short-term Treasury position — a record — represents capital earning Treasury-bill yields rather than Berkshire's historical equity-like returns. Berkshire has been a net seller of equities for 14 consecutive quarters, and aside from the $9.5B OxyChem deal and the GOOGL stake build, deployment has remained modest relative to the size of the hoard. With the "Buffett Indicator" (total U.S. market cap to GDP) reported at 226.8% as of April 2026 — well above its 88% historical average — management's stated rationale is to wait for valuations to normalize. The risk is that this discipline, applied for too long, compounds an opportunity cost that the market increasingly penalizes via a lower book-value multiple.</p>
+          <div class="timeline">Timeline: Medium-term (1-3 years) — resolution depends on either a market correction creating deployment opportunities or Abel demonstrating willingness to act at current valuations.</div>
+        </div>
+      </div>
+      <div class="risk-block medium">
+        <div class="risk-header"><h4>3. Insurance Underwriting Volatility &amp; PacifiCorp Wildfire Liability</h4><span class="severity">Medium Severity</span></div>
+        <div class="risk-body">
+          <p>FY2025 insurance underwriting profit fell roughly 20% to $7.26B, and Geico's Q1 2026 earnings declined 34% YoY even as overall underwriting improved on lower catastrophe activity. Separately, Berkshire Hathaway Energy's PacifiCorp subsidiary carries cumulative estimated probable wildfire losses of approximately $2.9B through March 31, 2026, with roughly $577M still unpaid, and an Oregon Court of Appeals decision reversing and remanding an earlier class-action verdict has introduced renewed legal uncertainty. Either a deterioration in Geico's competitive position in auto insurance or an adverse outcome in the PacifiCorp litigation could pressure segment earnings beyond what is currently reserved.</p>
+          <div class="timeline">Timeline: Near-to-medium term — Geico trends will be visible in the Q2 2026 report (Aug 3, 2026); PacifiCorp litigation timeline is less predictable and could extend over multiple years.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section animate" id="s2-4">
+      <h3 class="sub">2.4 Long-Term Growth Architecture</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Driver</th><th>Timeline</th><th>Current State</th><th>Potential</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Deployment of $397B cash hoard</td><td>1-3 years</td><td>Incremental (OxyChem, GOOGL build, modest buybacks)</td><td>A transformative acquisition or large equity stakes could materially re-rate intrinsic value per share</td><td class="num">Early stage</td></tr>
+            <tr><td>Alphabet (GOOGL) equity stake build-out</td><td>Ongoing</td><td>Tripled to ~$22.5B in Q1 2026, now 5th-largest holding</td><td>Signals a shift toward higher-growth, AI-exposed equity allocation under Abel</td><td class="num">Accelerating</td></tr>
+            <tr><td>BNSF operational efficiency ("precision railroading")</td><td>2-4 years</td><td>Expenses down 3.7% in FY2025 on productivity gains and lower fuel costs</td><td>Continued margin expansion as efficiency initiatives mature</td><td class="num">In progress</td></tr>
+            <tr><td>OxyChem integration</td><td>1-2 years</td><td>$9.5B deal closed Jan 2, 2026; ~$10.8B preliminary assets added</td><td>Expands manufacturing/chemicals footprint and diversifies earnings base</td><td class="num">Early integration</td></tr>
+            <tr><td>BHE renewables &amp; regulated utility growth</td><td>3-5 years</td><td>BHE earnings roughly flat YoY in FY2025; wildfire liabilities a near-term drag</td><td>Continued buildout of wind/solar generation and rate-base growth once litigation overhang clears</td><td class="num">Constrained near-term</td></tr>
+            <tr><td>Capital return resumption (buybacks)</td><td>Ongoing</td><td>$234M in Q1 2026, first since May 2024</td><td>A sustained multi-billion-dollar buyback program would signal management confidence in intrinsic value vs. price</td><td class="num">Nascent</td></tr>
+          </tbody>
+          <caption>Source: Berkshire Hathaway Q1 2026 8-K; Motley Fool (May 30, 2026); Stansberry Research; Global Finance Magazine.</caption>
+        </table>
+      </div>
+    </section>
+
+    <section class="section animate" id="s2-5">
+      <h3 class="sub">2.5 Bull Case vs. Bear Case</h3>
+      <div class="scenario-grid">
+        <div class="scenario-card bull">
+          <div class="head"><h4>Bull Case</h4><div class="target">$570 (18-24mo)</div></div>
+          <div class="body">
+            <p>Greg Abel demonstrates that the "Berkshire system" — decentralized operations plus disciplined, opportunistic capital allocation — survives the leadership transition intact, and the market gradually restores a meaningful portion of the valuation premium lost since mid-2025.</p>
+            <div class="lbl">Key assumptions</div>
+            <ul>
+              <li>A market pullback (Buffett Indicator normalization from 226.8%) allows Abel to deploy a substantial portion of the $397B cash hoard into either a large acquisition or expanded equity stakes</li>
+              <li>Geico underwriting stabilizes and insurance underwriting profit recovers toward FY2024 levels (~$9B annualized)</li>
+              <li>Buyback program scales meaningfully beyond the initial $234M as management signals shares trade below intrinsic value</li>
+              <li>PacifiCorp wildfire litigation resolves without material incremental reserve charges</li>
+            </ul>
+            <div class="lbl">Implied path</div>
+            <p>Operating earnings recover toward $55-60B annualized run-rate (vs. $44.5B in FY2025), supporting a re-rating of P/B toward 1.55-1.65x on a larger book value base.</p>
+            <div class="lbl">Requirements to play out</div>
+            <p>Visible, sizeable capital deployment within 12 months; at least two consecutive quarters of operating-earnings beats; stabilization (not just one-quarter improvement) in Geico underwriting.</p>
+          </div>
+        </div>
+        <div class="scenario-card bear">
+          <div class="head"><h4>Bear Case</h4><div class="target">$440 (18-24mo)</div></div>
+          <div class="body">
+            <p>The "Oracle premium" continues to leak out as the market concludes that a $1+ trillion conglomerate without Buffett's capital-allocation halo is structurally worth a lower multiple of book value — and the cash hoard becomes a persistent drag rather than a strategic asset.</p>
+            <div class="lbl">Key assumptions</div>
+            <ul>
+              <li>Cash and short-term Treasuries continue climbing past $400-450B with no transformative deployment over the next 12-18 months</li>
+              <li>Geico's 34% earnings decline proves structural (competitive pricing pressure, market-share loss) rather than a one-quarter anomaly</li>
+              <li>PacifiCorp wildfire liabilities escalate beyond the ~$2.9B cumulative estimate following adverse litigation outcomes</li>
+              <li>Operating earnings growth remains lumpy and below the FY2024 $47.4B level on a trailing basis</li>
+            </ul>
+            <div class="lbl">Implied path</div>
+            <p>P/B compresses toward 1.2-1.3x (low end of recent historical range) on a roughly flat book value base, consistent with a conglomerate-discount re-rating absent fresh catalysts.</p>
+            <div class="lbl">Requirements to play out</div>
+            <p>Continued sequential cash growth without deployment through year-end 2026; a third consecutive quarter of insurance underwriting weakness; no resumption of meaningful buybacks.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section animate" id="s2-6">
+      <h3 class="sub">2.6 Valuation Context</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Metric</th><th>Current</th><th>Forward Estimate</th><th>Historical Range</th><th>Commentary</th></tr></thead>
+          <tbody>
+            <tr><td>P/E (TTM)</td><td class="num">14.15x – 14.52x</td><td class="num">—</td><td class="num">~10x – 25x</td><td>TTM net income ($72.5B) includes large unrealized/realized investment gains, which distorts the trailing multiple lower than operating-earnings-based multiples would suggest</td></tr>
+            <tr><td>Forward P/E</td><td class="num">23.16x</td><td class="num">23.16x</td><td class="num">~18x – 24x</td><td>Reflects normalization toward operating-earnings-based earnings power rather than GAAP net income</td></tr>
+            <tr><td>P/B</td><td class="num">1.40x</td><td class="num">—</td><td class="num">1.2x – 1.6x</td><td>Currently mid-range; Morningstar separately frames the stock as trading at a "695% premium" on a different fair-value methodology</td></tr>
+            <tr><td>EV/EBITDA</td><td class="num">6.44x</td><td class="num">—</td><td class="num">5x – 8x (est.)</td><td>Reasonable for a diversified industrial/insurance conglomerate; not directly comparable to pure insurers or industrials</td></tr>
+            <tr><td>EV/Revenue</td><td class="num">N/M</td><td class="num">N/M</td><td class="num">N/M</td><td>Not meaningful — Berkshire's ~$397B net cash position depresses enterprise value well below market capitalization, distorting revenue-based multiples</td></tr>
+            <tr><td>PEG ratio</td><td class="num">N/M</td><td class="num">N/M</td><td class="num">N/M</td><td>Not meaningful given lumpy, insurance-driven operating-earnings growth and the conglomerate's diversified earnings mix</td></tr>
+            <tr><td>FCF yield</td><td class="num">≈ 2.3%</td><td class="num">—</td><td class="num">2% – 3% (est.)</td><td>TTM FCF of $23.87B against ≈$1.05T market cap; modest yield reflects heavy capex at BNSF/BHE and the insurance-float-funded model</td></tr>
+          </tbody>
+          <caption>Source: StockAnalysis.com statistics page; Vested Finance; GuruFocus; Morningstar; PGS calculations.</caption>
+        </table>
+      </div>
+    </section>
+
+    <section class="section animate" id="s2-7">
+      <h3 class="sub">2.7 Analyst Landscape</h3>
+      <p class="narrow">Coverage of BRK.B is notably thin relative to its size — a function of its conglomerate structure and limited sell-side incentive given the absence of dividends or frequent capital-markets activity. As of June 2026, consensus across 3-4 covering analysts is "Buy," with an average 12-month price target of $520.33 (range $481-$570), implying roughly 6-7% upside from the $487 reference price.</p>
+      <div class="analyst-grid">
+        <div class="analyst-cell bulls">
+          <h4>Bulls</h4>
+          <ul>
+            <li>24/7 Wall St. rates BRK.B a Buy with a proprietary 12-month target of $555.94 (+18.4% from its reference price), citing an attractive risk/reward profile and a 75% Buy-rating share among covering analysts</li>
+            <li>3 of 4 analysts tracked by Investing.com / MarketBeat carry Buy ratings, with a high estimate of $570</li>
+          </ul>
+        </div>
+        <div class="analyst-cell neutrals">
+          <h4>Neutrals</h4>
+          <ul>
+            <li>Seeking Alpha contributor analysis (Jan 2026) rated BRK.A/B a "Hold" following Buffett's retirement, citing the $382B cash hoard as a double-edged asset — useful optionality but also a sign of limited near-term deployment opportunities</li>
+            <li>1 of 4 tracked analysts (MarketBeat/Investing.com composite) carries a Hold rating, consistent with a "wait for Abel's track record" stance</li>
+          </ul>
+        </div>
+        <div class="analyst-cell bears">
+          <h4>Bears</h4>
+          <ul>
+            <li>CFRA Research's Cathy Seifert has voiced explicit caution on the succession, noting Abel has never professionally managed investment funds — a core CEO responsibility at Berkshire — while flagging the prior year's >50% decline in Q4 insurance underwriting profit relative to peers</li>
+            <li>No formal Sell ratings identified among publicly reported analyst coverage as of this report's publication</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- VERDICT -->
+    <section class="verdict animate" id="verdict">
+      <div class="section-label">PGS Verdict</div>
+      <h2 style="font-family:var(--display); font-weight:700; font-size:2.1rem; border-bottom:3px solid var(--accent); display:inline-block; padding-bottom:14px; margin-bottom:24px;">Investment Verdict</h2>
+      <div class="verdict-header">
+        <div class="rating-pill">🟡 NEUTRAL</div>
+        <div style="font-family:var(--mono); color:var(--text-muted); font-size:0.9rem;">Risk/Reward: Balanced, Capital-Preservation Bias</div>
+      </div>
+      <div class="verdict-metrics">
+        <div class="cell"><div class="label">Bull Target (18-24mo)</div><div class="value pos">$570.00</div></div>
+        <div class="cell"><div class="label">Bear Downside (18-24mo)</div><div class="value neg">$440.00</div></div>
+        <div class="cell"><div class="label">Current Price</div><div class="value">$487.00</div></div>
+        <div class="cell"><div class="label">Consensus Target</div><div class="value">$520.33</div></div>
+      </div>
+      <div class="prose">
+        <p>Berkshire Hathaway currently trades at $487, roughly 5.8% below its 52-week high of $516.85 and approximately 6.9% below the $520.33 consensus price target, with a P/B ratio of 1.40x sitting near the midpoint of its multi-year range. The stock's modest discount to consensus and to its own historical book-value multiple appears less a function of operating deterioration — operating earnings rose 18% YoY in the anchor quarter — and more a function of a market-wide re-rating of the "Buffett premium" following the CEO transition completed on January 1, 2026. The dislocation, where one exists, is therefore a sentiment-driven rather than fundamentals-driven gap, which historically has been a setup where Berkshire's underlying intrinsic value (book value growing at a high-single to low-double-digit rate) outpaces near-term share-price moves.</p>
+        <p>From a fundamental quality standpoint, the franchise remains intact: a $176.9B insurance float funding a diversified set of cash-generative operating businesses (insurance, rail, regulated energy, manufacturing, distribution, and retailing), a fortress balance sheet with $397.4B in cash and short-term Treasuries, and a decentralized management structure that has continued to function through the leadership change. The FY2025 operating-earnings decline of roughly 6% and the Q4 2025 underwriting weakness represent real, but largely cyclical, headwinds — insurance underwriting profitability has historically moved in multi-year cycles tied to catastrophe frequency, and the Q1 2026 partial recovery (ex-Geico) is consistent with that pattern reasserting itself.</p>
+        <p>The primary risk acknowledged in this verdict is execution risk around capital allocation under Greg Abel. Fourteen consecutive quarters of net equity selling and a record cash position that grew even after the OxyChem acquisition suggest that the most differentiated source of Berkshire's historical outperformance — opportunistic, large-scale capital deployment — has yet to be convincingly demonstrated by the new CEO. CFRA's explicit caution about Abel's lack of a public investment-management track record is a reasonable concern that the market is pricing, evidenced by the stock's underperformance relative to the S&amp;P 500 since the May 2025 succession announcement and the unusually sharp -4.9% reaction to the Q4 2025 miss.</p>
+        <p>Near-term catalysts to monitor include the Q2 2026 earnings report (expected August 3, 2026), which will be the first full quarterly print of the Abel era without a Buffett-authored narrative cushion and will be closely watched for (i) whether Geico's underwriting trend stabilizes, (ii) whether the cash balance shows its first sequential decline as deployment accelerates, and (iii) whether the initial $234M buyback program scales meaningfully. Additional 13F disclosures will also reveal whether the Q1 2026 shift toward Alphabet and away from legacy holdings such as Bank of America continues, which would offer further evidence of an evolving — rather than simply inherited — investment philosophy under the new leadership.</p>
+      </div>
+    </section>
+
+    <!-- DISCLAIMER -->
+    <section class="disclaimer" id="disclaimer">
+      <h3>Disclaimer</h3>
+      <p>This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice.</p>
+      <div class="ref-line">Report Reference: PGS-BRKB-202606 · Date: June 14, 2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: BRK.B · Exchange: NYSE</div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Page-load fade animation with fallback
+  document.addEventListener('DOMContentLoaded', function(){
+    var animEls = document.querySelectorAll('.animate');
+    if ('IntersectionObserver' in window){
+      var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting){
+            entry.target.style.opacity = '1';
+            entry.target.style.animationPlayState = 'running';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.05 });
+
+      animEls.forEach(function(el, i){
+        el.style.opacity = '0';
+        el.style.animationPlayState = 'paused';
+        el.style.animationDelay = (i * 0.05) + 's';
+        observer.observe(el);
+      });
+    }
+    // Aggressive fallback: force visible after 2s regardless
+    setTimeout(function(){
+      animEls.forEach(function(el){
+        el.style.opacity = '1';
+        el.style.animationPlayState = 'running';
+        el.style.transform = 'none';
+      });
+    }, 2000);
+  });
+
+  // Active nav highlight on scroll
+  (function(){
+    var sections = document.querySelectorAll('main.main-content > section[id]');
+    var links = document.querySelectorAll('.sidebar nav a');
+    function onScroll(){
+      var current = sections[0] ? sections[0].id : null;
+      sections.forEach(function(sec){
+        var rect = sec.getBoundingClientRect();
+        if (rect.top <= 120) current = sec.id;
+      });
+      links.forEach(function(link){
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+</body>
+</html>

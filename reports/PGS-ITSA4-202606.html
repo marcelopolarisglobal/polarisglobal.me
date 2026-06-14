@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGS-ITSA4-202606 · Itaúsa S.A. Equity Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#EC7000;          /* Itaú orange — brand accent */
+    --accent-deep:#B8560A;
+    --accent-tint:#FFF3E8;
+    --ink:#111827;
+    --muted:#6B7280;
+    --line:#E5E7EB;
+    --canvas:#FFFFFF;
+    --panel:#F9FAFB;
+    --card:#F3F4F6;
+    --pos:#16A34A;
+    --neg:#DC2626;
+    --warn:#D97706;
+    --serif:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+    --sans:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+    --mono:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--canvas);color:var(--ink);
+    font-family:var(--sans);font-size:15px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:220px 1fr;align-items:start;}
+  .sidebar{
+    position:sticky;top:0;height:100vh;overflow-y:auto;
+    background:var(--panel);border-right:1px solid var(--line);
+    padding:26px 16px;
+  }
+  .sb-brand{font-family:var(--serif);font-weight:800;font-size:19px;letter-spacing:.2px;}
+  .sb-brand span{color:var(--accent);}
+  .sb-sub{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:1.4px;margin-top:4px;margin-bottom:22px;}
+  .nav-link{
+    display:block;font-size:12.7px;color:var(--muted);
+    padding:7px 10px;border-left:3px solid transparent;border-radius:0 4px 4px 0;
+    transition:background .2s,color .2s,border-color .2s;margin-bottom:2px;
+  }
+  .nav-link:hover{background:#fff;color:var(--ink);}
+  .nav-link.active{background:var(--accent-tint);color:var(--accent-deep);border-left-color:var(--accent);font-weight:600;}
+  .nav-sec{font-size:10px;color:#9CA3AF;text-transform:uppercase;letter-spacing:1.2px;margin:18px 0 7px 10px;}
+
+  .main-content{min-width:0;}
+  .wrap{max-width:980px;margin:0 auto;padding:0 40px;}
+
+  /* ---------- COVER ---------- */
+  .cover{
+    min-height:96vh;background:var(--panel);
+    background-image:radial-gradient(var(--line) 1.1px,transparent 1.1px);
+    background-size:22px 22px;
+    border-bottom:1px solid var(--line);
+    display:flex;flex-direction:column;justify-content:center;
+    padding:64px 40px;
+  }
+  .cover-inner{max-width:900px;margin:0 auto;width:100%;}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent-deep);}
+  .cover h1{font-family:var(--serif);font-weight:800;font-size:clamp(42px,7vw,76px);line-height:1.02;margin:14px 0 6px;letter-spacing:-1px;}
+  .cover h1 b{color:var(--accent);font-weight:800;}
+  .cover-tag{font-size:16px;color:var(--muted);max-width:560px;margin-bottom:30px;}
+  .cover-meta{display:flex;flex-wrap:wrap;gap:26px 46px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0;margin-bottom:30px;}
+  .cm-item .k{font-size:10.5px;text-transform:uppercase;letter-spacing:1.3px;color:var(--muted);margin-bottom:3px;}
+  .cm-item .v{font-family:var(--mono);font-size:16px;font-weight:600;}
+  .rating-pill{display:inline-block;font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.4px;padding:6px 16px;border-radius:30px;}
+  .rating-buy{background:var(--accent);color:#fff;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+
+  .stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  .stat{background:var(--canvas);padding:16px 18px;}
+  .stat .sl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:5px;}
+  .stat .sv{font-family:var(--mono);font-size:20px;font-weight:600;}
+  .stat .sd{font-size:11.5px;color:var(--muted);margin-top:2px;}
+
+  /* ---------- SECTIONS ---------- */
+  .company-report{padding:54px 0 30px;}
+  section.block{padding:30px 0;border-top:1px solid var(--line);}
+  section.block:first-of-type{border-top:none;}
+  .kicker{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent-deep);margin-bottom:6px;}
+  h2.sec{font-family:var(--serif);font-weight:700;font-size:30px;margin:0 0 4px;letter-spacing:-.4px;}
+  h3.sub{font-family:var(--serif);font-weight:600;font-size:20px;margin:30px 0 12px;}
+  h3.sub .n{font-family:var(--mono);font-size:13px;color:var(--accent);margin-right:8px;font-weight:600;}
+  p{margin:0 0 14px;}
+  .lead{font-size:16.5px;color:#374151;}
+  .accent-bar{height:3px;width:54px;background:var(--accent);margin:0 0 22px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+
+  .anchor-note{background:var(--accent-tint);border:1px solid #FBD9B8;border-left:3px solid var(--accent);padding:14px 18px;font-size:13px;border-radius:0 6px 6px 0;margin-bottom:8px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  .anchor-note b{color:var(--accent-deep);}
+  .anchor-note code{font-family:var(--mono);font-size:12.5px;background:#fff;padding:1px 6px;border-radius:4px;border:1px solid #FBD9B8;}
+
+  /* ---------- TABLES ---------- */
+  .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;margin:14px 0 6px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead th{background:var(--card);text-align:left;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#374151;padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap;}
+  tbody td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tbody tr:nth-child(odd){background:var(--canvas);}
+  tbody tr:nth-child(even){background:var(--panel);}
+  tbody tr:hover{background:var(--accent-tint);transition:background .15s;}
+  tbody tr:last-child td{border-bottom:none;}
+  td.num,th.num{font-family:var(--mono);text-align:right;white-space:nowrap;}
+  .delta-pos{color:var(--pos);font-weight:600;}
+  .delta-neg{color:var(--neg);font-weight:600;}
+  .delta-flat{color:var(--muted);font-weight:600;}
+  caption,.cap{caption-side:bottom;text-align:left;font-family:var(--mono);font-size:10.5px;color:var(--muted);padding:8px 2px 0;line-height:1.5;}
+  .cap{display:block;}
+
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.3px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  .pill-beat{background:#DCFCE7;color:#15803D;}
+  .pill-miss{background:#FEE2E2;color:#B91C1C;}
+  .pill-line{background:#FEF3C7;color:#92400E;}
+
+  /* ---------- QUARTER CARDS ---------- */
+  .quarter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:16px 0 6px;}
+  .qcard{background:var(--canvas);border:1px solid var(--line);border-radius:8px;padding:16px;position:relative;overflow:hidden;}
+  .qcard:before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  .qc-q{font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.5px;}
+  .qc-rev{font-family:var(--serif);font-weight:800;font-size:27px;color:var(--accent);margin:6px 0 2px;line-height:1;}
+  .qc-lbl{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;}
+  .qc-row{display:flex;justify-content:space-between;font-size:12px;margin-top:9px;padding-top:9px;border-top:1px solid var(--line);}
+  .qc-row .l{color:var(--muted);}
+  .qc-row .r{font-family:var(--mono);font-weight:600;}
+  .qc-foot{margin-top:11px;}
+
+  /* ---------- RISK BLOCKS ---------- */
+  .risk{border:1px solid var(--line);border-left:3px solid var(--neg);border-radius:0 8px 8px 0;margin:14px 0;overflow:hidden;}
+  .risk.med{border-left-color:var(--warn);}
+  .risk-head{background:#FEF2F2;padding:12px 16px;display:flex;align-items:center;gap:12px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  .risk.med .risk-head{background:#FFFBEB;}
+  .risk-head .rt{font-weight:700;font-size:15px;font-family:var(--serif);}
+  .sev{margin-left:auto;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  .sev-high{background:var(--neg);color:#fff;}
+  .sev-med{background:var(--warn);color:#fff;}
+  .risk-body{background:var(--canvas);padding:13px 16px;font-size:13.5px;}
+  .risk-body .meta{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;}
+
+  /* ---------- SCENARIO ---------- */
+  .scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0 6px;}
+  .scn{border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  .scn-head{padding:13px 16px;font-family:var(--serif);font-weight:700;font-size:17px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  .scn.bull .scn-head{background:#F0FDF4;border-top:3px solid var(--pos);}
+  .scn.bear .scn-head{background:#FEE2E2;border-top:3px solid var(--neg);}
+  .scn-body{background:var(--canvas);padding:6px 16px 14px;}
+  .scn-body dl{margin:0;}
+  .scn-body dt{font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-top:12px;}
+  .scn-body dd{margin:2px 0 0;font-size:13.5px;}
+  .scn-target{font-family:var(--mono);font-weight:700;font-size:22px;}
+  .scn.bull .scn-target{color:var(--pos);}
+  .scn.bear .scn-target{color:var(--neg);}
+
+  /* ---------- ANALYST GRID ---------- */
+  .analyst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0 6px;}
+  .acell{border:1px solid var(--line);border-radius:8px;padding:15px;background:var(--canvas);}
+  .acell h4{margin:0 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:.8px;}
+  .acell.bulls h4{color:var(--pos);} .acell.neutrals h4{color:var(--warn);} .acell.bears h4{color:var(--neg);}
+  .acell .cnt{font-family:var(--mono);font-size:30px;font-weight:700;line-height:1;margin-bottom:8px;}
+  .acell ul{margin:0;padding-left:0;list-style:none;font-size:12.3px;}
+  .acell li{padding:5px 0;border-top:1px solid var(--line);color:#374151;}
+  .acell li:first-child{border-top:none;}
+  .acell li b{font-family:var(--mono);}
+
+  /* ---------- VERDICT ---------- */
+  .verdict{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:26px;margin:20px 0;}
+  .verdict-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px;}
+  .verdict-head h2{font-family:var(--serif);font-size:26px;margin:0;}
+  .verdict-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:20px;}
+  .vm{background:var(--card);padding:14px 16px;}
+  .vm .k{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:4px;}
+  .vm .v{font-family:var(--mono);font-size:19px;font-weight:700;}
+  .vm .v.pos{color:var(--pos);} .vm .v.neg{color:var(--neg);}
+  .verdict p{font-size:14.2px;color:#1F2937;}
+  .verdict p b{color:var(--ink);}
+
+  /* ---------- DISCLAIMER ---------- */
+  .disclaimer{border-top:1px solid var(--line);margin-top:30px;padding:24px 0 60px;}
+  .disclaimer h4{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:0 0 10px;}
+  .disclaimer p{font-size:11.5px;color:var(--muted);line-height:1.7;}
+  .disclaimer .ref{font-family:var(--mono);font-size:11px;color:#374151;border-top:1px solid var(--line);padding-top:12px;margin-top:14px;}
+
+  .scroll-cue{position:absolute;}
+
+  /* ---------- ANIMATION (PDF-SAFE: default visible) ---------- */
+  .animate{opacity:1;animation:fadeUp .6s ease forwards;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:768px){
+    .layout{display:block;}
+    .sidebar{position:sticky;top:0;height:auto;width:100%;border-right:none;border-bottom:1px solid var(--line);
+      display:flex;gap:6px;overflow-x:auto;padding:12px 14px;white-space:nowrap;z-index:20;}
+    .sb-brand,.sb-sub,.nav-sec{display:none;}
+    .nav-link{border-left:none;border-bottom:3px solid transparent;border-radius:0;padding:6px 10px;flex:0 0 auto;}
+    .nav-link.active{border-left:none;border-bottom-color:var(--accent);background:transparent;}
+    .wrap{padding:0 20px;}
+    .cover{padding:48px 20px;}
+    .stats-strip{grid-template-columns:repeat(2,1fr);}
+    .quarter-grid{grid-template-columns:repeat(2,1fr);}
+    .scenario-grid,.analyst-grid,.verdict-metrics{grid-template-columns:1fr;}
+    .cover-meta{gap:18px 30px;}
+  }
+
+  /* ---------- PRINT / PDF ---------- */
+  @media print{
+    body{background:#FFFFFF !important;color:#111827 !important;font-size:11px;}
+    .layout{display:block !important;}
+    .sidebar,.nav-link,.nav-sec,.sb-brand,.sb-sub,.scroll-cue{display:none !important;}
+    .main-content{display:block !important;width:100% !important;}
+    .wrap{max-width:100% !important;padding:0 6mm !important;}
+    .cover{min-height:auto !important;height:auto !important;display:block !important;background:#F9FAFB !important;padding:18mm 6mm !important;page-break-after:always;}
+    .company-report{padding:0 !important;}
+    section.block{page-break-inside:avoid;}
+    .stats-strip{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important;}
+    .quarter-grid{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:8px !important;}
+    .scenario-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:10px !important;}
+    .analyst-grid{display:grid !important;grid-template-columns:repeat(3,1fr) !important;gap:8px !important;}
+    .verdict-metrics{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important;}
+    .animate{opacity:1 !important;transform:none !important;animation:none !important;}
+    .table-wrap{overflow:visible !important;}
+    table{font-size:9.5px;}
+    td,th{word-break:break-word;}
+    .verdict,.qcard,.risk,.scn,.acell,.table-wrap{box-shadow:none !important;}
+    a{color:#111827 !important;}
+    h2.sec{font-size:20px;}
+    .cover h1{font-size:46px;}
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-brand">Polaris <span>Global</span></div>
+    <div class="sb-sub">Strategies · Internal Research</div>
+    <a href="#cover" class="nav-link active">Cover</a>
+    <div class="nav-sec">Section 1 · Earnings</div>
+    <a href="#s1" class="nav-link">1.1 Quarter snapshots</a>
+    <a href="#s12" class="nav-link">1.2 Beat / miss detail</a>
+    <a href="#s13" class="nav-link">1.3 Revenue &amp; margin</a>
+    <a href="#s14" class="nav-link">1.4 Quarter-defining events</a>
+    <a href="#s15" class="nav-link">1.5 Recurring patterns</a>
+    <a href="#s16" class="nav-link">1.6 Metrics monitored</a>
+    <a href="#s17" class="nav-link">1.7 What to watch</a>
+    <div class="nav-sec">Section 2 · Institutional</div>
+    <a href="#s21" class="nav-link">2.1 Business model</a>
+    <a href="#s22" class="nav-link">2.2 Moat assessment</a>
+    <a href="#s23" class="nav-link">2.3 Top 3 risks</a>
+    <a href="#s24" class="nav-link">2.4 Growth architecture</a>
+    <a href="#s25" class="nav-link">2.5 Bull vs bear</a>
+    <a href="#s26" class="nav-link">2.6 Valuation</a>
+    <a href="#s27" class="nav-link">2.7 Analyst landscape</a>
+    <div class="nav-sec">Conclusion</div>
+    <a href="#verdict" class="nav-link">PGS Verdict</a>
+    <a href="#disclaimer" class="nav-link">Disclaimer</a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <!-- COVER -->
+    <header class="cover" id="cover">
+      <div class="cover-inner animate">
+        <div class="eyebrow">PGS-ITSA4-202606 · Internal Equity Research</div>
+        <h1>Itaú<b>sa</b> S.A.</h1>
+        <div class="cover-tag">The cheapest door into Brazil's most profitable bank — a holding whose entire investment case rests on what discount the market is willing to apply.</div>
+        <div class="cover-meta">
+          <div class="cm-item"><div class="k">Ticker / Exchange</div><div class="v">ITSA4 · B3</div></div>
+          <div class="cm-item"><div class="k">Price at analysis</div><div class="v">R$ 12.54</div></div>
+          <div class="cm-item"><div class="k">Market cap</div><div class="v">≈ R$ 141 bn</div></div>
+          <div class="cm-item"><div class="k">Consensus</div><div class="v">Buy</div></div>
+          <div class="cm-item"><div class="k">PGS Rating</div><div class="v"><span class="rating-pill rating-buy">🟢 BUY</span></div></div>
+        </div>
+        <div class="stats-strip">
+          <div class="stat"><div class="sl">Recurring NI (LTM)</div><div class="sv">R$ 17.1 bn</div><div class="sd">FY25 R$ 16.5 bn + 1T26 step-up</div></div>
+          <div class="stat"><div class="sl">Recurring ROE 1T26</div><div class="sv">20.1%</div><div class="sd">+2.7 p.p. YoY</div></div>
+          <div class="stat"><div class="sl">P/E (TTM)</div><div class="sv">≈ 8.5×</div><div class="sd">vs ~10–11× hist. avg</div></div>
+          <div class="stat"><div class="sl">P/BV</div><div class="sv">≈ 1.6×</div><div class="sd"></div></div>
+          <div class="stat"><div class="sl">Dividend yield (LTM)</div><div class="sv">≈ 9.5%</div><div class="sd">payout 76%</div></div>
+          <div class="stat"><div class="sl">Holding discount</div><div class="sv">≈ 24%</div><div class="sd">vs sum-of-the-parts</div></div>
+          <div class="stat"><div class="sl">Avg target</div><div class="sv">R$ 16.4–17.0</div><div class="sd">range R$ 12.1–18.0</div></div>
+          <div class="stat"><div class="sl">52-week range</div><div class="sv">8.29 – 15.24</div><div class="sd">price near mid-range</div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="company-report">
+      <div class="wrap">
+
+        <!-- ============ SECTION 1 ============ -->
+        <section class="block animate" id="s1">
+          <div class="kicker">Section 1 · Earnings Analysis</div>
+          <h2 class="sec">Last Four Reported Quarters</h2>
+          <div class="accent-bar"></div>
+
+          <div class="anchor-note">
+            <b>Anchor confirmed:</b> <code>1T26 (Q1 2026)</code> — results released to market after close on <b>Monday, May 11, 2026</b> (PR Newswire, May 12). Verified against Itaúsa IR, Reuters and InfoMoney. Next release scheduled <b>Aug 10–11, 2026</b>.<br>
+            <b>Coverage sequence:</b> <code>1T26 → 4T25 → 3T25 → 2T25</code> — continuous quarterly sequence, no gaps.
+          </div>
+
+          <p class="lead">Itaúsa is an investment holding: it has no operating revenue of its own. Its income statement is the sum of equity-method results from its investees, dominated by Itaú Unibanco. The relevant "top line" for a holding is therefore <b>recurring net income</b> (lucro líquido recorrente) and <b>recurring ROE</b>, not sales. Across the four quarters, recurring net income has held a tight band around R$ 4.0–4.5 bn while ROE has stair-stepped from 18.4% to 20.1% — the clearest signal in the data.</p>
+
+          <h3 class="sub"><span class="n">1.1</span>Quarter-by-quarter snapshot</h3>
+          <div class="quarter-grid">
+            <div class="qcard">
+              <div class="qc-q">2T25 · Jun 2025</div>
+              <div class="qc-rev">R$ 4.04bn</div>
+              <div class="qc-lbl">Recurring net income</div>
+              <div class="qc-row"><span class="l">YoY</span><span class="r delta-pos">+11%</span></div>
+              <div class="qc-row"><span class="l">Recurring ROE</span><span class="r">18.4%</span></div>
+              <div class="qc-foot"><span class="pill pill-beat">RECORD (at time)</span></div>
+            </div>
+            <div class="qcard">
+              <div class="qc-q">3T25 · Sep 2025</div>
+              <div class="qc-rev">R$ 4.12bn</div>
+              <div class="qc-lbl">Recurring net income</div>
+              <div class="qc-row"><span class="l">YoY</span><span class="r delta-pos">+6%</span></div>
+              <div class="qc-row"><span class="l">Recurring ROE</span><span class="r">18.1%</span></div>
+              <div class="qc-foot"><span class="pill pill-line">SOFTEST QTR</span></div>
+            </div>
+            <div class="qcard">
+              <div class="qc-q">4T25 · Dec 2025</div>
+              <div class="qc-rev">R$ 4.45bn</div>
+              <div class="qc-lbl">Recurring net income</div>
+              <div class="qc-row"><span class="l">YoY</span><span class="r delta-pos">+21%</span></div>
+              <div class="qc-row"><span class="l">Recurring ROE</span><span class="r">19.6%</span></div>
+              <div class="qc-foot"><span class="pill pill-beat">STRONGEST YoY</span></div>
+            </div>
+            <div class="qcard">
+              <div class="qc-q">1T26 · Mar 2026</div>
+              <div class="qc-rev">R$ 4.49bn</div>
+              <div class="qc-lbl">Recurring net income</div>
+              <div class="qc-row"><span class="l">YoY</span><span class="r delta-pos">+17%</span></div>
+              <div class="qc-row"><span class="l">Recurring ROE</span><span class="r">20.1%</span></div>
+              <div class="qc-foot"><span class="pill pill-beat">ROE PEAK</span></div>
+            </div>
+          </div>
+          <span class="cap">Sources: Itaúsa IR / PR Newswire (1T26); ADVFN, Money Times, InfoMoney/Reuters (4T25); Exame, Money Times, Finance News (3T25); Suno, Euqueroinvestir, Finance News (2T25).</span>
+
+          <h3 class="sub"><span class="n">1.2</span>Beat / miss detail</h3>
+          <p>Itaúsa is a thin-coverage holding; the market reads it primarily off Itaú's print, which is released the same evening. Sell-side does not maintain dense quarterly revenue/EPS consensus on the holding itself, so "beat/miss" is best read against the company's own recurring-result run-rate and against the investee contribution. The one third-party surprise read available (Investing.com, 1T26) showed a positive EPS surprise of roughly +9.8% and revenue surprise of ~+5.2% versus modeled forecasts.</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Quarter</th><th class="num">Recurring NI</th><th class="num">YoY</th><th class="num">Accounting NI</th><th class="num">Recurring ROE</th><th>Read vs run-rate</th><th>Tape reaction</th></tr></thead>
+              <tbody>
+                <tr><td>2T25</td><td class="num">R$ 4,037 mn</td><td class="num delta-pos">+11%</td><td class="num">R$ 4,066 mn</td><td class="num">18.4%</td><td><span class="pill pill-beat">In line / record</span></td><td>Muted; dividend focus</td></tr>
+                <tr><td>3T25</td><td class="num">R$ 4,120 mn</td><td class="num delta-pos">+6%</td><td class="num">≈ R$ 4,2 bn</td><td class="num">18.1%</td><td><span class="pill pill-line">Soft (Dexco drag)</span></td><td>Positive into rally; YTD +47%</td></tr>
+                <tr><td>4T25</td><td class="num">R$ 4,449 mn</td><td class="num delta-pos">+21%</td><td class="num">R$ 4,3 bn</td><td class="num">19.6%</td><td><span class="pill pill-beat">Strong</span></td><td>Flat on day (R$ 13.38)</td></tr>
+                <tr><td>1T26</td><td class="num">R$ 4,491 mn</td><td class="num delta-pos">+17%</td><td class="num">R$ 4,410 mn</td><td class="num">20.1%</td><td><span class="pill pill-beat">Strong</span></td><td>Slightly lower (R$ 13.29, −1.6%)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <span class="cap">Sources: Itaúsa earnings releases via ADVFN, Money Times, Investidor10, Visno Invest; Investing.com surprise read. Holding-level sell-side revenue/EPS consensus is sparse; reactions reflect that ITSA4 trades as a derivative of ITUB4.</span>
+
+          <h3 class="sub"><span class="n">1.3</span>Recurring result &amp; ROE trajectory</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Metric</th><th class="num">2T25</th><th class="num">3T25</th><th class="num">4T25</th><th class="num">1T26</th><th>Trend</th></tr></thead>
+              <tbody>
+                <tr><td>Recurring net income</td><td class="num">4,037</td><td class="num">4,120</td><td class="num">4,449</td><td class="num">4,491</td><td class="delta-pos">Rising</td></tr>
+                <tr><td>Recurring ROE (%)</td><td class="num">18.4</td><td class="num">18.1</td><td class="num">19.6</td><td class="num">20.1</td><td class="delta-pos">+170 bps</td></tr>
+                <tr><td>Investee recurring result</td><td class="num">≈ 4,300</td><td class="num">4,369</td><td class="num">≈ 4,800</td><td class="num">≈ 4,800</td><td class="delta-pos">Rising</td></tr>
+                <tr><td>Itaú Unibanco contribution</td><td class="num delta-pos">+12%</td><td class="num delta-pos">+7%</td><td class="num delta-pos">+14%</td><td class="num">4,383 (+11%)</td><td class="delta-pos">Core engine</td></tr>
+                <tr><td>Non-financial investees</td><td class="num delta-neg">−8% (208)</td><td class="num delta-pos">+4% (330)</td><td class="num delta-pos">+330% (299)</td><td class="num delta-pos">+76%</td><td class="delta-pos">Inflecting up</td></tr>
+                <tr><td>Holding admin expense</td><td class="num">≈ 47</td><td class="num">≈ 50</td><td class="num">52</td><td class="num">44</td><td class="delta-flat">Contained</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <span class="cap">Figures in R$ millions unless noted. Sources: Itaúsa releases via Nord Investimentos, ADVFN, Money Times, Exame. Non-financial YoY base effects are large because absolute contributions are small (R$ 0.2–0.3 bn vs ~R$ 4.4 bn from Itaú).</span>
+
+          <h3 class="sub"><span class="n">1.4</span>Quarter-defining events</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Quarter</th><th>The story behind the numbers</th></tr></thead>
+              <tbody>
+                <tr><td><b>2T25</b></td><td>A record recurring quarter built almost entirely on Itaú (+12%), masking an 8% dip in the non-financial book (Dexco and Motiva soft). The real headline was capital allocation: management reaffirmed the multi-year deleveraging that had cut gross debt ~30% and lengthened maturities, and declared R$ 2.7 bn in JCP (R$ 0.245/share) — first-half shareholder returns up 47% YoY. The quarter cemented the "dividend machine with falling leverage" narrative.</td></tr>
+                <tr><td><b>3T25</b></td><td>The softest of the four on the surface (+6% YoY, ROE slipping to 18.1%), and the only quarter where the non-financial portfolio actively detracted — Dexco's weak panels/results offset gains at Aegea, Motiva and Alpargatas. Yet it was still a nominal record, and it landed inside a powerful B3 rally (ITSA4 +47% YTD by then), so the market looked through the deceleration and treated the stock as an index-and-dividend vehicle rather than reacting to the print.</td></tr>
+                <tr><td><b>4T25</b></td><td>The cleanest beat of the series: +21% YoY, ROE jumping to 19.6% from 16.6%, capping a <b>record FY2025 of R$ 16.5 bn (+11%)</b> in the holding's 50th-anniversary year. The non-financial book swung violently positive (+330% on a tiny base) and FY investee results reached R$ 17.6 bn (+12%). Management paired it with JCP of R$ 0.0957/share and a share-bonus, and a 76% payout — but the stock closed flat, the market already positioned.</td></tr>
+                <tr><td><b>1T26</b></td><td>Peak ROE of the cycle (20.1%) and a strategically important quarter: non-financial investees surged +76% YoY, validating a decade-long diversification bet. NTS (+87% to R$ 157 mn) and a reversal at Aegea (+R$ 89 mn) led; Itaú still supplied >90% of recurring results (R$ 4.38 bn, +11%). The board approved a small ITSA4 buyback (up to 5 mn shares). The quarter sat under the shadow of April's Aegea accounting restatement — a R$ 700 mn equity hit booked just before, which kept sentiment cautious despite the strong print (stock −1.6% on the day).</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <span class="cap">Sources: Itaúsa management messages (Alfredo Setubal) via Money Times, ADVFN, Suno, Rio Times, Brazil Journal; Investidor10 (Aegea restatement).</span>
+
+          <h3 class="sub"><span class="n">1.5</span>Recurring earnings patterns</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th class="num">#</th><th>Structural observation across the four quarters</th></tr></thead>
+              <tbody>
+                <tr><td class="num">1</td><td><b>Itaú is the result.</b> In every quarter Itaú Unibanco supplied roughly 90–95% of recurring investee results. ITSA4 is, mechanically, a leveraged-by-discount proxy for ITUB4 plus a small non-financial option.</td></tr>
+                <tr><td class="num">2</td><td><b>ROE is grinding higher.</b> 18.4% → 18.1% → 19.6% → 20.1%. The upward drift reflects both Itaú's own ~20%+ ROE and Itaúsa's lighter equity base after deleveraging and capital returns.</td></tr>
+                <tr><td class="num">3</td><td><b>The non-financial book is inflecting — but off a small base.</b> After a negative 2T25, contributions turned positive and then surged (+330% in 4T25, +76% in 1T26). Impressive in percentage terms, still only ~5–10% of total recurring results in reais.</td></tr>
+                <tr><td class="num">4</td><td><b>Returns policy is the constant.</b> Every quarter carried a JCP/dividend declaration; FY2025 payout reached 76% with ~R$ 11.9 bn distributed, anchoring an LTM yield near 9% — among the highest on B3.</td></tr>
+                <tr><td class="num">5</td><td><b>Holding cost discipline holds.</b> Administrative expense stayed in a R$ 44–52 mn band — immaterial against ~R$ 4.4 bn of quarterly recurring income — so essentially all investee growth flows through to shareholders.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <span class="cap">Synthesis of the four quarterly releases. Sources as cited in 1.3–1.4.</span>
+
+          <h3 class="sub"><span class="n">1.6</span>Metrics the market actually monitors</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>KPI</th><th>Latest</th><th>Why it matters</th><th>Threshold signal</th></tr></thead>
+              <tbody>
+                <tr><td>Holding discount to SOTP</td><td class="num">≈ 24–25%</td><td>The entire re-rating thesis</td><td><span class="pill pill-line">Watch &lt;20% = catalyst working</span></td></tr>
+                <tr><td>Itaú recurring profit</td><td class="num">R$ 12.3 bn (1T26)</td><td>~90%+ of the result</td><td><span class="pill pill-beat">ROE &gt;20% sustained</span></td></tr>
+                <tr><td>Recurring ROE (holding)</td><td class="num">20.1%</td><td>Quality of earnings</td><td><span class="pill pill-beat">&gt;19% = strong</span></td></tr>
+                <tr><td>Dividend yield (LTM)</td><td class="num">≈ 8.8–9.5%</td><td>Core ownership reason</td><td><span class="pill pill-beat">&gt;Selic-comparable</span></td></tr>
+                <tr><td>Net debt / leverage</td><td class="num">Rising modestly</td><td>Aegea capital calls in 2025–26</td><td><span class="pill pill-line">Watch coverage</span></td></tr>
+                <tr><td>Non-financial contribution</td><td class="num">+76% (1T26)</td><td>Diversification payoff</td><td><span class="pill pill-beat">Sustained growth</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <span class="cap">Sources: Itaúsa IR (portfolio value &amp; discount page), Genial, Safra, BTG; Itaú Unibanco 1T26 release.</span>
+
+          <h3 class="sub"><span class="n">1.7</span>What to watch — next earnings (2T26, ~Aug 11, 2026)</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Item</th><th>Direction signal</th></tr></thead>
+              <tbody>
+                <tr><td>Itaú Unibanco recurring profit &amp; 2026 guidance delivery</td><td class="delta-pos">▲ Watch ROE ~20%+</td></tr>
+                <tr><td>Whether recurring ROE holds the 20% line</td><td class="delta-pos">▲ Quality signal</td></tr>
+                <tr><td>Aegea: governance diagnosis follow-up &amp; restated-accounts cleanliness</td><td class="delta-neg">▼ Reputational tail</td></tr>
+                <tr><td>Non-financial momentum (NTS, Copa Energia, Alpargatas turnaround)</td><td class="delta-pos">▲ Diversification proof</td></tr>
+                <tr><td>JCP/dividend pace vs the R$ 11.9 bn FY25 base</td><td class="delta-flat">► Yield maintenance</td></tr>
+                <tr><td>Any commentary on LC 204/23 fiscal-efficiency capture timing (Jan 2027)</td><td class="delta-pos">▲ Re-rating catalyst</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <span class="cap">Source: PGS synthesis; next-report date per Investing.com / Itaúsa IR calendar.</span>
+        </section>
+
+        <!-- ============ SECTION 2 ============ -->
+        <section class="block animate" id="s21">
+          <div class="kicker">Section 2 · Institutional Analysis</div>
+          <h2 class="sec">Business, Moat, Risk &amp; Valuation</h2>
+          <div class="accent-bar"></div>
+
+          <h3 class="sub"><span class="n">2.1</span>Business model &amp; portfolio architecture</h3>
+          <p class="lead">Itaúsa is Brazil's largest listed investment holding — frequently described as a Brazilian Berkshire in miniature — controlled by the Egydio de Souza Aranha (Setubal/Villela) and Moreira Salles families. It owns long-term equity stakes and lives off the dividends those stakes pay up. Itaú Unibanco is ~90% of portfolio value; everything else is a diversification option assembled since 2008.</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Investee</th><th>Sector</th><th class="num">Economic stake</th><th>Role in the holding</th></tr></thead>
+              <tbody>
+                <tr><td><b>Itaú Unibanco</b> (ITUB4)</td><td>Banking</td><td class="num">≈ 37%*</td><td>≈90% of portfolio value; the engine of results &amp; dividends</td></tr>
+                <tr><td>Dexco (DXCO3)</td><td>Construction materials</td><td class="num">37.8%</td><td>Cyclical; the recent drag (Deca, Durafloor, Ceusa)</td></tr>
+                <tr><td>Alpargatas (ALPA4)</td><td>Consumer / footwear</td><td class="num">29.5%</td><td>Havaianas; multi-year turnaround under new CEO</td></tr>
+                <tr><td>Aegea</td><td>Water / sanitation</td><td class="num">13.27%</td><td>Unlisted growth bet; 2025 restatement &amp; delayed IPO</td></tr>
+                <tr><td>Copa Energia</td><td>LPG distribution</td><td class="num">48.9%</td><td>Held at book; growing faster than carried value</td></tr>
+                <tr><td>Motiva (MOTV3, ex-CCR)</td><td>Infrastructure / toll roads</td><td class="num">10.4%</td><td>Concessions; tariff-linked upside</td></tr>
+                <tr><td>NTS</td><td>Gas transport</td><td class="num">8.5%</td><td>Stable cash; fastest-growing contribution in 1T26</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <span class="cap">*Economic interest in Itaú's total capital. Stakes per Itaúsa IR portfolio page, Visno Invest and Investidor10 (FY25 reference). Reported portfolio value ranged ~R$ 135–159 bn across 2025 disclosures.</span>
+
+          <h3 class="sub"><span class="n">2.2</span>Competitive moat assessment</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Moat pillar</th><th>Strength</th><th>Underlying source</th><th>Risk to the moat</th><th class="num">PGS rating</th></tr></thead>
+              <tbody>
+                <tr><td>Control of a premier asset</td><td><span class="pill pill-beat">High</span></td><td>Permanent control bloc over Itaú Unibanco, LatAm's most profitable private bank</td><td>Concentration — moat and risk are the same fact</td><td class="num">★★★★★</td></tr>
+                <tr><td>Dividend pass-through</td><td><span class="pill pill-beat">High</span></td><td>Investee dividends recycled at ~76% payout; yield premium to Itaú</td><td>Depends on Itaú's distribution policy</td><td class="num">★★★★☆</td></tr>
+                <tr><td>Governance &amp; family stewardship</td><td><span class="pill pill-beat">High</span></td><td>50-yr track record, disciplined capital allocation, low holding cost</td><td>Aegea episode dents the "tight oversight" story</td><td class="num">★★★★☆</td></tr>
+                <tr><td>Tax-efficient structure (post-2027)</td><td><span class="pill pill-line">Improving</span></td><td>LC 204/23 removes PIS/COFINS leakage from Jan 2027 (~R$ 650 mn/yr)</td><td>Market may keep discounting until realised</td><td class="num">★★★☆☆</td></tr>
+                <tr><td>Diversification optionality</td><td><span class="pill pill-line">Developing</span></td><td>Non-financial book inflecting (+76% in 1T26)</td><td>Still &lt;10% of results; some assets unlisted/opaque</td><td class="num">★★★☆☆</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <span class="cap">PGS internal ratings. Drivers per Genial ("On Sale" / Top Pick note), Safra, Simply Wall St narrative, Itaúsa IR.</span>
+
+          <h3 class="sub"><span class="n">2.3</span>Top 3 risks</h3>
+          <div class="risk">
+            <div class="risk-head"><span class="rt">Single-asset concentration on Itaú Unibanco</span><span class="sev sev-high">High</span></div>
+            <div class="risk-body">With ~90% of portfolio value and &gt;90% of recurring results tied to one bank, ITSA4 is effectively a discounted ITUB4. Any deterioration in Brazilian credit quality, NII compression as Selic eventually falls, or a hit to Itaú's ROE flows straight through. The holding's diversification, while inflecting, is too small to cushion a bank shock.
+            <div class="meta">Timeline: continuous · Severity: defines the entire thesis</div></div>
+          </div>
+          <div class="risk med">
+            <div class="risk-head"><span class="rt">Holding-discount persistence (re-rating may not come)</span><span class="sev sev-med">Medium</span></div>
+            <div class="risk-body">The bull case needs the ~24–25% discount to SOTP to narrow. Discounts on holding companies are sticky and can stay wide for years regardless of fundamentals — they depend on liquidity, foreign flows, rates and sentiment toward banks. The fiscal catalyst (2027) is real but already partly known; the market has repeatedly been "indifferent" to the discount. Carry (the dividend) is paid while you wait, but the capital-gain leg is the uncertain one.
+            <div class="meta">Timeline: open-ended; catalyst from Jan 2027 · Severity: caps upside if it never closes</div></div>
+          </div>
+          <div class="risk med">
+            <div class="risk-head"><span class="rt">Investee governance / accounting tail (Aegea)</span><span class="sev sev-med">Medium</span></div>
+            <div class="risk-body">In April 2026, Aegea's conservative restatement cut Itaúsa's equity by R$ 700 mn (deemed &lt;1% of R$ 89 bn equity, "immaterial") and Aegea's own 2024 equity was restated down ~R$ 5 bn; its IPO slipped to 2027. No cash was paid, but the episode exposes the opacity of unlisted investees and the limits of minority oversight, and adds a reputational/valuation overhang to the non-financial diversification story.
+            <div class="meta">Timeline: near-term overhang into 2027 IPO · Severity: contained financially, larger reputationally</div></div>
+          </div>
+
+          <h3 class="sub"><span class="n">2.4</span>Long-term growth architecture</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Driver</th><th>Timeline</th><th>Current state</th><th>Potential</th><th class="num">Status</th></tr></thead>
+              <tbody>
+                <tr><td>Fiscal-efficiency capture (LC 204/23)</td><td>From Jan 2027</td><td>Legislated; not yet in numbers</td><td>~R$ 650 mn/yr; worth ~7–9% of mkt cap</td><td class="num delta-pos">▲ Pending</td></tr>
+                <tr><td>Itaú ROE durability ~20%+</td><td>Ongoing</td><td>1T26 contribution +11%</td><td>Compounding base of results</td><td class="num delta-pos">▲ On track</td></tr>
+                <tr><td>Non-financial maturation</td><td>2026–2028</td><td>+76% YoY in 1T26 off small base</td><td>Could reach &gt;10% of results</td><td class="num delta-pos">▲ Inflecting</td></tr>
+                <tr><td>Alpargatas turnaround</td><td>2025–2027</td><td>+50% contribution YoY in 1T26</td><td>Restored margins at Havaianas</td><td class="num delta-pos">▲ Recovering</td></tr>
+                <tr><td>Continued deleveraging / capital recycling</td><td>Ongoing</td><td>Gross debt down ~30% over cycle</td><td>Lower financial expense, higher ROE</td><td class="num delta-flat">► Steady</td></tr>
+                <tr><td>Aegea IPO / value crystallisation</td><td>2027</td><td>Delayed post-restatement</td><td>Mark-up of an unlisted stake</td><td class="num delta-neg">▼ At risk</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <span class="cap">Sources: Genial, Safra, Simply Wall St, Itaúsa IR, Itaú Unibanco guidance.</span>
+
+          <h3 class="sub"><span class="n">2.5</span>Bull case vs bear case</h3>
+          <div class="scenario-grid">
+            <div class="scn bull">
+              <div class="scn-head">🟢 Bull case</div>
+              <div class="scn-body">
+                <dl>
+                  <dt>Core assumption</dt><dd>Itaú holds ~20% ROE; the holding discount narrows toward ~17% as the 2027 fiscal-efficiency gain is priced in.</dd>
+                  <dt>Earnings path</dt><dd>Recurring NI scales past ~R$ 18 bn in 2026 on Itaú growth + non-financial inflection.</dd>
+                  <dt>Target (18–24 mo)</dt><dd><span class="scn-target">R$ 16–18</span></dd>
+                  <dt>What it requires</dt><dd>Discount compression + sustained Itaú profitability + clean Aegea resolution. Even without re-rating, ~9% dividend carry funds the wait.</dd>
+                </dl>
+              </div>
+            </div>
+            <div class="scn bear">
+              <div class="scn-head">🔴 Bear case</div>
+              <div class="scn-body">
+                <dl>
+                  <dt>Core assumption</dt><dd>Discount stays wide/widens; Brazilian credit cycle turns or Selic-cut NII pressure hits Itaú's ROE.</dd>
+                  <dt>Earnings path</dt><dd>Result growth fades to low single digits; non-financial book disappoints (Dexco soft, Aegea overhang).</dd>
+                  <dt>Downside</dt><dd><span class="scn-target">R$ 10–12</span></dd>
+                  <dt>What it requires</dt><dd>Macro deterioration, foreign outflows from B3 banks/holdings, or further governance surprises at unlisted investees.</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+          <span class="cap">Scenario framing per Genial (SOTP/discount math), Safra (R$ 15 target, 6.9×/6.4× P/E 2026–27), A Revista (R$ 18.5 bn 2026 profit, ~R$ 14–15 ceiling), Simply Wall St (bear consensus R$ 12.05).</span>
+
+          <h3 class="sub"><span class="n">2.6</span>Valuation context</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Metric</th><th class="num">Current</th><th class="num">Forward / context</th><th>Historical range</th><th>Commentary</th></tr></thead>
+              <tbody>
+                <tr><td>P/E (TTM)</td><td class="num">≈ 8.5×</td><td class="num">~6.9×/6.4× '26/'27 (Safra)</td><td>~8–12×</td><td>Below own history; cheap on earnings</td></tr>
+                <tr><td>P/Book</td><td class="num">≈ 1.6×</td><td class="num">—</td><td>~1.4–1.9×</td><td>Mid-range; reflects bank ROE</td></tr>
+                <tr><td>Dividend yield (LTM)</td><td class="num">≈ 8.8–9.5%</td><td class="num">~7–9% recurring '26</td><td>~6–10%</td><td>Among highest on B3; payout 76%</td></tr>
+                <tr><td>Holding discount to SOTP</td><td class="num">≈ 24–25%</td><td class="num">Genial fair: ~17%</td><td>~15–25%</td><td>~300 bps above its own average</td></tr>
+                <tr><td>Yield premium vs Itaú</td><td class="num">≈ +21%</td><td class="num">—</td><td>—</td><td>Same bank, higher yield via discount</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <span class="cap">Sources: Investidor10 (P/E 8.5, P/BV 1.6, DY 9.68%), Trading Economics (P/E 8.98), Status Invest (DY 9.55%), Safra, Genial, Itaúsa IR. Price reference R$ 12.54 (Jun 5, 2026 close); intraday quotes ranged ~R$ 12.5–13.1 in early-mid June.</span>
+
+          <h3 class="sub"><span class="n">2.7</span>Analyst landscape</h3>
+          <div class="analyst-grid">
+            <div class="acell bulls">
+              <h4>Bulls</h4>
+              <div class="cnt">7</div>
+              <ul>
+                <li><b>Genial</b> — Top Pick (banks); SOTP/fiscal-catalyst thesis</li>
+                <li><b>Banco Safra</b> — target <b>R$ 15</b>; "discounted ITUB4 proxy"</li>
+                <li><b>Investing.com panel</b> — 7 buy / 0 sell, "Strong Buy"</li>
+                <li>Yahoo consensus skew — high <b>R$ 18.00</b></li>
+              </ul>
+            </div>
+            <div class="acell neutrals">
+              <h4>Neutral / hold</h4>
+              <div class="cnt">~mid</div>
+              <ul>
+                <li>"Preço-teto" camp — fair ~<b>R$ 14–15</b> (A Revista)</li>
+                <li>Discount-skeptics — re-rating "may not occur near-term" (Safra)</li>
+                <li>Low target marker <b>R$ 13.7</b> (Investing range)</li>
+              </ul>
+            </div>
+            <div class="acell bears">
+              <h4>Bears / cautious</h4>
+              <div class="cnt">few</div>
+              <ul>
+                <li><b>Simply Wall St</b> narrative — consensus fair <b>R$ 12.05</b></li>
+                <li>Concentration &amp; Aegea-governance skeptics</li>
+                <li>Macro/flows risk to B3 bank-holdings</li>
+              </ul>
+            </div>
+          </div>
+          <span class="cap">Average target clusters R$ 16.4 (Itaúsa IR coverage page) to R$ 16.99 (Yahoo); full range ≈ R$ 12.05–18.00. Sources: Itaúsa IR, Yahoo Finance, Investing.com, Genial, Safra, Simply Wall St. Named houses cited only where publicly reported.</span>
+        </section>
+
+        <!-- ============ VERDICT ============ -->
+        <section class="block animate" id="verdict">
+          <div class="verdict">
+            <div class="verdict-head">
+              <span class="rating-pill rating-buy">🟢 BUY</span>
+              <h2>PGS Verdict</h2>
+            </div>
+            <div class="verdict-metrics">
+              <div class="vm"><div class="k">Bull target (18–24m)</div><div class="v pos">R$ 16–18</div></div>
+              <div class="vm"><div class="k">Bear downside</div><div class="v neg">R$ 10–12</div></div>
+              <div class="vm"><div class="k">Risk / reward</div><div class="v">Favourable</div></div>
+              <div class="vm"><div class="k">Carry while waiting</div><div class="v">≈ 9% yield</div></div>
+            </div>
+            <p><b>1 · Price dislocation.</b> At ~R$ 12.5 against an average target near R$ 16.4–17.0 and a ~24–25% discount to sum-of-the-parts (roughly 300 bps wide of its own history), ITSA4 offers a recognisable dislocation: you buy LatAm's most profitable private bank at a discount, with a dividend yield ~21% above owning Itaú directly. The mispricing is structural, not a one-off — which is exactly why it has persisted, and why patience is the cost of entry.</p>
+            <p><b>2 · Fundamental quality.</b> The four-quarter record is unusually clean for a holding: recurring net income rising R$ 4.04 bn → R$ 4.49 bn, recurring ROE climbing 18.4% → 20.1%, a record FY2025 (R$ 16.5 bn, +11%), a 76% payout, falling leverage, and a non-financial book finally inflecting (+76% in 1T26). Earnings quality and capital discipline are high; holding costs are immaterial.</p>
+            <p><b>3 · Primary risk.</b> The same fact that makes ITSA4 attractive — ~90% concentration in Itaú — is the dominant risk, alongside a holding discount that may simply refuse to close and an Aegea governance/accounting tail that, while financially immaterial (R$ 700 mn, &lt;1% of equity), dents the diversification narrative and pushes value crystallisation out to a 2027 IPO.</p>
+            <p><b>4 · Near-term catalysts.</b> (i) The 2T26 print (~Aug 11, 2026) and whether recurring ROE holds 20%; (ii) Itaú's delivery against 2026 guidance; (iii) progress on the Aegea governance diagnosis; and (iv) the approach of the Jan 2027 fiscal-efficiency gain (LC 204/23, ~R$ 650 mn/yr) as the clearest mechanical trigger for discount compression. The conclusion is directional: a favourable risk/reward where the dividend pays you to wait for a re-rating that is probable but not guaranteed.</p>
+          </div>
+        </section>
+
+        <!-- ============ DISCLAIMER ============ -->
+        <section class="disclaimer" id="disclaimer">
+          <h4>Disclaimer</h4>
+          <p>This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice.</p>
+          <div class="ref">
+            Report Reference: PGS-ITSA4-202606 · Date: June 14, 2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: ITSA4 · Exchange: B3
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  // Active sidebar state on scroll
+  (function(){
+    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+    var map = {};
+    links.forEach(function(l){
+      var id = l.getAttribute('href').slice(1);
+      var el = document.getElementById(id);
+      if(el) map[id] = l;
+    });
+    var ids = Object.keys(map);
+    function onScroll(){
+      var pos = window.scrollY + 120, current = ids[0];
+      ids.forEach(function(id){
+        var el = document.getElementById(id);
+        if(el && el.offsetTop <= pos) current = id;
+      });
+      links.forEach(function(l){ l.classList.remove('active'); });
+      if(map[current]) map[current].classList.add('active');
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  })();
+
+  // PDF-safe fade-up: JS sets opacity:0 then reveals; without JS everything stays visible
+  (function(){
+    var els = Array.prototype.slice.call(document.querySelectorAll('.animate'));
+    if(!('IntersectionObserver' in window)){ return; }
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.style.opacity = '1';
+          e.target.style.animationPlayState = 'running';
+          obs.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.08});
+    els.forEach(function(el){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      obs.observe(el);
+    });
+    // Aggressive fallback: force everything visible after 2s
+    setTimeout(function(){
+      els.forEach(function(el){
+        el.style.opacity = '1';
+        el.style.animationPlayState = 'running';
+      });
+    }, 2000);
+  })();
+</script>
+</body>
+</html>
