@@ -106,6 +106,15 @@
 
     .report-cta:hover { gap: 0.625rem; }
 
+    .research-disclaimer {
+      margin-top: 1rem;
+      color: var(--text-faint);
+      font-size: 0.75rem;
+      line-height: 1.6;
+      border-left: 2px solid var(--border);
+      padding-left: 0.875rem;
+    }
+
     @media (max-width: 480px) {
       .report-grid { grid-template-columns: 1fr; }
     }
@@ -149,7 +158,10 @@
         </div>
         <div class="col-right">
           <p class="body-lg" data-i18n="research.sub">
-            Proprietary analysis and investment thesis reports.
+            Each Polaris Global Strategies report is an institutional-grade equity research study on a single asset — B3-listed equities, U.S. stocks and ETFs, and other instruments. Data is sourced from primary sources (SEC filings, earnings calls, and leading financial press) and verified live for each edition, always covering the four most recently reported quarters in continuous sequence. Each document includes earnings analysis, competitive moat assessment, risks, bull and bear scenarios, valuation context, and a directional verdict (🟢 BUY / 🟡 NEUTRAL / 🔴 SELL). Conclusions describe the perceived risk/return profile — they never constitute buy or sell recommendations.
+          </p>
+          <p class="research-disclaimer" data-i18n="research.sub2">
+            Disclaimer: Content produced exclusively for internal use by Polaris Global Strategies Ltd. (BVI). Does not constitute an investment recommendation for third parties, individuals, or legal entities. PGS does not provide asset management, advisory, or consulting services, has no clients, and offers no products to third parties. Investments in variable income involve risks, including total loss of capital.
           </p>
 
           <div class="report-grid">
@@ -219,7 +231,7 @@
       </div>
       <div class="footer-bottom">
         <p data-i18n="footer.copy">
-          © 2026 Polaris Global Strategies Ltd. All rights reserved. Incorporated in the British Virgin Islands.
+          © 2026 Polaris Global Strategies Ltd. All rights reserved.
         </p>
       </div>
     </div>
