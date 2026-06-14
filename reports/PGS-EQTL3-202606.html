@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGS-EQTL3-202606 · Equatorial Energia · Relatório de Análise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#FFFFFF;
+    --section:#F9FAFB;
+    --card:#F3F4F6;
+    --ink:#111827;
+    --muted:#6B7280;
+    --line:#E5E7EB;
+    --accent:#0B7A4B;       /* Equatorial green */
+    --accent-soft:#E7F4EC;
+    --accent-deep:#075C39;
+    --pos:#16A34A;
+    --neg:#DC2626;
+    --amber:#D97706;
+    --serif:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+    --sans:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+    --mono:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--sans);background:var(--canvas);color:var(--ink);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased;}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{display:grid;grid-template-columns:220px 1fr;max-width:1280px;margin:0 auto;}
+  .sidebar{
+    position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;
+    background:var(--section);border-right:1px solid var(--line);padding:28px 18px;
+  }
+  .sb-brand{font-family:var(--serif);font-weight:700;font-size:18px;color:var(--ink);letter-spacing:-.3px;}
+  .sb-brand span{color:var(--accent);}
+  .sb-tag{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:4px;letter-spacing:.5px;text-transform:uppercase;}
+  .sb-divider{height:1px;background:var(--line);margin:20px 0 16px;}
+  .nav-link{display:block;padding:8px 12px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;border-left:3px solid transparent;border-radius:0 4px 4px 0;transition:all .18s ease;}
+  .nav-link:hover{color:var(--ink);background:#fff;}
+  .nav-link.active{color:var(--accent-deep);background:var(--accent-soft);border-left:3px solid var(--accent);font-weight:600;}
+  .nav-cap{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:18px 0 6px 12px;}
+
+  .main-content{min-width:0;padding:0;}
+  .wrap{padding:0 48px;}
+
+  /* ---------- COVER ---------- */
+  .cover{
+    min-height:96vh;background:var(--section);
+    background-image:radial-gradient(var(--line) 1.1px,transparent 1.1px);
+    background-size:22px 22px;
+    border-bottom:3px solid var(--accent);
+    padding:64px 48px 52px;display:flex;flex-direction:column;justify-content:center;
+  }
+  .cover-kicker{font-family:var(--mono);font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent-deep);margin-bottom:18px;}
+  .cover h1{font-family:var(--serif);font-weight:800;font-size:62px;line-height:1.02;letter-spacing:-1.5px;color:var(--ink);}
+  .cover h1 .ticker{color:var(--accent);}
+  .cover-sub{font-size:17px;color:var(--muted);margin-top:14px;max-width:640px;}
+  .cover-meta{display:flex;flex-wrap:wrap;gap:28px;margin-top:34px;font-family:var(--mono);font-size:12.5px;color:var(--ink);}
+  .cover-meta div span{display:block;color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+  .stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:40px;}
+  .stat{background:#fff;padding:16px 18px;}
+  .stat .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600;}
+  .stat .val{font-family:var(--mono);font-size:21px;font-weight:600;color:var(--ink);margin-top:5px;}
+  .stat .val.acc{color:var(--accent-deep);}
+
+  /* ---------- SECTIONS ---------- */
+  .section{padding:54px 0 12px;border-bottom:1px solid var(--line);}
+  .sec-tag{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:600;}
+  .sec-title{font-family:var(--serif);font-weight:700;font-size:34px;letter-spacing:-.7px;margin:6px 0 8px;color:var(--ink);}
+  .sec-lead{color:var(--muted);font-size:15px;max-width:760px;margin-bottom:26px;}
+  h3.block{font-family:var(--serif);font-weight:600;font-size:21px;margin:34px 0 6px;letter-spacing:-.3px;}
+  .block-note{font-size:13px;color:var(--muted);margin-bottom:16px;}
+  p.body{margin:0 0 14px;}
+  .anchor-banner{background:var(--accent-soft);border:1px solid #BfE3CE;border-left:3px solid var(--accent);padding:14px 18px;border-radius:0 6px 6px 0;font-family:var(--mono);font-size:12.5px;color:var(--accent-deep);margin-bottom:24px;line-height:1.9;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+
+  /* ---------- QUARTER CARDS ---------- */
+  .quarter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:8px 0 14px;}
+  .qcard{background:#fff;border:1px solid var(--line);border-top:3px solid var(--accent);padding:16px 16px 18px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .qcard .q{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--accent-deep);letter-spacing:.5px;}
+  .qcard .qd{font-size:10.5px;color:var(--muted);font-family:var(--mono);margin-top:2px;}
+  .qcard .rev{font-family:var(--serif);font-weight:700;font-size:27px;color:var(--accent);margin:12px 0 1px;letter-spacing:-.5px;}
+  .qcard .rev-l{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);}
+  .qcard .line{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);}
+  .qcard .line span{color:var(--muted);}
+  .pill{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:20px;margin-top:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .pill.beat{background:#DCFCE7;color:#15803D;}
+  .pill.miss{background:#FEE2E2;color:#B91C1C;}
+  .pill.mix{background:#FEF3C7;color:#B45309;}
+
+  /* ---------- TABLES ---------- */
+  .table-wrap{overflow-x:auto;border:1px solid var(--line);margin:8px 0 8px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:560px;}
+  thead th{background:var(--card);text-align:left;padding:10px 13px;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700;border-bottom:1px solid var(--line);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  tbody td{padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tbody tr:nth-child(odd){background:#fff;}
+  tbody tr:nth-child(even){background:var(--section);}
+  tbody tr:hover{background:var(--accent-soft);transition:background .15s;}
+  td.num,th.num{font-family:var(--mono);text-align:right;white-space:nowrap;}
+  td.lbl{font-weight:600;}
+  .d-pos{color:var(--pos);font-weight:600;}
+  .d-neg{color:var(--neg);font-weight:600;}
+  .d-neu{color:var(--amber);font-weight:600;}
+  caption,.cap{caption-side:bottom;font-family:var(--mono);font-size:10.5px;color:var(--muted);text-align:left;padding:8px 2px 0;line-height:1.5;}
+  .cap{display:block;}
+
+  /* ---------- NARRATIVE ROWS ---------- */
+  .narr{border-left:3px solid var(--accent);background:var(--section);padding:14px 18px;margin-bottom:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .narr h4{font-family:var(--mono);font-size:12px;color:var(--accent-deep);letter-spacing:.5px;margin-bottom:5px;text-transform:uppercase;}
+  .narr p{font-size:13.5px;color:var(--ink);margin:0;}
+
+  /* lists */
+  ol.obs,ul.watch{margin:6px 0 8px 0;padding-left:0;list-style:none;counter-reset:c;}
+  ol.obs li{counter-increment:c;position:relative;padding:11px 0 11px 42px;border-bottom:1px solid var(--line);font-size:14px;}
+  ol.obs li::before{content:counter(c);position:absolute;left:0;top:11px;width:26px;height:26px;background:var(--accent-soft);color:var(--accent-deep);font-family:var(--mono);font-weight:600;font-size:12px;border-radius:50%;display:flex;align-items:center;justify-content:center;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  ol.obs li b{color:var(--ink);}
+
+  /* ---------- RISK BLOCKS ---------- */
+  .risk{border:1px solid var(--line);border-left:3px solid var(--neg);margin-bottom:14px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .risk.med{border-left-color:var(--amber);}
+  .risk .rhead{background:#FEF2F2;padding:11px 16px;display:flex;justify-content:space-between;align-items:center;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .risk.med .rhead{background:#FFFBEB;}
+  .risk .rhead h4{font-family:var(--serif);font-size:17px;font-weight:600;}
+  .badge{font-family:var(--mono);font-size:10px;font-weight:600;padding:3px 9px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .badge.high{background:#FEE2E2;color:#B91C1C;}
+  .badge.medh{background:#FED7AA;color:#9A3412;}
+  .badge.med{background:#FEF3C7;color:#B45309;}
+  .risk .rbody{background:#fff;padding:13px 16px;font-size:13.5px;color:var(--ink);}
+  .risk .rbody .meta{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;}
+
+  /* ---------- SCENARIO ---------- */
+  .scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0;}
+  .scard{border:1px solid var(--line);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .scard .shead{padding:13px 18px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .scard.bull .shead{background:#F0FDF4;border-top:3px solid var(--pos);}
+  .scard.bear .shead{background:#FEE2E2;border-top:3px solid var(--neg);}
+  .scard .shead .t{font-family:var(--serif);font-size:19px;font-weight:700;}
+  .scard.bull .shead .t{color:#15803D;}
+  .scard.bear .shead .t{color:#B91C1C;}
+  .scard .shead .pt{font-family:var(--mono);font-size:13px;margin-top:4px;color:var(--ink);}
+  .scard .sbody{background:#fff;padding:14px 18px;font-size:13px;}
+  .scard .sbody .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;}
+  .scard .sbody .row span{color:var(--muted);font-family:var(--sans);}
+  .scard .sbody p{margin-top:10px;color:var(--ink);font-size:13px;}
+
+  /* ---------- ANALYST GRID ---------- */
+  .analyst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:8px 0;}
+  .acol{border:1px solid var(--line);background:#fff;padding:0 0 8px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .acol .ah{padding:10px 14px;font-family:var(--mono);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--line);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .acol.bulls .ah{background:#F0FDF4;color:#15803D;}
+  .acol.neu .ah{background:#FFFBEB;color:#B45309;}
+  .acol.bears .ah{background:#FEF2F2;color:#B91C1C;}
+  .acol .ai{padding:9px 14px;border-bottom:1px solid var(--line);font-size:12.5px;}
+  .acol .ai:last-child{border-bottom:none;}
+  .acol .ai b{display:block;}
+  .acol .ai .tgt{font-family:var(--mono);font-size:12px;color:var(--muted);}
+
+  /* ---------- VERDICT ---------- */
+  .verdict{background:var(--section);border:1px solid var(--line);border-top:3px solid var(--accent);padding:30px 32px;margin:24px 0 8px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .verdict-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:6px;}
+  .rating-pill{font-family:var(--mono);font-weight:600;font-size:15px;padding:8px 20px;border-radius:30px;background:var(--accent);color:#fff;letter-spacing:.5px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .verdict-head h3{font-family:var(--serif);font-size:26px;font-weight:700;}
+  .verdict-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:18px 0 22px;}
+  .vm{background:var(--card);padding:14px 16px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .vm .l{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600;}
+  .vm .v{font-family:var(--mono);font-size:18px;font-weight:600;margin-top:4px;}
+  .vm .v.pos{color:var(--pos);}.vm .v.neg{color:var(--neg);}
+  .verdict p{font-size:14px;margin-bottom:13px;color:var(--ink);}
+  .verdict p b{color:var(--accent-deep);}
+
+  /* ---------- DISCLAIMER ---------- */
+  .disclaimer{padding:32px 0 70px;}
+  .disclaimer .box{background:var(--card);border:1px solid var(--line);padding:22px 24px;font-size:11.5px;color:var(--muted);line-height:1.7;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .disclaimer .ref{font-family:var(--mono);font-size:11px;color:var(--ink);margin-top:14px;padding-top:12px;border-top:1px solid var(--line);line-height:1.9;}
+
+  .scroll-cue{position:absolute;}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:768px){
+    .layout{grid-template-columns:1fr;}
+    .sidebar{position:sticky;top:0;height:auto;display:flex;gap:6px;overflow-x:auto;border-right:none;border-bottom:1px solid var(--line);padding:12px;z-index:50;white-space:nowrap;}
+    .sb-brand,.sb-tag,.sb-divider,.nav-cap{display:none;}
+    .nav-link{border-left:none;border-bottom:3px solid transparent;border-radius:0;padding:8px 12px;flex:0 0 auto;}
+    .nav-link.active{border-left:none;border-bottom:3px solid var(--accent);}
+    .wrap,.cover{padding-left:20px;padding-right:20px;}
+    .cover h1{font-size:40px;}
+    .stats-strip,.verdict-metrics{grid-template-columns:repeat(2,1fr);}
+    .quarter-grid,.scenario-grid,.analyst-grid{grid-template-columns:1fr;}
+    .cover-meta{gap:18px;}
+  }
+
+  /* ---------- ANIMATION (PDF-safe: default opacity 1) ---------- */
+  .animate{opacity:1;animation:fadeUp .6s ease forwards;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---------- PRINT ---------- */
+  @media print{
+    body{background:#FFFFFF;color:#111827;font-size:11px;}
+    .layout{display:block !important;max-width:none;}
+    .sidebar{display:none !important;}
+    .main-content{display:block !important;width:100% !important;}
+    .wrap{padding:0 6mm !important;}
+    .cover{min-height:auto !important;height:auto !important;display:block !important;padding:10mm 6mm !important;background:#F9FAFB !important;}
+    .section{page-break-inside:auto;border-bottom:1px solid var(--line);padding:18px 0 8px;}
+    h3.block,.sec-title{page-break-after:avoid;}
+    .qcard,.risk,.scard,.acol,.narr,.verdict{page-break-inside:avoid;}
+    .quarter-grid{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:8px !important;}
+    .scenario-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:10px !important;}
+    .analyst-grid{display:grid !important;grid-template-columns:repeat(3,1fr) !important;gap:8px !important;}
+    .verdict-metrics{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important;}
+    .stats-strip{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important;}
+    .table-wrap{overflow:visible !important;}
+    table{min-width:0 !important;}
+    td,th{word-break:break-word;}
+    .nav-link,.scroll-cue{display:none !important;}
+    .animate{opacity:1 !important;transform:none !important;animation:none !important;}
+    *{box-shadow:none !important;backdrop-filter:none !important;}
+    .verdict{page-break-before:auto;}
+  }
+  /* ─── Back navigation bar ─── */
+  .pgs-topbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 24px;
+    background: #07090F;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 12px;
+  }
+  .pgs-topbar a { color: #94A3B8; text-decoration: none; transition: color 0.15s; }
+  .pgs-topbar a:hover { color: #F1F5F9; }
+  .pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+  .pgs-topbar .pgs-sep { color: #334155; }
+  @media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-EQTL3-202606</span>
+</div>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-brand">Polaris <span>·</span> GS</div>
+    <div class="sb-tag">Equity Research</div>
+    <div class="sb-divider"></div>
+    <div class="nav-cap">Capa</div>
+    <a class="nav-link" href="#cover">EQTL3 · Equatorial</a>
+    <div class="nav-cap">Seção 1 — Resultados</div>
+    <a class="nav-link" href="#s1-1">1.1 Snapshots trimestrais</a>
+    <a class="nav-link" href="#s1-2">1.2 Beat / Miss</a>
+    <a class="nav-link" href="#s1-3">1.3 Receita &amp; margens</a>
+    <a class="nav-link" href="#s1-4">1.4 Eventos do trimestre</a>
+    <a class="nav-link" href="#s1-5">1.5 Padrões recorrentes</a>
+    <a class="nav-link" href="#s1-6">1.6 KPIs monitorados</a>
+    <a class="nav-link" href="#s1-7">1.7 Próximo resultado</a>
+    <div class="nav-cap">Seção 2 — Institucional</div>
+    <a class="nav-link" href="#s2-1">2.1 Modelo de negócio</a>
+    <a class="nav-link" href="#s2-2">2.2 Moat competitivo</a>
+    <a class="nav-link" href="#s2-3">2.3 Top 3 riscos</a>
+    <a class="nav-link" href="#s2-4">2.4 Arquitetura de crescimento</a>
+    <a class="nav-link" href="#s2-5">2.5 Bull vs Bear</a>
+    <a class="nav-link" href="#s2-6">2.6 Valuation</a>
+    <a class="nav-link" href="#s2-7">2.7 Cobertura de analistas</a>
+    <div class="nav-cap">Conclusão</div>
+    <a class="nav-link" href="#verdict">Veredito PGS</a>
+    <a class="nav-link" href="#disclaimer">Disclaimer</a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <!-- COVER -->
+    <section class="cover animate" id="cover">
+      <div class="cover-kicker">Polaris Global Strategies · Relatório de Análise Interna</div>
+      <h1>Equatorial Energia<br><span class="ticker">EQTL3</span></h1>
+      <p class="cover-sub">Utility regulada de crescimento — distribuição, transmissão, geração renovável, saneamento e participação de 15% na Sabesp. Análise dos últimos 4 trimestres reportados e tese institucional de médio prazo.</p>
+      <div class="cover-meta">
+        <div><span>Bolsa</span>B3 · EQTL3</div>
+        <div><span>Referência</span>PGS-EQTL3-202606</div>
+        <div><span>Publicação</span>02 / Jun / 2026</div>
+        <div><span>Trimestre âncora</span>1T26 (13/05/2026)</div>
+        <div><span>Rating consenso</span>Compra forte</div>
+        <div><span>Rating PGS</span>🟢 COMPRA</div>
+      </div>
+      <div class="stats-strip">
+        <div class="stat"><div class="lbl">Preço (análise)</div><div class="val acc">R$ 38,35</div></div>
+        <div class="stat"><div class="lbl">Valor de mercado</div><div class="val">R$ 47,5 bi</div></div>
+        <div class="stat"><div class="lbl">Receita LTM</div><div class="val">R$ 52,1 bi</div></div>
+        <div class="stat"><div class="lbl">EBITDA aj. LTM</div><div class="val">~R$ 12,8 bi</div></div>
+        <div class="stat"><div class="lbl">P/L (12M)</div><div class="val">31,2x</div></div>
+        <div class="stat"><div class="lbl">EV/EBITDA 26e</div><div class="val">~8,0x</div></div>
+        <div class="stat"><div class="lbl">Dív. líq./EBITDA</div><div class="val">2,7x</div></div>
+        <div class="stat"><div class="lbl">Alvo médio</div><div class="val acc">R$ 47–48</div></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+
+    <!-- ===================== SEÇÃO 1 ===================== -->
+    <section class="section animate" id="s1">
+      <div class="sec-tag">Seção 1</div>
+      <h2 class="sec-title">Análise de Resultados — Últimos 4 Trimestres</h2>
+      <p class="sec-lead">Cobertura sequencial e contínua dos quatro trimestres reportados mais recentes. Foco em números ajustados (a métrica que o mercado precifica), com leitura do contábil onde há ruído de não recorrentes.</p>
+
+      <div class="anchor-banner">
+        ✓ Âncora confirmada: <b>1T26</b> — release publicado em <b>13/05/2026</b> (após o pregão), com números financeiros efetivos.<br>
+        ✓ Sequência de cobertura: <b>1T26 → 4T25 → 3T25 → 2T25</b><br>
+        ✓ Sequência trimestral contínua, sem lacunas.
+      </div>
+
+      <!-- 1.1 -->
+      <h3 class="block" id="s1-1">1.1 · Snapshots trimestrais</h3>
+      <p class="block-note">Receita líquida no card; lucro líquido ajustado e variação anual abaixo. Pill reflete a leitura geral do trimestre (operacional vs. resultado final).</p>
+      <div class="quarter-grid">
+        <div class="qcard">
+          <div class="q">2T25</div><div class="qd">div. 13/08/2025</div>
+          <div class="rev-l">Receita líquida</div>
+          <div class="rev">R$ 12,79 bi</div>
+          <div class="line"><span>Lucro aj.</span><b>R$ 614 mi</b></div>
+          <div class="line"><span>YoY lucro</span><b class="d-pos">+100,8%</b></div>
+          <div class="line"><span>EBITDA aj.</span><b>R$ 3,21 bi</b></div>
+          <span class="pill beat">BEAT · forte</span>
+        </div>
+        <div class="qcard">
+          <div class="q">3T25</div><div class="qd">div. 12/11/2025</div>
+          <div class="rev-l">Receita líquida</div>
+          <div class="rev">R$ 14,15 bi</div>
+          <div class="line"><span>Lucro aj.</span><b>R$ 830 mi</b></div>
+          <div class="line"><span>YoY lucro</span><b class="d-pos">+4,9%</b></div>
+          <div class="line"><span>EBITDA aj.</span><b>R$ 3,48 bi</b></div>
+          <span class="pill beat">BEAT · EBITDA</span>
+        </div>
+        <div class="qcard">
+          <div class="q">4T25</div><div class="qd">div. 25/03/2026</div>
+          <div class="rev-l">Receita líquida</div>
+          <div class="rev">R$ 14,42 bi</div>
+          <div class="line"><span>Lucro aj.</span><b>R$ 802 mi</b></div>
+          <div class="line"><span>YoY lucro</span><b class="d-neg">−20,7%</b></div>
+          <div class="line"><span>Contábil</span><b class="d-neg">−R$ 102 mi</b></div>
+          <span class="pill mix">MISTO · impairment</span>
+        </div>
+        <div class="qcard">
+          <div class="q">1T26 · âncora</div><div class="qd">div. 13/05/2026</div>
+          <div class="rev-l">Receita líquida</div>
+          <div class="rev">R$ 12,75 bi</div>
+          <div class="line"><span>Lucro aj.</span><b>R$ 359 mi</b></div>
+          <div class="line"><span>YoY lucro</span><b class="d-neg">−23,6%</b></div>
+          <div class="line"><span>EBITDA aj.</span><b>R$ 2,88 bi</b></div>
+          <span class="pill mix">MISTO · EBITDA &gt; lucro</span>
+        </div>
+      </div>
+      <span class="cap">Fontes: releases Equatorial RI; ADVFN, InfoMoney, Money Times, Exame, Nord, Empiricus, XP, Safra (2025–2026).</span>
+
+      <!-- 1.2 -->
+      <h3 class="block" id="s1-2">1.2 · Detalhe Beat / Miss vs. consenso</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Trimestre</th><th class="num">Receita líq.</th><th class="num">EBITDA aj.</th>
+            <th class="num">vs. consenso EBITDA</th><th class="num">Lucro aj.</th><th>Leitura / reação</th>
+          </tr></thead>
+          <tbody>
+            <tr><td class="lbl">2T25</td><td class="num">12,79 bi</td><td class="num">3,21 bi</td>
+              <td class="num d-pos">acima (+20% recorr.)</td><td class="num">614 mi</td><td>Itaú BBA: EBITDA recorrente acima de casa e consenso; reação positiva.</td></tr>
+            <tr><td class="lbl">3T25</td><td class="num">14,15 bi</td><td class="num">3,48 bi</td>
+              <td class="num d-pos">+10% (vs. R$ 3,15 bi IBES)</td><td class="num">830 mi</td><td>Distribuição forte; programa de recompra (até 5%) aprovado.</td></tr>
+            <tr><td class="lbl">4T25</td><td class="num">14,42 bi</td><td class="num">3,54 bi</td>
+              <td class="num d-neu">aj. acima; ex-part. ~1% abaixo</td><td class="num">802 mi</td><td>Prejuízo contábil por impairment de R$ 3,5 bi; mercado surpreendido.</td></tr>
+            <tr><td class="lbl">1T26</td><td class="num">12,75 bi</td><td class="num">2,88 bi</td>
+              <td class="num d-neu">aj. +7% (vs. R$ 2,7 bi LSEG); ex-trading ~5% abaixo</td><td class="num">359 mi</td><td>Operacional sólido, lucro ~35% abaixo da projeção Safra; ações sob pressão.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="cap">Consenso EBITDA: LSEG/IBES. Leitura de beat/miss combina release oficial e notas BTG/XP/Itaú BBA/Safra. "Ex-trading"/"ex-participações" conforme recortes das casas.</span>
+
+      <!-- 1.3 -->
+      <h3 class="block" id="s1-3">1.3 · Trajetória de receita &amp; margens</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Indicador</th><th class="num">2T25</th><th class="num">3T25</th><th class="num">4T25</th><th class="num">1T26</th>
+          </tr></thead>
+          <tbody>
+            <tr><td class="lbl">Receita líquida (R$ bi)</td><td class="num">12,79</td><td class="num">14,15</td><td class="num">14,42</td><td class="num">12,75</td></tr>
+            <tr><td class="lbl">Crescimento YoY receita</td><td class="num d-pos">+22%</td><td class="num d-pos">+14,4%</td><td class="num d-pos">+14,3%</td><td class="num d-pos">+12%</td></tr>
+            <tr><td class="lbl">EBITDA ajustado (R$ bi)</td><td class="num">3,21</td><td class="num">3,48</td><td class="num">3,54</td><td class="num">2,88</td></tr>
+            <tr><td class="lbl">Crescimento YoY EBITDA</td><td class="num d-pos">+32,4%</td><td class="num d-pos">+18,6%</td><td class="num d-pos">+10,5%</td><td class="num d-pos">+11,3%</td></tr>
+            <tr><td class="lbl">Margem EBITDA aj.</td><td class="num">25,1%</td><td class="num">24,6%</td><td class="num">~24,6%</td><td class="num">22,6%</td></tr>
+            <tr><td class="lbl">Lucro líquido ajustado (R$ mi)</td><td class="num">614</td><td class="num">830</td><td class="num">802</td><td class="num">359</td></tr>
+            <tr><td class="lbl">Lucro líquido contábil</td><td class="num">1.290</td><td class="num">~830</td><td class="num d-neg">−102</td><td class="num">607</td></tr>
+            <tr><td class="lbl">Resultado financeiro (R$ bi)</td><td class="num d-neg">neg.</td><td class="num d-neg">−1,57</td><td class="num d-neg">neg.</td><td class="num d-neg">−1,50</td></tr>
+            <tr><td class="lbl">Equiv. patrim. Sabesp (R$ mi)</td><td class="num">312</td><td class="num">315</td><td class="num">394</td><td class="num">~355</td></tr>
+            <tr><td class="lbl">Capex consolidado (R$ bi)</td><td class="num">2,72</td><td class="num">3,00</td><td class="num">2,90</td><td class="num">n/d</td></tr>
+            <tr><td class="lbl">Dív. líq./EBITDA (covenants)</td><td class="num">3,1x</td><td class="num">3,3x</td><td class="num">2,6x</td><td class="num">2,7x</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="cap">Receita 4T25 = R$ 14,418 bi; 3T25 = R$ 14,145 bi. EBITDA 1T26 societário R$ 3,17 bi / ajustado R$ 2,88 bi. Equiv. Sabesp 1T26 estimada (est.). Fontes: releases Equatorial; ADVFN, Exame, Money Times, Nord, Empiricus.</span>
+
+      <!-- 1.4 -->
+      <h3 class="block" id="s1-4">1.4 · Eventos que definiram cada trimestre</h3>
+      <div class="narr"><h4>2T25 — O salto que ancorou o ano</h4><p>Lucro ajustado dobrou (+100,8%) com receita +22%, impulsionado por maior volume distribuído, melhora de equivalência (Sabesp R$ 312 mi) e alívio na linha de IR. A margem EBITDA subiu de 23,1% para 25,1% — sinal de que a integração das concessões adquiridas em ciclos anteriores começava a maturar. O recado foi de eficiência operacional convertendo-se em margem, ainda que com alavancagem em 3,1x.</p></div>
+      <div class="narr"><h4>3T25 — Distribuição confirma a engrenagem</h4><p>EBITDA ajustado de R$ 3,48 bi (+18,6%) bateu o consenso de R$ 3,15 bi com folga; oitavo trimestre consecutivo de perdas abaixo do nível regulatório e DEC em queda em todas as distribuidoras. A companhia aprovou recompra de até 5% das ações e captou R$ 9,4 bi em renda fixa, alongando o prazo médio da dívida de 5,5 para 5,8 anos. O contraponto: alavancagem subiu a 3,3x com capex de R$ 3,0 bi (+25%) e resultado financeiro pesando (−R$ 1,57 bi).</p></div>
+      <div class="narr"><h4>4T25 — O trimestre do impairment</h4><p>Prejuízo contábil de R$ 102 mi (vs. lucro de R$ 1,5 bi no 4T24), resultado do reconhecimento de ~R$ 3,5 bi em impairment (com Echoenergia/renováveis no centro) e R$ 309 mi na CSA, parcialmente compensado por ganho de capital de R$ 2,2 bi com a venda de ativos de transmissão. Excluindo o ruído, o lucro ajustado foi de R$ 802 mi e o EBITDA ajustado de R$ 3,54 bi. O destaque estrutural: a venda de transmissão derrubou a alavancagem de 3,3x para 2,6x. No campo de governança, a proposta de cortar o dividendo obrigatório de 25% para 1% do lucro ajustado gerou reação negativa — e <b>não obteve os votos necessários</b> em assembleia (mai/2026).</p></div>
+      <div class="narr"><h4>1T26 — Operacional resiste, financeiro freia</h4><p>Receita +12% (R$ 12,75 bi) e EBITDA ajustado +11,3% (R$ 2,88 bi, acima das estimativas), com Distribuição novamente liderando: margem bruta ajustada do segmento +14%, puxada pelo efeito Parcela B/Fio B (+R$ 198 mi) e crescimento de mercado (+R$ 127 mi), com Maranhão, Pará e Piauí à frente. Mas o lucro ajustado caiu 23,6% (R$ 359 mi), pressionado por despesa financeira de R$ 1,5 bi (CDI alto) e alíquota efetiva de IR de 26%. A mensagem do trimestre: fundamentos preservados, freio macro-financeiro de curto prazo.</p></div>
+
+      <!-- 1.5 -->
+      <h3 class="block" id="s1-5">1.5 · Padrões estruturais recorrentes (4 trimestres)</h3>
+      <ol class="obs">
+        <li><b>Distribuição é o motor — e entrega com previsibilidade.</b> Em todos os trimestres o segmento regulado sustenta o EBITDA, com reajustes tarifários (Parcela B/Fio B) e crescimento de volume compondo o avanço de dois dígitos da receita.</li>
+        <li><b>O EBITDA ajustado bate; o lucro líquido decepciona.</b> Há descolamento persistente entre forte performance operacional e lucro final, sistematicamente corroído pelo resultado financeiro (CDI/Selic elevados sobre uma dívida bruta superior a R$ 50 bi).</li>
+        <li><b>Renováveis (Echoenergia) é o ponto fraco recorrente.</b> Curtailments e restrições de operação derrubam a geração trimestre após trimestre, culminando no impairment bilionário do 4T25.</li>
+        <li><b>Reciclagem ativa de portfólio sustenta o balanço.</b> A venda de transmissão (ganho de R$ 2,2 bi, 4T25) e captações longas mostram disciplina de capital que reduziu a alavancagem de 3,3x para a casa de 2,6–2,7x.</li>
+        <li><b>Sabesp já é linha relevante.</b> A equivalência patrimonial dos 15% adiciona R$ 300–400 mi por trimestre e cresce, virando vetor estrutural de valor além do core elétrico.</li>
+      </ol>
+
+      <!-- 1.6 -->
+      <h3 class="block" id="s1-6">1.6 · KPIs que o mercado monitora</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>KPI</th><th>Leitura atual</th><th>Sinal / limiar</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Dívida líquida / EBITDA (covenants)</td><td>2,7x (1T26), vindo de 3,3x</td><td class="d-pos">Favorável — desalavancagem em curso; vigiar acima de 3,5x</td></tr>
+            <tr><td class="lbl">Resultado financeiro líquido</td><td>−R$ 1,5 bi/tri</td><td class="d-neg">Adverso — sensível à Selic/CDI (~13% em 2026)</td></tr>
+            <tr><td class="lbl">Perdas de energia (vs. regulatório)</td><td>Abaixo do regulatório (8 tri seguidos)</td><td class="d-pos">Favorável — eficiência de execução</td></tr>
+            <tr><td class="lbl">DEC (qualidade) por distribuidora</td><td>Em queda; CEEE-D dentro do contratual</td><td class="d-pos">Favorável — sustenta reconhecimento de base</td></tr>
+            <tr><td class="lbl">Margem EBITDA ajustada</td><td>22,6% (1T26) vs. 24–25% nos tri anteriores</td><td class="d-neu">Atenção — pressão de custos (PMSO) e inadimplência</td></tr>
+            <tr><td class="lbl">Equivalência Sabesp</td><td>R$ 300–400 mi/tri, crescente</td><td class="d-pos">Favorável — turnaround em andamento</td></tr>
+            <tr><td class="lbl">Política de dividendos</td><td>Mínimo de 25% mantido (corte rejeitado)</td><td class="d-neu">Atenção — tensão entre payout e capex/M&amp;A</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="cap">Fontes: releases Equatorial RI; XP (PMSO/inadimplência 1T26); Investidor10 (assembleia 01/05/2026); apresentação institucional 3T25.</span>
+
+      <!-- 1.7 -->
+      <h3 class="block" id="s1-7">1.7 · O que observar — próximo resultado (2T26)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Item</th><th>Por que importa</th><th class="num">Direção</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Trajetória do PMSO/custos gerenciáveis</td><td>1T26 veio 13% acima da XPe; persistência exigiria revisão de premissas</td><td class="num d-neu">Vigiar</td></tr>
+            <tr><td class="lbl">Inadimplência nas distribuidoras</td><td>Tema recorrente em 2026, reflexo do macro</td><td class="num d-neu">Vigiar</td></tr>
+            <tr><td class="lbl">Resultado financeiro x curva de juros</td><td>Maior swing factor do lucro; depende da Selic</td><td class="num d-neg">Pressão</td></tr>
+            <tr><td class="lbl">Recuperação de renováveis (Echoenergia)</td><td>Pós-impairment, qualquer estabilização é gatilho</td><td class="num d-neu">Opcional</td></tr>
+            <tr><td class="lbl">Contribuição da Sabesp</td><td>Linha crescente; sinaliza ritmo do turnaround</td><td class="num d-pos">Suporte</td></tr>
+            <tr><td class="lbl">Sinais de M&amp;A / alocação de capital</td><td>Caixa para aquisições reacendeu debate com acionistas</td><td class="num d-neu">Opcional</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="cap">Data provável do 2T26: 2ª quinzena de agosto/2026 (padrão histórico). Direção indica o viés esperado pela mesa PGS, não projeção numérica.</span>
+    </section>
+
+    <!-- ===================== SEÇÃO 2 ===================== -->
+    <section class="section animate" id="s2">
+      <div class="sec-tag">Seção 2</div>
+      <h2 class="sec-title">Análise Institucional</h2>
+      <p class="sec-lead">Arquitetura do negócio, fosso competitivo, riscos, vetores de crescimento, cenários e contexto de valuation para horizonte de 18–24 meses.</p>
+
+      <!-- 2.1 -->
+      <h3 class="block" id="s2-1">2.1 · Modelo de negócio &amp; arquitetura de receita</h3>
+      <p class="body">A Equatorial é uma holding de infraestrutura essencial: o 3º maior grupo de distribuição de energia do país em número de clientes, com concessões em Maranhão, Pará, Piauí, Alagoas, Goiás e Rio Grande do Sul (CEEE-D). Em torno desse núcleo regulado orbitam transmissão, geração renovável (Echoenergia), saneamento (CSA, no Amapá), telecom e a participação de 15% na Sabesp. O fio condutor da tese é o mesmo desde o IPO de 2006: comprar/operar ativos regulados, extrair eficiência (redução de perdas e DEC/FEC), e reinvestir a base sob retorno acima do WACC.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Segmento</th><th>Papel</th><th>Dinâmica de receita</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Distribuição</td><td>Núcleo (maioria do EBITDA)</td><td>Regulado; Parcela B/Fio B, crescimento de mercado, controle de perdas</td></tr>
+            <tr><td class="lbl">Transmissão</td><td>Geração de caixa estável</td><td>Receita anual permitida (RAP); portfólio sob reciclagem ativa</td></tr>
+            <tr><td class="lbl">Geração renovável (Echoenergia)</td><td>Não-core sob pressão</td><td>Eólica/solar; exposta a curtailment e preço — origem do impairment</td></tr>
+            <tr><td class="lbl">Saneamento (CSA)</td><td>Nova avenida</td><td>Concessão no Amapá; ramp-up incipiente</td></tr>
+            <tr><td class="lbl">Sabesp (15%)</td><td>Opcionalidade de valor</td><td>Equivalência patrimonial crescente; turnaround pós-privatização</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="cap">Receita LTM ~R$ 52 bi; EBITDA ajustado LTM ~R$ 12,8 bi. CEO: Augusto Miranda da Paz. Fontes: XP, apresentação institucional 3T25 (Visno), TradingView.</span>
+
+      <!-- 2.2 -->
+      <h3 class="block" id="s2-2">2.2 · Avaliação do fosso competitivo</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Pilar</th><th>Força</th><th>Risco associado</th><th class="num">Rating PGS</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Monopólio regulado natural</td><td>Concessões exclusivas em vastas áreas</td><td>Revisões tarifárias adversas</td><td class="num">★★★★★</td></tr>
+            <tr><td class="lbl">Eficiência operacional / track record</td><td>Recuperação de distribuidoras é marca da casa</td><td>Custos (PMSO) e inadimplência</td><td class="num">★★★★☆</td></tr>
+            <tr><td class="lbl">Escala &amp; acesso a capital</td><td>3º maior em clientes; capta longo e barato</td><td>Dívida bruta &gt; R$ 50 bi sob juros altos</td><td class="num">★★★★☆</td></tr>
+            <tr><td class="lbl">Diversificação (utilities)</td><td>Energia + saneamento + Sabesp</td><td>Execução em frentes não-core (renováveis)</td><td class="num">★★★☆☆</td></tr>
+            <tr><td class="lbl">Essencialidade do serviço</td><td>Demanda inelástica, fluxo previsível</td><td>Risco regulatório/político sistêmico</td><td class="num">★★★★★</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="cap">Rating PGS: avaliação interna qualitativa (1–5 estrelas), não comparável a ratings de crédito.</span>
+
+      <!-- 2.3 -->
+      <h3 class="block" id="s2-3">2.3 · Top 3 riscos</h3>
+      <div class="risk">
+        <div class="rhead"><h4>1 · Sensibilidade a juros &amp; alavancagem</h4><span class="badge high">Severidade alta</span></div>
+        <div class="rbody">Com dívida bruta acima de R$ 50 bi e Selic/CDI na casa de 13% em 2026, o resultado financeiro consome cerca de R$ 1,5 bi por trimestre e é o principal responsável pela queda do lucro líquido mesmo com EBITDA crescente. Enquanto os juros permanecerem altos, o lucro contábil seguirá descolado da força operacional, limitando o gatilho de reprecificação.<div class="meta">Horizonte: imediato e persistente · Mitigante: desalavancagem (2,6–2,7x) e alongamento de dívida (5,8 anos)</div></div>
+      </div>
+      <div class="risk">
+        <div class="rhead"><h4>2 · Risco regulatório &amp; tarifário</h4><span class="badge medh">Severidade média-alta</span></div>
+        <div class="rbody">Toda a tese de previsibilidade depende dos ciclos de revisão (RTP/RTA) e da continuidade do reconhecimento de base e da Parcela B. Mudanças regulatórias, exigências de qualidade (DEC/FEC) mais duras ou interferência política sobre tarifas comprimiriam diretamente a margem do core de distribuição.<div class="meta">Horizonte: médio prazo (ciclos de revisão) · Mitigante: histórico de enquadramento e DEC em queda</div></div>
+      </div>
+      <div class="risk med">
+        <div class="rhead"><h4>3 · Execução em não-core &amp; governança de capital</h4><span class="badge med">Severidade média</span></div>
+        <div class="rbody">As renováveis (Echoenergia) geraram impairment bilionário no 4T25 e seguem pressionadas por curtailment. Soma-se a tensão de governança: a tentativa de reduzir o dividendo obrigatório de 25% para 1% — para liberar caixa a aquisições — foi rejeitada por acionistas, expondo desalinhamento sobre alocação de capital entre crescimento via M&amp;A e remuneração.<div class="meta">Horizonte: contínuo · Mitigante: reciclagem de portfólio e disciplina de capex</div></div>
+      </div>
+
+      <!-- 2.4 -->
+      <h3 class="block" id="s2-4">2.4 · Arquitetura de crescimento de longo prazo</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Vetor</th><th>Horizonte</th><th>Estado atual</th><th>Potencial</th><th class="num">Status</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Reconhecimento de base (RTP/RTA)</td><td>Recorrente</td><td>Ciclos em curso</td><td>Crescimento do EBITDA regulatório</td><td class="num d-pos">Ativo</td></tr>
+            <tr><td class="lbl">Crescimento de mercado &amp; perdas</td><td>Contínuo</td><td>8 tri abaixo do regulatório</td><td>Margem incremental sem capex novo</td><td class="num d-pos">Ativo</td></tr>
+            <tr><td class="lbl">Turnaround da Sabesp (15%)</td><td>2–4 anos</td><td>Equivalência crescente</td><td>Reavaliação relevante do equity</td><td class="num d-pos">Em curso</td></tr>
+            <tr><td class="lbl">Expansão em saneamento</td><td>3–5 anos</td><td>CSA em ramp-up</td><td>Nova vertical regulada</td><td class="num d-neu">Incipiente</td></tr>
+            <tr><td class="lbl">M&amp;A / alocação de capital</td><td>Oportunístico</td><td>Caixa disponível</td><td>Consolidação setorial</td><td class="num d-neu">Em debate</td></tr>
+            <tr><td class="lbl">Desalavancagem &amp; queda de juros</td><td>12–24 meses</td><td>2,7x; juros altos</td><td>Conversão de EBITDA em lucro</td><td class="num d-neu">Dependente macro</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 2.5 -->
+      <h3 class="block" id="s2-5">2.5 · Cenário Bull vs. Bear</h3>
+      <div class="scenario-grid">
+        <div class="scard bull">
+          <div class="shead"><div class="t">Cenário Bull</div><div class="pt">Alvo: R$ 55–59 (18–24m)</div></div>
+          <div class="sbody">
+            <div class="row"><span>Premissa macro</span><b>Selic em queda</b></div>
+            <div class="row"><span>EBITDA aj. 26e</span><b>~R$ 13–14 bi</b></div>
+            <div class="row"><span>Driver de lucro</span><b>Alívio financeiro</b></div>
+            <div class="row"><span>TIR real (XP)</span><b>~11–12,5%</b></div>
+            <p>Queda de juros destrava a conversão de EBITDA em lucro; Sabesp acelera; desalavancagem continua e o desconto vs. alvos (R$ 58,80 XP) se fecha. EQTL3 reassume status "must-own" no setor.</p>
+          </div>
+        </div>
+        <div class="scard bear">
+          <div class="shead"><div class="t">Cenário Bear</div><div class="pt">Downside: R$ 31–33</div></div>
+          <div class="sbody">
+            <div class="row"><span>Premissa macro</span><b>Juros altos prolongados</b></div>
+            <div class="row"><span>EBITDA aj. 26e</span><b>Estável, sem alavanca</b></div>
+            <div class="row"><span>Driver de lucro</span><b>Financeiro segue pesando</b></div>
+            <div class="row"><span>Risco extra</span><b>Custos/inadimplência</b></div>
+            <p>Selic mantida pressiona o lucro; PMSO e inadimplência escalam; novos impairments em renováveis e revisão tarifária adversa. Rotação setorial mantém o papel descontado rumo às mínimas de 52 semanas.</p>
+          </div>
+        </div>
+      </div>
+      <span class="cap">Alvos derivados de cobertura pública (XP R$ 58,80; Itaú BBA R$ 53,30; consenso R$ 47–48). Downside ancorado na faixa inferior de 52 semanas (~R$ 31–33).</span>
+
+      <!-- 2.6 -->
+      <h3 class="block" id="s2-6">2.6 · Contexto de valuation</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Métrica</th><th class="num">Atual</th><th class="num">Estim. forward</th><th>Faixa / referência</th><th>Comentário</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">P/L (12M)</td><td class="num">~31,2x</td><td class="num">~16x (Nord)</td><td>Distorcido por lucro deprimido</td><td>P/L cheio reflete lucro comprimido por juros, não caro de fato</td></tr>
+            <tr><td class="lbl">EV/EBITDA</td><td class="num">~8,0x</td><td class="num">8,0–8,4x (26e)</td><td>~ média histórica</td><td>Em linha; não exuberante para utility regulada de crescimento</td></tr>
+            <tr><td class="lbl">P/VP</td><td class="num">~1,88x</td><td class="num">—</td><td>Razoável para utility</td><td>Sem prêmio agressivo</td></tr>
+            <tr><td class="lbl">Dividend yield (12M)</td><td class="num">~4,1%</td><td class="num">—</td><td>Abaixo da média da bolsa (~6%)</td><td>Yield modesto; foco em capex/crescimento</td></tr>
+            <tr><td class="lbl">TIR real implícita</td><td class="num">~11–12,5%</td><td class="num">—</td><td>vs. ENGI ~13,7% (XP)</td><td>Atrativa em termos absolutos para o risco regulado</td></tr>
+            <tr><td class="lbl">Desconto vs. alvo médio</td><td class="num">~24–26%</td><td class="num">até ~40% (Itaú)</td><td>Alvo R$ 47–48 / topo R$ 58,80</td><td>Margem de segurança relevante se a tese operacional se mantiver</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="cap">Múltiplos: TradingView, Investidor10, Nord (P/L 16x, EV/EBITDA 8x), Empiricus (8,4x 26e), XP (TIR real 11,1%). Preço-base R$ 38,35 (02/06/2026).</span>
+
+      <!-- 2.7 -->
+      <h3 class="block" id="s2-7">2.7 · Panorama de cobertura de analistas</h3>
+      <p class="block-note">Consenso: ~14 casas com Compra, 0 com Venda — viés "Compra Forte". Alvo médio R$ 47–48 (mín. R$ 42,80 · máx. R$ 58,80).</p>
+      <div class="analyst-grid">
+        <div class="acol bulls">
+          <div class="ah">Otimistas</div>
+          <div class="ai"><b>XP Investimentos</b><span class="tgt">Compra · R$ 58,80 (fim 2026) · "must-own"</span></div>
+          <div class="ai"><b>Itaú BBA</b><span class="tgt">Compra · R$ 53,30 (de R$ 48,70) · +40% · F. Andrade / L. Guimarães</span></div>
+          <div class="ai"><b>Empiricus</b><span class="tgt">Construtivo · 8,4x EV/EBITDA 26e</span></div>
+          <div class="ai"><b>Consenso (Investing/LSEG)</b><span class="tgt">14 compras · alvo médio R$ 47,32</span></div>
+        </div>
+        <div class="acol neu">
+          <div class="ah">Neutros / cautos</div>
+          <div class="ai"><b>Nord Investimentos</b><span class="tgt">Sem recomendação de compra · múltiplos perto da média</span></div>
+          <div class="ai"><b>Safra</b><span class="tgt">Cobertura · operacional "em linha", lucro abaixo do esperado</span></div>
+          <div class="ai"><b>BTG Pactual</b><span class="tgt">Em cobertura · acompanhamento de custos/leverage</span></div>
+        </div>
+        <div class="acol bears">
+          <div class="ah">Pessimistas</div>
+          <div class="ai"><b>—</b><span class="tgt">Nenhuma casa relevante com rating de Venda</span></div>
+          <div class="ai"><span class="tgt">A visão mais conservadora se limita a postura neutra; ceticismo concentra-se em juros, dividendos e renováveis.</span></div>
+        </div>
+      </div>
+      <span class="cap">Nomes citados apenas quando reportados publicamente. Fontes: XP, Itaú BBA (via Investidor10), Empiricus, Nord, Safra, BTG, Investing.com/LSEG (mai/2026).</span>
+    </section>
+
+    <!-- ===================== VEREDITO ===================== -->
+    <section class="section animate" id="verdict">
+      <div class="sec-tag">Conclusão</div>
+      <h2 class="sec-title">Veredito PGS</h2>
+      <div class="verdict">
+        <div class="verdict-head">
+          <span class="rating-pill">🟢 COMPRA</span>
+          <h3>EQTL3 · Risco/retorno favorável</h3>
+        </div>
+        <div class="verdict-metrics">
+          <div class="vm"><div class="l">Alvo Bull (18–24m)</div><div class="v pos">R$ 55–59</div></div>
+          <div class="vm"><div class="l">Downside Bear</div><div class="v neg">R$ 31–33</div></div>
+          <div class="vm"><div class="l">Preço-base</div><div class="v">R$ 38,35</div></div>
+          <div class="vm"><div class="l">Relação R/R</div><div class="v pos">Assimetria positiva</div></div>
+        </div>
+        <p><b>1 · Tese de deslocamento de preço.</b> A ação acumula desempenho fraco/lateral em 12 meses e negocia ~24–26% abaixo do alvo médio (até ~40% para o Itaú BBA), apesar de receita e EBITDA crescendo de forma consistente. Boa parte da fraqueza é atribuída à rotação setorial — investidores usando EQTL3 como fonte de recursos para nomes mais sensíveis ao preço de energia — e não a uma deterioração de fundamentos. Esse é o cerne do deslocamento: preço punido por fluxo, não por tese.</p>
+        <p><b>2 · Qualidade fundamental.</b> O núcleo de distribuição é um monopólio regulado de alta previsibilidade, com oito trimestres de perdas abaixo do regulatório, DEC em queda e crescimento de receita de dois dígitos. A reciclagem de portfólio (venda de transmissão) reduziu a alavancagem de 3,3x para 2,6–2,7x, e a Sabesp adiciona uma opcionalidade de valor crescente. A máquina operacional está intacta e melhorando.</p>
+        <p><b>3 · Reconhecimento do risco principal.</b> O elo fraco é o resultado final, não o operacional: com dívida bruta acima de R$ 50 bi sob Selic/CDI de ~13%, o resultado financeiro de ~R$ 1,5 bi/tri derruba o lucro líquido (−24% no 1T26) mesmo com EBITDA em alta. Soma-se a pressão de PMSO/inadimplência e a tensão de governança em torno de dividendos e M&amp;A. A tese depende, em boa medida, de um ciclo de queda de juros que ainda não se materializou.</p>
+        <p><b>4 · Catalisadores de curto prazo.</b> (i) Sinalização de afrouxamento monetário, que reprecificaria o lucro diretamente; (ii) continuidade da desalavancagem e do alongamento de dívida; (iii) aceleração da contribuição da Sabesp; (iv) estabilização das renováveis pós-impairment; e (v) clareza sobre alocação de capital após a rejeição do corte de dividendos. Resultado do 2T26 previsto para a 2ª quinzena de agosto/2026.</p>
+      </div>
+    </section>
+
+    <!-- ===================== DISCLAIMER ===================== -->
+    <section class="disclaimer animate" id="disclaimer">
+      <div class="box">
+        Este relatório foi produzido exclusivamente para uso interno da Polaris Global Strategies Ltd. (PGS), empresa constituída nas Ilhas Virgens Britânicas (BVI), que opera como um veículo privado de pesquisa e análise de investimentos por conta de seus sócios. Este documento não constitui recomendação de investimento para qualquer terceiro, seja pessoa física ou jurídica, e não deve ser interpretado como tal. A PGS não presta serviços de gestão de recursos, assessoria ou consultoria de investimentos a qualquer cliente externo, não possui base de clientes e não oferece produtos ou serviços a terceiros. Eventual acesso a este documento por partes não autorizadas não lhe confere validade como aconselhamento ou recomendação de investimento. As informações e análises aqui contidas baseiam-se em fontes públicas consideradas confiáveis, mas a PGS não oferece qualquer garantia quanto à sua integralidade ou exatidão. Investimentos em instrumentos de renda variável envolvem riscos, incluindo a possibilidade de perda total do capital investido. As opiniões expressas refletem o julgamento analítico interno na data de publicação e estão sujeitas a alteração sem aviso prévio.
+        <div class="ref">
+          Referência do relatório: PGS-EQTL3-202606 · Data: 02 de junho de 2026 · Analista interno: Polaris Global Strategies Ltd. · Ticker: EQTL3 · Bolsa: B3
+        </div>
+      </div>
+    </section>
+
+    </div><!-- /wrap -->
+  </main>
+</div>
+
+<script>
+(function(){
+  // Scroll-spy
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var map = {};
+  links.forEach(function(l){
+    var id = l.getAttribute('href').slice(1);
+    var t = document.getElementById(id);
+    if(t) map[id] = {link:l, el:t};
+  });
+  function onScroll(){
+    var pos = window.scrollY + 140, current = null;
+    for(var id in map){
+      if(map[id].el.offsetTop <= pos) current = id;
+    }
+    links.forEach(function(l){ l.classList.remove('active'); });
+    if(current && map[current]) map[current].link.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // Animations — JS sets opacity:0; CSS default stays 1 for PDF safety
+  var animEls = Array.prototype.slice.call(document.querySelectorAll('.animate'));
+  if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.style.opacity = '1';
+          e.target.style.animationPlayState = 'running';
+          obs.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.08});
+    animEls.forEach(function(el){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      obs.observe(el);
+    });
+    // Aggressive fallback: force everything visible within 2s regardless of scroll
+    setTimeout(function(){
+      animEls.forEach(function(el){
+        el.style.opacity = '1';
+        el.style.animationPlayState = 'running';
+      });
+    }, 1800);
+  }
+})();
+</script>
+</body>
+</html>

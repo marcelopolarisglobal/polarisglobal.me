@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research · Polaris Global Strategies Ltd</title>
+  <meta name="description" content="Proprietary investment research and thesis reports by Polaris Global Strategies." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .nav-links a[aria-current="page"] { color: var(--text); }
+
+    .research-main {
+      padding-top: calc(var(--nav-h) + 5rem);
+      padding-bottom: 7rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-top: 3rem;
+    }
+
+    .report-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+
+    .report-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+    }
+
+    .report-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .report-ticker {
+      font-family: var(--font-display);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--blue-light);
+      background: var(--blue-dim);
+      border: 1px solid rgba(59, 130, 246, 0.22);
+      border-radius: 4px;
+      padding: 0.2rem 0.55rem;
+    }
+
+    .report-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    .report-lang {
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      padding: 0.15rem 0.4rem;
+    }
+
+    .report-company {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      margin-top: 0.25rem;
+    }
+
+    .report-type {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      flex-grow: 1;
+    }
+
+    .report-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--blue-light);
+      text-decoration: none;
+      margin-top: 0.875rem;
+      transition: gap 0.2s;
+    }
+
+    .report-cta:hover { gap: 0.625rem; }
+
+    @media (max-width: 480px) {
+      .report-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ──────────────────────────────────────────── -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Polaris Global Strategies">
+        <span class="logo-mark" aria-hidden="true">✦</span>
+        <span class="logo-wordmark">POLARIS GLOBAL</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Site navigation">
+        <a href="index.html#about"      data-i18n="nav.about">About</a>
+        <a href="index.html#disclaimer" data-i18n="nav.disclaimer">Disclaimer</a>
+        <a href="research.html" aria-current="page" data-i18n="nav.research">Research</a>
+      </nav>
+
+      <div class="lang-switch" role="group" aria-label="Language selection">
+        <button class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+        <span class="lang-dot" aria-hidden="true">·</span>
+        <button class="lang-btn" data-lang="pt" aria-pressed="false">PT</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Research listing ────────────────────────────────────── -->
+  <main class="research-main">
+    <div class="container">
+      <div class="section-tag">
+        <span data-i18n="nav.research">Research</span>
+      </div>
+      <div class="two-col">
+        <div class="col-left">
+          <h1 class="section-heading" data-i18n="research.heading">
+            Investment Research
+          </h1>
+        </div>
+        <div class="col-right">
+          <p class="body-lg" data-i18n="research.sub">
+            Proprietary analysis and investment thesis reports.
+          </p>
+
+          <div class="report-grid">
+
+            <!-- PGS-MGM-202606 -->
+            <article class="report-card">
+              <div class="report-card-meta">
+                <span class="report-ticker">MGM</span>
+                <span class="report-date">Jun 2026</span>
+                <span class="report-lang">EN</span>
+              </div>
+              <h2 class="report-company">MGM Resorts International</h2>
+              <p class="report-type">Equity Research</p>
+              <a href="reports/PGS-MGM-202606.html" class="report-cta">
+                <span data-i18n="research.cta">View Report</span> →
+              </a>
+            </article>
+
+            <!-- PGS-EQTL3-202606 -->
+            <article class="report-card">
+              <div class="report-card-meta">
+                <span class="report-ticker">EQTL3</span>
+                <span class="report-date">Jun 2026</span>
+                <span class="report-lang">PT</span>
+              </div>
+              <h2 class="report-company">Equatorial Energia</h2>
+              <p class="report-type">Relatório de Análise</p>
+              <a href="reports/PGS-EQTL3-202606.html" class="report-cta">
+                <span data-i18n="research.cta">View Report</span> →
+              </a>
+            </article>
+
+            <!-- PGS-BRKB-202604 -->
+            <article class="report-card">
+              <div class="report-card-meta">
+                <span class="report-ticker">BRK.B</span>
+                <span class="report-date">Apr 2026</span>
+                <span class="report-lang">PT</span>
+              </div>
+              <h2 class="report-company">Berkshire Hathaway</h2>
+              <p class="report-type">Relatório de Pesquisa Institucional</p>
+              <a href="reports/PGS-BRKB-202604.html" class="report-cta">
+                <span data-i18n="research.cta">View Report</span> →
+              </a>
+            </article>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Footer ──────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">
+          <span class="logo-mark" aria-hidden="true">✦</span>
+          <span class="logo-wordmark">POLARIS GLOBAL</span>
+        </div>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="index.html#about"      data-i18n="nav.about">About</a>
+          <a href="index.html#disclaimer" data-i18n="nav.disclaimer">Disclaimer</a>
+          <a href="research.html"         data-i18n="nav.research">Research</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p data-i18n="footer.copy">
+          © 2026 Polaris Global Strategies Ltd. All rights reserved. Incorporated in the British Virgin Islands.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGS-MGM-202606 · MGM Resorts International · Equity Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#9C7A1E;        /* MGM antique gold */
+  --accent-deep:#6E5512;
+  --accent-tint:#F6F0E1;
+  --accent-line:#E3D6AE;
+  --ink:#111827;
+  --muted:#6B7280;
+  --canvas:#FFFFFF;
+  --section:#F9FAFB;
+  --card:#F3F4F6;
+  --line:#E5E7EB;
+  --green:#16A34A;
+  --green-bg:#F0FDF4;
+  --green-pill-bg:#DCFCE7;
+  --green-pill-tx:#15803D;
+  --red:#DC2626;
+  --red-bg:#FEE2E2;
+  --red-soft:#FEF2F2;
+  --red-pill-bg:#FEE2E2;
+  --red-pill-tx:#B91C1C;
+  --amber:#D97706;
+  --amber-bg:#FFFBEB;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--canvas);color:var(--ink);
+  font-family:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  font-size:15px;line-height:1.62;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;font-weight:700;line-height:1.15;color:var(--ink);margin:0;}
+.mono{font-family:'JetBrains Mono','Roboto Mono','Courier New',monospace;}
+.num{font-family:'JetBrains Mono','Roboto Mono','Courier New',monospace;font-variant-numeric:tabular-nums;}
+a{color:var(--accent-deep);text-decoration:none;}
+
+/* ---------- LAYOUT ---------- */
+.layout{display:grid;grid-template-columns:220px 1fr;max-width:1280px;margin:0 auto;}
+.sidebar{
+  position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;
+  background:var(--section);border-right:1px solid var(--line);
+  padding:26px 16px 26px 22px;
+}
+.sb-brand{font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:18px;letter-spacing:.3px;color:var(--accent-deep);}
+.sb-sub{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:3px;font-weight:600;}
+.sb-rule{height:1px;background:var(--line);margin:18px 0;}
+.nav-link{
+  display:block;font-size:12.5px;color:var(--muted);padding:7px 10px;border-left:3px solid transparent;
+  border-radius:0 4px 4px 0;transition:background .2s,color .2s,border-color .2s;font-weight:500;
+}
+.nav-link:hover{background:#EFEAD9;color:var(--ink);}
+.nav-link.active{color:var(--accent-deep);border-left:3px solid var(--accent);background:var(--accent-tint);font-weight:600;}
+.nav-num{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--accent);margin-right:7px;}
+.main-content{padding:0 0 80px 0;min-width:0;}
+.wrap{padding:0 46px;}
+
+/* ---------- COVER ---------- */
+.cover{
+  background:var(--section);
+  background-image:radial-gradient(var(--line) 1px,transparent 1px);
+  background-size:22px 22px;
+  border-bottom:1px solid var(--line);
+  padding:60px 46px 46px;min-height:96vh;display:flex;flex-direction:column;
+}
+.cover-eyebrow{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+.cover-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);}
+.cover-ref{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent-deep);background:#fff;border:1px solid var(--accent-line);padding:4px 10px;border-radius:4px;}
+.cover-name{font-size:62px;font-weight:800;letter-spacing:-1px;margin-top:34px;line-height:1.02;}
+.cover-name .accent{color:var(--accent);}
+.cover-meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:18px;font-size:13.5px;color:var(--muted);}
+.cover-meta b{color:var(--ink);font-weight:600;}
+.cover-tag{margin-top:26px;max-width:760px;font-size:16px;color:#374151;line-height:1.6;}
+.cover-tag .hl{color:var(--accent-deep);font-weight:600;}
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-top:40px;}
+.stat{background:#fff;padding:15px 16px;}
+.stat .k{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+.stat .v{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600;color:var(--ink);margin-top:5px;}
+.stat .d{font-size:11px;margin-top:2px;color:var(--muted);}
+.stat .up{color:var(--green);}.stat .down{color:var(--red);}
+.cover-foot{margin-top:auto;padding-top:30px;font-size:11.5px;color:var(--muted);}
+
+/* ---------- SECTIONS ---------- */
+.section{padding:46px 0 8px;border-top:1px solid var(--line);}
+.section:first-of-type{border-top:none;}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px;}
+.sec-no{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--accent);border:1px solid var(--accent-line);background:var(--accent-tint);border-radius:5px;padding:3px 9px;}
+.sec-title{font-size:29px;font-weight:700;letter-spacing:-.3px;}
+.sec-kicker{font-size:13px;color:var(--muted);margin:4px 0 26px;max-width:820px;}
+h3.sub{font-size:17px;margin:30px 0 12px;font-weight:600;display:flex;align-items:center;gap:9px;}
+h3.sub .bar{width:3px;height:17px;background:var(--accent);border-radius:2px;display:inline-block;}
+p.body{margin:0 0 13px;color:#1F2937;}
+.flag{font-size:11px;color:var(--muted);font-style:italic;}
+
+/* ---------- ANCHOR BOX ---------- */
+.anchor{background:var(--accent-tint);border:1px solid var(--accent-line);border-left:3px solid var(--accent);border-radius:6px;padding:15px 18px;margin-bottom:24px;}
+.anchor .t{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-deep);font-weight:700;margin-bottom:7px;}
+.anchor .seq{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink);}
+.anchor .chk{color:var(--green);font-weight:700;}
+
+/* ---------- QUARTER CARDS ---------- */
+.quarter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:6px 0 8px;}
+.qcard{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+.qcard .top{height:3px;background:var(--accent);}
+.qcard .inner{padding:14px 15px 16px;}
+.qcard .qlabel{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+.qcard .qdate{font-size:10.5px;color:var(--muted);margin-top:1px;}
+.qcard .rev{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--accent);margin:9px 0 1px;}
+.qcard .revl{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+.qcard .row{display:flex;justify-content:space-between;font-size:12px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);}
+.qcard .row span:first-child{color:var(--muted);}
+.qcard .row .num{font-weight:600;}
+.pill{display:inline-block;font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.02em;margin-top:11px;}
+.pill.beat{background:var(--green-pill-bg);color:var(--green-pill-tx);}
+.pill.miss{background:var(--red-pill-bg);color:var(--red-pill-tx);}
+.pill.mix{background:#FEF3C7;color:#92400E;}
+
+/* ---------- TABLES ---------- */
+.table-wrap{overflow-x:auto;margin:8px 0 6px;border:1px solid var(--line);border-radius:8px;}
+table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;}
+thead th{background:var(--card);text-align:left;padding:10px 13px;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#374151;font-weight:700;border-bottom:1px solid var(--line);}
+tbody td{padding:9px 13px;border-bottom:1px solid var(--line);vertical-align:top;}
+tbody tr:nth-child(even){background:var(--section);}
+tbody tr:hover{background:var(--accent-tint);transition:background .15s;}
+tbody tr:last-child td{border-bottom:none;}
+td.num,th.num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;text-align:right;}
+.pos{color:var(--green);font-weight:600;}
+.neg{color:var(--red);font-weight:600;}
+.neu{color:var(--amber);font-weight:600;}
+caption,.src{caption-side:bottom;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);padding:7px 2px 0;}
+.src{display:block;}
+
+/* ---------- NARRATIVE ROWS ---------- */
+.story{border-left:3px solid var(--accent);background:var(--section);border-radius:0 6px 6px 0;padding:12px 16px;margin-bottom:11px;}
+.story .h{font-weight:700;font-size:13.5px;color:var(--accent-deep);margin-bottom:3px;}
+.story .h .q{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-left:6px;}
+.story p{margin:0;font-size:13px;color:#1F2937;}
+
+/* ---------- LIST OBSERVATIONS ---------- */
+.obs{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+.obs .item{display:flex;gap:13px;padding:12px 15px;border-bottom:1px solid var(--line);background:#fff;}
+.obs .item:nth-child(even){background:var(--section);}
+.obs .item:last-child{border-bottom:none;}
+.obs .n{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--accent);font-size:13px;flex-shrink:0;width:22px;}
+.obs .item p{margin:0;font-size:13px;}
+.obs .item b{color:var(--ink);}
+
+/* ---------- RISK BLOCKS ---------- */
+.risk{border:1px solid var(--line);border-left:3px solid var(--red);border-radius:0 7px 7px 0;margin-bottom:14px;overflow:hidden;}
+.risk.med{border-left-color:var(--amber);}
+.risk .rh{display:flex;align-items:center;gap:11px;padding:11px 16px;background:var(--red-soft);print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.risk.med .rh{background:var(--amber-bg);}
+.risk .rh .rt{font-family:'Playfair Display',serif;font-weight:700;font-size:16px;}
+.sev{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:20px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.sev.high{background:var(--red);color:#fff;}
+.sev.medium{background:var(--amber);color:#fff;}
+.risk .rb{padding:12px 16px;background:#fff;font-size:13px;color:#1F2937;}
+.risk .rb .tl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:5px;}
+
+/* ---------- SCENARIO CARDS ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0;}
+.scard{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;}
+.scard.bull{border-top:3px solid var(--green);}
+.scard.bear{border-top:3px solid var(--red);}
+.scard .sh{padding:12px 16px;font-family:'Playfair Display',serif;font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.scard.bull .sh{background:var(--green-bg);color:#166534;}
+.scard.bear .sh{background:var(--red-bg);color:#991B1B;}
+.scard .sb{padding:6px 16px 16px;}
+.scard .line{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12.5px;}
+.scard .line:last-child{border-bottom:none;}
+.scard .line .lk{color:var(--muted);}
+.scard .line .lv{font-family:'JetBrains Mono',monospace;font-weight:600;text-align:right;}
+.scard .req{font-size:12px;color:#374151;padding-top:10px;}
+
+/* ---------- ANALYST GRID ---------- */
+.analyst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:8px 0;}
+.acol{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;}
+.acol .ah{padding:10px 14px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid var(--line);print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.acol.b .ah{background:var(--green-bg);color:#166534;}
+.acol.n .ah{background:#F3F4F6;color:#374151;}
+.acol.s .ah{background:var(--red-bg);color:#991B1B;}
+.acol .ab{padding:11px 14px;font-size:12.5px;}
+.acol .ab .a{padding:6px 0;border-bottom:1px dashed var(--line);}
+.acol .ab .a:last-child{border-bottom:none;}
+.acol .ab .a .nm{font-weight:600;}
+.acol .ab .a .tg{font-family:'JetBrains Mono',monospace;color:var(--accent-deep);font-weight:600;}
+
+/* ---------- VERDICT ---------- */
+.verdict{background:var(--section);border:1px solid var(--line);border-radius:10px;padding:26px 26px 24px;margin-top:14px;}
+.verdict-top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.vrating{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:8px 18px;border-radius:30px;background:var(--amber);color:#fff;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.verdict-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:20px 0 6px;}
+.vm{background:var(--card);padding:14px 16px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.vm .k{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+.vm .v{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:600;margin-top:4px;}
+.vm .v.up{color:var(--green);}.vm .v.down{color:var(--red);}
+.verdict p{font-size:13.5px;color:#1F2937;margin:13px 0 0;}
+.verdict p .lead{font-family:'Playfair Display',serif;font-weight:700;color:var(--accent-deep);}
+
+/* ---------- DISCLAIMER ---------- */
+.disclaimer{margin-top:40px;border-top:1px solid var(--line);padding:24px 0 10px;}
+.disclaimer h4{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.disclaimer p{font-size:11px;color:#6B7280;line-height:1.7;margin:0 0 10px;}
+.disclaimer .ref{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#374151;background:var(--section);border:1px solid var(--line);border-radius:6px;padding:10px 13px;}
+
+/* ---------- ANIMATION (PDF-SAFE) ---------- */
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:768px){
+  .layout{display:block;}
+  .sidebar{position:sticky;top:0;height:auto;width:100%;border-right:none;border-bottom:1px solid var(--line);
+    display:flex;gap:6px;overflow-x:auto;padding:12px 14px;white-space:nowrap;z-index:5;}
+  .sb-brand,.sb-sub,.sb-rule{display:none;}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;border-radius:0;padding:6px 10px;}
+  .nav-link.active{border-left:none;border-bottom:3px solid var(--accent);}
+  .nav-num{display:none;}
+  .wrap,.cover{padding-left:20px;padding-right:20px;}
+  .cover-name{font-size:40px;}
+  .stats-strip,.verdict-metrics{grid-template-columns:repeat(2,1fr);}
+  .quarter-grid,.scenario-grid,.analyst-grid{grid-template-columns:1fr;}
+}
+
+/* ---------- PRINT / PDF ---------- */
+@media print{
+  body{background:#fff !important;color:#111827 !important;font-size:11px;}
+  .layout{display:block !important;max-width:none;}
+  .sidebar{display:none !important;}
+  .main-content{display:block !important;width:100% !important;padding:0 !important;}
+  .wrap{padding:0 8mm !important;}
+  .cover{min-height:auto !important;height:auto !important;display:block !important;padding:6mm 8mm !important;
+    background:#fff !important;background-image:none !important;page-break-after:always;}
+  .section{page-break-before:always;border-top:none;padding-top:6mm;}
+  #s1{page-break-before:avoid;}
+  .stats-strip,.verdict-metrics{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important;}
+  .quarter-grid{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:8px !important;}
+  .scenario-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:10px !important;}
+  .analyst-grid{display:grid !important;grid-template-columns:repeat(3,1fr) !important;gap:8px !important;}
+  .table-wrap{overflow:visible !important;}
+  table{font-size:10px;}
+  td,th{word-break:break-word;}
+  .nav-link,.sb-brand{display:none !important;}
+  .animate{opacity:1 !important;transform:none !important;animation:none !important;}
+  *{box-shadow:none !important;backdrop-filter:none !important;}
+  .risk,.scard,.qcard,.story,.verdict,.anchor{page-break-inside:avoid;}
+  .risk .rh,.risk.med .rh,.scard .sh,.scard.bull .sh,.scard.bear .sh,.acol .ah,
+  .sev,.vrating,.vm,.pill{print-color-adjust:exact !important;-webkit-print-color-adjust:exact !important;}
+}
+  /* ─── Back navigation bar ─── */
+  .pgs-topbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 24px;
+    background: #07090F;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 12px;
+  }
+  .pgs-topbar a { color: #94A3B8; text-decoration: none; transition: color 0.15s; }
+  .pgs-topbar a:hover { color: #F1F5F9; }
+  .pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+  .pgs-topbar .pgs-sep { color: #334155; }
+  @media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-MGM-202606</span>
+</div>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-brand">Polaris</div>
+    <div class="sb-sub">Global Strategies</div>
+    <div class="sb-rule"></div>
+    <nav id="nav">
+      <a class="nav-link" href="#cover"><span class="nav-num">00</span>Cover</a>
+      <a class="nav-link" href="#s1"><span class="nav-num">01</span>Earnings Analysis</a>
+      <a class="nav-link" href="#s2"><span class="nav-num">02</span>Institutional Analysis</a>
+      <a class="nav-link" href="#verdict"><span class="nav-num">★</span>PGS Verdict</a>
+      <a class="nav-link" href="#disclaimer"><span class="nav-num">§</span>Disclaimer</a>
+    </nav>
+    <div class="sb-rule"></div>
+    <div style="font-size:10.5px;color:var(--muted);line-height:1.6;">
+      <div class="mono" style="color:var(--accent-deep);">PGS-MGM-202606</div>
+      NYSE: MGM<br>Internal use only
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+  <!-- COVER -->
+  <section class="cover animate" id="cover">
+    <div class="cover-eyebrow">
+      <span class="dot"></span> Polaris Global Strategies · Equity Research
+      <span class="cover-ref">PGS-MGM-202606</span>
+    </div>
+    <h1 class="cover-name">MGM Resorts<br><span class="accent">International</span></h1>
+    <div class="cover-meta">
+      <span><b>NYSE: MGM</b></span>
+      <span>Travel &amp; Leisure · Casinos &amp; Resorts</span>
+      <span>Published <b>14 June 2026</b></span>
+      <span>Price at analysis <b class="num">$48.90</b></span>
+      <span>Market cap <b class="num">~$12.5B</b></span>
+      <span>Consensus <b>Hold / Moderate Buy</b></span>
+    </div>
+    <p class="cover-tag">
+      A diversified gaming and hospitality operator now defined less by its operations than by a
+      <span class="hl">$48.30-per-share take-private proposal from People Inc. (Barry Diller)</span> lobbed on 1 June 2026.
+      The shares have re-rated almost to the offer, converting MGM from a fundamental story into an
+      <span class="hl">event-driven situation</span>: Las Vegas softness, record Macau, and a scaling BetMGM now sit behind a deal calculus.
+    </p>
+
+    <div class="stats-strip">
+      <div class="stat"><div class="k">Revenue TTM</div><div class="v">$17.5B</div><div class="d">FY2025, +2% YoY</div></div>
+      <div class="stat"><div class="k">Adj. EPS TTM</div><div class="v">$3.12</div><div class="d">GAAP TTM ~$0.72*</div></div>
+      <div class="stat"><div class="k">Adj. EBITDA</div><div class="v">$2.4B</div><div class="d">FY2025, +1% YoY</div></div>
+      <div class="stat"><div class="k">Adj. P/E TTM</div><div class="v">~15.7x</div><div class="d">on adj. EPS</div></div>
+      <div class="stat"><div class="k">Take-Private Bid</div><div class="v">$48.30</div><div class="d">People Inc., 1 Jun</div></div>
+      <div class="stat"><div class="k">Avg PT (trailing)</div><div class="v">~$43</div><div class="d down">below offer</div></div>
+      <div class="stat"><div class="k">52-wk Range</div><div class="v">$29–52</div><div class="d up">near high</div></div>
+      <div class="stat"><div class="k">PGS Rating</div><div class="v" style="color:var(--amber);">NEUTRAL</div><div class="d">deal-anchored</div></div>
+    </div>
+    <div class="cover-foot">
+      *GAAP TTM EPS distorted by Q3-25 goodwill impairment and Q2-25 FX loss. Anchor quarter: Q1 CY2026 (reported 29 Apr 2026).
+      Figures sourced from SEC 8-K/10-Q filings, PR Newswire, company earnings releases and tier-1 financial press; see captions.
+    </div>
+  </section>
+
+  <div class="wrap">
+
+  <!-- SECTION 1 -->
+  <section class="section" id="s1">
+    <div class="sec-head"><span class="sec-no">01</span><h2 class="sec-title">Earnings Analysis — Last 4 Quarters</h2></div>
+    <p class="sec-kicker">Continuous quarterly sequence ending with the most recently published release. All figures re-sourced live; GAAP and Adjusted (non-GAAP) EPS shown separately because two non-operating items (a Q3-25 impairment and a Q2-25 FX loss) severely distort the GAAP line.</p>
+
+    <div class="anchor animate">
+      <div class="t">Anchoring Protocol — Verified</div>
+      <div class="seq"><span class="chk">✓</span> Anchor confirmed: <b>Q1 CY2026</b> (published 29 April 2026 — actual reported figures: revenue $4.45B, adj. EPS $0.49)</div>
+      <div class="seq"><span class="chk">✓</span> Coverage sequence: <b>Q1 2026 → Q4 2025 → Q3 2025 → Q2 2025</b></div>
+      <div class="seq"><span class="chk">✓</span> Continuous quarterly sequence — no gaps, no cross-year substitution</div>
+    </div>
+
+    <h3 class="sub"><span class="bar"></span>1.1 · Quarter-by-quarter snapshot</h3>
+    <div class="quarter-grid">
+      <div class="qcard animate"><div class="top"></div><div class="inner">
+        <div class="qlabel">Q2 2025</div><div class="qdate">rep. 30 Jul 2025</div>
+        <div class="rev">$4.4B</div><div class="revl">Net revenue · +2% YoY</div>
+        <div class="row"><span>Adj. EPS</span><span class="num">$0.79</span></div>
+        <div class="row"><span>GAAP EPS</span><span class="num">$0.18</span></div>
+        <div class="row"><span>Adj. EBITDA</span><span class="num">$648M</span></div>
+        <span class="pill beat">Adj. beat +43.6%</span>
+      </div></div>
+      <div class="qcard animate"><div class="top"></div><div class="inner">
+        <div class="qlabel">Q3 2025</div><div class="qdate">rep. 29 Oct 2025</div>
+        <div class="rev">$4.25B</div><div class="revl">Net revenue · +2% YoY</div>
+        <div class="row"><span>Adj. EPS</span><span class="num">$0.24</span></div>
+        <div class="row"><span>GAAP EPS</span><span class="num neg">−$1.05</span></div>
+        <div class="row"><span>Adj. EBITDA</span><span class="num">$506M</span></div>
+        <span class="pill miss">Adj. miss −19.9%</span>
+      </div></div>
+      <div class="qcard animate"><div class="top"></div><div class="inner">
+        <div class="qlabel">Q4 2025</div><div class="qdate">rep. 5 Feb 2026</div>
+        <div class="rev">$4.61B</div><div class="revl">Net revenue · +6% YoY</div>
+        <div class="row"><span>Adj. EPS</span><span class="num">$1.60</span></div>
+        <div class="row"><span>GAAP EPS</span><span class="num">$1.11</span></div>
+        <div class="row"><span>Adj. EBITDA</span><span class="num">$635M</span></div>
+        <span class="pill beat">Rev beat · EBITDA +20%</span>
+      </div></div>
+      <div class="qcard animate"><div class="top"></div><div class="inner">
+        <div class="qlabel">Q1 2026 · ANCHOR</div><div class="qdate">rep. 29 Apr 2026</div>
+        <div class="rev">$4.45B</div><div class="revl">Net revenue · +4.2% YoY</div>
+        <div class="row"><span>Adj. EPS</span><span class="num">$0.49</span></div>
+        <div class="row"><span>GAAP EPS</span><span class="num">$0.48</span></div>
+        <div class="row"><span>Adj. EBITDA</span><span class="num">$580M</span></div>
+        <span class="pill mix">Rev beat · EPS miss</span>
+      </div></div>
+    </div>
+
+    <h3 class="sub"><span class="bar"></span>1.2 · Beat / miss detail</h3>
+    <div class="table-wrap animate">
+      <table>
+        <thead><tr><th>Quarter</th><th class="num">Revenue</th><th class="num">vs Cons.</th><th class="num">Adj. EPS</th><th class="num">vs Cons.</th><th>Macau / China signal</th><th class="num">Stock reaction</th></tr></thead>
+        <tbody>
+          <tr><td>Q2 2025</td><td class="num">$4.40B</td><td class="num pos">+2.1% beat</td><td class="num">$0.79</td><td class="num pos">+43.6% beat</td><td>Record EBITDAR; 16.6% share</td><td class="num neg">−0.7% AH</td></tr>
+          <tr><td>Q3 2025</td><td class="num">$4.25B</td><td class="num neu">in line</td><td class="num">$0.24</td><td class="num neg">−19.9% miss</td><td>Record 3Q EBITDAR; 15.5% share</td><td class="num neg">−2.6% / −3.8%</td></tr>
+          <tr><td>Q4 2025</td><td class="num">$4.61B</td><td class="num pos">beat</td><td class="num">$1.60</td><td class="num pos">strong</td><td>China rev +21%, EBITDAR +30%</td><td class="num pos">re-rated higher</td></tr>
+          <tr><td>Q1 2026</td><td class="num">$4.45B</td><td class="num pos">+2.1% beat</td><td class="num">$0.49</td><td class="num neg">−7.8% miss</td><td>China rev +9%; Digital +43%</td><td class="num neg">−1.9% next session</td></tr>
+        </tbody>
+      </table>
+      <span class="src">Sources: MGM 8-K earnings releases (PR Newswire); StockStory; Investing.com; Yahoo Finance / GuruFocus consensus.</span>
+    </div>
+
+    <h3 class="sub"><span class="bar"></span>1.3 · Revenue &amp; margin trajectory</h3>
+    <div class="table-wrap animate">
+      <table>
+        <thead><tr><th>Metric ($M unless noted)</th><th class="num">Q2-25</th><th class="num">Q3-25</th><th class="num">Q4-25</th><th class="num">Q1-26</th></tr></thead>
+        <tbody>
+          <tr><td>Consolidated net revenue</td><td class="num">4,400</td><td class="num">4,250</td><td class="num">4,610</td><td class="num">4,450</td></tr>
+          <tr><td>Operating income</td><td class="num">~340</td><td class="num neg">(114)*</td><td class="num">325</td><td class="num">301</td></tr>
+          <tr><td>Consolidated Adj. EBITDA</td><td class="num">648</td><td class="num">506</td><td class="num">635</td><td class="num">580</td></tr>
+          <tr><td>Net income attrib. to MGM</td><td class="num">49</td><td class="num neg">(285)</td><td class="num">294</td><td class="num">125</td></tr>
+          <tr><td>GAAP diluted EPS ($)</td><td class="num">0.18</td><td class="num neg">(1.05)</td><td class="num">1.11</td><td class="num">0.48</td></tr>
+          <tr><td>Adjusted EPS ($)</td><td class="num">0.79</td><td class="num">0.24</td><td class="num">1.60</td><td class="num">0.49</td></tr>
+          <tr><td>LV Strip net revenue</td><td class="num">2,100</td><td class="num">2,000</td><td class="num">2,200</td><td class="num">2,200</td></tr>
+          <tr><td>MGM China net revenue</td><td class="num">~1,100</td><td class="num">~1,150</td><td class="num">1,200</td><td class="num">~1,200</td></tr>
+        </tbody>
+      </table>
+      <span class="src">*Q3-25 operating line turned negative on a $256M Empire City goodwill impairment + ~$93M write-offs. Sources: MGM 8-K filings, 10-Q, Hotel Dive, CDC Gaming, lodging press. Some segment figures rounded/approximate (est.).</span>
+    </div>
+
+    <h3 class="sub"><span class="bar"></span>1.4 · Quarter-defining events — the story behind the numbers</h3>
+    <div class="story animate"><div class="h">Record top line, but currency masked it<span class="q">Q2 2025</span></div>
+      <p>MGM printed its highest-ever consolidated net revenue, yet GAAP EPS collapsed to $0.18 from $0.60 — entirely on a $208M pre-tax foreign-currency transaction loss on USD-denominated debt held by a foreign subsidiary. Strip out the non-cash FX hit and adjusted EPS of $0.79 crushed the $0.55 consensus. Macau hit a record 16.6% share; Regional set a quarterly record; only Las Vegas (room remodel) softened.</p></div>
+    <div class="story animate"><div class="h">The impairment quarter<span class="q">Q3 2025</span></div>
+      <p>Management withdrew its Empire City commercial-gaming-license application, triggering a $256M non-cash goodwill impairment plus ~$93M of related write-offs and a headline $1.05 GAAP loss per share. Operations were steadier than the print: revenue still grew 2%, Macau set another 3Q EBITDAR record, and MGM announced the $546M Northfield Park sale at a premium multiple. But adjusted EPS of $0.24 missed badly and Las Vegas fell 7%.</p></div>
+    <div class="story animate"><div class="h">Diversification pays — China + BetMGM carry the quarter<span class="q">Q4 2025</span></div>
+      <p>The cleanest quarter of the year: revenue +6% to $4.61B, adjusted EBITDA +20%, GAAP EPS more than doubling to $1.11. MGM China revenue jumped 21% with EBITDAR +30%, and BetMGM distributed its first $135M of cash back to MGM after a ~$470M annual EBITDA swing to profitability. Las Vegas still slipped 3%, but the diversified engine more than offset it.</p></div>
+    <div class="story animate"><div class="h">Las Vegas finally inflects — into a takeover<span class="q">Q1 2026 · anchor</span></div>
+      <p>Record 1Q revenue with Las Vegas posting its first year-over-year top-line growth in over a year, helped by the completed MGM Grand remodel, conventions and an all-inclusive promotion. But margins compressed — adjusted EBITDA fell to $580M on higher gaming taxes, self-insurance reserves and payroll — so adjusted EPS of $0.49 missed. Weeks later the operational story was overtaken: on 1 June, People Inc. moved to take the company private.</p></div>
+
+    <h3 class="sub"><span class="bar"></span>1.5 · Recurring earnings patterns</h3>
+    <div class="obs animate">
+      <div class="item"><span class="n">1</span><p><b>Revenue resilience, margin erosion.</b> Net revenue grew YoY in all four quarters (+2% to +6%), but Adjusted EBITDA fell YoY in three of four — a persistent cost/mix squeeze from taxes, insurance and payroll.</p></div>
+      <div class="item"><span class="n">2</span><p><b>GAAP EPS is unreliable; watch Adjusted + EBITDA.</b> Two of four quarters carried large non-operating distortions (FX loss, impairment). The market consistently traded on the adjusted line and segment EBITDAR.</p></div>
+      <div class="item"><span class="n">3</span><p><b>Macau is the growth engine.</b> MGM China set record segment EBITDAR or share in every quarter, sustaining 15.5–16.6% market share — the most consistently positive part of the story.</p></div>
+      <div class="item"><span class="n">4</span><p><b>Las Vegas was the drag — until Q1-26.</b> Strip revenue declined every quarter of 2025 (room remodel, weaker leisure) before inflecting positive in Q1-26.</p></div>
+      <div class="item"><span class="n">5</span><p><b>Capital return + portfolio pruning.</b> 37.5M shares repurchased in 2025 (~$1.2B; share count down ~48% since 2021), Northfield Park sold for $546M, and BetMGM began returning cash — a clear self-help, value-surfacing posture that pre-dated Diller's bid.</p></div>
+    </div>
+
+    <h3 class="sub"><span class="bar"></span>1.6 · Key metrics the market monitors</h3>
+    <div class="table-wrap animate">
+      <table>
+        <thead><tr><th>KPI</th><th>Current read</th><th>Threshold signal</th></tr></thead>
+        <tbody>
+          <tr><td>LV Strip net revenue (YoY)</td><td class="num">+ (Q1-26 inflection)</td><td>Sustained growth = thesis repair; relapse = bear confirm</td></tr>
+          <tr><td>MGM China market share</td><td class="num">~16%</td><td>Holding &gt;16% = premium-mass leadership intact</td></tr>
+          <tr><td>BetMGM EBITDA (FY guide)</td><td class="num">$300–350M</td><td>Path to $500M target; cash distributions to MGM</td></tr>
+          <tr><td>Consolidated Adj. EBITDA (YoY)</td><td class="num neg">pressured</td><td>Return to growth needed to justify standalone multiple</td></tr>
+          <tr><td>Buyback pace</td><td class="num">~$1.2B/yr</td><td>Share-count reduction lifts FCF/share</td></tr>
+          <tr><td>People Inc. proposal status</td><td class="num neu">non-binding</td><td>Binding agreement / raised bid / board rejection</td></tr>
+        </tbody>
+      </table>
+      <span class="src">Sources: MGM Q4-25 call (Motley Fool transcript), FY2025 release, SCHEDULE 13D/A (1 Jun 2026).</span>
+    </div>
+
+    <h3 class="sub"><span class="bar"></span>1.7 · What to watch — next earnings (Q2 2026, expected late July)</h3>
+    <div class="table-wrap animate">
+      <table>
+        <thead><tr><th>Item</th><th>Why it matters</th><th class="num">Signal</th></tr></thead>
+        <tbody>
+          <tr><td>Las Vegas trajectory</td><td>Whether Q1 inflection holds into summer (short booking cycle)</td><td class="num pos">▲ watch up</td></tr>
+          <tr><td>Margin / cost trend</td><td>Gaming tax, self-insurance, payroll pressure on EBITDA</td><td class="num neg">▼ risk</td></tr>
+          <tr><td>MGM China share &amp; hold</td><td>Sustaining record EBITDAR vs intensifying competition</td><td class="num pos">▲</td></tr>
+          <tr><td>BetMGM EBITDA &amp; distributions</td><td>Progress toward $500M; further cash to parent</td><td class="num pos">▲</td></tr>
+          <tr><td>People Inc. process update</td><td>Any binding terms, special committee, go-shop, or competing bid</td><td class="num neu">◆ catalyst</td></tr>
+          <tr><td>MGM Osaka / Japan capex</td><td>2030 opening; funding cadence (yen facility)</td><td class="num neu">◆ long-dated</td></tr>
+        </tbody>
+      </table>
+      <span class="src">Next earnings expected late July 2026 (Q2 CY2026). Directional signals are PGS analytical judgement, not guidance.</span>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="section" id="s2">
+    <div class="sec-head"><span class="sec-no">02</span><h2 class="sec-title">Institutional Analysis</h2></div>
+    <p class="sec-kicker">Business architecture, moat, risks, growth drivers, scenario maths and valuation — read against an active take-private proposal that now sets the reference price.</p>
+
+    <h3 class="sub"><span class="bar"></span>2.1 · Business model &amp; revenue architecture (FY2025)</h3>
+    <p class="body">MGM operates four reportable segments plus a 50/50 unconsolidated venture (BetMGM). It is the largest Strip operator (~37,000 rooms, ~one-quarter of the market) but is increasingly a global, diversified gaming platform: Macau is the growth engine, BetMGM the digital optionality, and Osaka the long-dated call option. Many Strip properties are leased from gaming REITs, so reported Adjusted EBITDA is after substantial rent — a structural feature that matters for any multiple comparison.</p>
+    <div class="table-wrap animate">
+      <table>
+        <thead><tr><th>Segment</th><th class="num">FY2025 net rev</th><th class="num">YoY</th><th>Position / note</th></tr></thead>
+        <tbody>
+          <tr><td>Las Vegas Strip Resorts</td><td class="num">$8.4B</td><td class="num neg">−4%</td><td>Bellagio, Aria, MGM Grand, Mandalay Bay, Luxor, etc.; EBITDAR $2.9B (−8%)</td></tr>
+          <tr><td>MGM China (56%-owned)</td><td class="num">$4.46B</td><td class="num pos">+11%</td><td>MGM Macau + MGM Cotai; ~16% share, record EBITDAR; concession to 2032</td></tr>
+          <tr><td>Regional Operations</td><td class="num">~$3.8B</td><td class="num pos">+1%</td><td>US regional casinos; stable, record slot win in Q4</td></tr>
+          <tr><td>MGM Digital (LeoVegas etc.)</td><td class="num">incl. above</td><td class="num pos">+35%</td><td>International iGaming; still loss-making, narrowing</td></tr>
+          <tr><td>BetMGM (50/50 JV)</td><td class="num">$2.8B venture</td><td class="num pos">+33%</td><td>Equity-method; turned profitable, distributed $135M to MGM</td></tr>
+        </tbody>
+      </table>
+      <span class="src">Sources: MGM FY2025 8-K (PR Newswire 5 Feb 2026), intergameonline, CDC Gaming. Consolidated FY2025 net revenue $17.5B (+2%). BetMGM is a venture and is not consolidated into MGM net revenue.</span>
+    </div>
+
+    <h3 class="sub"><span class="bar"></span>2.2 · Competitive moat assessment</h3>
+    <div class="table-wrap animate">
+      <table>
+        <thead><tr><th>Pillar</th><th>Strength</th><th>Risk to moat</th><th class="num">PGS rating</th></tr></thead>
+        <tbody>
+          <tr><td>Irreplaceable Strip real estate &amp; scale</td><td>Distribution, conventions, ~25% of Strip rooms</td><td>Asset-heavy, REIT rent, demand cyclicality</td><td class="num">★★★★☆</td></tr>
+          <tr><td>MGM China license &amp; premium-mass</td><td>One of six concessions; record share</td><td>Macau regulatory / geopolitical concentration</td><td class="num">★★★★☆</td></tr>
+          <tr><td>BetMGM brand + omnichannel database</td><td>MGM Rewards cross-sell; #3 US OSB/iGaming</td><td>FanDuel/DraftKings dominance; promo intensity</td><td class="num">★★★☆☆</td></tr>
+          <tr><td>Loyalty &amp; group/convention engine</td><td>Recurring, higher-margin mid-week demand</td><td>Macro-sensitive corporate travel</td><td class="num">★★★★☆</td></tr>
+          <tr><td>Japan (Osaka) urban concession</td><td>Only urban Japanese gaming license</td><td>2030-dated, capital-intensive, unproven returns</td><td class="num">★★★☆☆</td></tr>
+        </tbody>
+      </table>
+      <span class="src">PGS qualitative ratings. Sources: Morningstar, company filings, Q4-25 call.</span>
+    </div>
+
+    <h3 class="sub"><span class="bar"></span>2.3 · Top 3 risks</h3>
+    <div class="risk animate"><div class="rh"><span class="rt">Deal break or repricing risk</span><span class="sev high">High · near-term</span></div>
+      <div class="rb"><div class="tl">Severity: High · Timeline: 0–9 months</div>The People Inc. proposal is explicitly <b>non-binding</b> and subject to a mutually satisfactory agreement. With the stock trading at/above $48.30, a collapse of talks, a board rejection without a higher bid, or financing/regulatory friction would likely send shares back toward their pre-offer standalone level (~$40s), a meaningful drawdown from current prices. The buyer already owns 26.1% and Diller sits on the board (recused), which both accelerates and complicates governance optics.</div></div>
+    <div class="risk animate"><div class="rh"><span class="rt">Las Vegas demand &amp; consumer cyclicality</span><span class="sev high">High · structural</span></div>
+      <div class="rb"><div class="tl">Severity: High · Timeline: ongoing</div>The Strip — still MGM's largest profit pool — declined every quarter of 2025 before a fragile Q1-26 inflection. Gaming/leisure spend is highly cyclical and the booking window is short (~50% within ~30 days), so a consumer slowdown transmits quickly. Margin pressure from gaming taxes, self-insurance and payroll compounds the top-line sensitivity.</div></div>
+    <div class="risk animate med"><div class="rh"><span class="rt">Macau concentration, leverage &amp; FX</span><span class="sev medium">Medium · ongoing</span></div>
+      <div class="rb"><div class="tl">Severity: Medium · Timeline: ongoing</div>A growing share of growth and EBITDAR depends on Macau, exposing MGM to Chinese regulatory, visitation and geopolitical risk. The Q2-25 $208M FX loss showed sensitivity of foreign-subsidiary USD debt to currency moves, and the lease-heavy capital structure plus Osaka funding keep leverage and fixed charges elevated.</div></div>
+
+    <h3 class="sub"><span class="bar"></span>2.4 · Long-term growth architecture</h3>
+    <div class="table-wrap animate">
+      <table>
+        <thead><tr><th>Driver</th><th>Timeline</th><th>Current state</th><th>Potential</th><th class="num">Status</th></tr></thead>
+        <tbody>
+          <tr><td>BetMGM to $500M EBITDA</td><td>2026–28</td><td>Profitable; $300–350M FY26 guide</td><td>Material FCF + parent distributions</td><td class="num pos">On track</td></tr>
+          <tr><td>MGM Osaka (Japan IR)</td><td>~2030</td><td>Under development; yen-funded</td><td>New high-margin Asian flagship</td><td class="num neu">Building</td></tr>
+          <tr><td>Macau premium-mass share</td><td>Ongoing</td><td>~16% share, record EBITDAR</td><td>Sustained Asia cash engine</td><td class="num pos">Leading</td></tr>
+          <tr><td>MGM Digital international</td><td>2026–27</td><td>Rev +35%, still loss-making</td><td>Path to profitability (Brazil, Sweden)</td><td class="num neu">Scaling</td></tr>
+          <tr><td>Buybacks / portfolio pruning</td><td>Continuous</td><td>−48% shares since 2021; Northfield sold</td><td>FCF/share accretion, value surfacing</td><td class="num pos">Active</td></tr>
+        </tbody>
+      </table>
+      <span class="src">Sources: Q4-25 earnings call (Motley Fool), FY2025 release, Q3-25 release. Standalone drivers; a take-private would internalise this value rather than deliver it to public holders.</span>
+    </div>
+
+    <h3 class="sub"><span class="bar"></span>2.5 · Bull case vs bear case</h3>
+    <div class="scenario-grid">
+      <div class="scard bull animate">
+        <div class="sh">▲ Bull case</div>
+        <div class="sb">
+          <div class="line"><span class="lk">Thesis</span><span class="lv" style="text-align:right;">Bidding war / sweetened bid</span></div>
+          <div class="line"><span class="lk">Catalyst</span><span class="lv" style="text-align:right;">Board shops deal; higher offer</span></div>
+          <div class="line"><span class="lk">Implied target</span><span class="lv">$52–55</span></div>
+          <div class="line"><span class="lk">Std-alone EPS power</span><span class="lv">~$3+ adj.</span></div>
+          <div class="req">Diller's 10.6% premium to last close is thin; the board can negotiate or attract a competing buyer, and recent sell-side PTs ($50 UBS, $53 JPMorgan) sit above the $48.30 bid — implying room for an improved price.</div>
+        </div>
+      </div>
+      <div class="scard bear animate">
+        <div class="sh">▼ Bear case</div>
+        <div class="sb">
+          <div class="line"><span class="lk">Thesis</span><span class="lv" style="text-align:right;">Deal breaks / no raise</span></div>
+          <div class="line"><span class="lk">Catalyst</span><span class="lv" style="text-align:right;">Talks stall; Vegas re-softens</span></div>
+          <div class="line"><span class="lk">Implied downside</span><span class="lv">$38–40</span></div>
+          <div class="line"><span class="lk">Std-alone multiple</span><span class="lv">~7–8x EBITDA*</span></div>
+          <div class="req">If the proposal lapses, shares likely revert toward the pre-bid level (~$43.67 close) and potentially lower as the "in-play" premium unwinds, with a cyclical Strip and pressured margins capping the standalone re-rate. *EBITDA before heavy lease rent.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub"><span class="bar"></span>2.6 · Valuation context</h3>
+    <div class="table-wrap animate">
+      <table>
+        <thead><tr><th>Metric</th><th class="num">Current</th><th class="num">Forward / ref.</th><th>Commentary</th></tr></thead>
+        <tbody>
+          <tr><td>Price / take-private bid</td><td class="num">~$48.90</td><td class="num">$48.30 offer</td><td>Trading at/above the cash bid — market prices some odds of a raise</td></tr>
+          <tr><td>Adj. P/E (TTM)</td><td class="num">~15.7x</td><td class="num">~16–24x FY26E</td><td>FY26 adj. EPS estimates vary widely ($2.04–$3.12); use with caution (est.)</td></tr>
+          <tr><td>GAAP P/E (TTM)</td><td class="num">n.m.</td><td class="num">—</td><td>Distorted by impairment + FX; not meaningful</td></tr>
+          <tr><td>EV (offer basis)</td><td class="num">~$18B+</td><td class="num">—</td><td>People Inc. values MGM &gt;$18B incl. debt; ~7–8x consol. EBITDA (pre-rent)</td></tr>
+          <tr><td>P/B</td><td class="num">~3.1x</td><td class="num">—</td><td>Above 3x book</td></tr>
+          <tr><td>PEG</td><td class="num">~2.6</td><td class="num">—</td><td>Elevated vs 1.0 (est., source-dependent)</td></tr>
+          <tr><td>52-week range</td><td class="num">$29–$52</td><td class="num">near high</td><td>Bid drove shares to top of range; above 200-day MA</td></tr>
+          <tr><td>Short interest</td><td class="num">~11.7% float</td><td class="num">—</td><td>High; partly merger-arb / hedging (as of early 2026)</td></tr>
+        </tbody>
+      </table>
+      <span class="src">Sources: People Inc. SCHEDULE 13D/A, Kraken/CNN quotes, MarketBeat, Macrotrends, FinancialContent. Forward EPS estimates flagged (est.); not PGS forecasts.</span>
+    </div>
+
+    <h3 class="sub"><span class="bar"></span>2.7 · Analyst landscape</h3>
+    <div class="analyst-grid">
+      <div class="acol b animate"><div class="ah">Bulls</div><div class="ab">
+        <div class="a"><div class="nm">JPMorgan</div><div>PT raised to <span class="tg">$53</span> (≈13 Jun, from $46)</div></div>
+        <div class="a"><div class="nm">UBS</div><div>PT raised to <span class="tg">$50</span> (4 Jun, from $39)</div></div>
+        <div class="a"><div class="nm">Mizuho — B. Chaiken</div><div>Street-high <span class="tg">~$62</span> (most bullish)</div></div>
+        <div class="a"><div class="nm">Citigroup</div><div>Upgraded to strong-buy, <span class="tg">$57</span> (2025)</div></div>
+      </div></div>
+      <div class="acol n animate"><div class="ah">Neutrals</div><div class="ab">
+        <div class="a"><div class="nm">Morgan Stanley</div><div>Equal-weight, <span class="tg">~$38</span></div></div>
+        <div class="a"><div class="nm">Citizens / JMP</div><div>Market perform (mid-2025)</div></div>
+        <div class="a"><div class="nm">Consensus (trailing)</div><div>Hold; avg PT <span class="tg">~$42–43</span></div></div>
+        <div class="a"><div class="nm">Distribution</div><div>~10 Buy / 9 Hold / 3 Sell</div></div>
+      </div></div>
+      <div class="acol s animate"><div class="ah">Bears</div><div class="ab">
+        <div class="a"><div class="nm">Street-low PT</div><div><span class="tg">$29–31</span> range</div></div>
+        <div class="a"><div class="nm">BTIG</div><div>Cut to Neutral (Feb 2025)</div></div>
+        <div class="a"><div class="nm">Sell-rated</div><div>~3 analysts at Sell</div></div>
+        <div class="a"><div class="nm">Concern</div><div>Vegas cyclicality; thin deal premium</div></div>
+      </div></div>
+    </div>
+    <span class="src" style="margin-top:6px;">Sources: TipRanks/CNBC (Jun 2026), MarketBeat, Investing.com, StockAnalysis, Benzinga, NAGA. Analyst counts vary by aggregator (13–31). Only publicly reported names/targets cited.</span>
+  </section>
+
+  <!-- VERDICT -->
+  <section class="section" id="verdict">
+    <div class="sec-head"><span class="sec-no">★</span><h2 class="sec-title">PGS Verdict</h2></div>
+    <div class="verdict animate">
+      <div class="verdict-top">
+        <span class="vrating">🟡 NEUTRAL</span>
+        <div style="font-size:13px;color:var(--muted);">Event-driven · deal-anchored · risk/reward roughly balanced at current price</div>
+      </div>
+      <div class="verdict-metrics">
+        <div class="vm"><div class="k">Bull target (18–24m)</div><div class="v up">$52–55</div></div>
+        <div class="vm"><div class="k">Bear downside</div><div class="v down">$38–40</div></div>
+        <div class="vm"><div class="k">Reference bid</div><div class="v">$48.30</div></div>
+        <div class="vm"><div class="k">Risk / reward</div><div class="v" style="color:var(--amber);">Balanced</div></div>
+      </div>
+
+      <p><span class="lead">1 · Price dislocation.</span> The dislocation that mattered has already closed. MGM jumped roughly 15% on 1 June when People Inc. offered $48.30 in cash, and the shares now sit at/above that bid near the top of their 52-week range. The easy re-rating — from a $43.67 pre-offer close to ~$49 — has been captured. What remains is a narrower bet on whether the non-binding proposal is lifted, completed at $48.30, or breaks; fresh capital at ~$48.90 is paying close to deal value for that optionality.</p>
+
+      <p><span class="lead">2 · Fundamental quality.</span> Underneath the deal, MGM is a genuinely diversified franchise with a record-setting Macau business (~16% share), a now-profitable BetMGM returning cash, a fragile but real Las Vegas inflection in Q1-26, and aggressive buybacks (−48% shares since 2021). The blemish is margin: Adjusted EBITDA fell year-over-year in three of the last four quarters on taxes, insurance and payroll, and the Strip — still the largest profit pool — is cyclical and lease-encumbered. Quality is solid, not pristine.</p>
+
+      <p><span class="lead">3 · Primary risk.</span> The dominant risk is binary and near-term: the proposal is explicitly non-binding. A board rejection without a higher bid, financing or regulatory friction, or stalled negotiations would unwind the in-play premium and likely return shares toward the low $40s or below — a clear drawdown from current levels. Diller's pre-existing 26.1% stake and board seat both speed and complicate the process.</p>
+
+      <p><span class="lead">4 · Near-term catalysts.</span> Watch for a special-committee response, binding merger terms, any go-shop or competing bidder, and further sell-side repricing (UBS $50 and JPMorgan $53 already sit above the bid). The Q2-26 print (late July) will test the Las Vegas inflection and BetMGM cash distributions. On balance the asymmetry that justified urgency has compressed into a balanced, deal-contingent setup — hence a favourable-quality business but a neutral risk/reward at today's price, rather than a directional entry.</p>
+    </div>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <section class="disclaimer" id="disclaimer">
+    <h4>Disclaimer</h4>
+    <p>This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice.</p>
+    <div class="ref">Report Reference: PGS-MGM-202606 · Date: 14 June 2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: MGM · Exchange: NYSE</div>
+  </section>
+
+  </div><!-- /wrap -->
+  </main>
+</div>
+
+<script>
+(function(){
+  // PDF-safe staggered fade: JS sets opacity:0, observer restores. Without JS, elements stay visible.
+  var els = document.querySelectorAll('.animate');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.style.opacity=''; e.target.style.animationPlayState='running'; io.unobserve(e.target); }
+      });
+    },{threshold:0.06});
+    els.forEach(function(el,i){
+      el.style.opacity='0'; el.style.animationPlayState='paused';
+      el.style.animationDelay=(Math.min(i*0.04,0.4))+'s';
+      io.observe(el);
+    });
+    // Fallback: force everything visible after 2s regardless of scroll.
+    setTimeout(function(){ els.forEach(function(el){ el.style.opacity=''; el.style.animationPlayState='running'; }); },2000);
+  }
+
+  // Active nav on scroll
+  var links = document.querySelectorAll('.nav-link');
+  var secs = ['cover','s1','s2','verdict','disclaimer'].map(function(id){return document.getElementById(id);});
+  function onScroll(){
+    var pos = window.scrollY + 120, cur = secs[0].id;
+    secs.forEach(function(s){ if(s && s.offsetTop<=pos) cur=s.id; });
+    links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href')==='#'+cur); });
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>
