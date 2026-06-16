@@ -5,6 +5,7 @@ const i18n = {
     'nav.about':      'About',
     'nav.disclaimer': 'Disclaimer',
     'nav.research':   'Research',
+    'nav.crypto':     'Crypto',
 
     'hero.eyebrow':  'Private Investment Company',
     'hero.heading1': 'Navigating Global',
@@ -35,6 +36,7 @@ const i18n = {
     'nav.about':      'Sobre',
     'nav.disclaimer': 'Aviso Legal',
     'nav.research':   'Pesquisa',
+    'nav.crypto':     'Cripto',
 
     'hero.eyebrow':  'Empresa de Investimentos Privados',
     'hero.heading1': 'Navegando pelos',
