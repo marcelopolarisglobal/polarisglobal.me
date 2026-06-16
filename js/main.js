@@ -14,7 +14,7 @@ const i18n = {
 
     'about.tag':        'About',
     'about.heading':    'About Polaris Global Strategies',
-    'about.body':       'We focus on identifying and capitalizing on strategic opportunities across global markets.',
+    'about.body':       'Polaris Global Strategies is a private investment company focused on identifying and capitalizing on strategic opportunities across global markets. We operate with a diversified approach, exploring real, financial and digital assets to build and preserve value over time.',
     'about.card1.title': 'Global Perspective',
     'about.card1.body':  'Navigating opportunities across international markets with strategic precision.',
     'about.card2.title': 'Private Capital',
@@ -45,7 +45,7 @@ const i18n = {
 
     'about.tag':        'Sobre',
     'about.heading':    'Sobre a Polaris Global Strategies',
-    'about.body':       'A Polaris Global Strategies Ltd é uma empresa de investimentos privados constituída nas Ilhas Virgens Britânicas. Focamos em identificar e capitalizar oportunidades estratégicas nos mercados globais.',
+    'about.body':       'A Polaris Global Strategies é uma empresa privada de investimentos focada em identificar e capitalizar oportunidades estratégicas nos mercados globais. Atuamos com uma abordagem diversificada, explorando ativos reais, financeiros e virtuais para construir e preservar valor ao longo do tempo.',
     'about.card1.title': 'Perspectiva Global',
     'about.card1.body':  'Navegando oportunidades nos mercados internacionais com precisão estratégica.',
     'about.card2.title': 'Capital Privado',
