@@ -1,6 +1,6 @@
 # Polaris Global Strategies — Manual Técnico e Funcional
 
-**Versão:** 1.1  
+**Versão:** 1.2  
 **Data:** Junho 2026  
 **Domínio:** https://polarisglobal.me
 
@@ -8,7 +8,7 @@
 
 ## 1. Visão Geral
 
-O site da Polaris Global Strategies Ltd é uma presença online institucional para a empresa de investimentos privados constituída nas Ilhas Virgens Britânicas (BVI). É um site estático, bilíngue (EN/PT), composto por uma página principal e uma seção de pesquisa de investimentos com relatórios individuais em HTML.
+O site da Polaris Global Strategies Ltd é uma presença online institucional para a empresa de investimentos privados. É um site estático, bilíngue (EN/PT), composto por uma página principal e uma seção de pesquisa de investimentos com relatórios individuais em HTML.
 
 ---
 
