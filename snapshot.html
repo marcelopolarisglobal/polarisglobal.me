@@ -293,14 +293,12 @@
   <script src="js/main.js"></script>
   <script>
     const ASSETS = [
-      { ticker: "SPY",  symbol: "SPY",     name: "SPDR S&P 500 ETF" },
-      { ticker: "QQQ",  symbol: "QQQ",     name: "Invesco Nasdaq-100 ETF" },
-      { ticker: "EWZ",  symbol: "EWZ",     name: "iShares MSCI Brazil ETF" },
-      { ticker: "BTC",  symbol: "BTC-USD", name: "Bitcoin / USD" },
-      { ticker: "GOLD", symbol: "GC=F",    name: "Gold Futures (GC=F)" },
+      { ticker: "SPY",  name: "SPDR S&P 500 ETF" },
+      { ticker: "QQQ",  name: "Invesco Nasdaq-100 ETF" },
+      { ticker: "EWZ",  name: "iShares MSCI Brazil ETF" },
+      { ticker: "BTC",  name: "Bitcoin / USD" },
+      { ticker: "GOLD", name: "Gold Futures (GC=F)" },
     ];
-
-    const TIMEOUT_MS = 8000;
 
     let _lastLoadTime = null;
     let _lastErrors   = [];
@@ -318,94 +316,17 @@
       }
 
       const notice = document.getElementById('notice');
-      if (_noticeType === 'file') {
-        notice.innerHTML = t('snapshot.notice.file');
-      } else if (_noticeType === 'err' && _lastErrors.length) {
+      if (_noticeType === 'err' && _lastErrors.length) {
         notice.innerHTML = t('snapshot.notice.err').replace('{t}', _lastErrors.join(', '));
+      } else if (_noticeType === 'json') {
+        notice.innerHTML = t('snapshot.notice.json');
       }
     }
 
     function setNotice(type) {
       _noticeType = type;
-      const el = document.getElementById('notice');
-      el.className = 'snapshot-notice ' + (type || '');
+      document.getElementById('notice').className = 'snapshot-notice ' + (type ? 'warn' : '');
       refreshDynamic();
-    }
-
-    function yahooUrl(sym) {
-      return `https://query2.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}` +
-             `?interval=1d&range=5y&events=history&corsDomain=finance.yahoo.com`;
-    }
-    function yahooUrl1(sym) {
-      return `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}` +
-             `?interval=1d&range=5y&events=history&corsDomain=finance.yahoo.com`;
-    }
-
-    function strategies(sym) {
-      const d  = yahooUrl(sym);
-      const d1 = yahooUrl1(sym);
-      return [
-        { url: d,  unwrap: r => r },
-        { url: d1, unwrap: r => r },
-        { url: `https://corsproxy.io/?${encodeURIComponent(d)}`,                          unwrap: r => r },
-        { url: `https://api.allorigins.win/get?url=${encodeURIComponent(d)}`,             unwrap: r => JSON.parse(r.contents) },
-      ];
-    }
-
-    async function fetchWithTimeout(url, ms) {
-      const ctrl = new AbortController();
-      const tid  = setTimeout(() => ctrl.abort(), ms);
-      try {
-        const res = await fetch(url, { signal: ctrl.signal, headers: { Accept: 'application/json' } });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return await res.json();
-      } finally {
-        clearTimeout(tid);
-      }
-    }
-
-    async function fetchAsset(asset) {
-      const list = strategies(asset.symbol);
-      let lastErr;
-      for (let i = 0; i < list.length; i++) {
-        const { url, unwrap } = list[i];
-        try {
-          const raw    = await fetchWithTimeout(url, TIMEOUT_MS);
-          const json   = unwrap(raw);
-          const result = json?.chart?.result?.[0];
-          if (!result) throw new Error('Empty payload');
-
-          const closes     = result.indicators.adjclose?.[0]?.adjclose ?? result.indicators.quote[0].close;
-          const timestamps = result.timestamp;
-
-          let last = closes.length - 1;
-          while (last > 0 && closes[last] == null) last--;
-
-          const price = closes[last];
-
-          let prevIdx = last - 1;
-          while (prevIdx > 0 && closes[prevIdx] == null) prevIdx--;
-          const d24 = (price / closes[prevIdx] - 1) * 100;
-
-          const thisYear = new Date().getFullYear();
-          let ytdIdx = 0;
-          for (let j = last; j >= 0; j--) {
-            if (new Date(timestamps[j] * 1000).getFullYear() < thisYear) { ytdIdx = j; break; }
-          }
-          const ytd = (price / closes[ytdIdx] - 1) * 100;
-
-          let first = 0;
-          while (first < last && closes[first] == null) first++;
-          const y5 = (price / closes[first] - 1) * 100;
-
-          console.info(`[${asset.ticker}] OK via strategy ${i + 1}`);
-          return { price, d24, ytd, y5 };
-        } catch (e) {
-          lastErr = e;
-          console.warn(`[${asset.ticker}] strategy ${i + 1} failed: ${e.message}`);
-        }
-      }
-      throw lastErr;
     }
 
     const fmtPrice = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -444,37 +365,42 @@
       btn.classList.add('is-loading');
       document.getElementById('stamp').textContent = t('snapshot.loading');
       document.getElementById('notice').className = 'snapshot-notice';
-      _noticeType  = null;
-      _lastErrors  = [];
+      _noticeType = null;
+      _lastErrors = [];
       buildRows();
 
-      if (location.protocol === 'file:') {
-        setNotice('info');
-      }
+      try {
+        const res = await fetch('data/snapshot.json');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
 
-      for (const asset of ASSETS) {
-        try {
-          paintRow(asset.ticker, await fetchAsset(asset));
-        } catch (e) {
-          paintRow(asset.ticker, { error: true });
-          _lastErrors.push(asset.ticker);
-          console.error(`[${asset.ticker}] all strategies failed:`, e.message);
+        for (const asset of ASSETS) {
+          const d = data.assets[asset.ticker];
+          if (!d || d.error) {
+            paintRow(asset.ticker, { error: true });
+            _lastErrors.push(asset.ticker);
+          } else {
+            paintRow(asset.ticker, d);
+          }
         }
-        await new Promise(r => setTimeout(r, 150));
-      }
 
-      if (_lastErrors.length) {
-        setNotice('err');
-      } else if (location.protocol !== 'file:') {
-        document.getElementById('notice').className = 'snapshot-notice';
-        _noticeType = null;
-      }
+        if (_lastErrors.length) setNotice('err');
 
-      const lang = getLang();
-      const now = new Date().toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US',
-        { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-      _lastLoadTime = now;
-      document.getElementById('stamp').innerHTML = t('snapshot.updated') + '<br><b>' + now + '</b>';
+        const lang    = getLang();
+        const updated = new Date(data.updated);
+        _lastLoadTime = updated.toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US', {
+          day: '2-digit', month: '2-digit', year: 'numeric',
+          hour: '2-digit', minute: '2-digit',
+          timeZone: 'UTC', timeZoneName: 'short',
+        });
+        document.getElementById('stamp').innerHTML =
+          t('snapshot.updated') + '<br><b>' + _lastLoadTime + '</b>';
+
+      } catch (e) {
+        ASSETS.forEach(a => paintRow(a.ticker, { error: true }));
+        setNotice('json');
+        console.error('Failed to load snapshot.json:', e);
+      }
 
       refreshDynamic();
       btn.classList.remove('is-loading');
@@ -482,13 +408,10 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       refreshDynamic();
-
       document.getElementById('refresh').addEventListener('click', loadAll);
-
       document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.addEventListener('click', () => setTimeout(refreshDynamic, 0));
       });
-
       loadAll();
     });
   </script>
