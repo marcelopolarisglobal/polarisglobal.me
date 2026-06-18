@@ -4,6 +4,7 @@ const i18n = {
   en: {
     'nav.about':      'About',
     'nav.disclaimer': 'Disclaimer',
+    'nav.snapshot':   'Snapshot',
     'nav.research':   'Research',
     'nav.crypto':     'Crypto',
 
@@ -26,6 +27,20 @@ const i18n = {
 
     'footer.copy': '© 2026 Polaris Global Strategies Ltd. All rights reserved.',
 
+    'snapshot.eyebrow':    'Market Snapshot',
+    'snapshot.heading':    'Market Snapshot',
+    'snapshot.col.ticker': 'Ticker',
+    'snapshot.col.price':  'Price (USD)',
+    'snapshot.col.24h':    '% 24h',
+    'snapshot.col.ytd':    '% YTD',
+    'snapshot.col.5y':     '% 5Y',
+    'snapshot.refresh':    'Refresh',
+    'snapshot.loading':    'loading…',
+    'snapshot.updated':    'updated',
+    'snapshot.foot':       'Source: Yahoo Finance (public, no key). Prices in USD &middot; <b>% 24h</b> current vs. previous close &middot; <b>% YTD</b> vs. last close of previous year &middot; <b>% 5Y</b> cumulative return &middot; GOLD = GC=F (continuous gold futures). Data may be delayed. Not investment advice.',
+    'snapshot.notice.file': '⚠️ File opened as <code>file://</code> — CORS active. For live data without proxy, serve via <b>http://localhost</b>: <code>python3 -m http.server 8080</code>. Trying alternative proxies…',
+    'snapshot.notice.err':  'Could not load: <b>{t}</b>. All sources (direct + 2 proxies) failed. Recommendation: open via <code>python3 -m http.server 8080</code>.',
+
     'research.heading': 'Investment Research',
     'research.sub':     'Each Polaris Global Strategies report is an institutional-grade equity research study on a single asset — B3-listed equities, U.S. stocks and ETFs, and other instruments. Data is sourced from primary sources (SEC filings, earnings calls, and leading financial press) and verified live for each edition, always covering the four most recently reported quarters in continuous sequence. Each document includes earnings analysis, competitive moat assessment, risks, bull and bear scenarios, valuation context, and a directional verdict (🟢 BUY / 🟡 NEUTRAL / 🔴 SELL). Conclusions describe the perceived risk/return profile — they never constitute buy or sell recommendations.',
     'research.sub2':    'Disclaimer: Content produced exclusively for internal use by Polaris Global Strategies Ltd. Does not constitute an investment recommendation for third parties, individuals, or legal entities. PGS does not provide asset management, advisory, or consulting services, has no clients, and offers no products to third parties. Investments in variable income involve risks, including total loss of capital.',
@@ -35,6 +50,7 @@ const i18n = {
   pt: {
     'nav.about':      'Sobre',
     'nav.disclaimer': 'Aviso Legal',
+    'nav.snapshot':   'Snapshot',
     'nav.research':   'Pesquisa',
     'nav.crypto':     'Cripto',
 
@@ -56,6 +72,20 @@ const i18n = {
     'disclaimer.body':    'A Polaris Global Strategies Ltd é uma empresa de investimentos privados. As informações contidas neste site são fornecidas exclusivamente para fins informativos e não constituem aconselhamento de investimento, solicitação ou oferta de compra ou venda de quaisquer valores mobiliários, instrumentos financeiros ou outros ativos. A Polaris Global Strategies Ltd não presta serviços de consultoria de investimentos ou gestão de carteiras ao público em geral. Quaisquer atividades de investimento descritas aqui são conduzidas exclusivamente por conta da empresa e de seus sócios. Desempenho passado não é indicativo de resultados futuros. Todo investimento envolve risco, incluindo a possível perda do capital principal. As informações neste site não são direcionadas a qualquer pessoa em jurisdição onde tal distribuição ou uso seja contrário às leis ou regulamentos locais. A Polaris Global Strategies Ltd não faz qualquer declaração ou garantia, expressa ou implícita, quanto à precisão, integralidade ou imparcialidade das informações aqui contidas.',
 
     'footer.copy': '© 2026 Polaris Global Strategies Ltd. Todos os direitos reservados.',
+
+    'snapshot.eyebrow':    'Panorama do Mercado',
+    'snapshot.heading':    'Panorama do Mercado',
+    'snapshot.col.ticker': 'Ativo',
+    'snapshot.col.price':  'Preço (USD)',
+    'snapshot.col.24h':    '% 24h',
+    'snapshot.col.ytd':    '% no Ano',
+    'snapshot.col.5y':     '% 5 Anos',
+    'snapshot.refresh':    'Atualizar',
+    'snapshot.loading':    'carregando…',
+    'snapshot.updated':    'atualizado',
+    'snapshot.foot':       'Fonte: Yahoo Finance (público, sem chave). Preços em USD &middot; <b>% 24h</b> fechamento atual vs. anterior &middot; <b>% YTD</b> vs. último fechamento do ano anterior &middot; <b>% 5 Anos</b> retorno acumulado &middot; GOLD = GC=F (ouro futuro contínuo). Dados podem ter atraso. Não é recomendação de investimento.',
+    'snapshot.notice.file': '⚠️ Arquivo aberto em <code>file://</code> — CORS ativo. Para dados ao vivo sem proxy, sirva via <b>http://localhost</b>: <code>python3 -m http.server 8080</code> na pasta do arquivo. Tentando proxies alternativos…',
+    'snapshot.notice.err':  'Não foi possível carregar: <b>{t}</b>. Todas as fontes (direto + 2 proxies) falharam. Recomendação: use <code>python3 -m http.server 8080</code> para abrir via localhost.',
 
     'research.heading': 'Pesquisa de Investimentos',
     'research.sub':     'Cada relatório da Polaris Global Strategies é um estudo de equity research de nível institucional sobre um único ativo — ações da B3, ações e ETFs norte-americanos e outros instrumentos. Os dados vêm de fontes primárias (registros na SEC, teleconferências de resultados e imprensa financeira de primeira linha) e são reapurados ao vivo a cada edição, cobrindo sempre os quatro trimestres reportados mais recentes em sequência contínua. Cada documento reúne análise de resultados, avaliação de fosso competitivo, riscos, cenários bull e bear, contexto de valuation e um veredito direcional (🟢 COMPRA / 🟡 NEUTRO / 🔴 VENDA). As conclusões descrevem a relação risco/retorno percebida — nunca orientam decisões de compra ou venda.',

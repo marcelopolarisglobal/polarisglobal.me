@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snapshot · Polaris Global Strategies Ltd</title>
+  <meta name="description" content="Live market snapshot — prices and returns for key global assets." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .nav-links a[aria-current="page"] { color: var(--text); }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
+    }
+
+    .snapshot-main {
+      padding-top: calc(var(--nav-h) + 5rem);
+      padding-bottom: 7rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .snapshot-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 2.5rem;
+    }
+
+    .snapshot-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .snapshot-stamp {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+
+    .snapshot-stamp b { color: var(--text); font-weight: 500; }
+
+    .snapshot-refresh {
+      appearance: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .snapshot-refresh:hover {
+      color: var(--blue-light);
+      border-color: var(--border-hover);
+      background: var(--blue-dim);
+    }
+
+    .snapshot-refresh:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+    .snapshot-refresh svg { width: 15px; height: 15px; }
+
+    .snapshot-refresh.is-loading svg { animation: snap-spin 0.9s linear infinite; }
+
+    @keyframes snap-spin { to { transform: rotate(360deg); } }
+
+    .snapshot-notice {
+      display: none;
+      padding: 0.625rem 1.5rem;
+      font-size: 0.75rem;
+      line-height: 1.6;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .snapshot-notice code {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.6875rem;
+      background: rgba(255,255,255,0.06);
+      border-radius: 3px;
+      padding: 0.1em 0.35em;
+    }
+
+    .snapshot-notice.warn {
+      display: block;
+      background: rgba(217, 106, 80, 0.10);
+      color: #D96A50;
+    }
+
+    .snapshot-notice.info {
+      display: block;
+      background: var(--blue-dim);
+      color: var(--blue-light);
+    }
+
+    .snapshot-scroll { overflow-x: auto; }
+
+    table.snapshot-table {
+      width: 100%;
+      min-width: 520px;
+      border-collapse: collapse;
+    }
+
+    .snapshot-table thead th {
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: right;
+      padding: 0.75rem 1.5rem 0.625rem;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .snapshot-table thead th:first-child { text-align: left; }
+
+    .snapshot-table tbody td {
+      padding: 0.875rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      text-align: right;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.875rem;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .snapshot-table tbody tr:last-child td { border-bottom: none; }
+
+    .snapshot-table tbody tr { transition: background 0.15s; }
+
+    .snapshot-table tbody tr:hover { background: rgba(255,255,255,0.025); }
+
+    .cell-ticker { text-align: left !important; }
+
+    .ticker-sym {
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--text);
+    }
+
+    .ticker-name {
+      display: block;
+      font-family: var(--font);
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .cell-price { color: var(--text); font-weight: 500; }
+
+    .delta { font-weight: 500; }
+    .delta.up   { color: #4FB286; }
+    .delta.down { color: #D96A50; }
+    .delta.flat { color: var(--text-muted); }
+
+    .skeleton {
+      display: inline-block;
+      height: 11px; width: 52px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--border) 25%, rgba(255,255,255,0.06) 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: snap-shimmer 1.3s infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes snap-shimmer { to { background-position: -200% 0; } }
+
+    .snapshot-foot {
+      padding: 0.875rem 1.5rem 1rem;
+      font-size: 0.6875rem;
+      color: var(--text-faint);
+      line-height: 1.6;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .snapshot-refresh.is-loading svg, .skeleton { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ──────────────────────────────────────────── -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Polaris Global Strategies">
+        <span class="logo-mark" aria-hidden="true">✦</span>
+        <span class="logo-wordmark">POLARIS GLOBAL</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Site navigation">
+        <a href="index.html#about"      data-i18n="nav.about">About</a>
+        <a href="index.html#disclaimer" data-i18n="nav.disclaimer">Disclaimer</a>
+        <a href="snapshot.html" aria-current="page" data-i18n="nav.snapshot">Snapshot</a>
+        <a href="research.html" data-i18n="nav.research">Research</a>
+        <a href="https://polarisglobal.me/crypto/" data-i18n="nav.crypto">Crypto</a>
+      </nav>
+
+      <div class="lang-switch" role="group" aria-label="Language selection">
+        <button class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+        <span class="lang-dot" aria-hidden="true">·</span>
+        <button class="lang-btn" data-lang="pt" aria-pressed="false">PT</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Snapshot ────────────────────────────────────────────── -->
+  <main class="snapshot-main">
+    <div class="container">
+      <div class="section-tag">
+        <span data-i18n="snapshot.eyebrow">Market Snapshot</span>
+      </div>
+      <div class="two-col">
+        <div class="col-left">
+          <h1 class="section-heading" data-i18n="snapshot.heading">Market Snapshot</h1>
+        </div>
+        <div class="col-right">
+
+          <div class="snapshot-card">
+            <div class="snapshot-card-head">
+              <div class="snapshot-stamp" id="stamp">—</div>
+              <button class="snapshot-refresh" id="refresh">
+                <span class="sr-only" data-i18n="snapshot.refresh">Refresh</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="snapshot-notice" id="notice"></div>
+
+            <div class="snapshot-scroll">
+              <table class="snapshot-table">
+                <thead>
+                  <tr>
+                    <th class="cell-ticker" data-i18n="snapshot.col.ticker">Ticker</th>
+                    <th data-i18n="snapshot.col.price">Price (USD)</th>
+                    <th data-i18n="snapshot.col.24h">% 24h</th>
+                    <th data-i18n="snapshot.col.ytd">% YTD</th>
+                    <th data-i18n="snapshot.col.5y">% 5Y</th>
+                  </tr>
+                </thead>
+                <tbody id="rows"></tbody>
+              </table>
+            </div>
+
+            <p class="snapshot-foot" id="snap-foot"></p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Footer ──────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">
+          <span class="logo-mark" aria-hidden="true">✦</span>
+          <span class="logo-wordmark">POLARIS GLOBAL</span>
+        </div>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="index.html#about"      data-i18n="nav.about">About</a>
+          <a href="index.html#disclaimer" data-i18n="nav.disclaimer">Disclaimer</a>
+          <a href="snapshot.html"         data-i18n="nav.snapshot">Snapshot</a>
+          <a href="research.html"         data-i18n="nav.research">Research</a>
+          <a href="https://polarisglobal.me/crypto/" data-i18n="nav.crypto">Crypto</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p data-i18n="footer.copy">© 2026 Polaris Global Strategies Ltd. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    const ASSETS = [
+      { ticker: "SPY",  symbol: "SPY",     name: "SPDR S&P 500 ETF" },
+      { ticker: "QQQ",  symbol: "QQQ",     name: "Invesco Nasdaq-100 ETF" },
+      { ticker: "EWZ",  symbol: "EWZ",     name: "iShares MSCI Brazil ETF" },
+      { ticker: "BTC",  symbol: "BTC-USD", name: "Bitcoin / USD" },
+      { ticker: "GOLD", symbol: "GC=F",    name: "Gold Futures (GC=F)" },
+    ];
+
+    const TIMEOUT_MS = 8000;
+
+    let _lastLoadTime = null;
+    let _lastErrors   = [];
+    let _noticeType   = null;
+
+    function getLang() { return localStorage.getItem('polaris-lang') || 'en'; }
+    function t(key)    { return (i18n[getLang()] || {})[key] || key; }
+
+    function refreshDynamic() {
+      document.getElementById('snap-foot').innerHTML = t('snapshot.foot');
+
+      if (_lastLoadTime) {
+        document.getElementById('stamp').innerHTML =
+          t('snapshot.updated') + '<br><b>' + _lastLoadTime + '</b>';
+      }
+
+      const notice = document.getElementById('notice');
+      if (_noticeType === 'file') {
+        notice.innerHTML = t('snapshot.notice.file');
+      } else if (_noticeType === 'err' && _lastErrors.length) {
+        notice.innerHTML = t('snapshot.notice.err').replace('{t}', _lastErrors.join(', '));
+      }
+    }
+
+    function setNotice(type) {
+      _noticeType = type;
+      const el = document.getElementById('notice');
+      el.className = 'snapshot-notice ' + (type || '');
+      refreshDynamic();
+    }
+
+    function yahooUrl(sym) {
+      return `https://query2.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}` +
+             `?interval=1d&range=5y&events=history&corsDomain=finance.yahoo.com`;
+    }
+    function yahooUrl1(sym) {
+      return `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}` +
+             `?interval=1d&range=5y&events=history&corsDomain=finance.yahoo.com`;
+    }
+
+    function strategies(sym) {
+      const d  = yahooUrl(sym);
+      const d1 = yahooUrl1(sym);
+      return [
+        { url: d,  unwrap: r => r },
+        { url: d1, unwrap: r => r },
+        { url: `https://corsproxy.io/?${encodeURIComponent(d)}`,                          unwrap: r => r },
+        { url: `https://api.allorigins.win/get?url=${encodeURIComponent(d)}`,             unwrap: r => JSON.parse(r.contents) },
+      ];
+    }
+
+    async function fetchWithTimeout(url, ms) {
+      const ctrl = new AbortController();
+      const tid  = setTimeout(() => ctrl.abort(), ms);
+      try {
+        const res = await fetch(url, { signal: ctrl.signal, headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+      } finally {
+        clearTimeout(tid);
+      }
+    }
+
+    async function fetchAsset(asset) {
+      const list = strategies(asset.symbol);
+      let lastErr;
+      for (let i = 0; i < list.length; i++) {
+        const { url, unwrap } = list[i];
+        try {
+          const raw    = await fetchWithTimeout(url, TIMEOUT_MS);
+          const json   = unwrap(raw);
+          const result = json?.chart?.result?.[0];
+          if (!result) throw new Error('Empty payload');
+
+          const closes     = result.indicators.adjclose?.[0]?.adjclose ?? result.indicators.quote[0].close;
+          const timestamps = result.timestamp;
+
+          let last = closes.length - 1;
+          while (last > 0 && closes[last] == null) last--;
+
+          const price = closes[last];
+
+          let prevIdx = last - 1;
+          while (prevIdx > 0 && closes[prevIdx] == null) prevIdx--;
+          const d24 = (price / closes[prevIdx] - 1) * 100;
+
+          const thisYear = new Date().getFullYear();
+          let ytdIdx = 0;
+          for (let j = last; j >= 0; j--) {
+            if (new Date(timestamps[j] * 1000).getFullYear() < thisYear) { ytdIdx = j; break; }
+          }
+          const ytd = (price / closes[ytdIdx] - 1) * 100;
+
+          let first = 0;
+          while (first < last && closes[first] == null) first++;
+          const y5 = (price / closes[first] - 1) * 100;
+
+          console.info(`[${asset.ticker}] OK via strategy ${i + 1}`);
+          return { price, d24, ytd, y5 };
+        } catch (e) {
+          lastErr = e;
+          console.warn(`[${asset.ticker}] strategy ${i + 1} failed: ${e.message}`);
+        }
+      }
+      throw lastErr;
+    }
+
+    const fmtPrice = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmtPct   = n => (n > 0 ? '+' : '') + n.toFixed(2) + '%';
+    const dcls     = n => n > 0.0001 ? 'up' : n < -0.0001 ? 'down' : 'flat';
+
+    function buildRows() {
+      document.getElementById('rows').innerHTML = ASSETS.map(a => `
+        <tr data-ticker="${a.ticker}">
+          <td class="cell-ticker">
+            <span class="ticker-sym">${a.ticker}</span>
+            <span class="ticker-name">${a.name}</span>
+          </td>
+          <td class="cell-price"><span class="skeleton"></span></td>
+          <td class="cell-24h"><span class="skeleton"></span></td>
+          <td class="cell-ytd"><span class="skeleton"></span></td>
+          <td class="cell-5y"><span class="skeleton"></span></td>
+        </tr>`).join('');
+    }
+
+    function paintRow(ticker, d) {
+      const tr = document.querySelector(`tr[data-ticker="${ticker}"]`);
+      if (!tr) return;
+      if (d.error) {
+        ['cell-price','cell-24h','cell-ytd','cell-5y'].forEach(c =>
+          tr.querySelector('.' + c).innerHTML = `<span class="delta flat">—</span>`);
+        return;
+      }
+      tr.querySelector('.cell-price').textContent = fmtPrice(d.price);
+      [['cell-24h', d.d24], ['cell-ytd', d.ytd], ['cell-5y', d.y5]].forEach(([c, v]) =>
+        tr.querySelector('.' + c).innerHTML = `<span class="delta ${dcls(v)}">${fmtPct(v)}</span>`);
+    }
+
+    async function loadAll() {
+      const btn = document.getElementById('refresh');
+      btn.classList.add('is-loading');
+      document.getElementById('stamp').textContent = t('snapshot.loading');
+      document.getElementById('notice').className = 'snapshot-notice';
+      _noticeType  = null;
+      _lastErrors  = [];
+      buildRows();
+
+      if (location.protocol === 'file:') {
+        setNotice('info');
+      }
+
+      for (const asset of ASSETS) {
+        try {
+          paintRow(asset.ticker, await fetchAsset(asset));
+        } catch (e) {
+          paintRow(asset.ticker, { error: true });
+          _lastErrors.push(asset.ticker);
+          console.error(`[${asset.ticker}] all strategies failed:`, e.message);
+        }
+        await new Promise(r => setTimeout(r, 150));
+      }
+
+      if (_lastErrors.length) {
+        setNotice('err');
+      } else if (location.protocol !== 'file:') {
+        document.getElementById('notice').className = 'snapshot-notice';
+        _noticeType = null;
+      }
+
+      const lang = getLang();
+      const now = new Date().toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US',
+        { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      _lastLoadTime = now;
+      document.getElementById('stamp').innerHTML = t('snapshot.updated') + '<br><b>' + now + '</b>';
+
+      refreshDynamic();
+      btn.classList.remove('is-loading');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      refreshDynamic();
+
+      document.getElementById('refresh').addEventListener('click', loadAll);
+
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => setTimeout(refreshDynamic, 0));
+      });
+
+      loadAll();
+    });
+  </script>
+</body>
+</html>
