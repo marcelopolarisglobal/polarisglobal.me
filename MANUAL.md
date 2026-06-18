@@ -1,6 +1,6 @@
 # Polaris Global Strategies — Manual Técnico e Funcional
 
-**Versão:** 1.4  
+**Versão:** 1.5  
 **Data:** Junho 2026  
 **Domínio:** https://polarisglobal.me
 
@@ -21,7 +21,7 @@ O site é composto por três camadas de páginas:
 | Página | Arquivo | Descrição |
 |---|---|---|
 | Home | `index.html` | Página principal com Hero, About e Disclaimer |
-| Snapshot | `snapshot.html` | Cotações e retornos ao vivo de ativos globais |
+| Snapshot | `snapshot.html` | Cotações e retornos do último fechamento de mercado |
 | Research | `research.html` | Listagem de todos os relatórios de investimento |
 | Relatório | `reports/PGS-XXX-YYYYMM.html` | Relatório individual de tese de investimento |
 
@@ -85,27 +85,35 @@ Exemplos: `PGS-BRKB-202606.html`, `PGS-GOOGL-202606.html`, `PGS-TSLA-202606.html
 
 ### 3.1 Stack
 
-O site é **estático puro** — não utiliza servidor, banco de dados, framework ou processo de build.
+O site é **estático puro** — não utiliza servidor de aplicação, banco de dados ou framework. A única automação de backend é o pipeline de dados do Snapshot, executado via GitHub Actions.
 
 | Camada | Tecnologia |
 |---|---|
 | Estrutura | HTML5 semântico |
 | Estilo | CSS3 com Custom Properties (variáveis nativas) |
 | Comportamento | JavaScript ES6+ vanilla (sem dependências) |
-| Fontes | Google Fonts (Outfit + Inter) via CDN |
+| Fontes | Google Fonts (Outfit + Inter + IBM Plex Mono) via CDN |
+| Dados de mercado | Python + `yfinance`, executado via GitHub Actions |
 
 ### 3.2 Estrutura de Arquivos
 
 ```
 polarisglobal.me/
 ├── index.html             ← página principal
-├── snapshot.html          ← cotações ao vivo (Yahoo Finance)
+├── snapshot.html          ← panorama de mercado (lê data/snapshot.json)
 ├── research.html          ← listagem de relatórios
 ├── CNAME                  ← domínio customizado para GitHub Pages
 ├── css/
 │   └── styles.css         ← design system (tema escuro azul)
 ├── js/
 │   └── main.js            ← motor de i18n e comportamentos
+├── data/
+│   └── snapshot.json      ← dados de mercado gerados pelo GitHub Actions
+├── scripts/
+│   └── update-snapshot.py ← script Python que busca e grava snapshot.json
+├── .github/
+│   └── workflows/
+│       └── market-data.yml ← workflow: roda o script seg–sex às 22:30 UTC
 └── reports/               ← relatórios HTML individuais
     ├── PGS-BRKB-202606.html
     ├── PGS-EQTL3-202606.html
@@ -214,20 +222,36 @@ git push
 
 ### 5.2 Página Snapshot
 
-A página `snapshot.html` busca dados ao vivo do Yahoo Finance em cascata por 4 fontes (query2 direto → query1 direto → corsproxy.io → allorigins.win). Não requer chave de API.
+A página `snapshot.html` exibe preços e retornos (% 24h, % YTD, % 5 Anos) do último fechamento de mercado. Os dados são buscados **no servidor** via GitHub Actions e armazenados em `data/snapshot.json`. O browser apenas lê esse arquivo estático — sem chamadas externas, sem restrição de CORS.
 
 **Ativos monitorados:** SPY · QQQ · EWZ · BTC-USD · GC=F (GOLD)
 
-**Para adicionar ou remover um ativo**, editar o array `ASSETS` no `<script>` inline de `snapshot.html`:
+**Frequência de atualização:** segunda a sexta, automaticamente às 22:30 UTC (após fechamento da NYSE). O timestamp da última atualização é exibido na própria página.
+
+**Atualização manual (fora do horário agendado):**
+Acesse `github.com/marcelopolarisglobal/polarisglobal.me → Actions → Update Market Snapshot → Run workflow`.
+
+**Para adicionar ou remover um ativo:**
+
+1. Editar o array `ASSETS` em `scripts/update-snapshot.py`:
+
+```python
+ASSETS = [
+    {"ticker": "SPY",  "symbol": "SPY",     "name": "SPDR S&P 500 ETF"},
+    # adicionar ou remover entradas aqui
+]
+```
+
+2. Editar o array `ASSETS` no `<script>` inline de `snapshot.html` (usado apenas para montar o esqueleto visual da tabela):
 
 ```javascript
 const ASSETS = [
-  { ticker: "SPY",  symbol: "SPY",     name: "SPDR S&P 500 ETF" },
-  // ...
+  { ticker: "SPY", name: "SPDR S&P 500 ETF" },
+  // mesmo conjunto do script Python
 ];
 ```
 
-**Nota CORS:** ao abrir `snapshot.html` diretamente como `file://`, o navegador bloqueia as requisições diretas ao Yahoo. A página exibe um aviso e tenta os proxies alternativos automaticamente. Para dados sem proxy, servir via `python3 -m http.server 8080`.
+3. Commitar, fazer push e acionar o workflow manualmente para gerar o novo `snapshot.json`.
 
 ### 5.4 Adicionar um novo relatório
 
