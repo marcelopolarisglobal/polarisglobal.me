@@ -1,6 +1,6 @@
 # Polaris Global Strategies — Manual Técnico e Funcional
 
-**Versão:** 1.3  
+**Versão:** 1.4  
 **Data:** Junho 2026  
 **Domínio:** https://polarisglobal.me
 
@@ -21,10 +21,11 @@ O site é composto por três camadas de páginas:
 | Página | Arquivo | Descrição |
 |---|---|---|
 | Home | `index.html` | Página principal com Hero, About e Disclaimer |
+| Snapshot | `snapshot.html` | Cotações e retornos ao vivo de ativos globais |
 | Research | `research.html` | Listagem de todos os relatórios de investimento |
 | Relatório | `reports/PGS-XXX-YYYYMM.html` | Relatório individual de tese de investimento |
 
-A navegação superior é fixa (*sticky*) em todas as páginas e inclui links para About, Disclaimer, Research e Crypto. Links de About e Disclaimer na `research.html` redirecionam para `index.html#about` e `index.html#disclaimer`. O link Crypto aponta para `/crypto/` (página externa ao site estático).
+A navegação superior é fixa (*sticky*) em todas as páginas e inclui links para About, Disclaimer, Snapshot, Research e Crypto — nessa ordem. Links de About e Disclaimer nas páginas internas redirecionam para `index.html#about` e `index.html#disclaimer`. O link Crypto aponta para `/crypto/` (página externa ao site estático).
 
 Cada relatório possui uma barra de navegação de volta ao site no topo (`✦ POLARIS GLOBAL / Research / PGS-XXX-YYYYMM`), que desaparece ao imprimir.
 
@@ -98,6 +99,7 @@ O site é **estático puro** — não utiliza servidor, banco de dados, framewor
 ```
 polarisglobal.me/
 ├── index.html             ← página principal
+├── snapshot.html          ← cotações ao vivo (Yahoo Finance)
 ├── research.html          ← listagem de relatórios
 ├── CNAME                  ← domínio customizado para GitHub Pages
 ├── css/
@@ -131,6 +133,7 @@ polarisglobal.me/
 **Tipografia:**
 - `Outfit` (pesos 600–800) — títulos e headings
 - `Inter` (pesos 300–600) — corpo de texto e interface
+- `IBM Plex Mono` (pesos 400–600) — dados numéricos em `snapshot.html`
 
 Os relatórios individuais possuem tema claro próprio com fontes e variáveis CSS independentes (Playfair Display + DM Sans). Não dependem de `css/styles.css`.
 
@@ -148,10 +151,11 @@ O arquivo `js/main.js` contém o objeto `i18n` com traduções EN e PT indexadas
 
 | Namespace | Descrição |
 |---|---|
-| `nav.*` | Links de navegação (about, disclaimer, research, crypto) |
+| `nav.*` | Links de navegação (about, disclaimer, snapshot, research, crypto) |
 | `hero.*` | Textos da seção Hero |
 | `about.*` | Textos e cards da seção About |
 | `disclaimer.*` | Textos da seção Disclaimer |
+| `snapshot.*` | Textos de `snapshot.html` (heading, colunas, stamp, rodapé, avisos) |
 | `research.*` | Textos da página Research (heading, sub, sub2, cta) |
 | `footer.*` | Copyright do rodapé |
 
@@ -208,7 +212,24 @@ git commit -m "descrição da mudança"
 git push
 ```
 
-### 5.2 Adicionar um novo relatório
+### 5.2 Página Snapshot
+
+A página `snapshot.html` busca dados ao vivo do Yahoo Finance em cascata por 4 fontes (query2 direto → query1 direto → corsproxy.io → allorigins.win). Não requer chave de API.
+
+**Ativos monitorados:** SPY · QQQ · EWZ · BTC-USD · GC=F (GOLD)
+
+**Para adicionar ou remover um ativo**, editar o array `ASSETS` no `<script>` inline de `snapshot.html`:
+
+```javascript
+const ASSETS = [
+  { ticker: "SPY",  symbol: "SPY",     name: "SPDR S&P 500 ETF" },
+  // ...
+];
+```
+
+**Nota CORS:** ao abrir `snapshot.html` diretamente como `file://`, o navegador bloqueia as requisições diretas ao Yahoo. A página exibe um aviso e tenta os proxies alternativos automaticamente. Para dados sem proxy, servir via `python3 -m http.server 8080`.
+
+### 5.4 Adicionar um novo relatório
 
 1. Colocar o arquivo HTML gerado em `reports/` seguindo a convenção `PGS-{TICKER}-{YYYYMM}.html`
 
@@ -266,7 +287,7 @@ git commit -m "Add PGS-TICKER-YYYYMM report"
 git push
 ```
 
-### 5.3 Remover um relatório
+### 5.5 Remover um relatório
 
 1. Deletar o arquivo em `reports/`
 2. Remover o `<article class="report-card">` correspondente em `research.html`
