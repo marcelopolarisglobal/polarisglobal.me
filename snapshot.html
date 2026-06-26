@@ -8,7 +8,7 @@
   <meta name="robots" content="noindex, nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
   <style>
     .nav-links a[aria-current="page"] { color: var(--text); }
@@ -42,7 +42,7 @@
     }
 
     .snapshot-stamp {
-      font-family: "IBM Plex Mono", monospace;
+      font-family: "JetBrains Mono", monospace;
       font-size: 0.6875rem;
       color: var(--text-muted);
       line-height: 1.5;
@@ -66,12 +66,12 @@
     }
 
     .snapshot-refresh:hover {
-      color: var(--blue-light);
+      color: var(--gold);
       border-color: var(--border-hover);
-      background: var(--blue-dim);
+      background: var(--gold-dim);
     }
 
-    .snapshot-refresh:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+    .snapshot-refresh:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
     .snapshot-refresh svg { width: 15px; height: 15px; }
 
@@ -88,7 +88,7 @@
     }
 
     .snapshot-notice code {
-      font-family: "IBM Plex Mono", monospace;
+      font-family: "JetBrains Mono", monospace;
       font-size: 0.6875rem;
       background: rgba(255,255,255,0.06);
       border-radius: 3px;
@@ -103,8 +103,8 @@
 
     .snapshot-notice.info {
       display: block;
-      background: var(--blue-dim);
-      color: var(--blue-light);
+      background: var(--gold-dim);
+      color: var(--gold);
     }
 
     .snapshot-scroll { overflow-x: auto; }
@@ -133,7 +133,7 @@
       padding: 0.875rem 1.5rem;
       border-bottom: 1px solid var(--border);
       text-align: right;
-      font-family: "IBM Plex Mono", monospace;
+      font-family: "JetBrains Mono", monospace;
       font-size: 0.875rem;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
@@ -148,7 +148,7 @@
     .cell-ticker { text-align: left !important; }
 
     .ticker-sym {
-      font-family: "IBM Plex Mono", monospace;
+      font-family: "JetBrains Mono", monospace;
       font-weight: 600;
       font-size: 0.875rem;
       color: var(--text);

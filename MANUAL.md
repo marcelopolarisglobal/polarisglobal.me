@@ -319,7 +319,51 @@ git push
 
 ---
 
-## 6. Contato e Titularidade
+## 6. Backup e Restauração
+
+### 6.1 Mecanismo
+
+Os backups são **tags Git** — marcadores permanentes no histórico do repositório que apontam para um commit específico. Uma tag não é afetada por commits futuros: mesmo após dezenas de alterações, ela continua apontando para o estado exato do momento em que foi criada. As tags são armazenadas tanto localmente quanto no GitHub.
+
+### 6.2 Criar um novo backup
+
+```bash
+# Identificar o hash do commit atual
+git log --oneline -1
+
+# Criar a tag (substituir a data)
+git tag backup-YYYY-MM-DD <hash>
+
+# Enviar para o GitHub
+git push origin backup-YYYY-MM-DD
+```
+
+### 6.3 Histórico de Backups
+
+| Tag | Data | Commit | Descrição |
+|---|---|---|---|
+| `backup-2026-06-26` | 26 Jun 2026 | `9c0c213` | Estado inicial — antes de qualquer redesign |
+
+### 6.4 Restaurar um backup
+
+Para restaurar todos os arquivos ao estado de um backup específico, sem perder o histórico:
+
+```bash
+# Voltar os arquivos para o estado da tag (sem fazer commit ainda)
+git checkout backup-YYYY-MM-DD -- .
+
+# Revisar o que mudou
+git status
+
+# Confirmar a restauração
+git add -A
+git commit -m "restore: volta ao estado de backup-YYYY-MM-DD"
+git push
+```
+
+---
+
+## 7. Contato e Titularidade
 
 | Item | Valor |
 |---|---|

@@ -5,26 +5,26 @@ html { scroll-behavior: smooth; font-size: 16px; }
 
 :root {
   /* Background layers */
-  --bg:          #07090F;
-  --bg-card:     #0E1520;
+  --bg:          #0C0B09;
+  --bg-card:     #161411;
+  --bg-surface:  #1E1B16;
 
   /* Borders */
   --border:       rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(96, 165, 250, 0.3);
+  --border-hover: rgba(200, 169, 94, 0.3);
 
-  /* Blue palette */
-  --blue:        #3B82F6;
-  --blue-light:  #60A5FA;
-  --blue-dim:    rgba(59, 130, 246, 0.11);
+  /* Gold palette */
+  --gold:        #C8A95E;
+  --gold-dim:    rgba(200, 169, 94, 0.12);
 
   /* Text */
-  --text:        #F1F5F9;
-  --text-muted:  #94A3B8;
-  --text-faint:  #475569;
+  --text:        #EDE8DF;
+  --text-muted:  #9E9689;
+  --text-faint:  #4A4540;
 
   /* Typography */
-  --font:         'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: 'Outfit', 'Inter', sans-serif;
+  --font:         'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
 
   /* Nav */
   --nav-h: 4rem;
@@ -45,7 +45,7 @@ body {
   inset: 0 0 auto 0;
   z-index: 100;
   height: var(--nav-h);
-  background: rgba(7, 9, 15, 0.8);
+  background: rgba(12, 11, 9, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
@@ -73,7 +73,7 @@ body {
 }
 
 .logo-mark {
-  color: var(--blue);
+  color: var(--gold);
   font-size: 1.05rem;
   line-height: 1;
 }
@@ -126,7 +126,7 @@ body {
 }
 
 .lang-btn:hover        { color: var(--text); }
-.lang-btn.active       { color: var(--blue-light); }
+.lang-btn.active       { color: var(--gold); }
 
 /* ── Hero ───────────────────────────────────────────────────── */
 .hero {
@@ -139,6 +139,11 @@ body {
   text-align: center;
   padding: calc(var(--nav-h) + 5rem) 2rem 7rem;
   overflow: hidden;
+  background-image:
+    linear-gradient(to bottom, rgba(12,11,9,0.82) 0%, rgba(12,11,9,0.96) 100%),
+    url('../IMG_0956.JPG');
+  background-size: cover;
+  background-position: center 30%;
 }
 
 /* Radial glow behind the headline */
@@ -150,8 +155,8 @@ body {
   width: 1000px;
   height: 640px;
   background: radial-gradient(ellipse at center,
-    rgba(59, 130, 246, 0.15) 0%,
-    rgba(59, 130, 246, 0.05) 40%,
+    rgba(200, 169, 94, 0.10) 0%,
+    rgba(200, 169, 94, 0.03) 40%,
     transparent 70%);
   pointer-events: none;
 }
@@ -168,7 +173,7 @@ body {
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--blue-light);
+  color: var(--gold);
   margin-bottom: 1.75rem;
 }
 
@@ -182,7 +187,7 @@ body {
   margin-bottom: 1.5rem;
 }
 
-.accent { color: var(--blue-light); }
+.accent { color: var(--gold); }
 
 .hero-sub {
   font-size: clamp(1rem, 1.8vw, 1.1875rem);
@@ -204,7 +209,7 @@ body {
   display: block;
   width: 1px;
   height: 56px;
-  background: linear-gradient(to bottom, var(--blue), transparent);
+  background: linear-gradient(to bottom, var(--gold), transparent);
   animation: pulse 2.4s ease-in-out infinite;
 }
 
@@ -235,10 +240,10 @@ body {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--blue);
+  color: var(--gold);
   padding: 0.3125rem 0.875rem;
-  background: var(--blue-dim);
-  border: 1px solid rgba(59, 130, 246, 0.22);
+  background: var(--gold-dim);
+  border: 1px solid rgba(200, 169, 94, 0.22);
   border-radius: 100px;
 }
 
@@ -289,7 +294,7 @@ body {
 
 .card-icon {
   font-size: 1.2rem;
-  color: var(--blue);
+  color: var(--gold);
   margin-bottom: 0.875rem;
 }
 
@@ -371,6 +376,23 @@ body {
   color: var(--text-faint);
   line-height: 1.6;
 }
+
+/* ── Contact Line ────────────────────────────────────────────── */
+.contact-line {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--text-faint);
+}
+
+.contact-line a {
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-left: 0.4rem;
+  transition: color 0.2s;
+}
+
+.contact-line a:hover { color: var(--gold); }
 
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 900px) {

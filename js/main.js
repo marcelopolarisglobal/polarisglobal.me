@@ -25,6 +25,8 @@ const i18n = {
     'disclaimer.heading': 'Disclaimer',
     'disclaimer.body':    'Polaris Global Strategies Ltd is a private investment company. The information contained on this website is provided for informational purposes only and does not constitute investment advice, a solicitation, or an offer to buy or sell any securities, financial instruments, or other assets. Polaris Global Strategies Ltd does not provide investment advisory or portfolio management services to the general public. Any investment activities described herein are conducted for the account of the company and its principals only. Past performance is not indicative of future results. All investments involve risk, including the possible loss of principal. The information on this website is not directed at any person in any jurisdiction where such distribution or use would be contrary to local laws or regulations. Polaris Global Strategies Ltd makes no representation or warranty, express or implied, as to the accuracy, completeness, or fairness of the information contained herein.',
 
+    'contact.label': 'Inquiries:',
+
     'footer.copy': '© 2026 Polaris Global Strategies Ltd. All rights reserved.',
 
     'snapshot.eyebrow':    'Market Snapshot',
@@ -70,6 +72,8 @@ const i18n = {
     'disclaimer.tag':     'Legal',
     'disclaimer.heading': 'Aviso Legal',
     'disclaimer.body':    'A Polaris Global Strategies Ltd é uma empresa de investimentos privados. As informações contidas neste site são fornecidas exclusivamente para fins informativos e não constituem aconselhamento de investimento, solicitação ou oferta de compra ou venda de quaisquer valores mobiliários, instrumentos financeiros ou outros ativos. A Polaris Global Strategies Ltd não presta serviços de consultoria de investimentos ou gestão de carteiras ao público em geral. Quaisquer atividades de investimento descritas aqui são conduzidas exclusivamente por conta da empresa e de seus sócios. Desempenho passado não é indicativo de resultados futuros. Todo investimento envolve risco, incluindo a possível perda do capital principal. As informações neste site não são direcionadas a qualquer pessoa em jurisdição onde tal distribuição ou uso seja contrário às leis ou regulamentos locais. A Polaris Global Strategies Ltd não faz qualquer declaração ou garantia, expressa ou implícita, quanto à precisão, integralidade ou imparcialidade das informações aqui contidas.',
+
+    'contact.label': 'Contato:',
 
     'footer.copy': '© 2026 Polaris Global Strategies Ltd. Todos os direitos reservados.',
 
