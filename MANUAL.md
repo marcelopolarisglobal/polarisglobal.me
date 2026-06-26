@@ -1,6 +1,6 @@
 # Polaris Global Strategies — Manual Técnico e Funcional
 
-**Versão:** 1.5  
+**Versão:** 1.6  
 **Data:** Junho 2026  
 **Domínio:** https://polarisglobal.me
 
@@ -20,7 +20,7 @@ O site é composto por três camadas de páginas:
 
 | Página | Arquivo | Descrição |
 |---|---|---|
-| Home | `index.html` | Página principal com Hero, About e Disclaimer |
+| Home | `index.html` | Página principal com Hero, About, Como Investimos e Disclaimer |
 | Snapshot | `snapshot.html` | Cotações e retornos do último fechamento de mercado |
 | Research | `research.html` | Listagem de todos os relatórios de investimento |
 | Relatório | `reports/PGS-XXX-YYYYMM.html` | Relatório individual de tese de investimento |
@@ -36,9 +36,11 @@ Seções acessadas via rolagem suave:
 | Seção | ID | Descrição |
 |---|---|---|
 | Hero | `#home` | Apresentação principal da empresa |
-| About | `#about` | Descrição institucional e diferenciais |
-| Disclaimer | `#disclaimer` | Aviso legal completo |
+| About | `#about` | Descrição institucional, diferenciais e filosofia de investimento |
+| Disclaimer | `#disclaimer` | Aviso legal completo + linha de contato |
 | Footer | — | Logo, links e copyright |
+
+A seção `#about` contém dois blocos internos em sequência: o bloco institucional (texto + cards "Global Perspective" / "Private Capital") e o bloco "Como Investimos" / "How We Invest" (três parágrafos sobre filosofia, disciplina e paciência), separados por uma linha divisória.
 
 ### 2.3 Suporte a Idiomas
 
@@ -70,6 +72,8 @@ PGS-{TICKER}-{YYYYMM}.html
 
 Exemplos: `PGS-BRKB-202606.html`, `PGS-GOOGL-202606.html`, `PGS-TSLA-202606.html`, `PGS-EQTL3-202606.html`
 
+Relatórios complementares (workbooks, carteiras) usam sufixo descritivo: `PGS-WAGN-202606-Carteira.html`
+
 ### 2.6 Responsividade
 
 | Breakpoint | Comportamento |
@@ -92,7 +96,7 @@ O site é **estático puro** — não utiliza servidor de aplicação, banco de 
 | Estrutura | HTML5 semântico |
 | Estilo | CSS3 com Custom Properties (variáveis nativas) |
 | Comportamento | JavaScript ES6+ vanilla (sem dependências) |
-| Fontes | Google Fonts (Outfit + Inter + IBM Plex Mono) via CDN |
+| Fontes | Google Fonts (Playfair Display + DM Sans + JetBrains Mono) via CDN |
 | Dados de mercado | Python + `yfinance`, executado via GitHub Actions |
 
 ### 3.2 Estrutura de Arquivos
@@ -102,9 +106,11 @@ polarisglobal.me/
 ├── index.html             ← página principal
 ├── snapshot.html          ← panorama de mercado (lê data/snapshot.json)
 ├── research.html          ← listagem de relatórios
+├── IMG_0956.JPG           ← ilustração Wall Street (fundo da hero section)
 ├── CNAME                  ← domínio customizado para GitHub Pages
+├── .gitignore             ← exclui .DS_Store e backup/
 ├── css/
-│   └── styles.css         ← design system (tema escuro azul)
+│   └── styles.css         ← design system (tema Wall Street Noir)
 ├── js/
 │   └── main.js            ← motor de i18n e comportamentos
 ├── data/
@@ -120,30 +126,44 @@ polarisglobal.me/
     ├── PGS-GOOGL-202606.html
     ├── PGS-ITSA4-202606.html
     ├── PGS-KLBN11-202606.html
+    ├── PGS-MSFT-202606.html
     ├── PGS-PSSA3-202606.html
     ├── PGS-TSLA-202606.html
-    └── PGS-VULC3-202606.html
+    ├── PGS-VULC3-202606.html
+    ├── PGS-WAGN-202606.html
+    └── PGS-WAGN-202606-Carteira.html
 ```
 
 ### 3.3 Design System
 
-**Paleta — tema escuro (site principal e research.html):**
+**Tema: Wall Street Noir** — fundo escuro com tons quentes, acento ouro vintage, tipografia serif editorial.
+
+**Paleta — site principal (`index.html`, `research.html`, `snapshot.html`):**
 
 ```css
---bg:          #07090F   /* fundo principal */
---bg-card:     #0E1520   /* fundo de cards */
---blue:        #3B82F6   /* azul primário */
---blue-light:  #60A5FA   /* azul claro (destaques) */
---text:        #F1F5F9   /* texto principal */
---text-muted:  #94A3B8   /* texto secundário */
+--bg:          #0C0B09   /* fundo principal (preto quente) */
+--bg-card:     #161411   /* fundo de cards */
+--bg-surface:  #1E1B16   /* superfície elevada */
+--gold:        #C8A95E   /* acento ouro vintage */
+--gold-dim:    rgba(200, 169, 94, 0.12)  /* fundo de badges e destaques */
+--text:        #EDE8DF   /* texto principal (branco-creme) */
+--text-muted:  #9E9689   /* texto secundário (cinza quente) */
+--text-faint:  #4A4540   /* texto terciário */
+--border:      rgba(255, 255, 255, 0.07)
+--border-hover: rgba(200, 169, 94, 0.3)
+--up:          #4FB286   /* positivo (verde) */
+--down:        #D96A50   /* negativo (vermelho) */
 ```
 
-**Tipografia:**
-- `Outfit` (pesos 600–800) — títulos e headings
-- `Inter` (pesos 300–600) — corpo de texto e interface
-- `IBM Plex Mono` (pesos 400–600) — dados numéricos em `snapshot.html`
+**Tipografia — site principal:**
+- `Playfair Display` (pesos 400–800, itálico) — títulos, headings, display
+- `DM Sans` (pesos 300–500) — corpo de texto e interface
+- `JetBrains Mono` (pesos 400–500) — dados numéricos em `snapshot.html`
 
-Os relatórios individuais possuem tema claro próprio com fontes e variáveis CSS independentes (Playfair Display + DM Sans). Não dependem de `css/styles.css`.
+**Asset visual:**
+- `IMG_0956.JPG` — ilustração panorâmica de Wall Street anos 50 (estilo graphic novel), usada como fundo da hero section com overlay escuro (`rgba(12,11,9,0.82)`)
+
+**Relatórios individuais** possuem tema claro próprio com fontes e variáveis CSS independentes (Playfair Display + DM Sans + JetBrains Mono, paleta laranja/azul por empresa). Não dependem de `css/styles.css`.
 
 ### 3.4 Sistema de Internacionalização (i18n)
 
@@ -161,7 +181,9 @@ O arquivo `js/main.js` contém o objeto `i18n` com traduções EN e PT indexadas
 |---|---|
 | `nav.*` | Links de navegação (about, disclaimer, snapshot, research, crypto) |
 | `hero.*` | Textos da seção Hero |
-| `about.*` | Textos e cards da seção About |
+| `about.*` | Textos institucionais, cards e bloco "Como Investimos" |
+| `about.invest.*` | Heading e 3 parágrafos da filosofia de investimento |
+| `contact.*` | Linha de contato após o disclaimer (`contact.label`) |
 | `disclaimer.*` | Textos da seção Disclaimer |
 | `snapshot.*` | Textos de `snapshot.html` (heading, colunas, stamp, rodapé, avisos) |
 | `research.*` | Textos da página Research (heading, sub, sub2, cta) |
@@ -231,6 +253,16 @@ A página `snapshot.html` exibe preços e retornos (% 24h, % YTD, % 5 Anos) do �
 **Atualização manual (fora do horário agendado):**
 Acesse `github.com/marcelopolarisglobal/polarisglobal.me → Actions → Update Market Snapshot → Run workflow`.
 
+Ou localmente (requer `yfinance` instalado):
+```bash
+python3 scripts/update-snapshot.py
+git add data/snapshot.json
+git commit -m "data: update market snapshot manual"
+git push
+```
+
+**Atenção:** Não abrir `snapshot.html` diretamente como arquivo (`file://`) — o `fetch()` é bloqueado pelo browser por segurança. Sempre usar um servidor HTTP local (`python3 -m http.server 8743`) ou o site publicado.
+
 **Para adicionar ou remover um ativo:**
 
 1. Editar o array `ASSETS` em `scripts/update-snapshot.py`:
@@ -252,6 +284,19 @@ const ASSETS = [
 ```
 
 3. Commitar, fazer push e acionar o workflow manualmente para gerar o novo `snapshot.json`.
+
+### 5.3 Adicionar texto traduzível (i18n)
+
+Todo texto visível ao usuário em `index.html` ou `research.html` deve:
+
+1. Ter atributo `data-i18n="namespace.chave"` no elemento HTML
+2. Ter entradas correspondentes em ambos os blocos (`en` e `pt`) do objeto `i18n` em `js/main.js`
+
+```js
+// em js/main.js
+en: { 'namespace.chave': 'English text' }
+pt: { 'namespace.chave': 'Texto em português' }
+```
 
 ### 5.4 Adicionar um novo relatório
 
@@ -307,7 +352,7 @@ const ASSETS = [
 
 ```bash
 git add reports/PGS-TICKER-YYYYMM.html research.html
-git commit -m "Add PGS-TICKER-YYYYMM report"
+git commit -m "feat(reports): add PGS-TICKER-YYYYMM"
 git push
 ```
 
@@ -342,7 +387,7 @@ git push origin backup-YYYY-MM-DD
 
 | Tag | Data | Commit | Descrição |
 |---|---|---|---|
-| `backup-2026-06-26` | 26 Jun 2026 | `9c0c213` | Estado inicial — antes de qualquer redesign |
+| `backup-2026-06-26` | 26 Jun 2026 | `9c0c213` | Estado inicial — antes do redesign Wall Street Noir |
 
 ### 6.4 Restaurar um backup
 
@@ -369,6 +414,7 @@ git push
 |---|---|
 | Empresa | Polaris Global Strategies Ltd |
 | Jurisdição | British Virgin Islands (BVI) |
-| E-mail | marcelo.polaris.global@gmail.com |
+| E-mail institucional | contact@polarisglobal.me |
+| E-mail do gestor | marcelo.polaris.global@gmail.com |
 | Domínio | polarisglobal.me |
 | Ano de referência legal | 2026 |
