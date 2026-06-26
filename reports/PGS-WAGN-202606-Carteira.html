@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGS · WAGN · Caderno de Carteira &amp; Teses de Investimento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF; --surface:#F9FAFB; --card:#F3F4F6;
+  --text:#111827; --text-mute:#6B7280;
+  --pos:#16A34A; --neg:#DC2626; --caution:#D97706;
+  --pos-tint:#F0FDF4; --neg-tint:#FEE2E2; --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#1C4A47;        /* petróleo-teal da marca Pabrai Wagons */
+  --accent-deep:#123532;
+  --accent-tint:#E7F0EF;
+  --gold:#B0894A;          /* ouro da roda de carroça (uso comedido) */
+  --gold-tint:#F7F1E6;
+  --serif:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --sans:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--text);background:var(--canvas);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:700;line-height:1.15;letter-spacing:-0.01em}
+.mono{font-family:var(--mono)}
+a{color:inherit;text-decoration:none}
+
+/* wagon-wheel motif */
+.wheel{display:inline-block;vertical-align:middle}
+.wheel circle,.wheel line{stroke:var(--gold);stroke-width:1.4;fill:none}
+.wheel .hub{fill:var(--gold);stroke:none}
+
+/* ---------- LAYOUT ---------- */
+.layout{display:grid;grid-template-columns:222px 1fr;min-height:96vh}
+.sidebar{position:sticky;top:0;align-self:start;height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:26px 0;overflow-y:auto}
+.sb-brand{padding:0 22px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sb-mark{font-family:var(--serif);font-weight:800;font-size:18px;color:var(--accent);letter-spacing:-0.02em;line-height:1}
+.sb-mark span{color:var(--text)}
+.sb-tag{font-family:var(--mono);font-size:9.5px;color:var(--text-mute);letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+.nav-link{display:block;padding:8px 22px;font-size:12.5px;color:var(--text-mute);border-left:3px solid transparent;transition:background .18s,color .18s}
+.nav-link:hover{color:var(--text);background:var(--card)}
+.nav-link.active{color:var(--accent-deep);font-weight:600;border-left:3px solid var(--accent);background:var(--accent-tint)}
+.nav-sec{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);padding:15px 22px 5px}
+.main-content{min-width:0}
+
+/* ---------- COVER ---------- */
+.cover{background:var(--surface);background-image:radial-gradient(var(--border) 1px,transparent 1px);background-size:22px 22px;padding:60px 56px;border-bottom:3px solid var(--accent);min-height:96vh;display:flex;flex-direction:column;justify-content:center}
+.cover-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.cover h1{font-size:56px;font-weight:800;color:var(--accent-deep);margin-bottom:6px;max-width:880px}
+.cover .sub{font-family:var(--serif);font-size:23px;font-weight:600;color:var(--accent);margin-bottom:10px}
+.cover .ticker-line{font-family:var(--mono);font-size:14px;color:var(--text-mute);margin-bottom:28px}
+.cover .ticker-line b{color:var(--text)}
+.cover-lede{font-size:17px;max-width:720px;color:var(--text);margin-bottom:30px;line-height:1.5}
+.cover-meta{display:flex;flex-wrap:wrap;gap:28px;font-family:var(--mono);font-size:12px;color:var(--text-mute);border-top:1px solid var(--border);padding-top:20px;max-width:820px}
+.cover-meta b{display:block;color:var(--text);font-size:14px;margin-top:3px;font-family:var(--sans);font-weight:600}
+
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:32px;max-width:900px}
+.stat{background:var(--canvas);padding:15px 18px}
+.stat .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
+.stat .v{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--accent-deep);margin-top:4px}
+.stat .s{font-family:var(--mono);font-size:10.5px;color:var(--text-mute);margin-top:1px}
+
+/* ---------- SECTIONS ---------- */
+.section{padding:52px 56px;border-bottom:1px solid var(--border)}
+.section:nth-of-type(even){background:var(--surface)}
+.sec-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.sec-eyebrow::before{content:"";width:26px;height:3px;background:var(--accent);display:inline-block}
+.section h2{font-size:32px;margin-bottom:8px;color:var(--text)}
+.section h3{font-size:20px;margin:32px 0 13px;color:var(--accent-deep)}
+.lede{font-size:16px;color:var(--text-mute);max-width:780px;margin-bottom:22px}
+p{margin-bottom:13px;max-width:840px}
+.section ul{margin:0 0 14px 20px;max-width:840px}
+.section li{margin-bottom:7px}
+
+/* ---------- TABLES ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:4px;margin:8px 0 6px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--canvas)}
+th{background:var(--accent-deep);color:#fff;text-align:left;padding:11px 13px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+td{padding:10px 13px;border-top:1px solid var(--border);vertical-align:top}
+tbody tr:nth-child(even){background:var(--surface)}
+tbody tr:hover{background:var(--accent-tint)}
+td.num,th.num{font-family:var(--mono);text-align:right;white-space:nowrap}
+.pos{color:var(--pos);font-weight:600}
+.neg{color:var(--neg);font-weight:600}
+.cau{color:var(--caution);font-weight:600}
+.src{font-family:var(--mono);font-size:11px;color:var(--text-mute);margin:6px 0 22px}
+
+/* pills */
+.pill{display:inline-block;font-family:var(--sans);font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.pill-pos{background:var(--pill-pos-bg);color:var(--pill-pos-fg)}
+.pill-neg{background:var(--pill-neg-bg);color:var(--pill-neg-fg)}
+.pill-neu{background:var(--card);color:var(--text-mute)}
+.pill-gold{background:var(--gold-tint);color:var(--gold)}
+
+/* stat cards */
+.quarter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:8px 0 6px}
+.qcard{background:var(--canvas);border:1px solid var(--border);border-top:3px solid var(--accent);border-radius:4px;padding:16px}
+.qcard .qlabel{font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.05em}
+.qcard .qbig{font-family:var(--serif);font-size:30px;font-weight:700;color:var(--accent-deep);margin:6px 0 2px}
+.qcard .qsub{font-family:var(--mono);font-size:12px;color:var(--text-mute)}
+
+/* principles cards */
+.prin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:10px 0}
+.prin{border:1px solid var(--border);border-radius:4px;background:var(--canvas);padding:18px;border-top:3px solid var(--gold)}
+.prin .pn{font-family:var(--mono);font-size:12px;color:var(--gold);font-weight:600}
+.prin h4{font-size:17px;margin:6px 0 6px}
+.prin p{font-size:13.5px;color:var(--text-mute);margin:0}
+
+/* BUCKET deep-dive */
+.bucket{border:1px solid var(--border);border-radius:5px;overflow:hidden;margin-bottom:22px;background:var(--canvas)}
+.bucket-head{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--accent-tint);border-bottom:1px solid var(--border)}
+.bucket-num{font-family:var(--serif);font-size:34px;font-weight:800;color:var(--accent);line-height:1;min-width:42px}
+.bucket-id{flex:1}
+.bucket-id h3{font-size:21px;margin:0;color:var(--accent-deep)}
+.bucket-id .geo{font-family:var(--mono);font-size:11.5px;color:var(--text-mute);margin-top:3px;letter-spacing:.04em}
+.bucket-wt{text-align:right}
+.bucket-wt .w{font-family:var(--serif);font-size:30px;font-weight:700;color:var(--accent)}
+.bucket-wt .wl{font-family:var(--mono);font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:.08em}
+.bucket-body{padding:18px 20px;display:grid;grid-template-columns:1.55fr 1fr;gap:22px}
+.bucket-body .thesis ul{margin:0 0 0 18px}
+.bucket-body .thesis li{margin-bottom:8px;font-size:14px}
+.bucket-holds{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:14px}
+.bucket-holds .bh-t{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-mute);margin-bottom:10px}
+.bh-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-top:1px dashed var(--border)}
+.bh-row:first-of-type{border-top:none}
+.bh-row .nm{font-weight:500}
+.bh-row .ct{font-family:var(--mono);color:var(--text-mute);font-size:11px}
+.bh-row .pw{font-family:var(--mono);font-weight:600;color:var(--accent)}
+.keyfig{margin-top:12px;border-top:1px solid var(--border);padding-top:10px}
+.keyfig .kf{display:flex;justify-content:space-between;font-size:12px;padding:3px 0}
+.keyfig .kf span:first-child{color:var(--text-mute)}
+.keyfig .kf span:last-child{font-family:var(--mono);font-weight:500;text-align:right;max-width:58%}
+
+/* sector bars */
+.bars{margin:8px 0 6px;max-width:680px}
+.bar{display:flex;align-items:center;gap:12px;margin-bottom:7px}
+.bar .bl{width:160px;font-size:13px;flex-shrink:0}
+.bar .bt{flex:1;background:var(--card);border-radius:3px;height:18px;overflow:hidden}
+.bar .bf{height:100%;background:var(--accent);border-radius:3px}
+.bar .bv{font-family:var(--mono);font-size:12px;width:52px;text-align:right;color:var(--text-mute)}
+
+/* callouts */
+.callout{background:var(--accent-tint);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:4px;padding:14px 16px;margin:14px 0;font-size:13.5px}
+.callout.gold{background:var(--gold-tint);border-left-color:var(--gold)}
+.callout b{color:var(--accent-deep)}
+.note{font-size:12.5px;color:var(--text-mute);font-style:italic;margin-top:4px}
+
+/* synthesis */
+.synth{padding:52px 56px;background:var(--surface);border-bottom:1px solid var(--border)}
+.synth-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin:18px 0 26px}
+.sm{background:var(--card);padding:17px}
+.sm .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
+.sm .v{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--accent-deep);margin-top:5px}
+.vnum{counter-reset:v}
+.vpara{position:relative;padding-left:34px;margin-bottom:15px;max-width:860px}
+.vpara::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:1px;font-family:var(--mono);font-size:12px;font-weight:600;color:#fff;background:var(--accent);width:23px;height:23px;border-radius:50%;display:flex;align-items:center;justify-content:center;print-color-adjust:exact}
+
+/* disclaimer */
+.disclaimer{padding:38px 56px;background:var(--canvas);font-size:12px;color:var(--text-mute);line-height:1.65}
+.disclaimer p{max-width:none}
+.disclaimer .ref{font-family:var(--mono);font-size:11px;margin-top:14px;color:var(--text);border-top:1px solid var(--border);padding-top:12px}
+
+/* animation — visível por padrão (correção PDF) */
+.animate{opacity:1;animation:fadeUp .6s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:768px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static;height:auto;display:flex;gap:4px;overflow-x:auto;white-space:nowrap;padding:12px}
+  .sb-brand,.nav-sec{display:none}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:8px 12px}
+  .nav-link.active{border-left:none;border-bottom:3px solid var(--accent)}
+  .cover{padding:42px 22px}
+  .cover h1{font-size:36px}
+  .section,.synth,.disclaimer{padding:34px 22px}
+  .stats-strip,.synth-metrics,.prin-grid,.quarter-grid{grid-template-columns:1fr 1fr}
+  .bucket-body{grid-template-columns:1fr}
+}
+
+/* ---------- PRINT / PDF ---------- */
+@media print{
+  .layout{display:block !important}
+  .sidebar,.nav-link{display:none !important}
+  .main-content{display:block !important;width:100% !important}
+  .cover{min-height:auto !important;height:auto !important;display:block !important;page-break-after:always;background-color:#FFFFFF !important}
+  .section,.synth,.disclaimer{background-color:#FFFFFF !important;color:#111827 !important}
+  .bucket{page-break-inside:avoid}
+  .stats-strip{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important}
+  .synth-metrics{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important}
+  .quarter-grid{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:10px !important}
+  .prin-grid{display:grid !important;grid-template-columns:repeat(3,1fr) !important;gap:10px !important}
+  .bucket-body{display:grid !important;grid-template-columns:1.5fr 1fr !important;gap:16px !important}
+  .table-wrap{overflow:visible !important}
+  table{font-size:11px}
+  td,th{word-break:break-word}
+  .animate{opacity:1 !important;transform:none !important;animation:none !important}
+  .bucket-head,.pill,.bar .bf,.vpara::before{print-color-adjust:exact}
+  *{box-shadow:none !important;backdrop-filter:none !important}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <svg class="wheel" width="26" height="26" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18"/><circle cx="20" cy="20" r="11"/><circle class="hub" cx="20" cy="20" r="3"/><line x1="20" y1="2" x2="20" y2="38"/><line x1="2" y1="20" x2="38" y2="20"/><line x1="7" y1="7" x2="33" y2="33"/><line x1="33" y1="7" x2="7" y2="33"/></svg>
+      <div>
+        <div class="sb-mark">Polaris<span> GS</span></div>
+        <div class="sb-tag">Caderno de Carteira</div>
+      </div>
+    </div>
+    <div class="nav-sec">Abertura</div>
+    <a class="nav-link" href="#capa">Resumo da Carteira</a>
+    <a class="nav-link" href="#filosofia">Filosofia "Circle the Wagons"</a>
+    <div class="nav-sec">Composição</div>
+    <a class="nav-link" href="#top10">10 Maiores Posições</a>
+    <a class="nav-link" href="#alocacao">Setores &amp; Geografia</a>
+    <a class="nav-link" href="#buckets">Os 6 Buckets</a>
+    <div class="nav-sec">Teses por Negócio</div>
+    <a class="nav-link" href="#carvao">1 · Carvão Metalúrgico</a>
+    <a class="nav-link" href="#offshore">2 · Serviços Offshore</a>
+    <a class="nav-link" href="#leonard">3 · Complexo Mark Leonard</a>
+    <a class="nav-link" href="#edelweiss">4 · Edelweiss</a>
+    <a class="nav-link" href="#tav">5 · TAV Airports</a>
+    <a class="nav-link" href="#reysas">6 · Reysas</a>
+    <a class="nav-link" href="#kaspi">Fora dos buckets · Kaspi</a>
+    <div class="nav-sec">Fechamento</div>
+    <a class="nav-link" href="#gestor">Gestor &amp; Equipe</a>
+    <a class="nav-link" href="#performance">Carteira × Performance</a>
+    <a class="nav-link" href="#sintese">Leitura PGS</a>
+    <a class="nav-link" href="#disclaimer">Disclaimer</a>
+  </aside>
+
+  <main class="main-content">
+    <!-- COVER -->
+    <section class="cover" id="capa">
+      <div class="cover-eyebrow animate">
+        <svg class="wheel" width="20" height="20" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18"/><circle cx="20" cy="20" r="11"/><circle class="hub" cx="20" cy="20" r="3"/><line x1="20" y1="2" x2="20" y2="38"/><line x1="2" y1="20" x2="38" y2="20"/><line x1="7" y1="7" x2="33" y2="33"/><line x1="33" y1="7" x2="7" y2="33"/></svg>
+        Polaris Global Strategies Ltd. · Caderno de Carteira · PGS-WAGN-202606-C
+      </div>
+      <div class="sub animate">Pabrai Wagons ETF</div>
+      <h1 class="animate">Composição do portfólio e teses de investimento</h1>
+      <div class="ticker-line animate"><b>WAGN</b> · NYSE · ~23 posições · não diversificado · gestor: Mohnish Pabrai · "circle the wagons"</div>
+      <p class="cover-lede animate">Companheiro do relatório PGS-WAGN-202606. Em vez de performance, este caderno disseca <b>onde o dinheiro está</b>: seis "buckets" temáticos que somam ~79% da carteira — carvão metalúrgico, serviços offshore, o complexo de software de Mark Leonard, a holding indiana Edelweiss e os turcos TAV e Reysas — e a justificativa de investimento de cada um, tal como apresentada pela própria gestora. Fonte primária: apresentação institucional oficial (junho/2026).</p>
+      <div class="cover-meta animate">
+        <div>Referência<b>PGS-WAGN-202606-C</b></div>
+        <div>Data de publicação<b>25 de junho de 2026</b></div>
+        <div>Carteira (Top 10)<b>31/03/2026</b></div>
+        <div>Maior bucket<b>Carvão met. · 21%</b></div>
+        <div>Concentração Top 10<b>67,8%</b></div>
+      </div>
+      <div class="stats-strip animate">
+        <div class="stat"><div class="k">Posições</div><div class="v">~23</div><div class="s">não diversificado</div></div>
+        <div class="stat"><div class="k">Top 10</div><div class="v">67,8%</div><div class="s">Morningstar 17/06</div></div>
+        <div class="stat"><div class="k">6 buckets</div><div class="v">~79%</div><div class="s">do portfólio</div></div>
+        <div class="stat"><div class="k">Sobreposição S&amp;P 500</div><div class="v">0%</div><div class="s">"Un-S&amp;P 500"</div></div>
+        <div class="stat"><div class="k">Retorno NAV YTD</div><div class="v">+21,1%</div><div class="s">até 31/05/2026</div></div>
+        <div class="stat"><div class="k">Retorno NAV 12M</div><div class="v">+51,7%</div><div class="s">vs S&amp;P +29,8%</div></div>
+        <div class="stat"><div class="k">Países no Top 10</div><div class="v">5</div><div class="s">EUA, Índia, Turquia…</div></div>
+        <div class="stat"><div class="k">Giro de carteira</div><div class="v">~69%</div><div class="s">baixa rotação</div></div>
+      </div>
+    </section>
+
+    <!-- FILOSOFIA -->
+    <section class="section" id="filosofia">
+      <div class="sec-eyebrow animate">Abertura · O método</div>
+      <h2 class="animate">A filosofia "Circle the Wagons"</h2>
+      <p class="lede animate">A construção da carteira não busca diversificação: busca poucas grandes decisões mantidas por muito tempo. O ETF "circula as carroças" ao redor das posições com maior potencial de retorno, seguindo três princípios explícitos.</p>
+      <div class="prin-grid animate">
+        <div class="prin"><div class="pn">Princípio 01</div><h4>Não cortar as flores e regar as ervas daninhas</h4><p>Manter os grandes negócios para sempre — resistir ao impulso de realizar lucro nos vencedores.</p></div>
+        <div class="prin"><div class="pn">Princípio 02</div><h4>Não pagar caro por grandes empresas</h4><p>Qualidade só vira retorno quando comprada com desconto. O preço de entrada importa.</p></div>
+        <div class="prin"><div class="pn">Princípio 03</div><h4>Moats largos, gestores excepcionais, longas pistas</h4><p>Concentrar em negócios com vantagem competitiva durável e capital alocado por donos-operadores.</p></div>
+      </div>
+      <div class="callout gold animate">
+        <b>A matemática das "poucas grandes decisões".</b> A gestora usa a Berkshire Hathaway como caso: ao longo de 58 anos, mais de 300 decisões relevantes (80+ aquisições, 210+ ações, 10+ contratações-chave) produziram resultado satisfatório a partir de cerca de <b>12 decisões realmente boas — apenas ~4%</b>. A leitura de Pabrai: o desempenho excepcional vem de um punhado de acertos, então faz sentido concentrar e segurar.
+      </div>
+      <p class="animate">Na prática, isso explica a forma da carteira: ~23 posições, baixa rotação (~69% vs ~93% da categoria), nenhuma sobreposição com o S&amp;P 500 e seis blocos temáticos respondendo por ~79% do total. O retorno do fundo é, por construção, a soma da evolução desses poucos temas — não o "beta" de um índice amplo.</p>
+    </section>
+
+    <!-- TOP 10 -->
+    <section class="section" id="top10">
+      <div class="sec-eyebrow animate">Composição · 2.1</div>
+      <h2 class="animate">As 10 maiores posições</h2>
+      <p class="lede animate">Composição em 31/03/2026 (data oficial das maiores posições na apresentação). As dez maiores somam ~62% do portfólio; com a cauda restante, o Top 10 medido pela Morningstar em 17/06/2026 chega a 67,8%.</p>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th class="num">#</th><th>Posição</th><th>País</th><th>Bucket / tema</th><th class="num">Peso</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>Warrior Met Coal</td><td>EUA</td><td>Carvão metalúrgico</td><td class="num">11,2%</td></tr>
+            <tr><td class="num">2</td><td>Edelweiss Financial Services</td><td>Índia</td><td>Holding financeira</td><td class="num">10,2%</td></tr>
+            <tr><td class="num">3</td><td>TAV Airport Holdings</td><td>Turquia</td><td>Aeroportos</td><td class="num">9,2%</td></tr>
+            <tr><td class="num">4</td><td>Valaris</td><td>EUA</td><td>Serviços offshore</td><td class="num">6,3%</td></tr>
+            <tr><td class="num">5</td><td>Transocean</td><td>EUA</td><td>Serviços offshore</td><td class="num">5,6%</td></tr>
+            <tr><td class="num">6</td><td>Alpha Metallurgical Resources</td><td>EUA</td><td>Carvão metalúrgico</td><td class="num">5,4%</td></tr>
+            <tr><td class="num">7</td><td>Kaspi.kz</td><td>Cazaquistão</td><td>Fintech / plataforma</td><td class="num">4,8%</td></tr>
+            <tr><td class="num">8</td><td>Constellation Software</td><td>Canadá</td><td>Complexo Mark Leonard</td><td class="num">4,7%</td></tr>
+            <tr><td class="num">9</td><td>Noble Corporation</td><td>EUA</td><td>Serviços offshore</td><td class="num">4,7%</td></tr>
+            <tr><td class="num">10</td><td>Lumine Group</td><td>Canadá</td><td>Complexo Mark Leonard</td><td class="num">4,7%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: Pabrai Wagons Advisors — Apresentação Institucional jun/2026 (slide "Largest 10 Holdings on 3/31/26"); Top 10 agregado de 67,8% via Morningstar (17/06/2026). Composição sujeita a mudança — holdings ao vivo em wagonsetf.com/fund-summary.</div>
+      <div class="callout animate"><b>Leitura.</b> Quatro das dez maiores são serviços offshore ou carvão — os dois maiores buckets. Edelweiss e TAV aparecem como posições únicas grandes (10,2% e 9,2%), o que concentra teses inteiras em um só papel. Cinco países no Top 10 sinalizam o caráter global e emergente da carteira.</div>
+    </section>
+
+    <!-- ALOCACAO -->
+    <section class="section" id="alocacao">
+      <div class="sec-eyebrow animate">Composição · 2.2</div>
+      <h2 class="animate">Distribuição setorial e geográfica</h2>
+      <h3 class="animate">Por setor</h3>
+      <div class="bars animate">
+        <div class="bar"><div class="bl">Materiais básicos</div><div class="bt"><div class="bf" style="width:84%"></div></div><div class="bv">21,2%</div></div>
+        <div class="bar"><div class="bl">Tecnologia</div><div class="bt"><div class="bf" style="width:77%"></div></div><div class="bv">19,3%</div></div>
+        <div class="bar"><div class="bl">Industriais</div><div class="bt"><div class="bf" style="width:69%"></div></div><div class="bv">17,4%</div></div>
+        <div class="bar"><div class="bl">Energia</div><div class="bt"><div class="bf" style="width:67%"></div></div><div class="bv">16,8%</div></div>
+        <div class="bar"><div class="bl">Serviços financeiros</div><div class="bt"><div class="bf" style="width:50%"></div></div><div class="bv">12,4%</div></div>
+        <div class="bar"><div class="bl">Consumo cíclico</div><div class="bt"><div class="bf" style="width:34%"></div></div><div class="bv">8,6%</div></div>
+        <div class="bar"><div class="bl">Imobiliário</div><div class="bt"><div class="bf" style="width:18%"></div></div><div class="bv">4,4%</div></div>
+      </div>
+      <div class="src">Fonte: Yahoo Finance (alocação setorial WAGN, ~abr/2026). Saúde, utilidades, consumo defensivo e comunicação em ~0%.</div>
+      <p class="animate">A leitura setorial reforça o desenho dos buckets: materiais básicos capturam o carvão metalúrgico; energia, o offshore; tecnologia, o complexo de software canadense; financeiro, a Edelweiss; industriais e imobiliário, TAV e Reysas. A ausência de saúde, utilidades e comunicação é a contrapartida natural de uma carteira que evita deliberadamente os setores onde o índice americano se concentra.</p>
+      <h3 class="animate">Por geografia (Top 10)</h3>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th>País</th><th>Posições no Top 10</th><th class="num">Peso somado (Top 10)</th></tr></thead>
+          <tbody>
+            <tr><td>EUA</td><td>Warrior, Valaris, Transocean, Alpha, Noble</td><td class="num">33,2%</td></tr>
+            <tr><td>Índia</td><td>Edelweiss Financial Services</td><td class="num">10,2%</td></tr>
+            <tr><td>Turquia</td><td>TAV Airport Holdings</td><td class="num">9,2%</td></tr>
+            <tr><td>Canadá</td><td>Constellation Software, Lumine Group</td><td class="num">9,4%</td></tr>
+            <tr><td>Cazaquistão</td><td>Kaspi.kz</td><td class="num">4,8%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: cálculo PGS sobre os pesos do slide "Largest 10 Holdings on 3/31/26". Reysas (Turquia) compõe o 6º bucket, mas suas posições individuais ficam abaixo do Top 10.</div>
+    </section>
+
+    <!-- BUCKETS OVERVIEW -->
+    <section class="section" id="buckets">
+      <div class="sec-eyebrow animate">Composição · 2.3</div>
+      <h2 class="animate">Os seis buckets temáticos</h2>
+      <p class="lede animate">A gestora "circula as carroças" em torno de seis blocos que somavam ~79% da carteira em 31/03/2026. Carvão metalúrgico é o maior (21%), seguido de serviços offshore (17%) e do complexo Mark Leonard (14%).</p>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th class="num">#</th><th>Bucket</th><th>Geografia</th><th class="num">Peso aprox.</th><th>Posições</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>Carvão metalúrgico</td><td>Global</td><td class="num">21%</td><td>Warrior, Alpha, Mongolian Mining</td></tr>
+            <tr><td class="num">2</td><td>Serviços offshore de petróleo</td><td>EUA</td><td class="num">17%</td><td>Valaris, Transocean, Noble</td></tr>
+            <tr><td class="num">3</td><td>Complexo Mark Leonard</td><td>Canadá &amp; UE</td><td class="num">14%</td><td>Constellation, Topicus, Lumine</td></tr>
+            <tr><td class="num">4</td><td>Edelweiss Financial</td><td>Índia</td><td class="num">10%</td><td>Edelweiss Financial Services</td></tr>
+            <tr><td class="num">5</td><td>TAV Airports</td><td>Turquia</td><td class="num">9%</td><td>TAV Airport Holdings</td></tr>
+            <tr><td class="num">6</td><td>Reysas</td><td>Turquia</td><td class="num">8%</td><td>Reysas (logística) + Reysas REIT</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: apresentação institucional jun/2026 (slide "Key Portfolio Buckets", pesos em 31/03/2026). Soma ≈ 79%; restante ~21% inclui Kaspi.kz e a cauda da carteira.</div>
+    </section>
+
+    <!-- ===================== TESES POR NEGÓCIO ===================== -->
+    <section class="section" id="carvao">
+      <div class="sec-eyebrow animate">Teses por negócio</div>
+      <h2 class="animate">Deep dive das posições</h2>
+      <p class="lede animate">Para cada bucket: as empresas, a justificativa de investimento da gestora (tal como apresentada) e os números-chave que sustentam a tese. As estimativas de valor são análises proprietárias da Dhandho Funds, sinalizadas como tal.</p>
+
+      <div class="bucket animate">
+        <div class="bucket-head">
+          <div class="bucket-num">1</div>
+          <div class="bucket-id"><h3>Carvão metalúrgico</h3><div class="geo">Global · Warrior Met Coal · Alpha Metallurgical · Mongolian Mining</div></div>
+          <div class="bucket-wt"><div class="w">21%</div><div class="wl">do portfólio</div></div>
+        </div>
+        <div class="bucket-body">
+          <div class="thesis">
+            <ul>
+              <li>Um punhado de produtores de carvão metalúrgico (siderúrgico), todos próximos do <b>quartil inferior da curva de custo</b> e liderados por gestores excepcionais.</li>
+              <li>Possuem algumas das melhores reservas de carvão met do planeta.</li>
+              <li>"Carvão é um palavrão" — a indústria é <b>odiada pelos investidores</b>, fonte da assimetria de preço.</li>
+              <li>A tese estrutural: <b>não há alternativa relevante ao carvão metalúrgico para produzir aço por várias décadas</b>, descolando a demanda do debate sobre carvão térmico/energia.</li>
+              <li>Disciplina de capital: a Alpha devolve 100% do capital via recompras, retirando ações de forma agressiva.</li>
+            </ul>
+          </div>
+          <div class="bucket-holds">
+            <div class="bh-t">Posições do bucket</div>
+            <div class="bh-row"><span><span class="nm">Warrior Met Coal</span><br><span class="ct">EUA</span></span><span class="pw">11,2%</span></div>
+            <div class="bh-row"><span><span class="nm">Alpha Metallurgical</span><br><span class="ct">EUA</span></span><span class="pw">5,4%</span></div>
+            <div class="bh-row"><span><span class="nm">Mongolian Mining</span><br><span class="ct">Mongólia · fora do Top 10</span></span><span class="pw">~4%</span></div>
+            <div class="keyfig">
+              <div class="kf"><span>Recompra Alpha (4 anos)</span><span>−32% das ações</span></div>
+              <div class="kf"><span>vs Apple / MSFT / Alphabet / Meta</span><span>−11% / −2% / −9% / −7%</span></div>
+              <div class="kf"><span>Potencial de recompra (década)</span><span>&gt;70% das ações (est. gestora)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="offshore">
+      <div class="bucket animate">
+        <div class="bucket-head">
+          <div class="bucket-num">2</div>
+          <div class="bucket-id"><h3>Serviços offshore de petróleo</h3><div class="geo">EUA · Valaris · Transocean · Noble</div></div>
+          <div class="bucket-wt"><div class="w">17%</div><div class="wl">do portfólio</div></div>
+        </div>
+        <div class="bucket-body">
+          <div class="thesis">
+            <ul>
+              <li>Três posições em serviços offshore norte-americanos. O offshore responde por <b>1/3 da produção global</b> de petróleo e gás e tem breakeven muito abaixo do fracking.</li>
+              <li><b>Sondas (drillships) são caras e complexas, e não há nova oferta no pipeline</b> — as ações negociam com desconto relevante ao custo de reposição.</li>
+              <li>Uma sonda de 8ª geração nova levaria &gt;5 anos para ser entregue, custaria &gt;US$ 1 bilhão e exigiria 50% de sinal à vista.</li>
+              <li>Para justificar esse capex, as diárias teriam de superar <b>US$ 1 milhão/dia por 20+ anos</b> — mais de 2x o nível atual.</li>
+              <li>Pela alavancagem operacional, a US$ 1 milhão/dia o fluxo de caixa livre de Transocean, Valaris e Noble poderia disparar para <b>bem acima de US$ 1 bilhão/ano cada</b>.</li>
+            </ul>
+          </div>
+          <div class="bucket-holds">
+            <div class="bh-t">Posições do bucket</div>
+            <div class="bh-row"><span><span class="nm">Valaris</span><br><span class="ct">EUA</span></span><span class="pw">6,3%</span></div>
+            <div class="bh-row"><span><span class="nm">Transocean</span><br><span class="ct">EUA</span></span><span class="pw">5,6%</span></div>
+            <div class="bh-row"><span><span class="nm">Noble Corporation</span><br><span class="ct">EUA</span></span><span class="pw">4,7%</span></div>
+            <div class="keyfig">
+              <div class="kf"><span>Custo de uma sonda nova</span><span>&gt;US$ 1 bi · sinal 50%</span></div>
+              <div class="kf"><span>Diária necessária p/ novo capex</span><span>&gt;US$ 1 mi/dia (&gt;2x hoje)</span></div>
+              <div class="kf"><span>FCF potencial a US$ 1 mi/dia</span><span>&gt;US$ 1 bi/ano por empresa (est. gestora)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="leonard">
+      <div class="bucket animate">
+        <div class="bucket-head">
+          <div class="bucket-num">3</div>
+          <div class="bucket-id"><h3>Complexo Mark Leonard</h3><div class="geo">Canadá &amp; UE · Constellation · Topicus · Lumine</div></div>
+          <div class="bucket-wt"><div class="w">14%</div><div class="wl">do portfólio</div></div>
+        </div>
+        <div class="bucket-body">
+          <div class="thesis">
+            <ul>
+              <li>A Constellation Software, fundada por Mark Leonard, é um <b>compounder de altíssima qualidade</b> que opera um flywheel de "buy and build" de software de mercado vertical (VMS).</li>
+              <li>O recente <b>selloff de software puxado por IA</b> derrubou esses papéis, abrindo a janela de entrada.</li>
+              <li>A visão da gestora: o "Sr. Mercado" está errado — a IA tende a <b>beneficiar os incumbentes</b> como Constellation e seus spin-offs Topicus e Lumine, que seguirão compondo por anos.</li>
+              <li>É o bucket que adiciona qualidade de "compounder" a uma carteira majoritariamente cíclica e de ativos duros.</li>
+            </ul>
+          </div>
+          <div class="bucket-holds">
+            <div class="bh-t">Posições do bucket</div>
+            <div class="bh-row"><span><span class="nm">Constellation Software</span><br><span class="ct">Canadá</span></span><span class="pw">4,7%</span></div>
+            <div class="bh-row"><span><span class="nm">Lumine Group</span><br><span class="ct">Canadá</span></span><span class="pw">4,7%</span></div>
+            <div class="bh-row"><span><span class="nm">Topicus</span><br><span class="ct">Países Baixos · fora do Top 10</span></span><span class="pw">~4,6%</span></div>
+            <div class="keyfig">
+              <div class="kf"><span>Modelo</span><span>Buy-and-build de VMS</span></div>
+              <div class="kf"><span>Gatilho de entrada</span><span>Selloff de software por IA</span></div>
+              <div class="kf"><span>Tese central</span><span>IA favorece incumbentes</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="edelweiss">
+      <div class="bucket animate">
+        <div class="bucket-head">
+          <div class="bucket-num">4</div>
+          <div class="bucket-id"><h3>Edelweiss Financial Services</h3><div class="geo">Índia · holding financeira · "Spin-Offs R Us"</div></div>
+          <div class="bucket-wt"><div class="w">10%</div><div class="wl">do portfólio</div></div>
+        </div>
+        <div class="bucket-body">
+          <div class="thesis">
+            <ul>
+              <li>Holding indiana com diversas subsidiárias de serviços financeiros que, na visão da gestora, têm <b>muitos ventos a favor</b>.</li>
+              <li>Valor de mercado de ~US$ 1,2 bilhão (29/05/2026) — pequena para o valor das partes.</li>
+              <li>Nos próximos <b>5–6 anos, planeja desmembrar ao menos 4 subsidiárias</b>, cada uma com valor estimado de US$ 0,5–1,5 bilhão no spin-off.</li>
+              <li>O <b>primeiro spin-off</b> (negócio de ativos alternativos, 100% detido) já está em curso e deve ser avaliado em <b>US$ 1–1,5 bilhão no IPO</b> — sozinho, próximo do valor de mercado atual da holding inteira.</li>
+            </ul>
+          </div>
+          <div class="bucket-holds">
+            <div class="bh-t">Posição</div>
+            <div class="bh-row"><span><span class="nm">Edelweiss Financial Services</span><br><span class="ct">Índia · 2ª maior posição</span></span><span class="pw">10,2%</span></div>
+            <div class="keyfig">
+              <div class="kf"><span>Valor de mercado da holding</span><span>~US$ 1,2 bi</span></div>
+              <div class="kf"><span>Spin-offs planejados (5–6 anos)</span><span>4+ subsidiárias</span></div>
+              <div class="kf"><span>Valor por spin-off</span><span>US$ 0,5–1,5 bi cada (est. gestora)</span></div>
+              <div class="kf"><span>1º IPO (ativos alternativos)</span><span>US$ 1–1,5 bi (est. gestora)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tav">
+      <div class="bucket animate">
+        <div class="bucket-head">
+          <div class="bucket-num">5</div>
+          <div class="bucket-id"><h3>TAV Airport Holdings</h3><div class="geo">Turquia · 15 aeroportos em 8 países</div></div>
+          <div class="bucket-wt"><div class="w">9%</div><div class="wl">do portfólio</div></div>
+        </div>
+        <div class="bucket-body">
+          <div class="thesis">
+            <ul>
+              <li>Opera <b>15 aeroportos em 8 países</b>, com <b>alta alavancagem operacional</b>: se os passageiros crescem 6–9% ao ano, o fluxo de caixa pode crescer mais de 2x esse ritmo.</li>
+              <li>Liderada por equipe excepcional e <b>muito barata</b> frente a outros operadores aeroportuários globais.</li>
+              <li>Unidades relacionadas — ATU (duty free), Havas (handling de solo), TAV Technologies (software aeroportuário) — que, na visão da gestora, <b>valem mais do que todo o valor de mercado da TAV</b>.</li>
+              <li>Caso Almaty: em 2021 comprou 85% do aeroporto internacional de Almaty (Cazaquistão), investindo US$ 120 milhões de equity; a fatia da TAV no EBITDA de Almaty foi de <b>US$ 112 milhões em 2025</b> — quase o capital investido por ano.</li>
+              <li>A Harvard Business School escreveu dois estudos de caso sobre a TAV (incluindo o de Almaty).</li>
+            </ul>
+          </div>
+          <div class="bucket-holds">
+            <div class="bh-t">Posição</div>
+            <div class="bh-row"><span><span class="nm">TAV Airport Holdings</span><br><span class="ct">Turquia · 3ª maior posição</span></span><span class="pw">9,2%</span></div>
+            <div class="keyfig">
+              <div class="kf"><span>Rede</span><span>15 aeroportos · 8 países</span></div>
+              <div class="kf"><span>Alavancagem operacional</span><span>caixa cresce &gt;2x os passageiros</span></div>
+              <div class="kf"><span>Almaty — equity 2021</span><span>US$ 120 mi (85%)</span></div>
+              <div class="kf"><span>Almaty — EBITDA atribuível 2025</span><span>US$ 112 mi</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="reysas">
+      <div class="bucket animate">
+        <div class="bucket-head">
+          <div class="bucket-num">6</div>
+          <div class="bucket-id"><h3>Reysas</h3><div class="geo">Turquia · logística + REIT · receitas recorrentes</div></div>
+          <div class="bucket-wt"><div class="w">8%</div><div class="wl">do portfólio</div></div>
+        </div>
+        <div class="bucket-body">
+          <div class="thesis">
+            <ul>
+              <li>Negócio de logística que detém <b>62% do Reysas REIT</b>, dono de mais de <b>12 milhões de pés² de galpões Grade-A</b> na Turquia.</li>
+              <li>Comandada por uma dupla pai-e-filho vista como operadores e alocadores de capital excepcionais.</li>
+              <li>Quase todos os negócios têm <b>receitas recorrentes fortes</b> e são líderes de mercado: maior dono de armazéns da Turquia, maior gerador de energia solar em telhado do país e líder em inspeção veicular (concessão governamental de longo prazo).</li>
+              <li>"Perpetuamente gerando negócios adjacentes" com boa economia e longas pistas.</li>
+              <li>Desconto de ativos: o Reysas REIT vale ~US$ 1,3 bilhão de mercado, mas a gestora estima o <b>valor de liquidação da carteira bem acima de US$ 2,5 bilhões</b>.</li>
+            </ul>
+          </div>
+          <div class="bucket-holds">
+            <div class="bh-t">Posições do bucket</div>
+            <div class="bh-row"><span><span class="nm">Reysas (logística)</span><br><span class="ct">Turquia · fora do Top 10</span></span><span class="pw">~4%</span></div>
+            <div class="bh-row"><span><span class="nm">Reysas REIT (GYO)</span><br><span class="ct">Turquia · fora do Top 10</span></span><span class="pw">~4%</span></div>
+            <div class="keyfig">
+              <div class="kf"><span>Participação no REIT</span><span>62%</span></div>
+              <div class="kf"><span>Galpões Grade-A</span><span>&gt;12 mi pés²</span></div>
+              <div class="kf"><span>Valor de mercado do REIT</span><span>~US$ 1,3 bi</span></div>
+              <div class="kf"><span>Valor de liquidação estimado</span><span>&gt;US$ 2,5 bi (est. gestora)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="kaspi">
+      <div class="sec-eyebrow animate">Fora dos buckets</div>
+      <h2 class="animate">Posição relevante sem bucket próprio</h2>
+      <p class="lede animate">A 7ª maior posição não pertence a nenhum dos seis blocos temáticos detalhados pela gestora.</p>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th>Posição</th><th>País</th><th>Negócio</th><th class="num">Peso</th><th>Tese na apresentação</th></tr></thead>
+          <tbody>
+            <tr><td>Kaspi.kz</td><td>Cazaquistão</td><td>Plataforma de pagamentos, marketplace e fintech (super-app)</td><td class="num">4,8%</td><td>Não detalhada nesta apresentação (n/d)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: slide "Largest 10 Holdings on 3/31/26". A gestora não dedica slide de tese ao Kaspi.kz na apresentação de jun/2026; descrição do negócio é contextual.</div>
+      <p class="animate">A Kaspi.kz é uma das maiores plataformas digitais do Cazaquistão, combinando pagamentos, comércio eletrônico e serviços financeiros. Como a apresentação não traz justificativa específica para a posição, o PGS a registra como exposição relevante (~4,8%) cuja racional de investimento não está documentada na fonte primária — ponto a acompanhar em materiais futuros do fundo.</p>
+    </section>
+
+    <!-- GESTOR -->
+    <section class="section" id="gestor">
+      <div class="sec-eyebrow animate">Fechamento · O responsável</div>
+      <h2 class="animate">Gestor e equipe</h2>
+      <p class="lede animate">Toda a carteira é expressão das decisões de um único gestor — o que é, simultaneamente, o principal ativo e o principal risco do veículo.</p>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th>Atributo</th><th>Detalhe</th></tr></thead>
+          <tbody>
+            <tr><td>Gestor / PM</td><td>Mohnish Pabrai — Fundador e CEO da Pabrai Wagons Advisors (Dhandho Funds / Dalal Street LLC)</td></tr>
+            <tr><td>AUM total sob gestão</td><td>~US$ 1,3 bilhão em parcerias privadas e no ETF (em 31/05/2026)</td></tr>
+            <tr><td>Experiência</td><td>28 anos gerindo fundos privados, incluindo os Pabrai Investment Funds</td></tr>
+            <tr><td>Filosofia</td><td>Discípulo declarado de Warren Buffett e Charlie Munger — value investing e alocação de capital</td></tr>
+            <tr><td>Trajetória empreendedora</td><td>Fundou a TransTech (1990), levada a &gt;US$ 20 mi de receita e vendida em 2000</td></tr>
+            <tr><td>Autoria</td><td>"The Dhandho Investor" e "Mosaic: Perspectives on Investing"</td></tr>
+            <tr><td>Equipe de apoio</td><td>Jaya Bharath Velicherla (VP), Fahad Missmar (SVP / analista sênior), Kimberly Engleman (CCO), Aidan Townsend (RI), Pauline Jin (administrativo)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: apresentação institucional jun/2026 (slides "Portfolio Manager" e "Team").</div>
+      <div class="callout animate"><b>Risco de pessoa-chave.</b> O prospecto declara que o consultor é "fortemente dependente das atividades de um único indivíduo, Mohnish Pabrai". A equipe de apoio é enxuta; a seleção e alocação concentram-se no gestor. Esse é o ponto que mais condiciona qualquer leitura da carteira.</div>
+    </section>
+
+    <!-- PERFORMANCE -->
+    <section class="section" id="performance">
+      <div class="sec-eyebrow animate">Fechamento · Carteira × resultado</div>
+      <h2 class="animate">Como a carteira se traduziu em performance</h2>
+      <p class="lede animate">Tabela oficial de performance em 31/05/2026 (NAV, preço de mercado e benchmark). Note a inversão de leitura conforme o horizonte: a carteira contrária supera o índice no ano e em 12 meses, mas fica atrás desde o início e no curtíssimo prazo.</p>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th>Janela (até 31/05/2026)</th><th class="num">WAGN NAV</th><th class="num">WAGN Mercado</th><th class="num">S&amp;P 500 TR</th><th class="num">NAV − índice</th></tr></thead>
+          <tbody>
+            <tr><td>1 mês</td><td class="num pos">+0,9%</td><td class="num pos">+0,3%</td><td class="num pos">+5,3%</td><td class="num neg">−4,4 p.p.</td></tr>
+            <tr><td>3 meses</td><td class="num pos">+4,2%</td><td class="num pos">+4,3%</td><td class="num pos">+10,5%</td><td class="num neg">−6,3 p.p.</td></tr>
+            <tr><td>No ano (YTD)</td><td class="num pos">+21,1%</td><td class="num pos">+21,5%</td><td class="num pos">+11,3%</td><td class="num pos">+9,8 p.p.</td></tr>
+            <tr><td>6 meses</td><td class="num pos">+23,2%</td><td class="num pos">+23,7%</td><td class="num pos">+11,3%</td><td class="num pos">+11,8 p.p.</td></tr>
+            <tr><td>12 meses</td><td class="num pos">+51,7%</td><td class="num pos">+52,3%</td><td class="num pos">+29,8%</td><td class="num pos">+21,9 p.p.</td></tr>
+            <tr><td>Desde início (anualizado)</td><td class="num pos">+16,6%</td><td class="num pos">+16,8%</td><td class="num pos">+25,4%</td><td class="num neg">−8,8 p.p.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: Pabrai Wagons Advisors — factsheet em 31/05/2026 (apresentação institucional jun/2026). Início em 29/09/2023. Diferenças em pontos percentuais calculadas pelo PGS sobre os retornos divulgados.</div>
+      <div class="callout gold animate"><b>Nota de integridade.</b> Esta tabela corrige números do relatório PGS-WAGN-202606, então extraídos de uma camada de texto embaralhada de PDF. Com a apresentação oficial em mãos, o <b>YTD do NAV é +21,1%</b> (e não +11,3%, que correspondia ao S&amp;P de 6 meses), e os pesos dos buckets seguem o slide renderizado: carvão met. 21%, offshore 17%.</div>
+      <p class="animate">A leitura combinada carteira-resultado é direta: os ganhos de 2026 vieram dos blocos contrários (carvão, offshore, emergentes) justamente quando o S&amp;P concentrado nos "Magnificent 7" patinava no começo do ano. No curtíssimo prazo, a recuperação do índice fez o WAGN ficar para trás em 1 e 3 meses. E, desde o início (set/2023), a carteira ainda <b>trilha o índice em base anualizada</b> — sinal de que a forte janela recente compensa, mas não apaga, um período inicial de desempenho relativo inferior. É uma carteira de alta dispersão, cujo retorno depende do destravamento dos poucos temas concentrados.</p>
+    </section>
+
+    <!-- SINTESE -->
+    <section class="synth" id="sintese">
+      <div class="sec-eyebrow animate">Leitura PGS da carteira</div>
+      <h2 class="animate">Síntese: o que a carteira diz</h2>
+      <div class="synth-metrics animate">
+        <div class="sm"><div class="k">Concentração temática</div><div class="v">79% em 6 buckets</div></div>
+        <div class="sm"><div class="k">Viés dominante</div><div class="v">Cíclico + emergente</div></div>
+        <div class="sm"><div class="k">Catalisador mais concreto</div><div class="v">IPO Edelweiss</div></div>
+        <div class="sm"><div class="k">Risco estrutural nº 1</div><div class="v">Pessoa-chave</div></div>
+      </div>
+      <div class="vnum">
+        <div class="vpara animate"><b>Uma carteira de teses, não de setores.</b> Cada bucket é uma aposta de valor identificável: oferta travada de sondas (offshore), ausência de substituto para o carvão siderúrgico, soma das partes na Edelweiss e na TAV, desconto de ativos no Reysas e qualidade de compounder no complexo Mark Leonard. O fio condutor é o mesmo — comprar geradores de caixa odiados ou ignorados, com donos-operadores alocando capital, e segurar.</div>
+        <div class="vpara animate"><b>O retorno é não-linear por desenho.</b> Com 79% em seis blocos e quatro das dez maiores posições em offshore ou carvão, o desempenho do fundo é a soma de poucos destravamentos. Isso gera tanto a forte superação de 12 meses (+21,9 p.p. sobre o índice) quanto o risco de drawdown concentrado se um ou dois temas centrais frustrarem.</div>
+        <div class="vpara animate"><b>Os gatilhos têm relógio próprio.</b> O mais concreto é o primeiro spin-off da Edelweiss (ativos alternativos, US$ 1–1,5 bi est.). Em paralelo correm as diárias de sondas, as recompras da Alpha, o tráfego e Almaty na TAV e a reavaliação do Reysas REIT. Nenhum depende do S&amp;P 500 — daí a descorrelação que define o veículo.</div>
+        <div class="vpara animate"><b>O risco e o motor são a mesma coisa.</b> Concentração, exposição a emergentes (Turquia, Índia, Cazaquistão) e dependência de um único gestor são, ao mesmo tempo, a origem da assimetria e a fonte da fragilidade. Para uso interno PGS, a carteira é coerente e bem fundamentada nas suas teses, mas deve ser lida como um veículo de alta dispersão — apropriado para tamanho de posição compatível com sua volatilidade, não como substituto de exposição ampla a ações.</div>
+      </div>
+    </section>
+
+    <!-- DISCLAIMER -->
+    <section class="disclaimer" id="disclaimer">
+      <p>Este relatório foi produzido exclusivamente para uso interno da Polaris Global Strategies Ltd. (PGS), sociedade constituída nas Ilhas Virgens Britânicas (BVI), que opera como veículo privado de pesquisa e análise de investimentos em nome de seus sócios. Este documento não constitui recomendação de investimento para qualquer terceiro, seja pessoa física ou jurídica, e não deve ser interpretado como tal. A PGS não presta serviços de gestão de recursos, assessoria ou consultoria de investimentos a qualquer cliente externo, não possui base de clientes e não oferece produtos ou serviços a terceiros. Qualquer eventual acesso a este documento por partes não autorizadas não confere validade como aconselhamento ou recomendação de investimento. As informações e análises aqui contidas baseiam-se em fontes públicas consideradas confiáveis — em especial a apresentação institucional oficial do Pabrai Wagons ETF (junho/2026) —, mas a PGS não oferece qualquer garantia quanto à sua integralidade ou exatidão. Investimentos em instrumentos de renda variável envolvem riscos, incluindo a possibilidade de perda total do capital investido. As opiniões expressas refletem o julgamento analítico interno na data de publicação e estão sujeitas a alteração sem aviso prévio.</p>
+      <p class="ref">Referência do relatório: PGS-WAGN-202606-C · Data: 25 de junho de 2026 · Analista interno: Polaris Global Strategies Ltd. · Ticker: WAGN · Bolsa: NYSE · Documento complementar ao PGS-WAGN-202606</p>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var map = links.map(function(l){var id=l.getAttribute('href').slice(1);return {l:l,el:document.getElementById(id)};}).filter(function(x){return x.el;});
+  function spy(){
+    var y = window.scrollY + 120, cur=null;
+    map.forEach(function(x){ if(x.el.offsetTop<=y) cur=x; });
+    links.forEach(function(l){l.classList.remove('active');});
+    if(cur) cur.l.classList.add('active');
+  }
+  window.addEventListener('scroll', spy, {passive:true});
+  spy();
+
+  var animateEls = Array.prototype.slice.call(document.querySelectorAll('.animate'));
+  if('IntersectionObserver' in window){
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.style.opacity='1';
+          e.target.style.animationPlayState='running';
+          animObserver.unobserve(e.target);
+        }
+      });
+    },{threshold:0.08});
+    animateEls.forEach(function(el){
+      el.style.opacity='0';
+      el.style.animationPlayState='paused';
+      animObserver.observe(el);
+    });
+  }
+})();
+</script>
+</body>
+</html>

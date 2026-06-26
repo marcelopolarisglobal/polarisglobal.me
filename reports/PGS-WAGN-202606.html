@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGS · Pabrai Wagons ETF (WAGN) · Relatório de Análise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF; --surface:#F9FAFB; --card:#F3F4F6;
+  --text:#111827; --text-mute:#6B7280;
+  --pos:#16A34A; --neg:#DC2626; --caution:#D97706;
+  --pos-tint:#F0FDF4; --neg-tint:#FEE2E2; --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#134E4A;        /* petróleo profundo — "a trilha diferente" do fundo */
+  --accent-deep:#0B3B38;
+  --accent-tint:#E7F0EF;
+  --serif:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --sans:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--text);background:var(--canvas);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:700;line-height:1.15;letter-spacing:-0.01em}
+.mono{font-family:var(--mono)}
+a{color:inherit;text-decoration:none}
+
+/* ---------- LAYOUT ---------- */
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:96vh}
+.sidebar{position:sticky;top:0;align-self:start;height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:26px 0;overflow-y:auto}
+.sb-brand{padding:0 22px 18px;border-bottom:1px solid var(--border);margin-bottom:14px}
+.sb-mark{font-family:var(--serif);font-weight:800;font-size:19px;color:var(--accent);letter-spacing:-0.02em}
+.sb-mark span{color:var(--text)}
+.sb-tag{font-family:var(--mono);font-size:10px;color:var(--text-mute);letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
+.nav-link{display:block;padding:9px 22px;font-size:13px;color:var(--text-mute);border-left:3px solid transparent;transition:background .18s,color .18s}
+.nav-link:hover{color:var(--text);background:var(--card)}
+.nav-link.active{color:var(--accent-deep);font-weight:600;border-left:3px solid var(--accent);background:var(--accent-tint)}
+.nav-sec{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);padding:16px 22px 6px}
+.main-content{min-width:0}
+
+/* ---------- COVER ---------- */
+.cover{background:var(--surface);background-image:radial-gradient(var(--border) 1px,transparent 1px);background-size:22px 22px;padding:64px 56px;border-bottom:3px solid var(--accent);min-height:96vh;display:flex;flex-direction:column;justify-content:center}
+.cover-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
+.cover h1{font-size:62px;font-weight:800;color:var(--accent-deep);margin-bottom:8px}
+.cover .ticker-line{font-family:var(--mono);font-size:15px;color:var(--text-mute);margin-bottom:30px}
+.cover .ticker-line b{color:var(--text)}
+.cover-lede{font-size:18px;max-width:680px;color:var(--text);margin-bottom:34px;line-height:1.5}
+.cover-meta{display:flex;flex-wrap:wrap;gap:30px;font-family:var(--mono);font-size:12px;color:var(--text-mute);border-top:1px solid var(--border);padding-top:22px;max-width:760px}
+.cover-meta b{display:block;color:var(--text);font-size:14px;margin-top:3px;font-family:var(--sans);font-weight:600}
+.rating-chip{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;font-family:var(--sans);font-weight:600;font-size:13px;padding:7px 15px;border-radius:3px;letter-spacing:.02em}
+
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:34px;max-width:860px}
+.stat{background:var(--canvas);padding:16px 18px}
+.stat .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
+.stat .v{font-family:var(--serif);font-size:25px;font-weight:700;color:var(--accent-deep);margin-top:4px}
+.stat .s{font-family:var(--mono);font-size:11px;color:var(--text-mute);margin-top:1px}
+
+/* ---------- SECTIONS ---------- */
+.section{padding:54px 56px;border-bottom:1px solid var(--border)}
+.section:nth-of-type(even){background:var(--surface)}
+.sec-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.sec-eyebrow::before{content:"";width:26px;height:3px;background:var(--accent);display:inline-block}
+.section h2{font-size:33px;margin-bottom:8px;color:var(--text)}
+.section h3{font-size:21px;margin:34px 0 14px;color:var(--accent-deep)}
+.lede{font-size:16px;color:var(--text-mute);max-width:760px;margin-bottom:22px}
+p{margin-bottom:13px;max-width:820px}
+.section ul{margin:0 0 14px 20px;max-width:820px}
+.section li{margin-bottom:7px}
+
+/* ---------- TABLES ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:4px;margin:8px 0 6px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--canvas)}
+th{background:var(--accent-deep);color:#fff;text-align:left;padding:11px 13px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+td{padding:10px 13px;border-top:1px solid var(--border);vertical-align:top}
+tbody tr:nth-child(even){background:var(--surface)}
+tbody tr:hover{background:var(--accent-tint)}
+td.num,th.num{font-family:var(--mono);text-align:right;white-space:nowrap}
+.pos{color:var(--pos);font-weight:600}
+.neg{color:var(--neg);font-weight:600}
+.cau{color:var(--caution);font-weight:600}
+.src{font-family:var(--mono);font-size:11px;color:var(--text-mute);margin:6px 0 22px}
+
+/* pills */
+.pill{display:inline-block;font-family:var(--sans);font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.pill-pos{background:var(--pill-pos-bg);color:var(--pill-pos-fg)}
+.pill-neg{background:var(--pill-neg-bg);color:var(--pill-neg-fg)}
+.pill-neu{background:var(--card);color:var(--text-mute)}
+
+/* quarter / period cards */
+.quarter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:8px 0 6px}
+.qcard{background:var(--canvas);border:1px solid var(--border);border-top:3px solid var(--accent);border-radius:4px;padding:16px}
+.qcard .qlabel{font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.05em}
+.qcard .qbig{font-family:var(--serif);font-size:32px;font-weight:700;color:var(--accent-deep);margin:6px 0 2px}
+.qcard .qsub{font-family:var(--mono);font-size:12px;color:var(--text-mute);margin-bottom:10px}
+.qcard .qrow{display:flex;justify-content:space-between;font-size:12.5px;padding:3px 0;border-top:1px dashed var(--border)}
+.qcard .qrow span:first-child{color:var(--text-mute)}
+.qcard .qrow span:last-child{font-family:var(--mono)}
+
+/* risk blocks */
+.risk{border:1px solid var(--border);border-left:3px solid var(--neg);border-radius:4px;margin-bottom:16px;overflow:hidden}
+.risk.med{border-left-color:var(--caution)}
+.risk-head{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--neg-tint)}
+.risk.med .risk-head{background:var(--caution-tint)}
+.risk-head h4{font-size:17px;margin:0;color:var(--text)}
+.risk-body{padding:14px 16px;background:var(--canvas)}
+.sev{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:3px;white-space:nowrap;print-color-adjust:exact}
+.sev-high{background:var(--neg);color:#fff}
+.sev-med{background:var(--caution);color:#fff}
+.sev-low{background:var(--card);color:var(--text-mute)}
+
+/* scenario cards */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:10px 0}
+.scard{border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.scard.bull{border-top:3px solid var(--pos)}
+.scard.bear{border-top:3px solid var(--neg)}
+.scard-head{padding:13px 16px}
+.scard.bull .scard-head{background:var(--pos-tint)}
+.scard.bear .scard-head{background:var(--neg-tint)}
+.scard-head h4{margin:0;font-size:19px}
+.scard-head .tg{font-family:var(--mono);font-size:13px;margin-top:4px;color:var(--text)}
+.scard-body{padding:14px 16px;background:var(--canvas);font-size:13.5px}
+.scard-body .lbl{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-mute);margin-top:10px}
+.scard-body .lbl:first-child{margin-top:0}
+
+/* analyst / coverage grid */
+.analyst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:10px 0}
+.acell{border:1px solid var(--border);border-radius:4px;background:var(--canvas);padding:16px}
+.acell h4{font-size:16px;margin-bottom:4px}
+.acell .acount{font-family:var(--serif);font-size:30px;font-weight:700;margin-bottom:8px}
+.acell.b h4,.acell.b .acount{color:var(--pos)}
+.acell.n h4,.acell.n .acount{color:var(--caution)}
+.acell.s h4,.acell.s .acount{color:var(--neg)}
+.acell ul{margin:0 0 0 16px;font-size:12.5px}
+.acell li{margin-bottom:5px}
+
+/* moat stars */
+.stars{color:var(--accent);letter-spacing:2px;font-size:14px;white-space:nowrap}
+.stars .off{color:var(--border)}
+
+/* verdict */
+.verdict{padding:54px 56px;background:var(--surface);border-bottom:1px solid var(--border)}
+.verdict-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin:18px 0 26px}
+.vm{background:var(--card);padding:18px}
+.vm .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
+.vm .v{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--accent-deep);margin-top:5px}
+.verdict-rating{display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#fff;font-weight:700;font-size:16px;padding:10px 20px;border-radius:4px;margin-bottom:18px;print-color-adjust:exact}
+.vnum{counter-reset:v}
+.vpara{position:relative;padding-left:34px;margin-bottom:16px;max-width:840px}
+.vpara::before{counter-increment:v;content:counter(v);position:absolute;left:0;top:1px;font-family:var(--mono);font-size:12px;font-weight:600;color:#fff;background:var(--accent);width:23px;height:23px;border-radius:50%;display:flex;align-items:center;justify-content:center;print-color-adjust:exact}
+
+/* disclaimer */
+.disclaimer{padding:40px 56px;background:var(--canvas);font-size:12px;color:var(--text-mute);line-height:1.65}
+.disclaimer p{max-width:none}
+.disclaimer .ref{font-family:var(--mono);font-size:11px;margin-top:14px;color:var(--text);border-top:1px solid var(--border);padding-top:12px}
+
+.callout{background:var(--accent-tint);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:4px;padding:14px 16px;margin:14px 0;font-size:13.5px}
+.callout b{color:var(--accent-deep)}
+.note{font-size:12.5px;color:var(--text-mute);font-style:italic;margin-top:4px}
+
+/* animation — visível por padrão (correção PDF) */
+.animate{opacity:1;animation:fadeUp .6s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:768px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static;height:auto;display:flex;gap:4px;overflow-x:auto;white-space:nowrap;padding:12px}
+  .sb-brand{display:none}
+  .nav-sec{display:none}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:8px 12px}
+  .nav-link.active{border-left:none;border-bottom:3px solid var(--accent)}
+  .cover{padding:44px 22px}
+  .cover h1{font-size:40px}
+  .section,.verdict,.disclaimer{padding:34px 22px}
+  .stats-strip,.verdict-metrics{grid-template-columns:repeat(2,1fr)}
+  .quarter-grid,.scenario-grid,.analyst-grid{grid-template-columns:1fr}
+}
+
+/* ---------- PRINT / PDF ---------- */
+@media print{
+  .layout{display:block !important}
+  .sidebar,.nav-link,.scroll-cue{display:none !important}
+  .main-content{display:block !important;width:100% !important}
+  .cover{min-height:auto !important;height:auto !important;display:block !important;page-break-after:always;background-color:#FFFFFF !important}
+  .section,.verdict,.disclaimer{background-color:#FFFFFF !important;color:#111827 !important;page-break-inside:avoid}
+  .section{border-bottom:1px solid var(--border)}
+  .stats-strip{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important}
+  .verdict-metrics{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important}
+  .quarter-grid{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:10px !important}
+  .scenario-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:12px !important}
+  .analyst-grid{display:grid !important;grid-template-columns:repeat(3,1fr) !important;gap:10px !important}
+  .table-wrap{overflow:visible !important}
+  table{font-size:11px}
+  td,th{word-break:break-word}
+  .animate{opacity:1 !important;transform:none !important;animation:none !important}
+  .sev,.verdict-rating,.verdict-rating *,.scard-head,.risk-head,.pill{print-color-adjust:exact}
+  *{box-shadow:none !important;backdrop-filter:none !important}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-mark">Polaris<span> GS</span></div>
+      <div class="sb-tag">Pesquisa Interna</div>
+    </div>
+    <div class="nav-sec">Capa</div>
+    <a class="nav-link" href="#capa">Resumo &amp; Métricas</a>
+    <div class="nav-sec">Seção 1 · Performance</div>
+    <a class="nav-link" href="#ancora">Verificação de Âncora</a>
+    <a class="nav-link" href="#snapshot">Snapshot por Período</a>
+    <a class="nav-link" href="#bench">NAV vs Mercado vs Índice</a>
+    <a class="nav-link" href="#trajetoria">Trajetória &amp; Eventos</a>
+    <a class="nav-link" href="#padroes">Padrões Recorrentes</a>
+    <a class="nav-link" href="#kpis">KPIs Monitorados</a>
+    <a class="nav-link" href="#watch">O Que Observar</a>
+    <div class="nav-sec">Seção 2 · Institucional</div>
+    <a class="nav-link" href="#estrutura">Estrutura &amp; Carteira</a>
+    <a class="nav-link" href="#moat">Avaliação de Moat</a>
+    <a class="nav-link" href="#riscos">Principais Riscos</a>
+    <a class="nav-link" href="#crescimento">Arquitetura de Retorno</a>
+    <a class="nav-link" href="#cenarios">Cenários Bull/Bear</a>
+    <a class="nav-link" href="#valuation">Contexto de Valuation</a>
+    <a class="nav-link" href="#cobertura">Cobertura &amp; Posicionamento</a>
+    <div class="nav-sec">Conclusão</div>
+    <a class="nav-link" href="#veredito">Veredito PGS</a>
+    <a class="nav-link" href="#disclaimer">Disclaimer</a>
+  </aside>
+
+  <main class="main-content">
+    <!-- COVER -->
+    <section class="cover" id="capa">
+      <div class="cover-eyebrow animate">Polaris Global Strategies Ltd. · Relatório de Análise · PGS-WAGN-202606</div>
+      <h1 class="animate">Pabrai Wagons ETF</h1>
+      <div class="ticker-line animate"><b>WAGN</b> · NYSE · ETF de ações de gestão ativa, não diversificado · Gestor: Mohnish Pabrai</div>
+      <p class="cover-lede animate">O ETF que se autodenomina o <b>"Un-S&amp;P 500"</b>: uma carteira concentrada de 23 posições profundamente contrárias — serviços offshore de petróleo, carvão metalúrgico, aeroportos turcos e financeiras indianas — sem nenhuma sobreposição com o índice americano. Convertido de fundo mútuo para ETF em fevereiro de 2026, exibe forte performance recente (NAV +51,66% em 12 meses), mas carrega risco de gestor único, concentração elevada e exposição a mercados emergentes.</p>
+      <div class="animate"><span class="rating-chip">Classificação PGS: 🟡 NEUTRO · risco/retorno Equilibrado</span></div>
+      <div class="cover-meta animate">
+        <div>Preço na análise<b>US$ 14,22 (24/06/2026)</b></div>
+        <div>NAV<b>~US$ 14,55–14,85</b></div>
+        <div>Patrimônio (AUM)<b>~US$ 180–185 mi</b></div>
+        <div>Taxa de administração<b>0,90% a.a.</b></div>
+        <div>Faixa 52 semanas<b>US$ 13,60 – 15,83</b></div>
+        <div>Data de publicação<b>25 de junho de 2026</b></div>
+      </div>
+      <div class="stats-strip animate">
+        <div class="stat"><div class="k">Retorno NAV 12M</div><div class="v">+51,7%</div><div class="s">até 31/05/2026</div></div>
+        <div class="stat"><div class="k">Desde início (anual.)</div><div class="v">+16,6%</div><div class="s">início 29/09/2023</div></div>
+        <div class="stat"><div class="k">P/L da carteira (TTM)</div><div class="v">~14,5x</div><div class="s">vs Mag-7 ~34x</div></div>
+        <div class="stat"><div class="k">Top 10 posições</div><div class="v">67,8%</div><div class="s">de 23 ativos</div></div>
+        <div class="stat"><div class="k">Sobreposição S&amp;P 500</div><div class="v">0%</div><div class="s">em 31/05/2026</div></div>
+        <div class="stat"><div class="k">Giro de carteira</div><div class="v">~69%</div><div class="s">categoria ~93%</div></div>
+        <div class="stat"><div class="k">Posições</div><div class="v">~23</div><div class="s">não diversificado</div></div>
+        <div class="stat"><div class="k">AUM no lançamento</div><div class="v">US$ 122,5 mi</div><div class="s">09/02/2026</div></div>
+      </div>
+    </section>
+
+    <!-- ====================== SEÇÃO 1 ====================== -->
+    <section class="section" id="ancora">
+      <div class="sec-eyebrow animate">Seção 1 · Análise de Performance</div>
+      <h2 class="animate">Verificação de âncora (adaptada a ETF)</h2>
+      <p class="lede animate">O protocolo de ancoragem do PGS pressupõe quatro trimestres de resultados contábeis. Um ETF de gestão ativa não publica lucro por trimestre — a métrica equivalente é o retorno padronizado de NAV e de preço de mercado por período, divulgado no factsheet oficial do fundo. A âncora é, portanto, o factsheet mais recente publicado.</p>
+      <div class="callout animate">
+        <div class="mono" style="font-size:12.5px;line-height:1.9">
+        ✓ Âncora confirmada: factsheet oficial em <b>31/05/2026</b> (apresentação institucional de junho/2026, Pabrai Wagons Advisors)<br>
+        ✓ Período secundário confirmado: factsheet em <b>31/03/2026</b> (fechamento do 1º trimestre civil)<br>
+        ✓ Janelas de retorno cobertas, em sequência: 1 mês → 3 meses → 6 meses → no ano → 12 meses → desde o início (anualizado)<br>
+        ✓ Sem lacunas — séries contínuas de NAV e de preço de mercado.<br>
+        ✓ Decomposição mês a mês de NAV não é divulgada oficialmente; rastreadores terceiros divergem e qualquer número não confirmado é marcado <b>(est.)</b> ou <b>n/d</b>.
+        </div>
+      </div>
+      <p class="animate">Como o WAGN é o sucessor contábil da classe institucional do fundo mútuo predecessor (início em 29/09/2023), todas as séries anteriores a 06/02/2026 referem-se ao fundo predecessor. O ETF passou a negociar na NYSE em 09/02/2026. EPS GAAP e ajustado, margem operacional e receita por segmento <b>não se aplicam</b> a um ETF e foram substituídos por retorno de NAV, retorno de preço de mercado, prêmio/desconto, fluxos de patrimônio e composição da carteira.</p>
+    </section>
+
+    <section class="section" id="snapshot">
+      <div class="sec-eyebrow animate">Seção 1.1</div>
+      <h2 class="animate">Snapshot por período</h2>
+      <p class="lede animate">Retornos de NAV nas duas datas-âncora oficiais. O fundo teve um primeiro trimestre civil de 2026 excepcional (+14,2% no NAV enquanto o S&amp;P 500 TR recuava), devolveu parte do ganho em abril–maio e encerrou maio ainda com forte desempenho em 12 meses.</p>
+      <div class="quarter-grid animate">
+        <div class="qcard">
+          <div class="qlabel">No ano (YTD) · 31/05/2026</div>
+          <div class="qbig">+11,3%</div>
+          <div class="qsub">NAV · mercado +11,3%</div>
+          <div class="qrow"><span>6 meses</span><span class="pos">+23,2%</span></div>
+          <div class="qrow"><span>1 mês (maio)</span><span class="pos">+0,9%</span></div>
+          <div class="qrow"><span>Sinal</span><span><span class="pill pill-pos">forte</span></span></div>
+        </div>
+        <div class="qcard">
+          <div class="qlabel">12 meses · 31/05/2026</div>
+          <div class="qbig">+51,7%</div>
+          <div class="qsub">NAV · mercado +52,3%</div>
+          <div class="qrow"><span>Desde início (a.a.)</span><span class="pos">+16,6%</span></div>
+          <div class="qrow"><span>vs categoria</span><span class="pos">acima</span></div>
+          <div class="qrow"><span>Sinal</span><span><span class="pill pill-pos">superação</span></span></div>
+        </div>
+        <div class="qcard">
+          <div class="qlabel">1º tri civil · 31/03/2026</div>
+          <div class="qbig">+14,2%</div>
+          <div class="qsub">NAV · YTD = 3 meses</div>
+          <div class="qrow"><span>6 meses</span><span class="pos">+21,3%</span></div>
+          <div class="qrow"><span>S&amp;P 500 TR (YTD)</span><span class="neg">−4,3%</span></div>
+          <div class="qrow"><span>Sinal</span><span><span class="pill pill-pos">descorrel.</span></span></div>
+        </div>
+        <div class="qcard">
+          <div class="qlabel">12 meses · 31/03/2026</div>
+          <div class="qbig">+44,2%</div>
+          <div class="qsub">NAV · mercado +45,9%</div>
+          <div class="qrow"><span>Desde início (a.a.)</span><span class="pos">+15,1%</span></div>
+          <div class="qrow"><span>1 mês (março)</span><span class="neg">−1,7%</span></div>
+          <div class="qrow"><span>Sinal</span><span><span class="pill pill-pos">forte</span></span></div>
+        </div>
+      </div>
+      <div class="src">Fonte: Pabrai Wagons Advisors — Apresentação Institucional (jun/2026); factsheets de 31/03/2026 e 31/05/2026. Retornos passados não garantem resultados futuros.</div>
+    </section>
+
+    <section class="section" id="bench">
+      <div class="sec-eyebrow animate">Seção 1.2 · Detalhe de desempenho vs benchmark</div>
+      <h2 class="animate">NAV, preço de mercado e índice</h2>
+      <p class="lede animate">O benchmark único do fundo é o S&amp;P 500 Total Return. A tabela abaixo confronta NAV e preço de mercado do WAGN com o índice nas janelas em que o dado do índice é inequívoco no factsheet. Onde o mapeamento de período do índice não pôde ser confirmado na fonte, registra-se n/d, sem estimar.</p>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th>Janela (até 31/05/2026)</th><th class="num">WAGN NAV</th><th class="num">WAGN Mercado</th><th class="num">S&amp;P 500 TR</th><th class="num">Diferença NAV vs índice</th></tr></thead>
+          <tbody>
+            <tr><td>1 mês</td><td class="num pos">+0,9%</td><td class="num">n/d</td><td class="num">n/d</td><td class="num">n/d</td></tr>
+            <tr><td>6 meses</td><td class="num pos">+23,2%</td><td class="num pos">+23,7%</td><td class="num">n/d</td><td class="num">n/d</td></tr>
+            <tr><td>No ano (YTD)</td><td class="num pos">+11,3%</td><td class="num pos">+11,3%</td><td class="num">n/d</td><td class="num">n/d</td></tr>
+            <tr><td>12 meses</td><td class="num pos">+51,7%</td><td class="num pos">+52,3%</td><td class="num">n/d</td><td class="num">n/d</td></tr>
+            <tr><td>Desde início (anualizado)</td><td class="num pos">+16,6%</td><td class="num pos">+16,8%</td><td class="num">n/d</td><td class="num">n/d</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: factsheet WAGN 31/05/2026. Mapeamento de período do S&amp;P 500 TR não confirmado na extração da fonte → marcado n/d (regra de integridade PGS: não estimar benchmark).</div>
+
+      <h3 class="animate">Ponto de contraste inequívoco — 1º trimestre de 2026</h3>
+      <p class="animate">A divergência mais relevante aparece no fechamento de março, quando a leitura do índice é clara no factsheet. Enquanto o S&amp;P 500 TR recuava no ano, o WAGN avançava em ritmo de dois dígitos — exatamente o comportamento descorrelacionado que o fundo promete como o "Un-S&amp;P 500".</p>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th>Métrica (até 31/03/2026)</th><th class="num">WAGN NAV</th><th class="num">S&amp;P 500 TR</th><th class="num">Diferença</th></tr></thead>
+          <tbody>
+            <tr><td>No ano (YTD = 3 meses)</td><td class="num pos">+14,2%</td><td class="num neg">−4,3%</td><td class="num pos">+18,5 p.p.</td></tr>
+            <tr><td>1 mês (março)</td><td class="num neg">−1,7%</td><td class="num">n/d</td><td class="num">n/d</td></tr>
+            <tr><td>12 meses</td><td class="num pos">+44,2%</td><td class="num">n/d</td><td class="num">n/d</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: factsheet WAGN 31/03/2026. Diferença em pontos percentuais calculada sobre os retornos divulgados.</div>
+      <div class="callout animate"><b>Divergência entre rastreadores.</b> Yahoo Finance reportou retorno total de mercado YTD de +22,4% até 17/04/2026; a Morningstar atribuiu nota "D" a abril/2026 (retorno mensal de +5,1% vs média de categoria +9,6%). Essas leituras usam metodologia (preço vs NAV, datas e classes) distinta do factsheet oficial. O PGS trata os números do factsheet do gestor como primários e registra as demais leituras como referência de terceiros.</div>
+    </section>
+
+    <section class="section" id="trajetoria">
+      <div class="sec-eyebrow animate">Seção 1.3 · A história por trás dos números</div>
+      <h2 class="animate">Trajetória e eventos definidores</h2>
+      <p class="lede animate">Uma linha narrativa por marco — o enredo, não a repetição das cifras.</p>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th>Marco</th><th>O que definiu o período</th></tr></thead>
+          <tbody>
+            <tr><td><b>4º tri 2025</b><br><span class="mono" style="font-size:11px;color:var(--text-mute)">predecessor</span></td><td>Janela de seis meses encerrada em 31/03/2026 já acumulava +21,3% no NAV, sinalizando que o portfólio contrário ganhava tração antes mesmo da conversão para ETF. O fundo entrava em 2026 como classe institucional de fundo mútuo.</td></tr>
+            <tr><td><b>1º tri 2026</b><br><span class="mono" style="font-size:11px;color:var(--text-mute)">jan–mar</span></td><td>Trimestre definidor: +14,2% no NAV enquanto o S&amp;P 500 TR caía 4,3% no ano. A correção dos "Magnificent 7" — pressionados por capex de IA em alta e competição crescente — beneficiou justamente as áreas "esquecidas" da carteira (offshore, carvão, emergentes), validando a tese de descorrelação.</td></tr>
+            <tr><td><b>Conversão p/ ETF</b><br><span class="mono" style="font-size:11px;color:var(--text-mute)">09/02/2026</span></td><td>Reorganização do fundo mútuo para ETF na NYSE, com classe única e taxa de 0,90% (substituindo as classes institucional e de varejo). Tese do gestor: menor custo, mais transparência, melhor eficiência tributária e disponibilidade ampla em corretoras. AUM inicial de US$ 122,5 mi.</td></tr>
+            <tr><td><b>Abr–mai 2026</b><br><span class="mono" style="font-size:11px;color:var(--text-mute)">pós-conversão</span></td><td>Devolução parcial dos ganhos: o YTD do NAV recuou de +14,2% (mar) para +11,3% (mai), com maio em +0,9%. Recuperação relativa do índice e volatilidade típica de small/mid caps emergentes explicam o respiro. Mesmo assim, 12 meses fecharam maio em +51,7%.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: factsheets WAGN 31/03/2026 e 31/05/2026; site oficial do fundo (cronologia da conversão); apresentação institucional jun/2026.</div>
+    </section>
+
+    <section class="section" id="padroes">
+      <div class="sec-eyebrow animate">Seção 1.4</div>
+      <h2 class="animate">Padrões recorrentes de desempenho</h2>
+      <p class="lede animate">Cinco observações estruturais que atravessam as janelas analisadas.</p>
+      <ul class="animate">
+        <li><b>Descorrelação como motor de retorno.</b> O melhor período relativo do fundo (1º tri 2026) coincidiu com o pior do S&amp;P 500 no ano. A ausência total de sobreposição com o índice torna o WAGN um diversificador genuíno — e também o expõe a ciclos próprios, alheios ao "beta" do mercado americano.</li>
+        <li><b>Volatilidade elevada em ambas as direções.</b> Oscilações mensais amplas (de −1,7% em março a +0,9% em maio, com o YTD recuando vários pontos entre as datas) refletem a concentração e o perfil small/mid cap emergente. O retorno de 12 meses é forte, mas o caminho é acidentado.</li>
+        <li><b>Prêmio/desconto de preço sobre NAV.</b> Como ETF recém-listado e ilíquido em alguns ativos subjacentes, o preço de mercado oscila em torno do NAV; o gestor recomenda explicitamente ordens limitadas. Mercado e NAV andaram próximos nas janelas oficiais (12M: +52,3% vs +51,7%).</li>
+        <li><b>Liderança por "buckets" temáticos.</b> Seis blocos respondem por ~79% do portfólio. O desempenho do fundo é, na prática, a soma da evolução de poucos temas concentrados (offshore, Edelweiss, complexo Mark Leonard, carvão met, TAV, Reysas), não de um índice amplo.</li>
+        <li><b>Baixo giro, alta convicção.</b> Giro de ~69% (abaixo da média de ~93% da categoria) é consistente com a filosofia "circle the wagons": poucas grandes decisões mantidas por muito tempo. O retorno tende a ser não-linear, concentrado em acertos individuais.</li>
+      </ul>
+    </section>
+
+    <section class="section" id="kpis">
+      <div class="sec-eyebrow animate">Seção 1.5</div>
+      <h2 class="animate">KPIs que o mercado monitora</h2>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th>Indicador</th><th class="num">Leitura atual</th><th>Referência</th><th class="num">Sinal</th></tr></thead>
+          <tbody>
+            <tr><td>Patrimônio (AUM)</td><td class="num">~US$ 180–185 mi</td><td>Lançamento em US$ 122,5 mi (fev/2026)</td><td class="num pos">↑ improving</td></tr>
+            <tr><td>Retorno NAV 12 meses</td><td class="num">+51,7%</td><td>Acima da categoria Global Small/Mid</td><td class="num pos">↑ improving</td></tr>
+            <tr><td>Concentração (Top 10)</td><td class="num">67,8%</td><td>Fundo não diversificado</td><td class="num cau">→ stable</td></tr>
+            <tr><td>Prêmio/desconto sobre NAV</td><td class="num">próximo de zero</td><td>Mercado 12M +52,3% vs NAV +51,7%</td><td class="num pos">→ stable</td></tr>
+            <tr><td>Giro de carteira</td><td class="num">~69%</td><td>Categoria ~93%</td><td class="num pos">→ stable</td></tr>
+            <tr><td>Taxa de administração</td><td class="num">0,90%</td><td>Classe única (pós-conversão)</td><td class="num cau">→ stable</td></tr>
+            <tr><td>Caixa em carteira</td><td class="num">~0,5%</td><td>Praticamente investido</td><td class="num pos">→ stable</td></tr>
+            <tr><td>Sobreposição com S&amp;P 500</td><td class="num">0%</td><td>"Un-S&amp;P 500"</td><td class="num pos">→ stable</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: Morningstar (17/06/2026), TradingView, Investing.com, AAII, Yahoo Finance e apresentação institucional jun/2026. Sinal conforme vocabulário PGS (↑ melhora · → estável · ↓ deterioração).</div>
+    </section>
+
+    <section class="section" id="watch">
+      <div class="sec-eyebrow animate">Seção 1.6</div>
+      <h2 class="animate">O que observar no próximo período</h2>
+      <ul class="animate">
+        <li><b>Primeiro spin-off da Edelweiss ↑</b> — IPO do braço de ativos alternativos (avaliado em US$ 1–1,5 bi pela gestora) é o catalisador mais concreto da maior posição financeira do fundo.</li>
+        <li><b>Day rates de drillships → </b> — preços de diárias offshore e novas contratações de Valaris, Transocean e Noble definem o maior bucket (~21%). Tese depende de oferta apertada sustentar tarifas.</li>
+        <li><b>Preço do carvão metalúrgico e recompras ↑/↓</b> — Warrior e Alpha dependem do ciclo do carvão; Alpha segue recomprando agressivamente (−32% das ações em 4 anos).</li>
+        <li><b>Tráfego de passageiros e Almaty na TAV ↑</b> — crescimento de 6–9% de passageiros pode amplificar caixa em mais de 2x, por alavancagem operacional.</li>
+        <li><b>Reavaliação do Reysas REIT →</b> — destravamento do valor de liquidação (>US$ 2,5 bi estimado vs ~US$ 1,3 bi de mercado) do maior dono de galpões da Turquia.</li>
+        <li><b>Fluxos e AUM do ETF ↑</b> — captação contínua pós-conversão sinaliza adoção; AUM crescente reduz custo relativo e risco de viabilidade do fundo.</li>
+      </ul>
+      <div class="src">Fonte: apresentação institucional WAGN jun/2026 (teses por posição). Estimativas de valor são da própria gestora (Dhandho Funds).</div>
+    </section>
+
+    <!-- ====================== SEÇÃO 2 ====================== -->
+    <section class="section" id="estrutura">
+      <div class="sec-eyebrow animate">Seção 2 · Análise Institucional</div>
+      <h2 class="animate">Estrutura do fundo e arquitetura da carteira</h2>
+      <p class="lede animate">O WAGN é um ETF de gestão ativa, não diversificado, que busca apreciação de capital de longo prazo investindo ao menos 80% do patrimônio em ações de qualquer capitalização, com forte viés para small/mid caps globais profundamente descontadas. O processo segue os princípios "Circle the Wagons": não cortar as flores e regar as ervas daninhas (manter os grandes negócios), não pagar caro por grandes empresas e focar em moats largos, bons gestores e longas pistas de crescimento.</p>
+
+      <h3 class="animate">Dez maiores posições (31/03/2026)</h3>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th class="num">#</th><th>Posição</th><th>País</th><th>Tema</th><th class="num">Peso</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td>Warrior Met Coal</td><td>EUA</td><td>Carvão metalúrgico</td><td class="num">11,2%</td></tr>
+            <tr><td class="num">2</td><td>Edelweiss Financial Services</td><td>Índia</td><td>Holding financeira</td><td class="num">10,2%</td></tr>
+            <tr><td class="num">3</td><td>Valaris</td><td>EUA</td><td>Serviços offshore</td><td class="num">9,2%</td></tr>
+            <tr><td class="num">4</td><td>Alpha Metallurgical Resources</td><td>EUA</td><td>Carvão metalúrgico</td><td class="num">6,3%</td></tr>
+            <tr><td class="num">5</td><td>TAV Airport Holdings</td><td>Turquia</td><td>Aeroportos</td><td class="num">5,6%</td></tr>
+            <tr><td class="num">6</td><td>Transocean</td><td>EUA</td><td>Serviços offshore</td><td class="num">5,4%</td></tr>
+            <tr><td class="num">7</td><td>Kaspi.kz</td><td>Cazaquistão</td><td>Fintech/plataforma</td><td class="num">4,8%</td></tr>
+            <tr><td class="num">8</td><td>Constellation Software</td><td>Canadá</td><td>Software vertical (VMS)</td><td class="num">4,7%</td></tr>
+            <tr><td class="num">9</td><td>Noble Corporation</td><td>EUA</td><td>Serviços offshore</td><td class="num">4,7%</td></tr>
+            <tr><td class="num">10</td><td>Lumine Group</td><td>Canadá</td><td>Software vertical (VMS)</td><td class="num">4,7%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: Pabrai Wagons Advisors — Apresentação Institucional jun/2026 (10 maiores posições em 31/03/2026). Composição sujeita a mudança.</div>
+
+      <h3 class="animate">Seis "buckets" temáticos (~79% do portfólio, 31/03/2026)</h3>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th>Bucket</th><th>Geografia</th><th class="num">Peso aprox.</th><th>Tese central</th></tr></thead>
+          <tbody>
+            <tr><td>Serviços offshore de petróleo</td><td>EUA</td><td class="num">~21%</td><td>Oferta de drillships travada, sem novos navios; tarifas poderiam dobrar para &gt;US$ 1 mi/dia, com FCF potencial &gt;US$ 1 bi/ano por empresa. Negociam abaixo do custo de reposição.</td></tr>
+            <tr><td>Edelweiss Financial</td><td>Índia</td><td class="num">~17%</td><td>Holding (~US$ 1,2 bi de mkt cap) com 4+ spin-offs planejados em 5–6 anos; primeiro (ativos alternativos) avaliado em US$ 1–1,5 bi no IPO.</td></tr>
+            <tr><td>Complexo Mark Leonard</td><td>Canadá &amp; UE</td><td class="num">~14%</td><td>Constellation, Topicus e Lumine: compounders de software vertical penalizados pelo selloff de IA; tese de que IA beneficia incumbentes.</td></tr>
+            <tr><td>Carvão metalúrgico</td><td>Global</td><td class="num">~10%</td><td>Produtores no quartil inferior da curva de custo; setor odiado, mas sem substituto relevante para a siderurgia por décadas. Recompras agressivas.</td></tr>
+            <tr><td>TAV Airports</td><td>Turquia</td><td class="num">~9%</td><td>15 aeroportos em 8 países; alta alavancagem operacional; unidades (ATU, Havas, TAV Technologies) valeriam mais que o mkt cap total. Almaty: US$ 120 mi investidos (2021) → US$ 112 mi de EBITDA atribuível (2025).</td></tr>
+            <tr><td>Reysas</td><td>Turquia</td><td class="num">~8%</td><td>Logística dona de 62% do Reysas REIT (12 mi+ pés² de galpões Grade-A); maior dono de armazéns e maior gerador solar em telhado da Turquia. Liquidação estimada &gt;US$ 2,5 bi vs ~US$ 1,3 bi de mercado.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: apresentação institucional WAGN jun/2026. Estimativas de valor são da gestora (Dhandho Funds — análise proprietária).</div>
+
+      <h3 class="animate">Alocação setorial</h3>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th>Setor</th><th class="num">Peso</th><th>Setor</th><th class="num">Peso</th></tr></thead>
+          <tbody>
+            <tr><td>Materiais básicos</td><td class="num">21,2%</td><td>Serviços financeiros</td><td class="num">12,4%</td></tr>
+            <tr><td>Tecnologia</td><td class="num">19,3%</td><td>Consumo cíclico</td><td class="num">8,6%</td></tr>
+            <tr><td>Industriais</td><td class="num">17,4%</td><td>Imobiliário</td><td class="num">4,4%</td></tr>
+            <tr><td>Energia</td><td class="num">16,8%</td><td>Demais setores</td><td class="num">~0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: Yahoo Finance (alocação setorial WAGN, ~abr/2026). Saúde, utilidades, consumo defensivo e comunicação em ~0%.</div>
+    </section>
+
+    <section class="section" id="moat">
+      <div class="sec-eyebrow animate">Seção 2.1</div>
+      <h2 class="animate">Avaliação de "moat" (do veículo)</h2>
+      <p class="lede animate">Um ETF não tem moat próprio no sentido corporativo; o que se avalia é a vantagem estrutural e durável do veículo e de seu processo. As estrelas refletem a robustez de cada pilar (5 = vantagem quase inexpugnável).</p>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th>Pilar</th><th class="num">Força</th><th>Risco ao pilar</th><th class="num">PGS</th></tr></thead>
+          <tbody>
+            <tr><td>Habilidade do gestor (Pabrai, 28 anos, discípulo Buffett/Munger)</td><td class="num">Alta</td><td>É também risco de pessoa-chave — indissociável do indivíduo</td><td class="num"><span class="stars">★★★★<span class="off">★</span></span></td></tr>
+            <tr><td>Diferenciação estrutural ("Un-S&amp;P 500", 0% de overlap)</td><td class="num">Alta</td><td>Descorrelação corta nos dois sentidos; sem "rede" do índice</td><td class="num"><span class="stars">★★★★<span class="off">★</span></span></td></tr>
+            <tr><td>Disciplina de processo (baixo giro, alta convicção)</td><td class="num">Média-alta</td><td>Concentração amplifica erro individual</td><td class="num"><span class="stars">★★★<span class="off">★★</span></span></td></tr>
+            <tr><td>Custo vs gestão ativa concentrada (0,90%)</td><td class="num">Média</td><td>Caro frente a ETFs passivos; competitivo frente a hedge funds</td><td class="num"><span class="stars">★★★<span class="off">★★</span></span></td></tr>
+            <tr><td>Acesso a nichos ilíquidos/emergentes difíceis de replicar</td><td class="num">Média-alta</td><td>Iliquidez e governança dos ativos subjacentes</td><td class="num"><span class="stars">★★★★<span class="off">★</span></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: avaliação PGS a partir de apresentação institucional jun/2026, prospecto e dados de Morningstar/AAII. Classificação por estrelas conforme escala PGS.</div>
+    </section>
+
+    <section class="section" id="riscos">
+      <div class="sec-eyebrow animate">Seção 2.2</div>
+      <h2 class="animate">Principais riscos</h2>
+
+      <div class="risk animate">
+        <div class="risk-head"><h4>1 · Dependência de pessoa-chave (gestor único)</h4><span class="sev sev-high">Severidade Alta</span></div>
+        <div class="risk-body">O próprio prospecto afirma que o consultor é "fortemente dependente das atividades de um único indivíduo, Mohnish Pabrai". Toda a tese de seleção, alocação e timing repousa em uma pessoa. Incapacitação, mudança de foco ou erro de julgamento do gestor afetariam o fundo de forma desproporcional. Horizonte: estrutural e permanente.</div>
+      </div>
+
+      <div class="risk animate">
+        <div class="risk-head"><h4>2 · Concentração e não diversificação</h4><span class="sev sev-high">Severidade Alta</span></div>
+        <div class="risk-body">Apenas ~23 posições, com as 10 maiores somando 67,8% e buckets temáticos individuais ultrapassando 20%. O fundo pode, por desenho, alocar 25% ou mais em um único setor. Um choque idiossincrático (um produtor de carvão, a tese offshore, ou a Edelweiss) tem impacto material no NAV. Horizonte: permanente, inerente à estratégia.</div>
+      </div>
+
+      <div class="risk animate">
+        <div class="risk-head"><h4>3 · Mercados emergentes, câmbio e liquidez de small caps</h4><span class="sev sev-high">Severidade Alta</span></div>
+        <div class="risk-body">Exposição relevante a Turquia (TAV, Reysas), Índia (Edelweiss) e Cazaquistão (Kaspi.kz) traz risco político, econômico, cambial e de governança, além de menor proteção ao investidor e liquidação mais lenta. Ativos small/mid cap acrescentam volatilidade e iliquidez. A inflação e a moeda turcas são fontes recorrentes de ruído. Horizonte: contínuo, sensível a ciclos macro locais.</div>
+      </div>
+
+      <div class="risk med animate">
+        <div class="risk-head"><h4>4 · Histórico curto como ETF e prêmio/desconto</h4><span class="sev sev-med">Severidade Média</span></div>
+        <div class="risk-body">O ETF negocia desde fev/2026; mercado secundário ainda em maturação pode gerar prêmio/desconto sobre o NAV e spreads largos (a gestora recomenda ordens limitadas). AUM ainda modesto (~US$ 180–185 mi) implica risco de viabilidade econômica caso a captação reverta. Horizonte: 12–24 meses, decrescente com a adoção.</div>
+      </div>
+    </section>
+
+    <section class="section" id="crescimento">
+      <div class="sec-eyebrow animate">Seção 2.3</div>
+      <h2 class="animate">Arquitetura de retorno de longo prazo</h2>
+      <p class="lede animate">Os vetores de retorno são os destravamentos de valor de cada bucket — não um crescimento agregado de "receita".</p>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th>Vetor</th><th>Horizonte</th><th>Estado atual</th><th>Potencial</th><th class="num">Status</th></tr></thead>
+          <tbody>
+            <tr><td>Ciclo de diárias offshore</td><td>2–5 anos</td><td>Oferta travada, sem newbuilds</td><td>Tarifas &gt;US$ 1 mi/dia; FCF potencial &gt;US$ 1 bi/ano por empresa</td><td class="num"><span class="pill pill-neu">emerging</span></td></tr>
+            <tr><td>Spin-offs da Edelweiss</td><td>1–6 anos</td><td>Primeiro IPO (alt. assets) em curso</td><td>4+ subsidiárias, cada uma US$ 0,5–1,5 bi</td><td class="num"><span class="pill pill-pos">on track</span></td></tr>
+            <tr><td>Recompras no carvão met</td><td>contínuo</td><td>Alpha: −32% de ações em 4 anos</td><td>Possível retirar &gt;70% das ações em uma década</td><td class="num"><span class="pill pill-pos">on track</span></td></tr>
+            <tr><td>Alavancagem operacional da TAV</td><td>3–7 anos</td><td>15 aeroportos; Almaty maturando</td><td>Caixa cresce &gt;2x o ritmo de passageiros</td><td class="num"><span class="pill pill-pos">on track</span></td></tr>
+            <tr><td>Reavaliação do Reysas REIT</td><td>3–7 anos</td><td>Mercado ~US$ 1,3 bi</td><td>Liquidação estimada &gt;US$ 2,5 bi</td><td class="num"><span class="pill pill-neu">emerging</span></td></tr>
+            <tr><td>Compounders Mark Leonard</td><td>5+ anos</td><td>Penalizados pelo selloff de IA</td><td>Composição de longo prazo via VMS</td><td class="num"><span class="pill pill-neu">at risk</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: apresentação institucional WAGN jun/2026. Potenciais e estimativas são da gestora (Dhandho Funds). Status conforme escala PGS (on track · emerging · at risk).</div>
+    </section>
+
+    <section class="section" id="cenarios">
+      <div class="sec-eyebrow animate">Seção 2.4</div>
+      <h2 class="animate">Cenários bull vs bear</h2>
+      <p class="lede animate">Para um ETF, não há "preço-alvo" de sell-side. Os números abaixo são faixas ilustrativas de retorno de NAV em 18–24 meses <b>(est.)</b>, derivadas dos vetores de cada bucket — não recomendações nem projeções da gestora.</p>
+      <div class="scenario-grid animate">
+        <div class="scard bull">
+          <div class="scard-head"><h4>Cenário Bull</h4><div class="tg">NAV: ~+35% a +60% em 18–24m (est.)</div></div>
+          <div class="scard-body">
+            <div class="lbl">Premissas</div>
+            <p>Tarifas offshore disparam com oferta travada; IPO de ativos alternativos da Edelweiss destrava valor; carvão met resiliente com recompras; reavaliação do Reysas REIT; rotação global para "value" e fora dos Mag-7 continua.</p>
+            <div class="lbl">O que sustenta</div>
+            <p>Múltiplos baixos (P/L ~14,5x) + catalisadores idiossincráticos com gatilho próprio, pouco dependentes do índice americano.</p>
+            <div class="lbl">Requer</div>
+            <p>Estabilidade macro razoável na Turquia/Índia; câmbio sob controle; execução do gestor.</p>
+          </div>
+        </div>
+        <div class="scard bear">
+          <div class="scard-head"><h4>Cenário Bear</h4><div class="tg">NAV: ~−25% a −40% em 18–24m (est.)</div></div>
+          <div class="scard-body">
+            <div class="lbl">Premissas</div>
+            <p>Queda no preço de petróleo/carvão derruba dois maiores buckets; crise cambial ou política na Turquia atinge TAV e Reysas; spin-offs da Edelweiss atrasam; selloff de software persiste; saídas reduzem AUM.</p>
+            <div class="lbl">O que pressiona</div>
+            <p>Concentração amplifica perdas; iliquidez agrava drawdowns; ausência de "rede" do índice.</p>
+            <div class="lbl">Requer</div>
+            <p>Choque macro em emergentes ou erro de tese em um ou dois buckets centrais.</p>
+          </div>
+        </div>
+      </div>
+      <div class="src">Fonte: cenarização PGS (est.) a partir das teses por bucket (apresentação jun/2026). Faixas ilustrativas, não projeções da gestora; ETFs não têm preço-alvo de consenso.</div>
+    </section>
+
+    <section class="section" id="valuation">
+      <div class="sec-eyebrow animate">Seção 2.5</div>
+      <h2 class="animate">Contexto de valuation</h2>
+      <p class="lede animate">A tese de valuation do WAGN é relativa: a carteira negocia a um múltiplo muito inferior ao do índice concentrado nos Mag-7, com zero sobreposição.</p>
+      <div class="table-wrap animate">
+        <table>
+          <thead><tr><th>Métrica</th><th class="num">Atual</th><th>Referência</th><th>Comentário</th></tr></thead>
+          <tbody>
+            <tr><td>P/L da carteira (TTM)</td><td class="num">~14,5x</td><td>Mag-7 ponderado ~34x</td><td>Desconto estrutural; carteira "value" profunda</td></tr>
+            <tr><td>Preço / NAV</td><td class="num">~1,0x</td><td>Próximo da paridade</td><td>Prêmio/desconto pequeno nas janelas oficiais</td></tr>
+            <tr><td>Taxa de administração</td><td class="num">0,90%</td><td>ETFs passivos &lt;0,1%; ativos 0,5–1,0%</td><td>Cara vs passivos; alinhada a ativos concentrados</td></tr>
+            <tr><td>Dividend yield</td><td class="num">~0,0–0,8%</td><td>Foco em apreciação, não renda</td><td>Estratégia de ganho de capital</td></tr>
+            <tr><td>Patrimônio (AUM)</td><td class="num">~US$ 180 mi</td><td>Média de categoria ~US$ 278 mi</td><td>Abaixo da média; em crescimento</td></tr>
+            <tr><td>Beta vs S&amp;P 500</td><td class="num">baixo/atípico</td><td>0% de overlap</td><td>Comportamento próprio, não "beta" de índice</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: Yahoo Finance (P/L TTM ~14,5x, taxa 0,90%), AAII/Morningstar (AUM, categoria), apresentação institucional jun/2026 (P/L dos Mag-7 ~34x). Múltiplos sujeitos a variação.</div>
+    </section>
+
+    <section class="section" id="cobertura">
+      <div class="sec-eyebrow animate">Seção 2.6</div>
+      <h2 class="animate">Cobertura e posicionamento de mercado</h2>
+      <p class="lede animate">ETFs não recebem recomendações nem preços-alvo de analistas de sell-side. Em vez de inventar nomes ou alvos, o quadro abaixo organiza o posicionamento real: a tese do próprio gestor, a leitura neutra dos provedores de dados e os pontos céticos.</p>
+      <div class="analyst-grid animate">
+        <div class="acell b">
+          <h4>Construtivo</h4>
+          <div class="acount">Tese</div>
+          <ul>
+            <li>Diferenciação estrutural ("Un-S&amp;P 500", 0% de overlap)</li>
+            <li>Gestor experiente, track record de valor</li>
+            <li>Múltiplo de carteira muito abaixo do índice</li>
+            <li>Eficiência tributária e custo menor pós-conversão</li>
+          </ul>
+        </div>
+        <div class="acell n">
+          <h4>Neutro / observadores</h4>
+          <div class="acount">Dados</div>
+          <ul>
+            <li>Categoria Morningstar: Global Small/Mid Stock</li>
+            <li>Nota de abril/2026: "D" (vs média de categoria)</li>
+            <li>Rating Morningstar Medalist: n/d (não localizado)</li>
+            <li>Benchmark único: S&amp;P 500 TR (100%)</li>
+          </ul>
+        </div>
+        <div class="acell s">
+          <h4>Cético / riscos</h4>
+          <div class="acount">Alertas</div>
+          <ul>
+            <li>Risco de pessoa-chave indissociável</li>
+            <li>Concentração e não diversificação</li>
+            <li>Exposição a emergentes, câmbio e iliquidez</li>
+            <li>Histórico curto como ETF; AUM modesto</li>
+          </ul>
+        </div>
+      </div>
+      <div class="src">Fonte: Morningstar (categoria e nota mensal), AAII (benchmark), apresentação institucional jun/2026. Preços-alvo de consenso não se aplicam a ETFs (n/d por natureza do veículo).</div>
+    </section>
+
+    <!-- VERDICT -->
+    <section class="verdict" id="veredito">
+      <div class="sec-eyebrow animate">Conclusão</div>
+      <h2 class="animate">Veredito PGS</h2>
+      <div class="animate"><span class="verdict-rating">🟡 NEUTRO · viés construtivo · risco/retorno Equilibrado</span></div>
+      <div class="verdict-metrics animate">
+        <div class="vm"><div class="k">Cenário bull (NAV, 18–24m)</div><div class="v">~+35% a +60% (est.)</div></div>
+        <div class="vm"><div class="k">Cenário bear (NAV, 18–24m)</div><div class="v">~−25% a −40% (est.)</div></div>
+        <div class="vm"><div class="k">Retorno NAV 12M</div><div class="v">+51,7%</div></div>
+        <div class="vm"><div class="k">Risco/retorno</div><div class="v">Equilibrado</div></div>
+      </div>
+      <div class="vnum">
+        <div class="vpara animate"><b>Dislocação de preço relativo.</b> A tese do WAGN é de descorrelação: a carteira negocia a ~14,5x lucros enquanto o índice de referência se concentra em Mag-7 a ~34x, sem nenhuma ação em comum. Em 2026, essa dislocação se materializou — o NAV subiu +14,2% no 1º trimestre enquanto o S&amp;P 500 TR recuava 4,3% no ano. O fundo é, na prática, uma aposta concentrada em cantos "esquecidos" do mercado global; quando esses cantos reprecificam, o veículo entrega retorno desproporcional.</div>
+        <div class="vpara animate"><b>Qualidade fundamental.</b> O processo é coerente e disciplinado: baixo giro (~69%), alta convicção, foco em geradores de caixa com gestores-proprietários (Reysas, TAV, complexo Mark Leonard) e em ciclos com oferta estruturalmente travada (offshore, carvão met). O gestor tem 28 anos de histórico e filosofia explícita de "poucas grandes decisões". A performance de 12 meses (+51,7% no NAV) e a superação da categoria sustentam a qualidade da execução até aqui — ainda que o histórico como ETF seja curto.</div>
+        <div class="vpara animate"><b>Risco primário.</b> O mesmo desenho que gera o retorno gera a fragilidade: gestor único (dependência de pessoa-chave reconhecida em prospecto), concentração extrema (Top 10 = 67,8%; buckets &gt;20%) e exposição pesada a emergentes (Turquia, Índia, Cazaquistão) com risco cambial, político e de liquidez. Não há "rede" do índice: um erro de tese em um ou dois buckets centrais, ou um choque macro emergente, produziria drawdown material. É um veículo de alta volatilidade nos dois sentidos.</div>
+        <div class="vpara animate"><b>Catalisadores de curto prazo.</b> Os gatilhos mais concretos são o primeiro spin-off da Edelweiss (IPO de ativos alternativos, US$ 1–1,5 bi est.), a evolução das diárias offshore, as recompras no carvão metalúrgico, o tráfego e a maturação de Almaty na TAV e a reavaliação do Reysas REIT, somados à captação contínua do ETF. O equilíbrio entre um portfólio barato e descorrelacionado, de um lado, e concentração com risco de pessoa-chave, de outro, sustenta a leitura <b>Equilibrada</b> e a classificação <b>NEUTRA com viés construtivo</b> para fins de pesquisa interna.</div>
+      </div>
+    </section>
+
+    <!-- DISCLAIMER -->
+    <section class="disclaimer" id="disclaimer">
+      <p>Este relatório foi produzido exclusivamente para uso interno da Polaris Global Strategies Ltd. (PGS), sociedade constituída nas Ilhas Virgens Britânicas (BVI), que opera como veículo privado de pesquisa e análise de investimentos em nome de seus sócios. Este documento não constitui recomendação de investimento para qualquer terceiro, seja pessoa física ou jurídica, e não deve ser interpretado como tal. A PGS não presta serviços de gestão de recursos, assessoria ou consultoria de investimentos a qualquer cliente externo, não possui base de clientes e não oferece produtos ou serviços a terceiros. Qualquer eventual acesso a este documento por partes não autorizadas não confere validade como aconselhamento ou recomendação de investimento. As informações e análises aqui contidas baseiam-se em fontes públicas consideradas confiáveis, mas a PGS não oferece qualquer garantia quanto à sua integralidade ou exatidão. Investimentos em instrumentos de renda variável envolvem riscos, incluindo a possibilidade de perda total do capital investido. As opiniões expressas refletem o julgamento analítico interno na data de publicação e estão sujeitas a alteração sem aviso prévio.</p>
+      <p class="ref">Referência do relatório: PGS-WAGN-202606 · Data: 25 de junho de 2026 · Analista interno: Polaris Global Strategies Ltd. · Ticker: WAGN · Bolsa: NYSE</p>
+    </section>
+  </main>
+</div>
+<script>
+(function(){
+  // Scroll-spy
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var map = links.map(function(l){var id=l.getAttribute('href').slice(1);return {l:l,el:document.getElementById(id)};}).filter(function(x){return x.el;});
+  function spy(){
+    var y = window.scrollY + 120, cur=null;
+    map.forEach(function(x){ if(x.el.offsetTop<=y) cur=x; });
+    links.forEach(function(l){l.classList.remove('active');});
+    if(cur) cur.l.classList.add('active');
+  }
+  window.addEventListener('scroll', spy, {passive:true});
+  spy();
+
+  // Animations — JS define opacity:0 e observa; sem JS (Playwright) tudo permanece visível
+  var animateEls = Array.prototype.slice.call(document.querySelectorAll('.animate'));
+  if('IntersectionObserver' in window){
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.style.opacity='1';
+          e.target.style.animationPlayState='running';
+          animObserver.unobserve(e.target);
+        }
+      });
+    },{threshold:0.08});
+    animateEls.forEach(function(el){
+      el.style.opacity='0';
+      el.style.animationPlayState='paused';
+      animObserver.observe(el);
+    });
+  }
+})();
+</script>
+</body>
+</html>
