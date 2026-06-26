@@ -40,7 +40,7 @@ body {
     transition: background-color 0.25s, color 0.25s;
 }
 
-.card, .chart-box, .period-selector, .glossary-item, .currency-toggle, footer {
+.card, .chart-box, .period-selector, .glossary-item, .currency-toggle, .lang-toggle, footer {
     transition: background-color 0.25s, border-color 0.25s;
 }
 
@@ -138,6 +138,27 @@ header {
 
 .currency-btn.active { background: var(--accent); color: var(--accent-text); }
 .currency-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+.lang-toggle {
+    display: flex;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.lang-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: background var(--transition), color var(--transition);
+}
+
+.lang-btn.active { background: var(--accent); color: var(--accent-text); }
+.lang-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
 /* ── Theme toggle ────────────────────────────────── */
 
@@ -561,6 +582,68 @@ footer {
     margin-top: 14px;
 }
 
+/* ── BTC Valuation Charts ────────────────────────── */
+
+#btc-valuation {
+    margin-bottom: 32px;
+}
+
+.btc-val-intro {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+
+.btc-val-loading {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    padding: 32px 0;
+}
+
+.btc-val-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.btc-val-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 20px;
+}
+
+.btc-val-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.btc-val-legend {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+    line-height: 1.5;
+}
+
+.btc-val-chart-wrap {
+    position: relative;
+    height: 380px;
+    margin-bottom: 12px;
+}
+
+.btc-val-disclaimer {
+    font-size: 0.72rem;
+    color: var(--muted-dark);
+    line-height: 1.5;
+    border-top: 1px solid var(--card-border);
+    padding-top: 10px;
+    margin-top: 4px;
+}
+
 /* ── Responsive ──────────────────────────────────── */
 
 @media (max-width: 960px) {
@@ -572,6 +655,7 @@ footer {
     .main-chart-box    { height: 300px; }
     .header-right      { gap: 10px; }
     .period-selector   { gap: 8px; }
+    .btc-val-chart-wrap { height: 280px; }
 }
 
 @media (max-width: 640px) {

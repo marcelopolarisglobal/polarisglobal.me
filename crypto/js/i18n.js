@@ -1,0 +1,193 @@
+// i18n.js — sistema de tradução PT/EN
+// Carregado antes de qualquer outro script.
+
+let currentLang = localStorage.getItem('btc-lang') || 'pt';
+
+const TRANSLATIONS = {
+    pt: {
+        // ── UI estática ──────────────────────────────────────────────────────
+        loading:              'Carregando dados...',
+        price_current:        'Preço Atual',
+        change_24h:           'Variação 24h',
+        change_7d:            'Variação 7 dias',
+        change_mtd:           'Variação MTD',
+        change_ytd:           'Variação YTD',
+        ath_price:            'Preço ATH',
+        ath_potential:        'Ganho Potencial ATH',
+        volume_24h:           'Volume 24h',
+        mayer_multiple:       'Múltiplo de Mayer',
+        btc_dominance:        'Dominância BTC',
+        dominance_sub:        'do market cap global em cripto',
+        mvrv_note:            'Indicador on-chain — requer dados proprietários não disponíveis em APIs gratuitas.',
+        mvrv_link:            'Ver gráfico em LookIntoBitcoin →',
+        next_halving:         'Próximo Halving',
+        updated:              'Atualizado:',
+        date_from:            'De:',
+        date_to:              'Até:',
+        apply:                'Aplicar',
+        understand_indicators:'Entenda os Indicadores',
+        fg_fear:              'Medo',
+        fg_neutral:           'Neutro',
+        fg_greed:             'Ganância',
+        disclaimer_title:     'Aviso Legal',
+        // ── Dinâmicas (app.js) ───────────────────────────────────────────────
+        mayer_sub_prefix:     'MM200:',
+        mayer_undervalued:    'Subvalorizado',
+        mayer_below_ma:       'Abaixo MM200',
+        mayer_normal:         'Zona Normal',
+        mayer_overheated:     'Sobreaquecido',
+        halving_days_unit:    'dias',
+        halving_block_label:  'Bloco',
+        halving_forecast:     'Previsão:',
+        unavailable:          'Indisponível',
+        load_error:           'Não foi possível carregar o período. Aguarde e tente novamente.',
+        fg_extreme_fear:      'Medo Extremo',
+        fg_fear_label:        'Medo',
+        fg_neutral_label:     'Neutro',
+        fg_greed_label:       'Ganância',
+        fg_extreme_greed:     'Ganância Extrema',
+        // ── Gráficos de valuation ────────────────────────────────────────────
+        bv_section_title:     'Modelos de Valuation — Bitcoin',
+        bv_intro:             'Análise estrutural de longo prazo baseada em regressões históricas. Modelos são referência analítica — não constituem recomendação de investimento.',
+        bv_loading:           'Carregando dados históricos…',
+        bv_load_error:        'Não foi possível carregar os dados. Tente recarregar a página.',
+        bv_picycle_title:     'Pi Cycle Top',
+        bv_picycle_legend:    'Quando a MM(111) cruza acima de 2×MM(350), sinalizou historicamente topos de ciclo do Bitcoin.',
+        bv_picycle_disc:      'Indicador curve-fit histórico. Não constitui recomendação de venda.',
+        bv_picycle_sub:       'Cruzamentos detectados:',
+        bv_powerlaw_title:    'Power Law · Rainbow Chart',
+        bv_powerlaw_legend:   'Regressão log-log do preço pelos dias desde o bloco gênesis. As 9 faixas (1.3× cada) indicam zonas históricas de valorização relativa — metodologia idêntica ao Bitcoin Rainbow Chart original.',
+        bv_powerlaw_disc:     'Dados Bitstamp (desde 2011) + Binance. Não é garantia de preço futuro.',
+        bv_powerlaw_today:    'hoje',
+        bv_mm200w_title:      'MM200 Semanas · Heatmap',
+        bv_mm200w_legend:     'Cada ponto de preço é colorido pela distância acima da MM(1400 dias). Azul = próximo ao piso histórico; vermelho = euforia.',
+        bv_mm200w_disc:       'A MM200 semanas serviu historicamente como suporte de longo prazo nos fundos de ciclo.',
+        bv_mm200w_sub:        'Cor = distância acima da MM200W: azul (fundo) → vermelho (euforia)',
+        bv_mm2a_title:        'Múltiplo da Média de 2 Anos',
+        bv_mm2a_legend:       'Zona de acumulação histórica: preço abaixo da MM(730 dias). Zona de distribuição: preço acima de 5×MM(730).',
+        bv_mm2a_disc:         'As bandas delimitam regiões históricas de fundo e topo de ciclo.',
+        bv_mm2a_sub:          'Verde = zona de acumulação histórica · Vermelho = zona de distribuição histórica',
+        bv_btc_price:         'BTC Preço',
+        bv_btc_price_heatmap: 'BTC Preço (heatmap)',
+        bv_mm111:             'MM(111)',
+        bv_mm350x2:           '2 × MM(350)',
+        bv_crossing:          'Cruzamento (topo histórico)',
+        bv_mm200w_line:       'MM(1400d) ≈ MM200 semanas',
+        bv_mm730:             'MM(730d) ≈ MM2 Anos — Acumulação',
+        bv_mm730x5:           '5 × MM(730d) — Distribuição',
+        // ── Rainbow labels (ordem: topo → fundo) ────────────────────────────
+        rainbow_0:            'Território de bolha máxima',
+        rainbow_1:            'Vender. Sério, VENDER!',
+        rainbow_2:            'FOMO se intensificando',
+        rainbow_3:            'Isso é uma bolha?',
+        rainbow_4:            'Segurar!',
+        rainbow_5:            'Ainda barato',
+        rainbow_6:            'Acumular',
+        rainbow_7:            'Comprar!',
+        rainbow_8:            'Queima de estoque',
+    },
+    en: {
+        // ── UI estática ──────────────────────────────────────────────────────
+        loading:              'Loading data...',
+        price_current:        'Current Price',
+        change_24h:           '24h Change',
+        change_7d:            '7-Day Change',
+        change_mtd:           'MTD Change',
+        change_ytd:           'YTD Change',
+        ath_price:            'ATH Price',
+        ath_potential:        'ATH Potential Gain',
+        volume_24h:           '24h Volume',
+        mayer_multiple:       'Mayer Multiple',
+        btc_dominance:        'BTC Dominance',
+        dominance_sub:        'of global crypto market cap',
+        mvrv_note:            'On-chain indicator — requires proprietary data not available in free APIs.',
+        mvrv_link:            'View chart at LookIntoBitcoin →',
+        next_halving:         'Next Halving',
+        updated:              'Updated:',
+        date_from:            'From:',
+        date_to:              'To:',
+        apply:                'Apply',
+        understand_indicators:'About the Indicators',
+        fg_fear:              'Fear',
+        fg_neutral:           'Neutral',
+        fg_greed:             'Greed',
+        disclaimer_title:     'Disclaimer',
+        // ── Dinâmicas (app.js) ───────────────────────────────────────────────
+        mayer_sub_prefix:     'MA200:',
+        mayer_undervalued:    'Undervalued',
+        mayer_below_ma:       'Below MA200',
+        mayer_normal:         'Normal Zone',
+        mayer_overheated:     'Overheated',
+        halving_days_unit:    'days',
+        halving_block_label:  'Block',
+        halving_forecast:     'Forecast:',
+        unavailable:          'Unavailable',
+        load_error:           'Could not load the period. Please wait and try again.',
+        fg_extreme_fear:      'Extreme Fear',
+        fg_fear_label:        'Fear',
+        fg_neutral_label:     'Neutral',
+        fg_greed_label:       'Greed',
+        fg_extreme_greed:     'Extreme Greed',
+        // ── Gráficos de valuation ────────────────────────────────────────────
+        bv_section_title:     'Valuation Models — Bitcoin',
+        bv_intro:             'Long-term structural analysis based on historical regressions. Models are analytical references — they do not constitute investment advice.',
+        bv_loading:           'Loading historical data…',
+        bv_load_error:        'Could not load data. Please try reloading the page.',
+        bv_picycle_title:     'Pi Cycle Top',
+        bv_picycle_legend:    'When SMA(111) crosses above 2×SMA(350), it has historically signaled Bitcoin cycle tops.',
+        bv_picycle_disc:      'Historical curve-fit indicator. Does not constitute a sell recommendation.',
+        bv_picycle_sub:       'Crossovers detected:',
+        bv_powerlaw_title:    'Power Law · Rainbow Chart',
+        bv_powerlaw_legend:   'Log-log regression of price against days since the genesis block. The 9 bands (1.3× each) indicate historical relative valuation zones — methodology identical to the original Bitcoin Rainbow Chart.',
+        bv_powerlaw_disc:     'Bitstamp data (since 2011) + Binance. Not a guarantee of future price.',
+        bv_powerlaw_today:    'today',
+        bv_mm200w_title:      '200-Week MA · Heatmap',
+        bv_mm200w_legend:     'Each price point is colored by its distance above the SMA(1400 days). Blue = near the historical floor; red = euphoria.',
+        bv_mm200w_disc:       'The 200-week MA has historically served as long-term support at cycle bottoms.',
+        bv_mm200w_sub:        'Color = distance above 200-Week MA: blue (bottom) → red (euphoria)',
+        bv_mm2a_title:        '2-Year Moving Average Multiple',
+        bv_mm2a_legend:       'Historical accumulation zone: price below SMA(730 days). Distribution zone: price above 5×SMA(730).',
+        bv_mm2a_disc:         'The bands delineate historical cycle bottom and top regions.',
+        bv_mm2a_sub:          'Green = historical accumulation zone · Red = historical distribution zone',
+        bv_btc_price:         'BTC Price',
+        bv_btc_price_heatmap: 'BTC Price (heatmap)',
+        bv_mm111:             'SMA(111)',
+        bv_mm350x2:           '2 × SMA(350)',
+        bv_crossing:          'Crossover (historical top)',
+        bv_mm200w_line:       'SMA(1400d) ≈ 200-Week MA',
+        bv_mm730:             'SMA(730d) ≈ 2-Year MA — Accumulation',
+        bv_mm730x5:           '5 × SMA(730d) — Distribution',
+        // ── Rainbow labels (order: top → bottom) ────────────────────────────
+        rainbow_0:            'Maximum Bubble Territory',
+        rainbow_1:            'Sell. Seriously, SELL!',
+        rainbow_2:            'FOMO Intensifying',
+        rainbow_3:            'Is this a bubble?',
+        rainbow_4:            'Hold!',
+        rainbow_5:            'Still Cheap',
+        rainbow_6:            'Accumulate',
+        rainbow_7:            'Buy!',
+        rainbow_8:            'Basically a Fire Sale',
+    },
+};
+
+function t(key) {
+    return TRANSLATIONS[currentLang]?.[key] ?? TRANSLATIONS.pt[key] ?? key;
+}
+
+function setLang(lang) {
+    if (!TRANSLATIONS[lang]) return;
+    currentLang = lang;
+    localStorage.setItem('btc-lang', lang);
+    document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t(el.dataset.i18n);
+    });
+
+    document.querySelectorAll('.lang-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.lang === lang);
+    });
+
+    if (typeof refreshBtcValuation === 'function') refreshBtcValuation();
+    if (typeof loadAll === 'function') loadAll();
+}

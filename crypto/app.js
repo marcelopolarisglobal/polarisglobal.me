@@ -288,12 +288,12 @@ async function fetchMonth1Prices() {
 
 // ── Fear & Greed ──────────────────────────────────────────────────────────────
 
-const FG_PT = {
-    'Extreme Fear':  'Medo Extremo',
-    'Fear':          'Medo',
-    'Neutral':       'Neutro',
-    'Greed':         'Ganância',
-    'Extreme Greed': 'Ganância Extrema'
+const FG_KEY = {
+    'Extreme Fear':  'fg_extreme_fear',
+    'Fear':          'fg_fear_label',
+    'Neutral':       'fg_neutral_label',
+    'Greed':         'fg_greed_label',
+    'Extreme Greed': 'fg_extreme_greed',
 };
 
 function fgColor(v) {
@@ -309,7 +309,7 @@ function fgColor(v) {
 function updateFearGreed(fgData) {
     const value = parseInt(fgData.value);
     const color = fgColor(value);
-    const label = FG_PT[fgData.value_classification] || fgData.value_classification;
+    const label = t(FG_KEY[fgData.value_classification] || fgData.value_classification);
 
     const numEl = document.getElementById('fg-value');
     numEl.textContent = value;
@@ -325,7 +325,7 @@ function updateFearGreed(fgData) {
 function fgUnavailable() {
     setText('fg-value', 'N/D');
     const cl = document.getElementById('fg-class');
-    cl.textContent = 'Indisponível';
+    cl.textContent = t('unavailable');
     cl.style.color = '';
 }
 
@@ -340,13 +340,13 @@ function updateMayer(prices) {
 
     const { low, mid, high } = activeCoin.mayer;
     let label, cls;
-    if (multiple < low)        { label = 'Subvalorizado'; cls = 'sub'; }
-    else if (multiple < mid)   { label = 'Abaixo MM200';  cls = 'sub'; }
-    else if (multiple <= high) { label = 'Zona Normal';   cls = 'norm'; }
-    else                       { label = 'Sobreaquecido'; cls = 'hot'; }
+    if (multiple < low)        { label = t('mayer_undervalued'); cls = 'sub'; }
+    else if (multiple < mid)   { label = t('mayer_below_ma');   cls = 'sub'; }
+    else if (multiple <= high) { label = t('mayer_normal');     cls = 'norm'; }
+    else                       { label = t('mayer_overheated'); cls = 'hot'; }
 
     setText('mayer-value', '×' + multiple.toFixed(2));
-    setText('mayer-sub',   'MM200: ' + sym() + ' ' + fmtLarge(ma200));
+    setText('mayer-sub',   t('mayer_sub_prefix') + ' ' + sym() + ' ' + fmtLarge(ma200));
     const badge = document.getElementById('mayer-badge');
     badge.textContent = label;
     badge.className   = 'badge ' + cls;
@@ -373,10 +373,11 @@ function updateHalving(height) {
     const blocksPerDay = 86400 / activeCoin.halvingBlockTime;
     const days         = Math.ceil(remaining / blocksPerDay);
     const estDate      = new Date(Date.now() + remaining * activeCoin.halvingBlockTime * 1000);
-    const dateStr      = estDate.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    setText('halving-days',  days.toLocaleString('pt-BR') + ' dias');
-    setText('halving-block', 'Bloco ' + height.toLocaleString('pt-BR') + ' / ' + activeCoin.nextHalvingBlock.toLocaleString('pt-BR'));
-    setText('halving-date',  'Previsão: ' + dateStr);
+    const locale   = currentLang === 'en' ? 'en-US' : 'pt-BR';
+    const dateStr  = estDate.toLocaleDateString(locale, { day: '2-digit', month: '2-digit', year: 'numeric' });
+    setText('halving-days',  days.toLocaleString(locale) + ' ' + t('halving_days_unit'));
+    setText('halving-block', t('halving_block_label') + ' ' + height.toLocaleString(locale) + ' / ' + activeCoin.nextHalvingBlock.toLocaleString(locale));
+    setText('halving-date',  t('halving_forecast') + ' ' + dateStr);
 }
 
 function halvingUnavailable() {
@@ -480,6 +481,7 @@ function updateCoinHeader() {
 
 function switchCoin(id) {
     activeCoin    = COINS[id];
+    renderBtcValuation(activeCoin);   // portão: cria seção para BTC, remove para outros
     currency      = 'usd';
     currentPeriod = '7';
     jan1Prices    = { usd: null, brl: null };
@@ -518,7 +520,7 @@ function initCoin() {
 function setLoading(on) {
     const el = document.getElementById('loading');
     el.style.display = on ? 'block' : 'none';
-    if (on) el.textContent = 'Carregando dados...';
+    if (on) el.textContent = t('loading');
 }
 
 function showError(msg) {
@@ -748,9 +750,19 @@ document.querySelectorAll('.currency-btn').forEach(btn => {
     });
 });
 
+document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        if (btn.dataset.lang !== currentLang) setLang(btn.dataset.lang);
+    });
+});
+
 // ── Init ──────────────────────────────────────────────────────────────────────
 
 initTheme();
 initCoin();
+// Restaurar idioma salvo e sincronizar botão ativo
+document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.lang === currentLang));
+renderBtcValuation(activeCoin);       // portão: cria seção se ativo inicial for BTC
 setInterval(refreshCards, CONFIG.REFRESH_MS);
 loadAll();

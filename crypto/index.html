@@ -30,8 +30,12 @@
                 <button class="coin-btn" data-coin="solana"  aria-label="Solana">SOL</button>
             </nav>
             <div class="header-right">
-                <span class="update-label">Atualizado: <span id="last-update">--:--:--</span></span>
+                <span class="update-label"><span data-i18n="updated">Atualizado:</span> <span id="last-update">--:--:--</span></span>
                 <button id="theme-toggle" aria-label="Alternar tema claro/escuro">☀️</button>
+                <div class="lang-toggle" role="group" aria-label="Select language">
+                    <button class="lang-btn active" data-lang="pt" aria-label="Português">PT</button>
+                    <button class="lang-btn" data-lang="en" aria-label="English">EN</button>
+                </div>
                 <div class="currency-toggle" role="group" aria-label="Selecionar moeda">
                     <button class="currency-btn active" data-currency="usd" aria-label="Exibir em dólar americano">USD</button>
                     <button class="currency-btn" data-currency="brl" aria-label="Exibir em real brasileiro">BRL</button>
@@ -39,28 +43,28 @@
             </div>
         </header>
 
-        <div id="loading" role="status" aria-live="polite">Carregando dados...</div>
+        <div id="loading" role="status" aria-live="polite" data-i18n="loading">Carregando dados...</div>
 
         <!-- Cards principais de preço e variação -->
         <div class="cards-grid main-cards">
             <div class="card price-card">
-                <span class="card-label">Preço Atual</span>
+                <span class="card-label" data-i18n="price_current">Preço Atual</span>
                 <span class="card-value accent" id="price">--</span>
             </div>
             <div class="card">
-                <span class="card-label">Variação 24h</span>
+                <span class="card-label" data-i18n="change_24h">Variação 24h</span>
                 <span class="card-value" id="change24h">--</span>
             </div>
             <div class="card">
-                <span class="card-label">Variação 7 dias</span>
+                <span class="card-label" data-i18n="change_7d">Variação 7 dias</span>
                 <span class="card-value" id="change7d">--</span>
             </div>
             <div class="card">
-                <span class="card-label">Variação MTD</span>
+                <span class="card-label" data-i18n="change_mtd">Variação MTD</span>
                 <span class="card-value" id="changeMtd">--</span>
             </div>
             <div class="card">
-                <span class="card-label">Variação YTD</span>
+                <span class="card-label" data-i18n="change_ytd">Variação YTD</span>
                 <span class="card-value" id="changeYtd">--</span>
             </div>
         </div>
@@ -68,16 +72,16 @@
         <!-- Cards secundários de mercado -->
         <div class="cards-grid secondary-cards">
             <div class="card">
-                <span class="card-label">Preço ATH</span>
+                <span class="card-label" data-i18n="ath_price">Preço ATH</span>
                 <span class="card-value" id="athPrice">--</span>
                 <span class="card-sublabel" id="athDate">--</span>
             </div>
             <div class="card">
-                <span class="card-label">Ganho Potencial ATH</span>
+                <span class="card-label" data-i18n="ath_potential">Ganho Potencial ATH</span>
                 <span class="card-value" id="athPotential">--</span>
             </div>
             <div class="card">
-                <span class="card-label">Volume 24h</span>
+                <span class="card-label" data-i18n="volume_24h">Volume 24h</span>
                 <span class="card-value" id="volume">--</span>
             </div>
             <div class="card">
@@ -99,9 +103,9 @@
                 <button class="period-btn" data-period="max" aria-label="Todo o histórico">ALL</button>
             </div>
             <div class="date-range">
-                <label for="date-from">De: <input type="date" id="date-from" aria-label="Data inicial"></label>
-                <label for="date-to">Até: <input type="date" id="date-to" aria-label="Data final"></label>
-                <button id="btn-apply-dates" aria-label="Aplicar intervalo de datas">Aplicar</button>
+                <label for="date-from"><span data-i18n="date_from">De:</span> <input type="date" id="date-from" aria-label="Data inicial"></label>
+                <label for="date-to"><span data-i18n="date_to">Até:</span> <input type="date" id="date-to" aria-label="Data final"></label>
+                <button id="btn-apply-dates" aria-label="Aplicar intervalo de datas" data-i18n="apply">Aplicar</button>
             </div>
         </div>
 
@@ -124,12 +128,12 @@
                     <div class="fg-needle" id="fg-bar"></div>
                 </div>
                 <div class="fg-axis-labels" aria-hidden="true">
-                    <span>Medo</span><span>Neutro</span><span>Ganância</span>
+                    <span data-i18n="fg_fear">Medo</span><span data-i18n="fg_neutral">Neutro</span><span data-i18n="fg_greed">Ganância</span>
                 </div>
             </div>
 
             <div class="card adv-card">
-                <span class="card-label">Múltiplo de Mayer</span>
+                <span class="card-label" data-i18n="mayer_multiple">Múltiplo de Mayer</span>
                 <div class="mayer-display">
                     <span class="mayer-value" id="mayer-value">--</span>
                     <span class="badge" id="mayer-badge">--</span>
@@ -138,21 +142,21 @@
             </div>
 
             <div class="card adv-card">
-                <span class="card-label" id="dominance-label">Dominância BTC</span>
+                <span class="card-label" id="dominance-label" data-i18n="btc_dominance">Dominância BTC</span>
                 <span class="card-value accent dom-value" id="dominance">--</span>
-                <span class="adv-sub">do market cap global em cripto</span>
+                <span class="adv-sub" data-i18n="dominance_sub">do market cap global em cripto</span>
             </div>
 
             <div class="card adv-card mvrv-card">
                 <span class="card-label">MVRV Z-Score</span>
-                <span class="mvrv-note">Indicador on-chain — requer dados proprietários não disponíveis em APIs gratuitas.</span>
+                <span class="mvrv-note" data-i18n="mvrv_note">Indicador on-chain — requer dados proprietários não disponíveis em APIs gratuitas.</span>
                 <a class="mvrv-link" id="mvrv-link" href="https://www.lookintobitcoin.com/charts/mvrv-zscore/" target="_blank" rel="noopener">
                     Ver gráfico em LookIntoBitcoin →
                 </a>
             </div>
 
             <div class="card adv-card" id="card-halving">
-                <span class="card-label">Próximo Halving</span>
+                <span class="card-label" data-i18n="next_halving">Próximo Halving</span>
                 <div class="halving-display">
                     <span class="halving-days" id="halving-days">--</span>
                 </div>
@@ -164,7 +168,7 @@
 
         <!-- Glossário — Indicadores -->
         <section class="glossary glossary-indicators">
-            <h2 class="section-title">Entenda os Indicadores</h2>
+            <h2 class="section-title" data-i18n="understand_indicators">Entenda os Indicadores</h2>
             <div id="glossary-indicators-content"></div>
         </section>
 
@@ -178,12 +182,16 @@
 
     <footer>
         <div class="disclaimer">
-            <p><strong>Aviso Legal</strong> — As informações exibidas neste dashboard são fornecidas exclusivamente para fins informativos e educacionais, com base em dados públicos de mercado. Não constituem recomendação de investimento, aconselhamento financeiro, consultoria de valores mobiliários ou oferta de compra e venda de ativos. Rentabilidade passada não é garantia de rentabilidade futura. Criptoativos são investimentos de alto risco e podem resultar em perda total do capital investido. Antes de tomar qualquer decisão de investimento, consulte um profissional financeiro habilitado.</p>
+            <p><strong data-i18n="disclaimer_title">Aviso Legal</strong> — As informações exibidas neste dashboard são fornecidas exclusivamente para fins informativos e educacionais, com base em dados públicos de mercado. Não constituem recomendação de investimento, aconselhamento financeiro, consultoria de valores mobiliários ou oferta de compra e venda de ativos. Rentabilidade passada não é garantia de rentabilidade futura. Criptoativos são investimentos de alto risco e podem resultar em perda total do capital investido. Antes de tomar qualquer decisão de investimento, consulte um profissional financeiro habilitado.</p>
             <p class="copyright">© 2026 Polaris Global Strategies Ltd. Todos os direitos reservados.</p>
         </div>
     </footer>
 
     <script src="coins.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="data/btc-daily-seed.js"></script>
+    <script src="js/indicators.js"></script>
+    <script src="js/btc-valuation.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
