@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Princípios e orientações práticas para adotar inteligência artificial com responsabilidade em médias empresas — separar hard compliance de soft compliance, controlar shadow AI e manter a responsabilidade humana no centro.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self'; base-uri 'self'; form-action 'none'">
+  <title>Guia de Governança de IA em Médias Empresas — Marcelo Santos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="../index.html" class="site-logo">Marcelo Santos</a>
+      <span class="site-tagline">IA com foco corporativo</span>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <header class="article-cover">
+        <div class="article-cover__inner">
+          <p class="cover-mark">Guia de Governança de IA · v2 · Junho de 2026</p>
+          <h1 class="cover-title">IA em médias empresas: inovar sem perder o <em>controle</em></h1>
+          <p class="cover-sub">Princípios e orientações práticas para adotar inteligência artificial com responsabilidade</p>
+          <div class="cover-meta">
+            <span>Marcelo Santos</span>
+            <span>Síntese de 4 pesquisas independentes</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="article-wrapper">
+        <div class="spine" aria-hidden="true">
+          <span class="spine__dot"></span>
+          <span class="spine__tag">Governança de IA</span>
+          <span class="spine__dot"></span>
+        </div>
+
+        <div class="article-content">
+
+          <!-- ── 1. O problema ─────────────────────────── -->
+          <section id="o-problema" class="article-section">
+            <span class="eyebrow">01 · O problema</span>
+            <h2>Usa-se mais IA<br>do que se <em>controla</em></h2>
+
+            <p>A IA generativa já está dentro da empresa. O ponto não é decidir se ela vai ser usada, e sim saber onde está sendo usada e com quais dados.</p>
+            <p>Na maioria das organizações a resposta ainda é não. Usa-se mais IA do que se controla. Esse descompasso entre adoção e governança é o ponto de partida deste guia.</p>
+            <p>O risco está no uso invisível: ferramentas públicas, não homologadas, alimentadas com dados que nunca deveriam sair da empresa. Esse fenômeno tem nome: <strong>shadow AI</strong>.</p>
+            <p>Política restritiva demais não elimina o shadow AI. Ela o esconde. Quando a empresa não oferece um caminho aprovado e ágil, o colaborador resolve sozinho, com a ferramenta que tem na mão. O risco aumenta exatamente onde a política tentou reduzi-lo.</p>
+            <p>Na média empresa o problema é mais agudo. Não há um time de governança dedicado, nem orçamento para infraestrutura própria de IA. A governança precisa caber na estrutura que já existe, e funcionar mesmo sem uma área de risco formal.</p>
+
+            <div class="rule"></div>
+
+            <p>3 objetivos sustentam tudo o que vem a seguir:</p>
+            <div class="list">
+              <div class="list__item">
+                <span class="list__mark">01</span>
+                <span class="list__text">Não travar a inovação. <strong>Compliance bem feito facilita, não impede.</strong></span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">02</span>
+                <span class="list__text">Manter a responsabilidade final com quem usa a ferramenta. <strong>IA assiste, pessoa decide.</strong></span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">03</span>
+                <span class="list__text">Proteger dados sensíveis e a conformidade da empresa, <strong>sem exceção.</strong></span>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── 2. A regra de ouro ─────────────────────── -->
+          <section id="regra-de-ouro" class="article-section">
+            <span class="eyebrow">02 · A regra de ouro</span>
+            <h2>Política <em>+</em> Normativo</h2>
+
+            <p>O erro mais comum é tentar resolver tudo em único documento rígido, que trava a operação ou que envelhece em 3 meses.</p>
+            <p>A solução é separar o que precisa ser estável do que precisa evoluir rápido, em 2 instrumentos com hierarquia clara:</p>
+
+            <div class="two-col">
+              <div class="card">
+                <span class="card__label">Política de Uso de IA</span>
+                <p>Curta, estável, aprovada formalmente pela direção. Contém os princípios e as regras inegociáveis: dados, segurança, responsabilidade. Muda pouco.</p>
+              </div>
+              <div class="card">
+                <span class="card__label">Normativo Interno de IA</span>
+                <p>Documento subordinado à Política, vivo, atualizável pela própria área sem reaprovação formal a cada ajuste. Lista casos de uso aprovados, ferramentas homologadas e regras do dia a dia. Evolui na velocidade da tecnologia.</p>
+              </div>
+            </div>
+
+            <p>A Política diz o que vale e por quê. O Normativo diz como fazer, hoje, com as ferramentas de hoje. Quando surge uma ferramenta nova ou um caso de uso novo, atualiza-se o Normativo. A Política só é reaberta quando muda um princípio, o que é raro.</p>
+
+            <div class="callout">Núcleo rígido em dados e conformidade, periferia flexível em experimentação e caso de uso.</div>
+          </section>
+
+          <!-- ── 3. Hard compliance ──────────────────────── -->
+          <section id="hard-compliance" class="article-section">
+            <span class="eyebrow">03 · O que é inegociável</span>
+            <h2>Hard compliance</h2>
+
+            <p>Estes pontos precisam ser uniformes em toda a empresa, sem exceção por área. Vão na Política.</p>
+
+            <span class="sub-label">3.1</span>
+            <h3>Classificação de dados</h3>
+            <p>É o item mais crítico do guia inteiro. Defina com clareza o que nunca pode entrar em ferramenta pública de IA:</p>
+            <div class="list">
+              <div class="list__item">
+                <span class="list__mark">—</span>
+                <span class="list__text">Dados pessoais identificáveis e dados sensíveis</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">—</span>
+                <span class="list__text">Dados financeiros da empresa e de clientes</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">—</span>
+                <span class="list__text">Informações sob sigilo legal ou contratual</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">—</span>
+                <span class="list__text">Código-fonte, propriedade intelectual, segredo de negócio</span>
+              </div>
+            </div>
+            <p>Use as camadas que sua empresa já tem (público, interno, confidencial). Não invente rótulos novos. E diga também o que é <strong>permitido</strong>. A zona cinzenta, não o proibido, é o que empurra as pessoas para o shadow AI.</p>
+
+            <span class="sub-label">3.2</span>
+            <h3>Lista de ferramentas aprovadas</h3>
+            <p>Catálogo das ferramentas homologadas, com o caso de uso de cada uma e a versão recomendada — de preferência a paga, com contrato que garante que seus dados não viram treino.</p>
+
+            <span class="sub-label">3.3</span>
+            <h3>Supervisão humana</h3>
+            <p>Toda saída de IA usada para decisão passa por verificação humana. Uma pessoa identificada revisa, aprova e responde pelo resultado. A IA nunca responde por nada. Quando aplicável, conteúdo gerado por IA é identificado como tal.</p>
+
+            <span class="sub-label">3.4</span>
+            <h3>Inventário do que está em uso</h3>
+            <p>Liste as ferramentas de IA em uso: as contratadas, as embutidas em softwares que a empresa já paga, e o que estiver rodando sem aprovação. Atenção especial à IA que já vem dentro de sistemas comprados para outra finalidade — o assistente do CRM, do e-mail, do editor de texto. É o ponto cego mais comum, e na média empresa quase sempre passa despercebido.</p>
+
+            <span class="sub-label">3.5</span>
+            <h3>Quem responde pelo quê</h3>
+            <p>Não precisa de comitê pesado. Precisa de clareza. Nomeie um responsável pelo tema de IA, alguém com trânsito entre Tecnologia, Jurídico e Negócio. Para os usos mais sensíveis, defina quem aprova e quem responde. O essencial é não deixar a responsabilidade difusa, onde todo mundo usa e ninguém responde.</p>
+            <p>Na média empresa funciona um arranjo simples: quem usa cuida do uso correto, e o responsável pelo tema confere os pontos críticos de tempos em tempos.</p>
+
+            <span class="sub-label">3.6</span>
+            <h3>Registro e reporte</h3>
+            <p>Onde a ferramenta permitir, mantenha registro de uso. Tenha um canal claro para reportar incidente: vazamento, erro grave que passou para frente, comportamento estranho de uma ferramenta. Reporte simples, sem burocracia, importa mais do que auditoria formal que ninguém executa.</p>
+
+            <span class="sub-label">3.7</span>
+            <h3>Fornecedores</h3>
+            <p>Antes de adotar uma ferramenta paga, leia o contrato no ponto que importa: o fornecedor usa seus dados para treinar o modelo? Guarda seus inputs? Onde ficam armazenados? Prefira quem oferece, por contrato, a não retenção e o não uso dos seus dados para treino. Esse é o filtro que mais protege, e não custa nada além de atenção.</p>
+
+            <span class="sub-label">3.8</span>
+            <h3>Revisão periódica</h3>
+            <p>Revise a lista de ferramentas e os dados proibidos a cada trimestre, porque plataformas novas surgem todo mês. Revise a Política inteira uma vez por ano. O Normativo se atualiza quando precisar, sem esperar o calendário.</p>
+          </section>
+
+          <!-- ── 4. Soft compliance ──────────────────────── -->
+          <section id="soft-compliance" class="article-section">
+            <span class="eyebrow">04 · O que precisa respirar</span>
+            <h2>Soft compliance</h2>
+
+            <p>Rigor nos dados não significa burocracia em tudo. Aqui está o que deve ficar leve, e vai no Normativo:</p>
+
+            <div class="list">
+              <div class="list__item">
+                <span class="list__mark">+</span>
+                <span class="list__text">Autonomia para testar ferramentas com dados públicos ou fictícios</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">+</span>
+                <span class="list__text">Aprovação simplificada para casos de baixo risco</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">+</span>
+                <span class="list__text">Liberdade de escolha entre as ferramentas homologadas, para não depender de um único fornecedor</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">+</span>
+                <span class="list__text">Atualização ágil do próprio Normativo, sem reabrir a Política toda vez</span>
+              </div>
+            </div>
+
+            <p>Atividades de risco baixo — ideação, tradução de texto público, resumo de material não confidencial, rascunho de comunicação interna, apoio em código — merecem fluxo simples, às vezes self-service. Reserve a aprovação formal para o que de fato exige.</p>
+          </section>
+
+          <!-- ── 5. Responsabilidade ─────────────────────── -->
+          <section id="responsabilidade" class="article-section">
+            <span class="eyebrow">05 · Responsabilidade final</span>
+            <h2>IA assiste. <em>Pessoa decide.</em></h2>
+
+            <p>Este é o princípio que atravessa todo o resto. IA é ferramenta de apoio à produtividade. Nunca substitui o julgamento técnico ou ético de quem está no comando da tarefa.</p>
+            <p>A pessoa que usa o resultado é editora, revisora e validadora final. Se o modelo errar, inventar informação ou reproduzir viés, quem aceitou e entregou aquele trabalho responde por ele. A ferramenta não tem responsabilidade própria, porque não tem personalidade jurídica.</p>
+
+            <div class="callout">Toda saída gerada por IA é insumo que subsidia a decisão humana, nunca a decisão em si. Quem a utiliza é o responsável final pelo conteúdo, deve revisá-lo, validá-lo e, quando aplicável, identificá-lo como assistido por IA. A responsabilidade recai sobre a pessoa designada, jamais sobre a ferramenta.</div>
+          </section>
+
+          <!-- ── 6. Riscos ───────────────────────────────── -->
+          <section id="riscos" class="article-section">
+            <span class="eyebrow">06 · Riscos</span>
+            <h2>5 riscos, 5 respostas</h2>
+
+            <table class="risk">
+              <thead>
+                <tr>
+                  <th>Risco</th>
+                  <th>O que é</th>
+                  <th>Como tratar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="risk-name">Vazamento de dados</td>
+                  <td class="risk-what">Dado sensível entra em ferramenta pública</td>
+                  <td>Bloquear ferramenta pública para dado sensível; usar versão paga com não retenção</td>
+                </tr>
+                <tr>
+                  <td class="risk-name">Dependência excessiva</td>
+                  <td class="risk-what">Aceitar o resultado sem checar</td>
+                  <td>Revisão humana obrigatória antes de usar</td>
+                </tr>
+                <tr>
+                  <td class="risk-name">Informação inventada</td>
+                  <td class="risk-what">O modelo afirma com confiança algo falso</td>
+                  <td>Validar fato e fonte antes de levar adiante</td>
+                </tr>
+                <tr>
+                  <td class="risk-name">Viés reproduzido</td>
+                  <td class="risk-what">O modelo repete preconceito presente nos dados</td>
+                  <td>Olhar crítico humano em qualquer uso que afete pessoas</td>
+                </tr>
+                <tr>
+                  <td class="risk-name">Acesso mal controlado</td>
+                  <td class="risk-what">Conta compartilhada, sem rastro de quem usou</td>
+                  <td>Conta individual, login próprio, nada de senha de equipe</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- ── 7. Referências ──────────────────────────── -->
+          <section id="referencias" class="article-section">
+            <span class="eyebrow">07 · Referências</span>
+            <h2>4 pilares regulatórios</h2>
+
+            <p>Não é preciso inventar um framework do zero. O mundo já produziu referências sólidas, e vale entender o que cada uma oferece antes de escolher onde se apoiar.</p>
+
+            <div class="list">
+              <div class="list__item">
+                <span class="list__mark">→</span>
+                <span class="list__text"><strong>NIST AI Risk Management Framework.</strong> Funciona como um método de raciocínio sobre risco, organizado em 4 movimentos: governar, mapear, medir, gerenciar. Para a média empresa, tem 3 vantagens: é gratuito, é flexível e é proporcional. Você aplica na profundidade que faz sentido para o seu tamanho, sem precisar contratar consultoria para entender.</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">→</span>
+                <span class="list__text"><strong>ISO/IEC 42001.</strong> Publicada em 2023, a primeira norma internacional de sistema de gestão de IA. É certificável — um auditor externo pode atestar que sua empresa segue boas práticas. Para a maioria das médias empresas, é um horizonte mais distante. Vale conhecer a lógica e adotar os controles que fazem sentido, deixando a certificação para quando houver demanda concreta.</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">→</span>
+                <span class="list__text"><strong>LGPD — artigo 20.</strong> Já vincula a empresa hoje, independentemente de qualquer norma específica de IA. O ponto que mais toca o tema: garante à pessoa o direito de pedir revisão humana de uma decisão tomada apenas por algoritmo. Se a sua empresa usa IA para decidir algo que afeta um cliente, esse direito precisa estar previsto e funcionando.</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">→</span>
+                <span class="list__text"><strong>PL 2338/2023.</strong> O projeto que deve se tornar o marco legal da IA no Brasil. Ainda tramita, e o texto pode mudar até virar lei. Mas a direção já está clara: regulação baseada em risco, com obrigações maiores para usos de alto impacto. Quem organiza a governança agora, na lógica de risco, chega pronto quando a lei chegar.</span>
+              </div>
+            </div>
+
+            <div class="rule"></div>
+            <p>A leitura conjunta dessas 4 referências dá o recado: comece pelo NIST como método, respeite a LGPD como obrigação atual, antecipe a lógica do PL 2338, e guarde a ISO 42001 para quando a maturidade pedir.</p>
+          </section>
+
+          <!-- ── 8. Como construir ───────────────────────── -->
+          <section id="como-construir" class="article-section">
+            <span class="eyebrow">08 · Como construir</span>
+            <h2>5 fases</h2>
+
+            <div class="list">
+              <div class="list__item">
+                <span class="list__mark">01</span>
+                <span class="list__text"><strong>Diagnóstico (1 a 2 semanas).</strong> Levante as ferramentas de IA em uso, incluindo as embutidas em sistemas que a empresa já paga e o uso não homologado. Veja quais dados estão sendo colocados nelas. Entregável: lista do que existe e onde estão os riscos.</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">02</span>
+                <span class="list__text"><strong>Regras base (2 a 4 semanas).</strong> Defina quem responde pelo tema. Estabeleça as camadas de classificação de dados da empresa. Monte a primeira lista de ferramentas aprovadas. Redija a Política, curta. Entregável: Política aprovada pela direção e catálogo inicial de ferramentas.</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">03</span>
+                <span class="list__text"><strong>O caminho aprovado (em paralelo).</strong> Em vez de construir infraestrutura própria, contrate as versões pagas das ferramentas que sua equipe já quer usar. Esse é o antídoto ao shadow AI na média empresa: dar a ferramenta boa, oficial e segura. Entregável: acesso oficial às ferramentas que as pessoas usariam de qualquer jeito.</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">04</span>
+                <span class="list__text"><strong>Capacitação (contínua).</strong> Treine a equipe no básico que evita os erros caros: o que nunca colocar em IA, como checar um resultado antes de usar, como reconhecer informação inventada. Entregável: equipe treinada no essencial.</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">05</span>
+                <span class="list__text"><strong>Acompanhamento (permanente).</strong> Revise a lista de ferramentas a cada trimestre e a Política uma vez por ano. Atualize o Normativo sempre que surgir caso de uso ou ferramenta nova.</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── 9. Indicadores ──────────────────────────── -->
+          <section id="indicadores" class="article-section">
+            <span class="eyebrow">09 · Indicadores</span>
+            <h2>O que acompanhar</h2>
+
+            <p>Poucos e simples, do tamanho da estrutura:</p>
+
+            <div class="list">
+              <div class="list__item">
+                <span class="list__mark">—</span>
+                <span class="list__text">Percentual da equipe treinada no uso seguro</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">—</span>
+                <span class="list__text">Número de incidentes reportados e tempo de resposta</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">—</span>
+                <span class="list__text">Número de ferramentas homologadas versus pedidos de exceção</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">—</span>
+                <span class="list__text">Uso das ferramentas oficiais versus sinais de shadow AI</span>
+              </div>
+              <div class="list__item">
+                <span class="list__mark">—</span>
+                <span class="list__text">Aderência à revisão trimestral da lista e anual da Política</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- ── 10. Para fechar ─────────────────────────── -->
+          <section id="para-fechar" class="article-section">
+            <span class="eyebrow">10 · Para fechar</span>
+            <h2>O modelo que funciona</h2>
+
+            <p>Governança de IA bem feita não atrapalha a empresa. O que ela contém é o uso descontrolado. O modelo que funciona controla risco no núcleo — dados e conformidade — e libera espaço para experimentar na borda: caso de uso e tecnologia.</p>
+            <p>Na média empresa, a vantagem é a simplicidade. Sem camadas de burocracia, dá para montar uma governança enxuta e real: uma Política curta, um Normativo vivo, ferramentas pagas e seguras no lugar das públicas, e a regra que sustenta tudo.</p>
+
+            <div class="closing-block">
+              <div class="closing-l1">A IA amplia capacidade.</div>
+              <div class="closing-l2">A responsabilidade continua humana.</div>
+            </div>
+          </section>
+
+          <!-- ── Autoria ─────────────────────────────────── -->
+          <div class="author-block">
+            <div class="author-name">Marcelo Santos</div>
+            <a class="author-link" href="https://www.linkedin.com/in/marcelomirandadossantos/" rel="noopener noreferrer">linkedin.com/in/marcelomirandadossantos</a>
+            <p class="disclaimer">As opiniões são pessoais e não representam nenhuma organização ou empregador. Este guia partiu de 4 pesquisas independentes conduzidas por IAs distintas — Gemini Plus, Grok Free, Claude Opus e Copilot FBB — com formatação assistida por IA. A consolidação, a adaptação à realidade empresarial brasileira e o julgamento final são do autor.</p>
+          </div>
+
+        </div><!-- .article-content -->
+      </div><!-- .article-wrapper -->
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <span class="site-footer__copy">© 2026 Marcelo Santos</span>
+      <a href="https://www.linkedin.com/in/marcelomirandadossantos/" class="site-footer__link" rel="noopener noreferrer">LinkedIn</a>
+    </div>
+  </footer>
+
+</body>
+</html>
