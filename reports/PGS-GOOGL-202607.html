@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PGS-GOOGL-202607 · Alphabet Inc. · Polaris Global Strategies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  --text:#111827;
+  --text-mute:#6B7280;
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#4285F4;
+  --display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --data:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--canvas);color:var(--text);
+  font-family:var(--body);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:grid;grid-template-columns:220px 1fr;align-items:start;}
+
+/* ---------- sidebar ---------- */
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--surface);border-right:1px solid var(--border);
+  padding:28px 0 40px 0;
+}
+.sidebar .brand{
+  padding:0 20px 18px 20px;border-bottom:1px solid var(--border);margin-bottom:14px;
+}
+.sidebar .brand .mark{
+  font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:.01em;line-height:1.2;
+}
+.sidebar .brand .ref{
+  font-family:var(--data);font-size:10.5px;color:var(--text-mute);margin-top:6px;letter-spacing:.04em;
+}
+.nav-link{
+  display:block;padding:8px 20px;border-left:3px solid transparent;
+  color:var(--text-mute);text-decoration:none;font-size:13px;font-weight:500;
+  transition:background .18s ease,color .18s ease;
+}
+.nav-link .kick{font-family:var(--data);font-size:10.5px;margin-right:8px;color:#9CA3AF;}
+.nav-link:hover{color:var(--text);background:var(--card);}
+.nav-link.active{
+  color:var(--text);background:var(--card);border-left:3px solid var(--accent);font-weight:700;
+}
+
+/* ---------- content ---------- */
+.main-content{padding:0;min-width:0;}
+.section{padding:54px 56px;border-bottom:1px solid var(--border);}
+.section:last-of-type{border-bottom:none;}
+.prose{max-width:68ch;}
+.prose p{margin:0 0 16px 0;}
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;color:var(--text);margin:0;}
+.eyebrow{
+  font-family:var(--data);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-mute);margin-bottom:10px;display:block;
+}
+h2.block-title{font-size:30px;line-height:1.2;margin-bottom:6px;letter-spacing:-.01em;}
+h3.sub-title{font-size:20px;margin:34px 0 10px 0;}
+.rule{height:3px;width:56px;background:var(--accent);margin:14px 0 26px 0;}
+
+/* ---------- cover ---------- */
+.cover{
+  min-height:96vh;display:flex;flex-direction:column;justify-content:center;
+  background:var(--surface);
+  background-image:radial-gradient(var(--border) 1.1px, transparent 1.1px);
+  background-size:22px 22px;
+  padding:70px 56px;border-bottom:1px solid var(--border);
+}
+.cover .firm{
+  font-family:var(--data);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-mute);
+}
+.cover .accentbar{height:3px;width:120px;background:var(--accent);margin:26px 0 30px 0;}
+.cover h1{font-size:76px;line-height:1;letter-spacing:-.025em;color:var(--accent);font-weight:900;}
+.cover .legalname{font-family:var(--display);font-size:26px;font-weight:500;color:var(--text);margin-top:10px;}
+.cover .listing{font-family:var(--data);font-size:14px;color:var(--text-mute);margin-top:18px;letter-spacing:.05em;}
+.cover .meta{margin-top:44px;display:flex;gap:46px;flex-wrap:wrap;}
+.cover .meta div span{display:block;}
+.cover .meta .lbl{font-family:var(--data);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);}
+.cover .meta .val{font-family:var(--data);font-size:15px;color:var(--text);margin-top:5px;}
+.cover .quicklinks{margin-top:52px;display:flex;gap:12px;flex-wrap:wrap;}
+.cover .quicklinks a{
+  font-family:var(--data);font-size:12px;text-decoration:none;color:var(--text);
+  background:var(--canvas);border:1px solid var(--border);border-left:3px solid var(--accent);
+  padding:9px 14px;transition:background .18s ease;
+}
+.cover .quicklinks a:hover{background:var(--card);}
+
+/* ---------- block A instrument panel ---------- */
+.panel-wrap{border:1px solid var(--border);border-top:3px solid var(--accent);background:var(--card);}
+.panel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+.panel-col{padding:22px 22px 24px 22px;border-right:1px solid var(--border);}
+.panel-col:last-child{border-right:none;}
+.panel-col h4{
+  font-family:var(--data);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-mute);font-weight:500;margin-bottom:14px;
+}
+.panel-row{display:flex;justify-content:space-between;gap:10px;padding:5px 0;align-items:baseline;}
+.panel-row .k{font-size:12.5px;color:var(--text-mute);}
+.panel-row .v{font-family:var(--data);font-size:13px;font-weight:500;text-align:right;white-space:nowrap;}
+.v.pos{color:var(--pos);} .v.neg{color:var(--neg);}
+
+/* ---------- tables ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);}
+table{border-collapse:collapse;width:100%;font-size:13.5px;}
+th{
+  background:var(--card);text-align:left;padding:11px 13px;
+  font-family:var(--data);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-mute);font-weight:500;border-bottom:1px solid var(--border);vertical-align:bottom;
+}
+td{padding:11px 13px;border-bottom:1px solid var(--border);vertical-align:top;word-break:break-word;}
+tbody tr:nth-child(odd){background:var(--canvas);}
+tbody tr:nth-child(even){background:var(--surface);}
+tbody tr:hover{background:var(--card);transition:background .18s ease;}
+td.num,th.num{font-family:var(--data);text-align:right;white-space:nowrap;}
+td.qlabel{font-family:var(--data);font-weight:700;white-space:nowrap;}
+.pos-cell{color:var(--pos);font-weight:500;}
+.neg-cell{color:var(--neg);font-weight:500;}
+.pill{
+  display:inline-block;font-family:var(--data);font-size:10px;letter-spacing:.08em;
+  padding:2px 7px;border-radius:2px;text-transform:uppercase;margin-left:7px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.pill.beat{background:var(--pill-pos-bg);color:var(--pill-pos-fg);}
+.pill.miss{background:var(--pill-neg-bg);color:var(--pill-neg-fg);}
+.stars{font-family:var(--data);letter-spacing:.08em;color:var(--accent);white-space:nowrap;}
+.src{
+  font-family:var(--data);font-size:10.5px;color:var(--text-mute);
+  margin-top:8px;margin-bottom:26px;line-height:1.5;
+}
+
+/* ---------- block C ---------- */
+.quarters{border-left:3px solid var(--accent);padding-left:22px;max-width:68ch;}
+.qkick{
+  font-family:var(--data);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);margin-top:26px;margin-bottom:6px;
+}
+.quarters > .qkick:first-child{margin-top:0;}
+
+/* ---------- block D ---------- */
+.obs{max-width:68ch;margin:0;padding:0;list-style:none;}
+.obs li{padding:12px 0;border-bottom:1px solid var(--border);font-size:14.5px;}
+.obs li:last-child{border-bottom:none;}
+.obs .claim{font-weight:700;}
+.sig{font-family:var(--data);font-size:12px;color:var(--text-mute);margin-right:8px;}
+.sig.up{color:var(--pos);} .sig.down{color:var(--neg);} .sig.flat{color:var(--caution);}
+
+/* ---------- block F ---------- */
+.risk{border:1px solid var(--border);margin-bottom:22px;}
+.risk.high{border-left:3px solid var(--neg);}
+.risk.medium{border-left:3px solid var(--caution);}
+.risk .rhead{
+  padding:13px 18px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.risk.high .rhead{background:var(--neg-tint);}
+.risk.medium .rhead{background:var(--caution-tint);}
+.risk .rname{font-family:var(--display);font-weight:700;font-size:17px;}
+.badge{
+  font-family:var(--data);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  padding:3px 9px;color:#FFFFFF;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.badge.high{background:var(--neg);}
+.badge.medium{background:var(--caution);}
+.risk .rbody{background:var(--canvas);padding:16px 18px;font-size:14.5px;}
+.risk .rbody p{margin:0;max-width:68ch;}
+
+/* ---------- block G ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.scen{border:1px solid var(--border);}
+.scen.bull{border-top:3px solid var(--pos);}
+.scen.bear{border-top:3px solid var(--neg);}
+.scen .shead{
+  padding:13px 18px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.scen.bull .shead{background:var(--pos-tint);}
+.scen.bear .shead{background:var(--neg-tint);}
+.scen .sname{font-family:var(--display);font-weight:700;font-size:18px;}
+.scen .sdelta{font-family:var(--data);font-size:14px;font-weight:700;}
+.scen.bull .sdelta{color:var(--pos);}
+.scen.bear .sdelta{color:var(--neg);}
+.scen .sbody{background:var(--canvas);padding:16px 18px;font-size:14px;}
+.scen ul{margin:0 0 12px 0;padding-left:18px;}
+.scen li{margin-bottom:6px;}
+.scen p{margin:0;}
+
+/* ---------- block H ---------- */
+.verdict{background:var(--surface);border:1px solid var(--border);padding:32px 30px;}
+.rating-pill{
+  display:inline-block;background:var(--accent);color:#FFFFFF;
+  font-family:var(--data);font-size:14px;font-weight:700;letter-spacing:.1em;
+  padding:8px 18px;text-transform:uppercase;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.metrics-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);
+  border:1px solid var(--border);margin:24px 0 28px 0;
+}
+.metrics-strip div{background:var(--card);padding:14px 16px;}
+.metrics-strip .lbl{font-family:var(--data);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mute);}
+.metrics-strip .val{font-family:var(--data);font-size:17px;font-weight:700;margin-top:6px;}
+
+/* ---------- disclaimer ---------- */
+.disclaimer{background:var(--surface);padding:44px 56px;border-top:1px solid var(--border);}
+.disclaimer p{max-width:80ch;font-size:12px;line-height:1.7;color:var(--text-mute);margin:0 0 18px 0;}
+.disclaimer p.ref{font-family:var(--data);font-size:11px;color:var(--text-mute);}
+
+/* ---------- animation (visible by default, JS hides) ---------- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@media (prefers-reduced-motion: reduce){
+  .animate{opacity:1 !important;transform:none !important;animation:none !important;}
+  html{scroll-behavior:auto;}
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .panel-grid{grid-template-columns:repeat(2,1fr);}
+  .panel-col{border-bottom:1px solid var(--border);}
+  .scenario-grid{grid-template-columns:1fr;}
+  .metrics-strip{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:768px){
+  .layout{display:block;}
+  .sidebar{
+    position:sticky;top:0;height:auto;z-index:20;
+    display:flex;gap:0;overflow-x:auto;white-space:nowrap;
+    border-right:none;border-bottom:1px solid var(--border);padding:0;
+  }
+  .sidebar .brand{display:none;}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:12px 14px;}
+  .nav-link.active{border-left:none;border-bottom:3px solid var(--accent);}
+  .section{padding:38px 20px;}
+  .cover{padding:52px 20px;}
+  .cover h1{font-size:48px;}
+  .disclaimer{padding:34px 20px;}
+}
+
+/* ---------- print ---------- */
+@media print{
+  @page{size:A4;margin:15mm 12mm;}
+  body{background-color:#FFFFFF;color:#111827;font-size:10.5pt;}
+  .layout{display:block !important;}
+  .sidebar,.nav-link,.cover .quicklinks{display:none !important;}
+  .main-content{display:block !important;width:100% !important;padding:0 !important;}
+  .section{padding:16pt 0 !important;background-color:#FFFFFF;color:#111827;break-inside:auto;}
+  .cover{
+    min-height:auto !important;height:auto !important;display:block !important;
+    padding:0 0 18pt 0 !important;background-image:none !important;background-color:#FFFFFF !important;
+  }
+  .cover h1{font-size:44pt;}
+  .panel-wrap,.risk,.scen,.verdict,.table-wrap{background-color:#FFFFFF;box-shadow:none !important;}
+  .panel-grid{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:0 !important;}
+  .scenario-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:12pt !important;}
+  .metrics-strip{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important;}
+  .prose,.quarters,.risk .rbody p{orphans:3;widows:3;}
+  p{orphans:3;widows:3;}
+  .risk,.scen,.panel-wrap,.metrics-strip{page-break-inside:avoid;}
+  table{page-break-inside:auto;}
+  tr{page-break-inside:avoid;}
+  .table-wrap{overflow:visible !important;}
+  td,th{word-break:break-word;}
+  .animate{opacity:1 !important;transform:none !important;animation:none !important;}
+  .pill,.badge,.rating-pill,.risk .rhead,.scen .shead{print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  a{text-decoration:none;color:inherit;}
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Report sections">
+    <div class="brand">
+      <div class="mark">Polaris Global<br>Strategies</div>
+      <div class="ref">PGS-GOOGL-202607</div>
+    </div>
+    <a class="nav-link" href="#cover"><span class="kick">00</span>Cover</a>
+    <a class="nav-link" href="#panel"><span class="kick">A</span>Consolidated panel</a>
+    <a class="nav-link" href="#quarters"><span class="kick">B</span>Quarterly table</a>
+    <a class="nav-link" href="#reading"><span class="kick">C</span>Reading the quarters</a>
+    <a class="nav-link" href="#patterns"><span class="kick">D</span>Patterns and watch list</a>
+    <a class="nav-link" href="#architecture"><span class="kick">E</span>Strategic architecture</a>
+    <a class="nav-link" href="#risks"><span class="kick">F</span>Risks</a>
+    <a class="nav-link" href="#scenarios"><span class="kick">G</span>Scenarios</a>
+    <a class="nav-link" href="#verdict"><span class="kick">H</span>PGS verdict</a>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- ============ COVER ============ -->
+    <header class="cover" id="cover">
+      <div class="firm">Polaris Global Strategies Ltd.</div>
+      <div class="accentbar"></div>
+      <h1>GOOGL</h1>
+      <div class="legalname">Alphabet Inc.</div>
+      <div class="listing">NASDAQ &middot; Class A Common Stock</div>
+      <div class="meta">
+        <div><span class="lbl">Reference</span><span class="val">PGS-GOOGL-202607</span></div>
+        <div><span class="lbl">Publication date</span><span class="val">24 July 2026</span></div>
+        <div><span class="lbl">Exchange</span><span class="val">NASDAQ</span></div>
+      </div>
+      <div class="quicklinks">
+        <a href="#panel">A · Consolidated panel</a>
+        <a href="#quarters">B · Quarterly table</a>
+        <a href="#reading">C · Reading the quarters</a>
+        <a href="#patterns">D · Patterns</a>
+        <a href="#architecture">E · Strategic architecture</a>
+        <a href="#risks">F · Risks</a>
+        <a href="#scenarios">G · Scenarios</a>
+        <a href="#verdict">H · Verdict</a>
+      </div>
+    </header>
+
+    <!-- ============ BLOCK A ============ -->
+    <section class="section animate" id="panel">
+      <span class="eyebrow">Block A</span>
+      <h2 class="block-title">Consolidated panel</h2>
+      <div class="rule"></div>
+
+      <div class="panel-wrap">
+        <div class="panel-grid">
+
+          <div class="panel-col">
+            <h4>Market</h4>
+            <div class="panel-row"><span class="k">Price at analysis</span><span class="v">$319.76</span></div>
+            <div class="panel-row"><span class="k">Market cap</span><span class="v">$3.91T</span></div>
+            <div class="panel-row"><span class="k">Vs. 52-week high</span><span class="v neg">-21.7%</span></div>
+            <div class="panel-row"><span class="k">Vs. 52-week low</span><span class="v pos">+70.6%</span></div>
+            <div class="panel-row"><span class="k">52-week range</span><span class="v">$187.46 - $408.61</span></div>
+          </div>
+
+          <div class="panel-col">
+            <h4>Fundamentals (TTM)</h4>
+            <div class="panel-row"><span class="k">Revenue</span><span class="v">$445,866M</span></div>
+            <div class="panel-row"><span class="k">EPS, GAAP diluted</span><span class="v">$19.94</span></div>
+            <div class="panel-row"><span class="k">EPS, adjusted</span><span class="v">$11.39 (est.)</span></div>
+            <div class="panel-row"><span class="k">Operating margin</span><span class="v">33.1%</span></div>
+            <div class="panel-row"><span class="k">Free cash flow yield</span><span class="v">1.4%</span></div>
+          </div>
+
+          <div class="panel-col">
+            <h4>Valuation</h4>
+            <div class="panel-row"><span class="k">P/E TTM</span><span class="v">15.9x</span></div>
+            <div class="panel-row"><span class="k">Forward P/E</span><span class="v">23.9x</span></div>
+            <div class="panel-row"><span class="k">EV / Revenue</span><span class="v">8.5x</span></div>
+            <div class="panel-row"><span class="k">PEG</span><span class="v">1.66</span></div>
+            <div class="panel-row"><span class="k">5-yr forward P/E band</span><span class="v">17x - 28x (est.)</span></div>
+          </div>
+
+          <div class="panel-col">
+            <h4>Consensus</h4>
+            <div class="panel-row"><span class="k">Covering analysts</span><span class="v">64</span></div>
+            <div class="panel-row"><span class="k">Buy / Hold / Sell</span><span class="v">90% / 10% / 0% (est.)</span></div>
+            <div class="panel-row"><span class="k">Average target</span><span class="v">$428.12</span></div>
+            <div class="panel-row"><span class="k">High target</span><span class="v pos">$515.00</span></div>
+            <div class="panel-row"><span class="k">Low target</span><span class="v">$340.00</span></div>
+            <div class="panel-row"><span class="k">Next earnings</span><span class="v">27 Oct 2026</span></div>
+          </div>
+
+        </div>
+      </div>
+      <div class="src">Sources: Alphabet Q2 2026 Form 8-K (SEC, 22 Jul 2026); S&amp;P Global Market Intelligence via StockAnalysis (24 Jul 2026); TipRanks earnings calendar. Historical multiple band is a PGS estimate.</div>
+
+      <div class="prose">
+        <p>The trailing multiple in the panel understates what investors are actually paying, because a single quarter of unrealised marks on equity holdings inflated reported earnings by a factor that has nothing to do with operations. The forward multiple, which strips that distortion out, sits in the upper half of the five year band even after a double digit drawdown from the high, so the market is still assigning a premium to Alphabet's operating earnings while the headline reads cheap.</p>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK B ============ -->
+    <section class="section animate" id="quarters">
+      <span class="eyebrow">Block B</span>
+      <h2 class="block-title">Quarterly table</h2>
+      <div class="rule"></div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Quarter</th>
+              <th class="num">Revenue vs. consensus</th>
+              <th class="num">GAAP EPS vs. consensus</th>
+              <th class="num">Adjusted EPS vs. consensus</th>
+              <th class="num">Operating margin<br>reported / adjusted</th>
+              <th class="num">Free cash flow</th>
+              <th class="num">Next-session<br>stock reaction</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="qlabel">Q2 2026<br><span style="font-weight:400;color:#6B7280;">30 Jun 2026</span></td>
+              <td class="num">$119,796M vs. $116,930M<span class="pill beat">Beat</span></td>
+              <td class="num">$9.11 vs. $2.88<span class="pill beat">Beat</span></td>
+              <td class="num">$2.85 vs. $2.89<span class="pill miss">Miss</span></td>
+              <td class="num">34.0% / 34.0%</td>
+              <td class="num neg-cell">-$5,855M</td>
+              <td class="num neg-cell">-7.1% (est.)</td>
+            </tr>
+            <tr>
+              <td class="qlabel">Q1 2026<br><span style="font-weight:400;color:#6B7280;">31 Mar 2026</span></td>
+              <td class="num">$109,896M vs. $107,200M<span class="pill beat">Beat</span></td>
+              <td class="num">$5.11 vs. $2.63<span class="pill beat">Beat</span></td>
+              <td class="num">$2.62 vs. $2.63<span class="pill miss">Miss</span></td>
+              <td class="num">36.1% / 36.1%</td>
+              <td class="num pos-cell">$10,116M</td>
+              <td class="num pos-cell">+10.0%</td>
+            </tr>
+            <tr>
+              <td class="qlabel">Q4 2025<br><span style="font-weight:400;color:#6B7280;">31 Dec 2025</span></td>
+              <td class="num">$113,828M vs. $111,430M<span class="pill beat">Beat</span></td>
+              <td class="num">$2.82 vs. $2.63<span class="pill beat">Beat</span></td>
+              <td class="num">$2.67 (est.) vs. $2.63<span class="pill beat">Beat</span></td>
+              <td class="num">31.6% / 33.4% (est.)</td>
+              <td class="num pos-cell">$24,551M</td>
+              <td class="num neg-cell">-0.5%</td>
+            </tr>
+            <tr>
+              <td class="qlabel">Q3 2025<br><span style="font-weight:400;color:#6B7280;">30 Sep 2025</span></td>
+              <td class="num">$102,346M vs. $99,890M<span class="pill beat">Beat</span></td>
+              <td class="num">$2.87 vs. $2.26<span class="pill beat">Beat</span></td>
+              <td class="num">$3.10 vs. $2.33<span class="pill beat">Beat</span></td>
+              <td class="num">30.5% / 33.9%</td>
+              <td class="num pos-cell">$24,461M</td>
+              <td class="num pos-cell">+3.9% (est.)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Sources: Alphabet Forms 8-K for Q3 2025, Q4 2025, Q1 2026 and Q2 2026 (SEC). Consensus figures per LSEG and StreetAccount as reported by CNBC; Q3 2025 consensus per Finviz. Next-session moves per Motley Fool, Finviz and StockAnalysis price data. Adjusted Q4 2025 figures exclude the Waymo employee compensation charge and the equity securities gain; adjusted Q3 2025 margin excludes the European Commission fine.</div>
+    </section>
+
+    <!-- ============ BLOCK C ============ -->
+    <section class="section animate" id="reading">
+      <span class="eyebrow">Block C</span>
+      <h2 class="block-title">Reading the quarters</h2>
+      <div class="rule"></div>
+
+      <div class="quarters">
+        <div class="qkick">Q2 2026 &middot; reported 22 July 2026</div>
+        <p>The strongest revenue quarter Alphabet has ever produced, and the market sold it. Cloud carried the acceleration, with the beat concentrated in enterprise AI infrastructure and enterprise AI solutions rather than core platform services, and Search grew faster than the Services line that contains it, which cuts against the disintermediation argument. The headline earnings figure is close to meaningless: almost the entire year over year gain in net income came from unrealised marks on equity holdings, and the release says so explicitly. Strip that out and adjusted earnings landed a shade under consensus, the second consecutive quarter of that pattern. What moved the stock arrived on the call rather than in the release, when Ashkenazi raised the full year capital expenditure range for the third time in three prints and warned that 2027 spending increases again. Free cash flow turned negative for the first time in the covered sequence, and the framing was demand led: accelerated capacity deliveries against supply constraints management expects to persist.</p>
+
+        <div class="qkick">Q1 2026 &middot; reported 29 April 2026</div>
+        <p>This was the quarter that changed the argument. Cloud growth stepped up sharply from the prior print, backlog nearly doubled sequentially, and Pichai said plainly that revenue would have been higher had compute been available. That single sentence is the most useful disclosure in the whole sequence, because it recasts capital spending as a response to booked demand. Operating margin reached its high for the four quarters even as quarterly capital expenditure roughly doubled year over year, which tells you the depreciation drag had not yet arrived in force. Reported earnings again carried a large equity gain and adjusted earnings again landed a cent below consensus, and the market ignored both. Shares rose close to ten percent the following session, the largest positive reaction in the sequence, because backlog gave investors a return figure to attach to the spending. Guidance for the year moved up on that same call and the stock rose regardless, which is the cleanest evidence available that the market prices capital intensity conditionally.</p>
+
+        <div class="qkick">Q4 2025 &middot; reported 4 February 2026</div>
+        <p>Annual revenue crossed four hundred billion dollars for the first time and the reaction was flat. Two items sat inside the operating line: an employee compensation charge tied to a revised Waymo stock valuation, which held reported margin below the adjusted level, and a Cloud result that cleared estimates by a wide margin. YouTube advertising missed, the only advertising line to do so across the four quarters, and management attributed the softness to comparison effects rather than demand. The capital expenditure guidance issued that day, roughly double the prior year's spend, drew immediate scepticism, and the shares recovered an early decline to close near unchanged. That session is the useful data point. The market was willing to absorb a doubling of spend while backlog was compounding and cash generation stayed intact, and became unwilling six months later once free cash flow inverted. Gemini 3 had shipped during the quarter, direct API token throughput was already growing quickly, and paid subscriptions kept building.</p>
+
+        <div class="qkick">Q3 2025 &middot; reported 29 October 2025</div>
+        <p>The first hundred billion dollar quarter, and the cleanest beat of the four. The European Commission fine sat entirely inside Google Services and pulled reported operating margin well below the adjusted level, which is the only reason the margin line looks weak on the face of the table. Underneath it, expense discipline was doing real work and Cloud operating margin expanded materially year over year as scale effects started to show in a segment that had spent years absorbing them. Every major revenue line grew double digits. Management raised the 2025 capital expenditure range and flagged a significant increase for the following year without quantifying it, a sequencing choice that gave the market a full quarter to adjust before the number landed. The shares rose the next session. Cloud backlog was disclosed at a level that looked large then and now reads as modest, and token throughput entered the release as a headline metric for the first time.</p>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK D ============ -->
+    <section class="section animate" id="patterns">
+      <span class="eyebrow">Block D</span>
+      <h2 class="block-title">Patterns and watch list</h2>
+      <div class="rule"></div>
+
+      <h3 class="sub-title">Structural patterns</h3>
+      <ul class="obs">
+        <li><span class="claim">Cloud growth accelerated in every quarter of the sequence.</span> The segment's year over year rate stepped up at each successive print, and its share of consolidated revenue rose with it.</li>
+        <li><span class="claim">Reported earnings have decoupled from operating earnings.</span> Marks on equity securities drove most of the net income growth in three of four quarters, while operating income grew far more steadily.</li>
+        <li><span class="claim">Capital intensity is compounding faster than guidance can track it.</span> The 2026 spending range was raised at three consecutive prints, each time landing above a consensus that had already moved up.</li>
+        <li><span class="claim">The market rewards backlog and punishes cash burn.</span> Comparable capital expenditure raises produced a ten percent gain in April and a seven percent loss in July; the variable that changed was free cash flow turning negative.</li>
+      </ul>
+
+      <h3 class="sub-title">Watch list for the next print</h3>
+      <ul class="obs">
+        <li><span class="sig flat">&rarr; stable</span><span class="claim">Cloud revenue growth rate.</span> Backlog converting at or above the current pace confirms capacity is arriving on schedule; deceleration back toward the Q1 rate breaks the acceleration pattern.</li>
+        <li><span class="sig down">&darr; deteriorating</span><span class="claim">Free cash flow.</span> A second consecutive negative quarter confirms the capital cycle has outrun operating cash generation; a return to positive without a cut to spending breaks the concern.</li>
+        <li><span class="sig flat">&rarr; stable</span><span class="claim">Google Services operating margin.</span> Holding near the 2025 level while depreciation steps up confirms operating leverage in Search; compression beyond two points breaks it.</li>
+        <li><span class="sig down">&darr; deteriorating</span><span class="claim">Frontier model cadence.</span> Shipping a competitive Pro tier Gemini inside the quarter confirms the current delay was schedule noise; a second postponement breaks the full stack argument.</li>
+      </ul>
+    </section>
+
+    <!-- ============ BLOCK E ============ -->
+    <section class="section animate" id="architecture">
+      <span class="eyebrow">Block E</span>
+      <h2 class="block-title">Strategic architecture</h2>
+      <div class="rule"></div>
+
+      <h3 class="sub-title">1 &middot; Business model and revenue architecture</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Line</th>
+              <th class="num">FY2025 revenue</th>
+              <th class="num">% of total</th>
+              <th class="num">YoY</th>
+              <th>Margin profile</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Google Search &amp; other</td><td class="num">$224,532M</td><td class="num">55.7%</td><td class="num pos-cell">+13.4%</td><td>Highest incremental margin in the group</td></tr>
+            <tr><td>YouTube ads</td><td class="num">$40,367M</td><td class="num">10.0%</td><td class="num pos-cell">+11.7%</td><td>Revenue share paid to creators caps margin</td></tr>
+            <tr><td>Google Network</td><td class="num">$29,792M</td><td class="num">7.4%</td><td class="num neg-cell">-1.9%</td><td>Low margin, structurally declining</td></tr>
+            <tr><td>Subscriptions, platforms and devices</td><td class="num">$48,030M</td><td class="num">11.9%</td><td class="num pos-cell">+19.1%</td><td>Mixed: software high, hardware thin</td></tr>
+            <tr><td><strong>Google Services total</strong></td><td class="num"><strong>$342,721M</strong></td><td class="num"><strong>85.1%</strong></td><td class="num pos-cell"><strong>+12.4%</strong></td><td><strong>40.7% segment operating margin</strong></td></tr>
+            <tr><td>Google Cloud</td><td class="num">$58,705M</td><td class="num">14.6%</td><td class="num pos-cell">+35.8%</td><td>23.7% segment operating margin, expanding</td></tr>
+            <tr><td>Other Bets</td><td class="num">$1,537M</td><td class="num">0.4%</td><td class="num neg-cell">-6.7%</td><td>$7,515M operating loss</td></tr>
+            <tr><td>Hedging gains (losses)</td><td class="num">-$127M</td><td class="num">n/m</td><td class="num">n/m</td><td>Recognised at consolidated level</td></tr>
+            <tr><td><strong>Total revenues</strong></td><td class="num"><strong>$402,836M</strong></td><td class="num"><strong>100.0%</strong></td><td class="num pos-cell"><strong>+15.1%</strong></td><td><strong>32.0% consolidated operating margin</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Source: Alphabet Forms 8-K, quarterly supplemental revenue and segment tables, Q1 2025 through Q4 2025 (SEC); FY2024 comparatives per Alphabet Q4 2024 Form 8-K and Bullfincher segment history. FY2025 line totals are the sum of the four reported quarters.</div>
+
+      <div class="prose">
+        <p>The architecture is one very large profit engine funding two very different consumers of capital. Search and its adjacent surfaces generate the cash, at a segment margin that has survived a decade of predictions of its collapse, and that cash pays for the compute that Cloud sells and the compute that Gemini consumes. Note that the shared AI research and development sits outside all three segments, in Alphabet level activities, so the reported Services margin flatters the true cost of the model programme and the reported Cloud margin flatters the true cost of the infrastructure that serves it. Anyone modelling this business needs to hold both facts at once.</p>
+        <p>Operating leverage originates in two places. The first is Search, where incremental query volume carries almost no incremental cost once the index and the serving infrastructure exist, and where AI Overviews and AI Mode have so far expanded usage without collapsing the advertising unit economics. The second is Cloud, where the segment margin has been climbing steadily as fixed infrastructure absorbs more workload, and where Alphabet sells the same silicon it uses internally. That vertical integration is the structural difference from every rival except Amazon: the tensor processing units that train Gemini also generate third party revenue, so the fixed cost of the model programme is amortised across two demand curves rather than one.</p>
+        <p>The Network line is a managed decline and should be read as such. Subscriptions are the quiet compounder, growing fastest of the advertising adjacent lines and carrying recurring revenue characteristics that the advertising business does not have. Other Bets remains a cost centre with one asset, Waymo, that has plausible standalone value and no path to consolidated profitability inside the forecast horizon.</p>
+      </div>
+
+      <h3 class="sub-title">2 &middot; Competitive moat</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Pillar</th><th>Strength</th><th>Erosion risk</th><th class="num">Rating</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Query and interaction data flywheel</td><td>Very strong</td><td>Moderate</td><td class="num"><span class="stars">&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+            <tr><td>YouTube two sided network</td><td>Very strong</td><td>Low</td><td class="num"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+            <tr><td>TPU vertical integration and full stack cost position</td><td>Strong</td><td>Low</td><td class="num"><span class="stars">&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+            <tr><td>Search default distribution and placement economics</td><td>Strong</td><td>High</td><td class="num"><span class="stars">&#9733;&#9733;&#9733;</span></td></tr>
+            <tr><td>Android and Chrome installed surface</td><td>Strong</td><td>Elevated</td><td class="num"><span class="stars">&#9733;&#9733;&#9733;</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Source: PGS assessment, informed by Alphabet Forms 8-K and earnings calls Q3 2025 to Q2 2026, and by the September 2025 remedies decision in United States v. Google (D.D.C.).</div>
+
+      <div class="prose">
+        <p>Rate the mechanism, not the brand. The YouTube network earns the top rating because it is the only pillar here where the advantage is created by users on both sides and cannot be bought: creators go where the audience and the payout are, advertisers go where the creators are, and no competitor has assembled that loop at scale despite a decade of well funded attempts. The data flywheel rates one notch lower because generative interfaces genuinely change what data matters. Two decades of click logs are worth less when the interface is a conversation, and the remedies order now requires Alphabet to share categories of search and interaction data with rivals, which converts a private asset into a partially public one.</p>
+        <p>The silicon position is underrated by the market and is the pillar PGS would defend hardest. Designing the accelerator, owning the data centres, training the model and selling the capacity is a cost structure competitors cannot replicate by writing a cheque, and it shows up as a Cloud margin that keeps expanding through a period of extreme capital intensity. Its erosion risk is low because the barrier is accumulated engineering rather than a contract.</p>
+        <p>Distribution is the weak pillar and the one most exposed to legal outcomes. Exclusive default arrangements are now prohibited and the payments that sustained them are under appellate review from both directions. The honest reading is that distribution was always a purchased moat, and purchased moats erode when the purchase becomes illegal. What protects Alphabet is that the product wins most choice screens on merit, which the September ruling effectively conceded.</p>
+      </div>
+
+      <h3 class="sub-title">3 &middot; Long-term growth architecture</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Driver</th><th>Timeline</th><th>Current state</th><th>Potential</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cloud backlog conversion</td><td>2026 - 2029</td>
+              <td>$514B backlog, up more than $50B sequentially; supply constrained</td>
+              <td>Multiple of the current segment revenue base</td><td>on track</td>
+            </tr>
+            <tr>
+              <td>Gemini API token consumption</td><td>2026 - 2028</td>
+              <td>22 billion tokens per minute via direct customer API use</td>
+              <td>Consumption revenue at platform economics</td><td>on track</td>
+            </tr>
+            <tr>
+              <td>AI Mode and AI Overviews monetisation</td><td>2026 - 2028</td>
+              <td>Record query volumes; commercial formats still early</td>
+              <td>Defends and extends the Search revenue pool</td><td>emerging</td>
+            </tr>
+            <tr>
+              <td>Consumer AI subscriptions</td><td>2026 - 2029</td>
+              <td>350M paid subscriptions; Gemini App at 950M monthly active users</td>
+              <td>Recurring revenue at Services margin</td><td>emerging</td>
+            </tr>
+            <tr>
+              <td>Waymo commercialisation</td><td>2027 - 2031</td>
+              <td>More than 500,000 fully autonomous rides per week; loss making</td>
+              <td>Standalone segment scale</td><td>at risk</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Sources: Alphabet Q1 2026 and Q2 2026 Forms 8-K and earnings calls (SEC, 29 Apr 2026 and 22 Jul 2026); Alphabet Q4 2025 Form 8-K. Status values per PGS controlled vocabulary.</div>
+
+      <div class="prose">
+        <p>Sequencing decides whether any of this matters. Backlog conversion has to work first, because it is the only driver that turns the current capital programme into recognised revenue on a timeline the market will tolerate. Everything else is downstream of it. If capacity arrives and converts, the spending is a build cycle with a visible end; if it slips, the same spending is a write down waiting to be scheduled, and the equity story changes from compounder to capital trap regardless of how well Search performs.</p>
+        <p>Token consumption is the second gate and the more interesting one, because it is where AI demand becomes a metered utility rather than a subscription. Throughput has been compounding at a rate that few businesses of this size have ever recorded, but per token pricing is falling as fast as volume is rising, which is why management keeps emphasising cost efficiency in each model release. The revenue outcome depends on whether volume growth outruns price decay, and one quarter of disclosure is not enough to settle that.</p>
+        <p>Search monetisation of AI formats sits third by dependency, not by importance. It is the largest pool by far, and the current evidence, with query volumes at record levels and Search revenue growing faster than the Services average, argues the formats are additive. Subscriptions and Waymo are optionality. Neither changes the investment case inside two years, and Waymo carries capital demands of its own that compete with the compute programme for the same balance sheet.</p>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK F ============ -->
+    <section class="section animate" id="risks">
+      <span class="eyebrow">Block F</span>
+      <h2 class="block-title">Risks</h2>
+      <div class="rule"></div>
+
+      <div class="risk high">
+        <div class="rhead">
+          <span class="rname">Capital intensity and the free cash flow inversion</span>
+          <span class="badge high">High</span>
+        </div>
+        <div class="rbody">
+          <p>The mechanism is straightforward and already visible. Capital expenditure is now running ahead of operating cash generation, so the business funds growth by issuing equity and debt rather than from its own cash flow, and every dollar of that spend converts into depreciation that lands in the operating line over the following several years. Alphabet has already raised equity and issued notes at scale to bridge the gap. The timeline is immediate: the drag begins in the next four quarters and compounds through 2028 as assets placed in service today start depreciating. The observable that signals this risk materialising is Google Services operating margin compressing while Cloud revenue growth decelerates in the same print, because that combination means the depreciation has arrived without the revenue that was supposed to justify it. A second consecutive negative free cash flow quarter alongside another guidance raise would make the concern concrete.</p>
+        </div>
+      </div>
+
+      <div class="risk high">
+        <div class="rhead">
+          <span class="rname">Antitrust remedies and the distribution economics</span>
+          <span class="badge high">High</span>
+        </div>
+        <div class="rbody">
+          <p>Two federal cases and one European decision are live simultaneously. The search remedies took effect in February 2026, prohibiting exclusive distribution contracts for Search, Chrome and certain AI products, and requiring data sharing with rivals. Both sides are appealing at the D.C. Circuit: Alphabet against the data sharing obligations, the Department of Justice and a coalition of states for the structural relief the district court declined to order, including a Chrome divestiture. Separately, the ad tech remedies ruling from the Eastern District of Virginia is pending after a November 2025 trial in which the government sought divestiture of the exchange and the publisher ad server. The timeline runs into 2027 at the earliest for appellate resolution. The observable is the appellate calendar itself: a scheduling order setting oral argument on the cross-appeal, or an adverse ad tech remedies order, would move the tail risk into the near term.</p>
+        </div>
+      </div>
+
+      <div class="risk medium">
+        <div class="rhead">
+          <span class="rname">Content supply withdrawal and frontier model slippage</span>
+          <span class="badge medium">Medium</span>
+        </div>
+        <div class="rbody">
+          <p>Two related pressures on the input side. Publishers and platforms that supply the corpus behind AI answers are reconsidering their arrangements as generated summaries reduce referral traffic, with several large sources reported to be weighing withdrawal of licensing agreements. Thinner or more expensive content supply raises the cost of the answer layer and weakens the quality advantage that keeps users on the default. In parallel, the Pro tier Gemini release has slipped, and rivals have used the delay to argue that Alphabet's frontier position is trailing rather than leading. The mechanism connecting the two is perception: enterprise buyers commit multi year Cloud contracts partly on model leadership, so a credibility gap at the frontier eventually shows up in backlog. The observable is sequential backlog growth slowing while a competitive Pro tier model remains unshipped.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK G ============ -->
+    <section class="section animate" id="scenarios">
+      <span class="eyebrow">Block G</span>
+      <h2 class="block-title">Scenarios</h2>
+      <div class="rule"></div>
+
+      <div class="scenario-grid">
+
+        <div class="scen bull">
+          <div class="shead">
+            <span class="sname">Bull</span>
+            <span class="sdelta">+47% to the bull target</span>
+          </div>
+          <div class="sbody">
+            <ul>
+              <li>Cloud capacity arrives on schedule and backlog converts at or above the current pace through 2027.</li>
+              <li>Search advertising revenue keeps growing faster than the Services average as AI formats monetise.</li>
+              <li>Free cash flow returns to positive during 2027 as the build cycle passes its peak.</li>
+            </ul>
+            <p>Conditions required: capacity deliveries land without slippage, which depends on supply chains management has already flagged as constrained; the depreciation step up is absorbed by revenue growth rather than margin; and the appellate outcome leaves distribution economics substantially intact. Under those conditions the market re-rates the operating business rather than the reported earnings, and the current drawdown reads as an entry point created by a guidance headline rather than by a change in the franchise.</p>
+          </div>
+        </div>
+
+        <div class="scen bear">
+          <div class="shead">
+            <span class="sname">Bear</span>
+            <span class="sdelta">-24% to the bear case</span>
+          </div>
+          <div class="sbody">
+            <ul>
+              <li>Backlog conversion slips, leaving capacity built ahead of revenue that arrives late or not at all.</li>
+              <li>Depreciation compresses consolidated operating margin faster than Cloud contribution replaces it.</li>
+              <li>An adverse appellate or ad tech remedies outcome forces structural change in distribution or ad technology.</li>
+            </ul>
+            <p>Conditions required: a demand air pocket in enterprise AI spending, which would show first as sequential backlog growth stalling; a second and third year of spending at or above the current run rate without matching revenue recognition; and a court willing to order the structural relief two district judges have so far been reluctant to impose. In that case the forward multiple compresses toward the lower half of its historical band on earnings that are themselves being revised down, and both terms move against the holder at once.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ BLOCK H ============ -->
+    <section class="section animate" id="verdict">
+      <span class="eyebrow">Block H</span>
+      <h2 class="block-title">PGS verdict</h2>
+      <div class="rule"></div>
+
+      <div class="verdict">
+        <span class="rating-pill">&#128994; BUY</span>
+
+        <div class="metrics-strip">
+          <div><span class="lbl">Bull target, 18-24 months</span><span class="val">$470 (est.)</span></div>
+          <div><span class="lbl">Bear downside</span><span class="val">$243 (est.)</span></div>
+          <div><span class="lbl">Risk / reward</span><span class="val">Favourable</span></div>
+          <div><span class="lbl">Horizon</span><span class="val">18-24 months</span></div>
+        </div>
+
+        <div class="prose">
+          <p><strong>Price dislocation.</strong> The stock fell roughly seven percent on the strongest quarter in its history, on a guidance line delivered verbally after a release that beat on revenue, Cloud, operating income and margin. The market repriced a spending assumption, not a business. That is the classic shape of a dislocation: a single forward variable moved, the terminal value did not, and the multiple did the adjusting. The drawdown from the high now exceeds twenty percent while operating income grows at thirty.</p>
+          <p><strong>Fundamental quality.</strong> Twelve consecutive quarters of double digit revenue growth, a Search franchise still expanding faster than the segment that contains it, a Cloud business accelerating through four straight prints while its margin expands, and a silicon position no rival can buy. The balance sheet carries net cash even after the largest capital programme in corporate history. Earnings quality is the caveat: reported figures are distorted by equity marks and the adjusted line has missed twice running.</p>
+          <p><strong>Primary risk.</strong> The capital intensity risk in Block F dominates the other two. Antitrust is a tail with a long fuse and a district court record that has twice declined structural relief. Content supply and model cadence are recoverable. Depreciation arriving without revenue is neither, and it is the one exposure that would invalidate the rating rather than delay it.</p>
+          <p><strong>Near-term catalysts.</strong> The Q3 2026 print on 27 October is the next test, with backlog conversion and free cash flow the lines that matter. Before then: a Pro tier Gemini release that closes the frontier perception gap, the ad tech remedies ruling from the Eastern District of Virginia, and any scheduling order on the D.C. Circuit cross-appeal.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DISCLAIMER ============ -->
+    <footer class="disclaimer">
+      <p>"This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice."</p>
+
+      <p>This report was produced with the assistance of artificial intelligence. Generative model: Anthropic &middot; Claude Opus 5 &middot; version claude-opus-5, accessed via the Claude web application (claude.ai). All figures were sourced from live web search within the same session and cross-checked against the anchoring protocol in Step 1; the model's role was data synthesis, formatting and drafting, not the origination of financial estimates. Human review by the internal analyst precedes publication.</p>
+
+      <p class="ref">Report Reference: PGS-GOOGL-202607 &middot; Date: 24 July 2026 &middot; Internal Analyst: Polaris Global Strategies Ltd. &middot; Ticker: GOOGL &middot; Exchange: NASDAQ &middot; AI Model: Anthropic claude-opus-5</p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '';
+          entry.target.style.animationPlayState = 'running';
+          animObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+
+    animateEls.forEach(function(el, i){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      el.style.animationDelay = (Math.min(i,4) * 0.06) + 's';
+      animObserver.observe(el);
+    });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var sections = links.map(function(l){ return document.querySelector(l.getAttribute('href')); });
+
+  function setActive(){
+    var pos = window.scrollY + (window.innerHeight * 0.28);
+    var idx = 0;
+    sections.forEach(function(sec, i){
+      if (sec && sec.offsetTop <= pos) { idx = i; }
+    });
+    links.forEach(function(l, i){ l.classList.toggle('active', i === idx); });
+  }
+
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking) {
+      window.requestAnimationFrame(function(){ setActive(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+  setActive();
+})();
+</script>
+
+</body>
+</html>
