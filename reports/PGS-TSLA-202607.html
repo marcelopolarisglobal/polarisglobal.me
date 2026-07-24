@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PGS-TSLA-202607 · Tesla, Inc. · Polaris Global Strategies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* surfaces */
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  /* text */
+  --text:#111827;
+  --text-mute:#6B7280;
+  /* signals */
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  /* signal tints */
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  /* structure */
+  --border:#E5E7EB;
+  --accent:#E31937;
+
+  --serif:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --sans:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--canvas);
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- layout ---------- */
+.layout{display:grid;grid-template-columns:220px 1fr;}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  padding:28px 0 40px 0;
+}
+.sidebar .brand{
+  padding:0 18px 18px 18px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:14px;
+}
+.sidebar .brand .mark{
+  font-family:var(--serif);font-weight:900;font-size:19px;letter-spacing:-.01em;
+  color:var(--text);line-height:1.15;
+}
+.sidebar .brand .sub{
+  font-family:var(--mono);font-size:10px;letter-spacing:.09em;
+  color:var(--text-mute);text-transform:uppercase;margin-top:7px;
+}
+.nav-link{
+  display:block;padding:8px 18px;
+  border-left:3px solid transparent;
+  color:var(--text-mute);text-decoration:none;
+  font-size:13px;line-height:1.35;
+}
+.nav-link .kick{
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  display:block;color:var(--text-mute);opacity:.75;
+}
+.nav-link:hover{color:var(--text);background:var(--card);}
+.nav-link.active{
+  color:var(--text);font-weight:500;
+  border-left-color:var(--accent);
+  background:var(--card);
+}
+.main-content{min-width:0;padding:0 0 80px 0;}
+.inner{max-width:980px;margin:0 auto;padding:0 40px;}
+
+/* ---------- cover ---------- */
+.cover{
+  background:var(--surface);
+  background-image:radial-gradient(var(--border) 1px, transparent 1px);
+  background-size:22px 22px;
+  border-bottom:1px solid var(--border);
+  min-height:96vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 0;
+}
+.cover .rule{width:64px;height:3px;background:var(--accent);margin-bottom:34px;}
+.cover .eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--text-mute);margin-bottom:22px;
+}
+.cover h1{
+  font-family:var(--serif);font-weight:900;
+  font-size:clamp(46px,7.6vw,88px);line-height:1.02;
+  letter-spacing:-.025em;margin:0 0 10px 0;
+}
+.cover h1 em{font-style:normal;color:var(--accent);}
+.cover .tick{
+  font-family:var(--mono);font-size:15px;letter-spacing:.14em;
+  color:var(--text);margin-bottom:46px;
+}
+.cover-meta{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:1px;background:var(--border);border:1px solid var(--border);max-width:660px;
+}
+.cover-meta div{background:var(--surface);padding:14px 16px;}
+.cover-meta .lbl{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--text-mute);margin-bottom:5px;
+}
+.cover-meta .val{font-family:var(--mono);font-size:13px;color:var(--text);}
+
+/* ---------- section furniture ---------- */
+section{padding:64px 0 8px 0;}
+.block-kicker{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.19em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:10px;
+}
+h2{
+  font-family:var(--serif);font-weight:700;font-size:34px;
+  line-height:1.15;letter-spacing:-.015em;margin:0 0 8px 0;
+}
+h3{
+  font-family:var(--sans);font-weight:700;font-size:15px;
+  letter-spacing:.005em;margin:38px 0 12px 0;
+}
+.lede{color:var(--text-mute);font-size:15px;max-width:68ch;margin:0 0 26px 0;}
+p{max-width:68ch;margin:0 0 16px 0;}
+.prose p{max-width:68ch;}
+
+/* ---------- tables ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+thead th{
+  background:var(--card);
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-mute);font-weight:500;
+  text-align:left;padding:11px 12px;border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+tbody td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+tbody tr:nth-child(odd){background:var(--canvas);}
+tbody tr:nth-child(even){background:var(--surface);}
+tbody tr:hover{background:var(--card);transition:background .18s ease;}
+tbody tr:last-child td{border-bottom:none;}
+td.num,th.num{font-family:var(--mono);white-space:nowrap;}
+td.name{font-weight:500;}
+tr.band td{
+  background:var(--card);font-family:var(--mono);font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--text-mute);
+  padding:8px 12px;
+}
+.src{
+  font-family:var(--mono);font-size:10.5px;line-height:1.5;
+  color:var(--text-mute);margin:8px 0 0 0;max-width:none;
+}
+.pos{color:var(--pos);}
+.neg{color:var(--neg);}
+.pill{
+  display:inline-block;font-family:var(--mono);font-size:10px;
+  letter-spacing:.06em;padding:2px 7px;border-radius:2px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.pill-beat{background:var(--pill-pos-bg);color:var(--pill-pos-fg);}
+.pill-miss{background:var(--pill-neg-bg);color:var(--pill-neg-fg);}
+.stars{font-family:var(--mono);letter-spacing:.06em;color:var(--accent);
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+
+/* ---------- block A panel ---------- */
+.panel-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;
+  background:var(--border);border:1px solid var(--border);
+  border-top:3px solid var(--accent);
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.panel-col{background:var(--card);padding:18px 16px 16px 16px;}
+.panel-col h4{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--text-mute);font-weight:500;
+  margin:0 0 14px 0;padding-bottom:9px;border-bottom:1px solid var(--border);
+}
+.metric{margin-bottom:12px;}
+.metric .k{font-size:11.5px;color:var(--text-mute);line-height:1.35;}
+.metric .v{font-family:var(--mono);font-size:14.5px;color:var(--text);margin-top:1px;}
+.metric .v small{font-size:11px;color:var(--text-mute);}
+
+/* ---------- block C typographic ---------- */
+.quarters{border-left:3px solid var(--accent);padding-left:22px;margin-top:26px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.q-item{margin-bottom:30px;}
+.q-item:last-child{margin-bottom:6px;}
+.q-kick{
+  font-family:var(--mono);font-size:11px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--text);margin-bottom:7px;
+}
+.q-kick span{color:var(--text-mute);letter-spacing:.08em;}
+
+/* ---------- block D ---------- */
+.obs{margin:22px 0 0 0;padding:0;list-style:none;max-width:68ch;}
+.obs li{padding:12px 0;border-top:1px solid var(--border);}
+.obs li:last-child{border-bottom:1px solid var(--border);}
+.obs .claim{font-weight:500;}
+.obs .ev{color:var(--text-mute);font-size:14px;}
+.sig{font-family:var(--mono);font-size:12px;margin-right:6px;}
+
+/* ---------- block F risks ---------- */
+.risk{border:1px solid var(--border);margin-bottom:18px;}
+.risk-hi{border-left:3px solid var(--neg);}
+.risk-md{border-left:3px solid var(--caution);}
+.risk .rh{
+  padding:12px 18px;display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;
+  border-bottom:1px solid var(--border);
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.risk-hi .rh{background:var(--neg-tint);}
+.risk-md .rh{background:var(--caution-tint);}
+.risk .rh .t{font-weight:700;font-size:15px;}
+.badge{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 8px;border-radius:2px;color:#FFFFFF;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.badge-hi{background:var(--neg);}
+.badge-md{background:var(--caution);}
+.risk .rb{background:var(--canvas);padding:16px 18px;}
+.risk .rb p{margin:0;max-width:68ch;font-size:14.5px;}
+
+/* ---------- block G scenarios ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:26px;}
+.scen{border:1px solid var(--border);}
+.scen.bull{border-top:3px solid var(--pos);}
+.scen.bear{border-top:3px solid var(--neg);}
+.scen .sh{padding:12px 18px;border-bottom:1px solid var(--border);
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.scen.bull .sh{background:var(--pos-tint);}
+.scen.bear .sh{background:var(--neg-tint);}
+.scen .sh .t{font-weight:700;font-size:15px;}
+.scen .sh .d{font-family:var(--mono);font-size:12px;margin-top:3px;}
+.scen.bull .sh .d{color:var(--pos);}
+.scen.bear .sh .d{color:var(--neg);}
+.scen .sb{background:var(--canvas);padding:16px 18px;}
+.scen .sb p{font-size:14.5px;margin:0 0 12px 0;}
+.scen .sb ul{margin:0 0 12px 0;padding-left:18px;font-size:14px;}
+.scen .sb li{margin-bottom:5px;}
+.scen .sb .cond{font-size:13.5px;color:var(--text-mute);margin:0;}
+
+/* ---------- block H verdict ---------- */
+.verdict{background:var(--surface);border:1px solid var(--border);padding:28px 28px 12px 28px;margin-top:26px;}
+.vstrip{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;
+  background:var(--border);border:1px solid var(--border);margin-bottom:26px;
+}
+.vstrip div{background:var(--card);padding:14px 16px;}
+.vstrip .lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--text-mute);margin-bottom:6px;}
+.vstrip .val{font-family:var(--mono);font-size:14px;}
+.rating-pill{
+  display:inline-block;background:var(--accent);color:#FFFFFF;
+  font-family:var(--mono);font-size:12px;letter-spacing:.09em;
+  padding:5px 12px;border-radius:2px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+
+/* ---------- disclaimer ---------- */
+.disclaimer{margin-top:64px;padding-top:26px;border-top:1px solid var(--border);}
+.disclaimer p{font-size:12.5px;line-height:1.6;color:var(--text-mute);max-width:none;}
+.disclaimer .ref{font-family:var(--mono);font-size:11px;}
+
+/* ---------- animation (rule 3: visible by default) ---------- */
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@media (prefers-reduced-motion:reduce){
+  .animate{animation:none !important;opacity:1 !important;transform:none !important;}
+  html{scroll-behavior:auto;}
+}
+a:focus-visible,.nav-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .panel-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .scenario-grid{grid-template-columns:1fr;}
+  .vstrip{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:768px){
+  .layout{display:block;}
+  .sidebar{
+    position:sticky;top:0;height:auto;z-index:20;
+    display:flex;gap:0;overflow-x:auto;white-space:nowrap;
+    border-right:none;border-bottom:1px solid var(--border);padding:0;
+  }
+  .sidebar .brand{display:none;}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:11px 14px;}
+  .nav-link.active{border-left:none;border-bottom-color:var(--accent);}
+  .nav-link .kick{display:inline;margin-right:6px;}
+  .inner{padding:0 20px;}
+  .cover-meta{grid-template-columns:1fr;}
+  .panel-grid{grid-template-columns:1fr;}
+  .vstrip{grid-template-columns:1fr;}
+  h2{font-size:27px;}
+}
+
+/* ---------- print ---------- */
+@media print{
+  @page{size:A4;margin:15mm 12mm;}
+  html,body{background-color:#FFFFFF !important;color:#111827 !important;font-size:10.5pt;}
+  .layout{display:block !important;}
+  .sidebar,.nav-link{display:none !important;}
+  .main-content{display:block !important;width:100% !important;padding:0 !important;}
+  .inner{max-width:none !important;padding:0 !important;margin:0 !important;}
+  .cover{
+    min-height:auto !important;height:auto !important;display:block !important;
+    background-color:#FFFFFF !important;background-image:none !important;
+    border-bottom:1px solid #E5E7EB;padding:0 0 24pt 0 !important;
+  }
+  section{padding:18pt 0 4pt 0 !important;page-break-inside:auto;}
+  .panel-grid{
+    display:grid !important;grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:1px !important;page-break-inside:avoid;
+  }
+  .scenario-grid{
+    display:grid !important;grid-template-columns:1fr 1fr !important;
+    gap:12pt !important;page-break-inside:avoid;
+  }
+  .panel-col,.verdict,.vstrip div,.risk .rb,.scen .sb,.table-wrap,tbody tr:nth-child(even){
+    background-color:#FFFFFF !important;color:#111827 !important;
+  }
+  thead th,tr.band td,.vstrip div,.panel-col{background-color:#F3F4F6 !important;}
+  .risk,.scen,.q-item,table,tr{page-break-inside:avoid;}
+  .prose p,p{orphans:3;widows:3;}
+  h2,h3{page-break-after:avoid;}
+  .table-wrap{overflow:visible !important;}
+  table{table-layout:fixed;width:100% !important;}
+  td,th{word-break:break-word;}
+  .animate{opacity:1 !important;transform:none !important;animation:none !important;}
+  *{box-shadow:none !important;backdrop-filter:none !important;}
+  .pill,.badge,.rating-pill,.stars,.panel-grid,.risk .rh,.scen .sh,.quarters{
+    print-color-adjust:exact !important;-webkit-print-color-adjust:exact !important;
+  }
+  a{text-decoration:none;color:#111827 !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Report sections">
+    <div class="brand">
+      <div class="mark">Polaris Global<br>Strategies</div>
+      <div class="sub">PGS-TSLA-202607</div>
+    </div>
+    <a class="nav-link" href="#cover"><span class="kick">00</span>Cover</a>
+    <a class="nav-link" href="#block-a"><span class="kick">A</span>Consolidated panel</a>
+    <a class="nav-link" href="#block-b"><span class="kick">B</span>Quarterly record</a>
+    <a class="nav-link" href="#block-c"><span class="kick">C</span>Reading the quarters</a>
+    <a class="nav-link" href="#block-d"><span class="kick">D</span>Patterns and watch list</a>
+    <a class="nav-link" href="#block-e"><span class="kick">E</span>Strategic architecture</a>
+    <a class="nav-link" href="#block-f"><span class="kick">F</span>Risks</a>
+    <a class="nav-link" href="#block-g"><span class="kick">G</span>Scenarios</a>
+    <a class="nav-link" href="#block-h"><span class="kick">H</span>PGS verdict</a>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- ============ COVER ============ -->
+    <header class="cover animate" id="cover">
+      <div class="inner">
+        <div class="rule"></div>
+        <div class="eyebrow">Polaris Global Strategies Ltd. · Internal research</div>
+        <h1>Tesla,<br><em>Inc.</em></h1>
+        <div class="tick">TSLA · NASDAQ</div>
+        <div class="cover-meta">
+          <div><div class="lbl">Reference</div><div class="val">PGS-TSLA-202607</div></div>
+          <div><div class="lbl">Publication date</div><div class="val">24 July 2026</div></div>
+          <div><div class="lbl">Anchor quarter</div><div class="val">Q2 2026</div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="inner">
+
+      <!-- ============ BLOCK A ============ -->
+      <section id="block-a" class="animate">
+        <div class="block-kicker">Block A</div>
+        <h2>Consolidated panel</h2>
+        <p class="lede">Every price, multiple and consensus figure carried by this report is recorded once, here.</p>
+
+        <div class="panel-grid">
+          <div class="panel-col">
+            <h4>Market</h4>
+            <div class="metric"><div class="k">Price at analysis</div><div class="v">$319.69 <small>23 Jul close</small></div></div>
+            <div class="metric"><div class="k">Market capitalisation</div><div class="v">$1,034,900.0m</div></div>
+            <div class="metric"><div class="k">Versus 52-week high $498.83</div><div class="v neg">-35.9%</div></div>
+            <div class="metric"><div class="k">Versus 52-week low $297.82</div><div class="v pos">+7.3%</div></div>
+          </div>
+          <div class="panel-col">
+            <h4>Fundamentals · TTM</h4>
+            <div class="metric"><div class="k">Revenue</div><div class="v">$103,619.0m</div></div>
+            <div class="metric"><div class="k">EPS diluted, GAAP</div><div class="v">$1.08</div></div>
+            <div class="metric"><div class="k">EPS diluted, adjusted</div><div class="v">$1.74</div></div>
+            <div class="metric"><div class="k">Operating margin</div><div class="v">4.2%</div></div>
+            <div class="metric"><div class="k">Free cash flow yield</div><div class="v">0.6%</div></div>
+          </div>
+          <div class="panel-col">
+            <h4>Valuation</h4>
+            <div class="metric"><div class="k">P/E TTM, GAAP</div><div class="v">296.0x</div></div>
+            <div class="metric"><div class="k">Forward P/E, FY2026E</div><div class="v">175.0x</div></div>
+            <div class="metric"><div class="k">EV / Revenue TTM</div><div class="v">9.7x</div></div>
+            <div class="metric"><div class="k">PEG</div><div class="v">5.6x <small>(est.)</small></div></div>
+            <div class="metric"><div class="k">P/E band, last 12 months</div><div class="v">261x to 373x</div></div>
+          </div>
+          <div class="panel-col">
+            <h4>Consensus</h4>
+            <div class="metric"><div class="k">Analysts covering</div><div class="v">47</div></div>
+            <div class="metric"><div class="k">Ratings, trailing 3 months</div><div class="v">8 buy / 16 hold / 3 sell</div></div>
+            <div class="metric"><div class="k">Average target</div><div class="v">$425.22</div></div>
+            <div class="metric"><div class="k">High target</div><div class="v">$600.00</div></div>
+            <div class="metric"><div class="k">Low target</div><div class="v">$125.00</div></div>
+            <div class="metric"><div class="k">Next earnings</div><div class="v">28 Oct 2026</div></div>
+          </div>
+        </div>
+        <p class="src">Sources: NASDAQ close 23 July 2026 · Macrotrends 52-week range · Tesla Form 8-K Exhibit 99.1, Q2 2026 update (TTM aggregates) · S&amp;P Global Market Intelligence via stockanalysis.com (analyst count, targets) · TipRanks (rating distribution, next earnings date) · Barron's via Invezz (forward multiple). Market capitalisation, enterprise value, operating margin and free cash flow yield derived from the same filings. PEG marked (est.) as no single published series was verifiable.</p>
+
+        <p style="margin-top:22px">The trailing multiple now sits at the bottom of its own twelve-month band, after spending June and early July near the top of it. That compression came almost entirely from the share price, since trailing GAAP earnings barely moved across the four quarters here: the market has repriced the story, not the reported profit.</p>
+      </section>
+
+      <!-- ============ BLOCK B ============ -->
+      <section id="block-b" class="animate">
+        <div class="block-kicker">Block B</div>
+        <h2>Quarterly record</h2>
+        <p class="lede">Four continuous quarters, anchor first.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Quarter</th>
+                <th class="num">Revenue vs consensus</th>
+                <th class="num">EPS GAAP vs cons.</th>
+                <th class="num">EPS adj. vs cons.</th>
+                <th class="num">Op. margin / adj. EBITDA margin</th>
+                <th class="num">Free cash flow</th>
+                <th class="num">Next session</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="name">Q2 2026<br><span style="color:var(--text-mute);font-size:11.5px">rep. 22 Jul 2026</span></td>
+                <td class="num">$28,236.0m vs $26,320.0m<br><span class="pill pill-beat">beat +7.3%</span></td>
+                <td class="num">$0.32 vs $0.36<br><span class="pill pill-miss">miss</span></td>
+                <td class="num">$0.33 vs $0.50<br><span class="pill pill-miss">miss -34.0%</span></td>
+                <td class="num">1.4% / 11.6%</td>
+                <td class="num neg">-$1,092.0m</td>
+                <td class="num neg">-14.5%</td>
+              </tr>
+              <tr>
+                <td class="name">Q1 2026<br><span style="color:var(--text-mute);font-size:11.5px">rep. 22 Apr 2026</span></td>
+                <td class="num">$22,387.0m vs $22,640.0m<br><span class="pill pill-miss">miss -1.1%</span></td>
+                <td class="num">$0.13 vs (data not found)</td>
+                <td class="num">$0.41 vs $0.37<br><span class="pill pill-beat">beat +10.8%</span></td>
+                <td class="num">4.2% / 16.4%</td>
+                <td class="num pos">$1,444.0m</td>
+                <td class="num neg">-3.6%</td>
+              </tr>
+              <tr>
+                <td class="name">Q4 2025<br><span style="color:var(--text-mute);font-size:11.5px">rep. 28 Jan 2026</span></td>
+                <td class="num">$24,901.0m vs $24,780.0m<br><span class="pill pill-beat">beat +0.5%</span></td>
+                <td class="num">$0.24 vs (data not found)</td>
+                <td class="num">$0.50 vs $0.45<br><span class="pill pill-beat">beat +11.1%</span></td>
+                <td class="num">5.7% / 16.7%</td>
+                <td class="num pos">$1,420.0m</td>
+                <td class="num pos">+2.7%</td>
+              </tr>
+              <tr>
+                <td class="name">Q3 2025<br><span style="color:var(--text-mute);font-size:11.5px">rep. 22 Oct 2025</span></td>
+                <td class="num">$28,095.0m vs $26,370.0m<br><span class="pill pill-beat">beat +6.5%</span></td>
+                <td class="num">$0.39 vs (data not found)</td>
+                <td class="num">$0.50 vs $0.54<br><span class="pill pill-miss">miss -7.4%</span></td>
+                <td class="num">5.8% / 15.0%</td>
+                <td class="num pos">$3,990.0m</td>
+                <td class="num neg">-3.0% (est.)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Sources: Tesla Form 8-K Exhibit 99.1, Q2 2026 update (all reported figures) · consensus: Bloomberg (Q2 2026 revenue and adjusted EPS), Tesla-compiled sell-side survey (Q2 2026 GAAP EPS), LSEG via CNBC (Q1 2026, Q3 2025), Benzinga Pro (Q4 2025) · next-session moves: NASDAQ closes 23 Jul 2026, 23 Apr 2026, 29 Jan 2026. Sell-side does not publish a GAAP EPS consensus for the three earlier quarters. The Q3 2025 next-session move is marked (est.) because only the pre-market move on 23 Oct 2025 was verifiable. Adjusted margin column uses adjusted EBITDA margin, the only non-GAAP margin Tesla publishes below gross profit.</p>
+      </section>
+
+      <!-- ============ BLOCK C ============ -->
+      <section id="block-c" class="animate">
+        <div class="block-kicker">Block C</div>
+        <h2>Reading the quarters</h2>
+        <p class="lede">What produced each number, and whether the market read it correctly.</p>
+
+        <div class="quarters prose">
+
+          <div class="q-item">
+            <div class="q-kick">Q2 2026 <span>· anchor · record revenue, worst operating margin of the sequence</span></div>
+            <p>The revenue beat was real and the profit collapse was structural. Deliveries hit a second-quarter record and services grew fifty percent, yet operating income fell by more than half. Four things did the damage. Regulatory credits, once a pure-margin line, shrank to a rounding error against automotive revenue. Average selling prices fell as Tesla sold cheaper Model 3 and Model Y trims after retiring the Model S and X lines. Operating expenses grew nearly twice as fast as revenue, split between artificial intelligence research and stock-based compensation tied to the 2025 CEO Performance Award. An energy warranty charge from a vendor cell defect took the rest. GAAP earnings held up only because of an unrealised gain on the SpaceX stake and a California deferred tax release, both of which management stripped out of the adjusted figure. Capital expenditure more than doubled and free cash flow turned negative for the first time since early 2024. The market punished the print harder than any quarter in years, and the CFO's disclosure of the largest order backlog since 2023 did not slow the selling.</p>
+          </div>
+
+          <div class="q-item">
+            <div class="q-kick">Q1 2026 <span>· best margin print, sold off anyway</span></div>
+            <p>On the numbers alone this was the strongest quarter of the four. Gross margin reached its highest level in the sequence and automotive gross margin excluding credits improved sharply on lower material costs. Free cash flow came in positive against a market braced for burn. The quality of that margin deserves qualification: one-time warranty and tariff benefits filled the hole left by falling credit revenue, so the underlying improvement is smaller than the headline. Energy revenue fell year over year, breaking the momentum built in the two preceding quarters and raising a demand question about the segment the bulls had been counting on. Revenue missed the LSEG estimate. Shares rose about four percent after the bell on the earnings beat, then gave it all back when the CFO raised 2026 capital expenditure guidance by five billion dollars and said free cash flow would be negative for the remaining three quarters. The stock closed lower the next session. That reversal, not the margin, was the signal.</p>
+          </div>
+
+          <div class="q-item">
+            <div class="q-kick">Q4 2025 <span>· a beat against a low bar</span></div>
+            <p>Tesla cleared both lines, but the bar had been lowered twice before the print. Deliveries fell sixteen percent year over year after the expiry of the United States federal electric vehicle credit pulled demand into the prior quarter. Automotive gross margin excluding credits improved sequentially on regional mix, with strength in Asia-Pacific and Europe covering weakness at home. Energy delivered its record deployment quarter and record segment gross profit, which is what carried the beat. Regulatory credits were at their high point for the sequence, and a restructuring charge ran through operating expenses. Management used the call to reframe the company as a physical artificial intelligence business, confirming Cybercab timing, announcing a two billion dollar equity investment linked to SpaceX and guiding to roughly twenty billion dollars of 2026 capital expenditure. Shares rose the following session. In hindsight this was the quarter that set the terms of the current debate, and the guidance figure it introduced has since been revised upward twice.</p>
+          </div>
+
+          <div class="q-item">
+            <div class="q-kick">Q3 2025 <span>· borrowed demand, best cash quarter</span></div>
+            <p>Record deliveries came from customers rushing to claim the seven thousand five hundred dollar United States credit before it expired at the end of September. Revenue beat by a wide margin, adjusted earnings missed for the fourth consecutive quarter, and operating margin was the highest of the four quarters here. Free cash flow was the strongest of the sequence, though nearly two billion dollars of it came from working capital as inventory drained rather than from earnings. Regulatory credit revenue fell sharply against the prior year, and a restructuring charge sat in operating expenses. The market treated the delivery record as pulled forward rather than earned and marked the stock down modestly. Read against everything that followed, this quarter is the cleanest statement of the problem the report keeps returning to: Tesla can still move enormous volume, and volume has stopped translating reliably into operating profit.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ BLOCK D ============ -->
+      <section id="block-d" class="animate">
+        <div class="block-kicker">Block D</div>
+        <h2>Patterns and watch list</h2>
+
+        <h3>Structural patterns across the four quarters</h3>
+        <ul class="obs">
+          <li><span class="claim">Volume and profit have separated.</span> <span class="ev">Deliveries set records in two quarters while operating margin fell in three, and the anchor quarter paired the highest revenue with the lowest margin.</span></li>
+          <li><span class="claim">Regulatory credits have stopped being a profit source.</span> <span class="ev">Credit revenue as a share of automotive revenue fell in every quarter and is now roughly a quarter of its Q4 2025 weight.</span></li>
+          <li><span class="claim">Services and other is the only line compounding without interruption.</span> <span class="ev">It grew sequentially in all four quarters and hit record gross profit and margin in the anchor quarter, carried by a fleet that keeps growing.</span></li>
+          <li><span class="claim">Operating expense growth has decoupled from revenue growth.</span> <span class="ev">Anchor-quarter opex grew nearly twice as fast as revenue on artificial intelligence research and a stock compensation charge that rose every quarter.</span></li>
+        </ul>
+
+        <h3>Watch list for the October print</h3>
+        <ul class="obs">
+          <li><span class="sig">↓</span><span class="claim">Automotive gross margin excluding credits.</span> <span class="ev">Another sequential decline confirms price is doing the work on volume. A recovery toward the Q1 2026 level breaks it.</span></li>
+          <li><span class="sig">↓</span><span class="claim">Capital expenditure against free cash flow.</span> <span class="ev">Capex holding near the anchor-quarter pace with no attached revenue confirms the burn. A step down with no project slipping breaks it.</span></li>
+          <li><span class="sig">↑</span><span class="claim">Energy storage deployments and Megafactory Texas.</span> <span class="ev">A fourth trailing-twelve-month record plus Megapack 3 shipping confirms the second engine. A repeat of the Q1 2026 decline breaks it.</span></li>
+          <li><span class="sig">↑</span><span class="claim">Paid Full Self-Driving subscriptions and attach rate.</span> <span class="ev">Attach above the anchor-quarter North American level plus European net additions confirms software monetisation. Flat subscriptions break it.</span></li>
+        </ul>
+      </section>
+
+      <!-- ============ BLOCK E ============ -->
+      <section id="block-e" class="animate">
+        <div class="block-kicker">Block E</div>
+        <h2>Strategic architecture</h2>
+
+        <h3>1 · Business model, revenue architecture and product lines</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Segment / product line</th><th class="num">FY2025</th><th class="num">Share of total</th><th class="num">Year on year</th><th>Margin profile</th></tr>
+            </thead>
+            <tbody>
+              <tr class="band"><td colspan="5">Revenue by segment, fiscal 2025, USD millions</td></tr>
+              <tr><td class="name">Automotive</td><td class="num">69,530.0</td><td class="num">73.3%</td><td class="num neg">-9.8%</td><td>Gross margin excluding credits in the mid to high teens, falling</td></tr>
+              <tr><td class="name">Energy generation and storage</td><td class="num">12,770.0</td><td class="num">13.5%</td><td class="num pos">+26.6%</td><td>Best in the group, near thirty percent gross margin</td></tr>
+              <tr><td class="name">Services and other</td><td class="num">12,530.0</td><td class="num">13.2%</td><td class="num pos">+19.0%</td><td>High single digits in 2025, fourteen percent by Q2 2026</td></tr>
+              <tr><td class="name">Total revenue</td><td class="num">94,830.0</td><td class="num">100.0%</td><td class="num neg">-2.9%</td><td>Blended gross margin around eighteen percent</td></tr>
+              <tr class="band"><td colspan="5">Unit volumes by product line, deliveries and deployments</td></tr>
+              <tr><td class="name">Model 3 and Model Y</td><td class="num">1,585,279</td><td class="num">96.9%</td><td class="num neg">-7.0%</td><td>The entire profit engine of the automotive segment</td></tr>
+              <tr><td class="name">Model S, Model X, Cybertruck</td><td class="num">50,850</td><td class="num">3.1%</td><td class="num neg">-40.3%</td><td>Model S and X lines decommissioned in Q2 2026</td></tr>
+              <tr><td class="name">Total vehicle deliveries</td><td class="num">1,636,129</td><td class="num">100.0%</td><td class="num neg">-8.6%</td><td>Second consecutive annual decline</td></tr>
+              <tr><td class="name">Energy storage deployed (GWh)</td><td class="num">46.7</td><td class="num">n/a</td><td class="num pos">+31.2% (est.)</td><td>Supply constrained through the year</td></tr>
+              <tr><td class="name">Cybercab, Tesla Semi, Optimus</td><td class="num">pre-revenue</td><td class="num">0.0%</td><td class="num">n/a</td><td>Cybercab in production Q2 2026, other two scheduled for 2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Sources: Tesla Form 8-K Exhibit 99.1, Q2 2026 and Q4 2025 updates (unit volumes, deployments, segment commentary) · Tesla FY2025 Form 10-K segment disclosure via Bullfincher (segment revenue and year-on-year change). Energy deployment growth marked (est.) because the fiscal 2024 comparative was not verifiable from a primary filing in this session.</p>
+
+        <p style="margin-top:22px">Two vehicles fund everything else. The Model 3 and Model Y platform carried roughly ninety-seven percent of fiscal 2025 deliveries, and the retirement of the Model S and X lines at Fremont in the anchor quarter concentrates that dependence further rather than diversifying it. Automotive revenue is therefore a single-platform business wearing a four-model badge, and its gross profit pays for the artificial intelligence research, the battery plants, the Austin semiconductor fab and the Optimus lines that the equity story now rests on.</p>
+        <p>The two smaller segments behave very differently. Energy generation and storage is the highest-margin business Tesla owns and the only one that grew revenue by more than a quarter in fiscal 2025, but it is supply constrained and it stumbled badly in Q1 2026, which makes it a good business with an unreliable delivery curve. Services and other is the quiet compounder. It grows mechanically with the installed fleet through out-of-warranty work, insurance, Supercharging and used vehicles, and it reached record gross profit and a fourteen percent margin in the anchor quarter. It is also where Full Self-Driving subscription revenue lands as the software business scales.</p>
+        <p>Operating leverage originates in exactly one place today: cost per vehicle on the Model 3 and Model Y platform, multiplied by volume. Everything else is either too small to move consolidated margin or is currently a cost centre. The strategic bet is that leverage migrates from manufacturing to software and fleet economics before the manufacturing side gives out. The anchor quarter is the first clear evidence that the manufacturing side is giving out faster than the software side is arriving. Battery pack capacity, which management named as the binding constraint on vehicle output, sits underneath both.</p>
+
+        <h3>2 · Balance sheet, treasury and non-operating assets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Position</th><th class="num">30 Jun 2026</th><th class="num">31 Mar 2026</th><th>Note</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="name">Cash, equivalents and short-term investments</td><td class="num">43,524.0</td><td class="num">44,743.0</td><td>Fell on negative free cash flow, not on operations</td></tr>
+              <tr><td class="name">Inventory</td><td class="num">13,752.0</td><td class="num">14,434.0</td><td>Days of supply cut from 27 to 15</td></tr>
+              <tr><td class="name">Digital assets (11,509 BTC)</td><td class="num">674.0</td><td class="num">786.0</td><td>Unchanged coin count since 2022, cost basis about 386.0</td></tr>
+              <tr><td class="name">SpaceX equity investment</td><td class="num">2,002.0 at cost</td><td class="num">2,002.0 at cost</td><td>Carried an unrealised gain of 1,005.0 in Q2 2026</td></tr>
+              <tr><td class="name">Property, plant and equipment, net</td><td class="num">47,255.0</td><td class="num">43,213.0</td><td>The capex programme showing up on the balance sheet</td></tr>
+              <tr><td class="name">Total assets</td><td class="num">148,524.0</td><td class="num">143,724.0</td><td></td></tr>
+              <tr><td class="name">Total debt and finance leases</td><td class="num">9,342.0</td><td class="num">9,229.0</td><td>Almost entirely non-recourse</td></tr>
+              <tr><td class="name">Total stockholders' equity</td><td class="num">86,858.0</td><td class="num">84,116.0</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Source: Tesla Form 8-K Exhibit 99.1, Q2 2026 update, balance sheet and cash flow statement, filed 22 July 2026. Bitcoin holding count and cost basis corroborated by Tesla disclosure via CoinDesk and FinanceFeeds. USD millions.</p>
+
+        <p style="margin-top:22px">The balance sheet is the strongest part of the investment case and the least discussed. Cash and short-term investments cover total debt more than four times over, and that debt is almost entirely non-recourse. This is what allows Tesla to fund a capital programme of this size without going to the market. The Bitcoin position is small enough to be financially immaterial and large enough to be a recurring headline: the coin count has not changed since 2022, the carrying value has fallen through 2026 with the Bitcoin price, and the fair-value accounting standard now pushes those swings straight through reported earnings. Adjusted earnings strip them out. The SpaceX stake did the opposite in the anchor quarter, contributing a large unrealised gain to GAAP net income that adjusted earnings removed. Investors reading GAAP figures alone will keep getting a distorted picture of operating performance from these two lines.</p>
+
+        <h3>3 · Competitive moat</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Pillar</th><th>Mechanism</th><th>Erosion risk</th><th class="num">Rating</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="name">Charging network and energy ecosystem</td><td>Owned Supercharger infrastructure now licensed to rivals, plus Megapack and Powerwall attach</td><td>Low</td><td class="num stars">★★★★★</td></tr>
+              <tr><td class="name">Real-world driving data and fleet scale</td><td>Nearly ten million vehicles feeding a single autonomy model, with 1.48 million paid subscriptions</td><td>Medium</td><td class="num stars">★★★★☆</td></tr>
+              <tr><td class="name">Manufacturing cost per vehicle at scale</td><td>Single-platform volume, casting and in-house cell production drive unit cost below Western peers</td><td>Medium</td><td class="num stars">★★★★☆</td></tr>
+              <tr><td class="name">Vertical integration in cells and materials</td><td>4680 cells, cathode production and lithium refining owned rather than contracted</td><td>Medium</td><td class="num stars">★★★☆☆</td></tr>
+              <tr><td class="name">Brand and direct distribution</td><td>No dealer layer, direct pricing control, high awareness</td><td>High</td><td class="num stars">★★☆☆☆</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">PGS assessment. Underlying operating data from Tesla Form 8-K Exhibit 99.1, Q2 2026 update. Rating scale: ★ 1 to 5, where 5 denotes a durable, near-unassailable advantage.</p>
+
+        <p style="margin-top:22px">Rate the mechanism, not the badge. The charging network is the most durable asset Tesla owns, because rivals adopting the connector standard entrenched it as infrastructure rather than displacing it, and every additional vehicle on the network improves its economics. The data advantage is genuine but conditional: it only converts into value if the autonomy stack clears regulatory approval at scale, and a competitor with a working stack and a fleet partnership could reach the same place with less data. Manufacturing cost is a real edge over Western incumbents and a shrinking one against Chinese producers, several of whom now match Tesla on unit cost while beating it on interior and software refresh cycles.</p>
+        <p>Vertical integration cuts both ways. It reduces supplier dependence and it is why battery pack capacity, not demand, currently caps output. It also means Tesla carries the fixed cost of cell, cathode and lithium plants through a demand cycle it does not control, and the Austin semiconductor project extends that exposure into an industry with brutal capital intensity and no Tesla track record. The brand pillar is the weakest and has deteriorated fastest. United States electric vehicle share fell from roughly four fifths in 2019 to under half in 2025, European volumes contracted sharply, and the chief executive's political profile has become a measurable demand variable in several markets. A moat that depends on the founder's public standing is not a moat.</p>
+
+        <h3>4 · Long-term growth architecture</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Driver</th><th>Timeline</th><th>Current state</th><th>Potential</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="name">Full Self-Driving subscriptions</td><td>Now to 2027</td><td>1.48 million paid, above 55% attach in North America, approvals spreading across Europe</td><td>High</td><td>on track</td></tr>
+              <tr><td class="name">Energy storage and Megapack</td><td>Now to 2028</td><td>Record trailing deployments, Megafactory Texas nearing production</td><td>High</td><td>on track</td></tr>
+              <tr><td class="name">Robotaxi and Cybercab</td><td>2027 to 2029</td><td>Seven metros, a fleet in the low tens against thousands at the nearest rival</td><td>Very high</td><td>emerging</td></tr>
+              <tr><td class="name">Optimus humanoid robots</td><td>2028 to 2030</td><td>First-generation lines being installed at Fremont, no revenue</td><td>Speculative</td><td>emerging</td></tr>
+              <tr><td class="name">In-house silicon and Tesla Semi</td><td>2028 and beyond</td><td>Austin fab under construction, Nevada Semi plant commissioning</td><td>Medium</td><td>at risk</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Sources: Tesla Form 8-K Exhibit 99.1, Q2 2026 update (subscriptions, attach rate, factory status, Robotaxi metro list) · Mizuho research via Yahoo Finance (relative robotaxi fleet size). Timelines and status assignments are PGS judgements.</p>
+
+        <p style="margin-top:22px">Sequencing matters more than any individual driver. Full Self-Driving subscriptions must work first, and they are the only item on the list already generating recurring revenue at scale. They validate the autonomy stack commercially, they carry software gross margins into a segment that currently reports in the low teens, and they generate the driving data the robotaxi programme depends on. If attach rates stall, the robotaxi case loses both its evidence and its funding.</p>
+        <p>Energy storage runs in parallel and serves a different purpose: it is the only near-term source of consolidated margin improvement that does not require a regulatory decision. Robotaxi sits third because it needs the first two to be working, and its current fleet is roughly two orders of magnitude smaller than the market leader's, which makes the near-term revenue contribution immaterial regardless of how the technology performs. Optimus and the semiconductor fab are the last links in the chain and the least constrained by evidence. Both are being funded now out of cash flow that the core business is no longer producing, which is precisely the tension the anchor quarter exposed.</p>
+      </section>
+
+      <!-- ============ BLOCK F ============ -->
+      <section id="block-f" class="animate">
+        <div class="block-kicker">Block F</div>
+        <h2>Risks</h2>
+
+        <div class="risk risk-hi">
+          <div class="rh"><span class="badge badge-hi">High</span><span class="t">Margin structure has decoupled from volume</span></div>
+          <div class="rb"><p>Mechanism: three profit sources are eroding at once. Regulatory credits, historically close to pure margin, have nearly disappeared as a contributor. Average selling prices are falling as the mix shifts to cheaper trims and financing incentives widen. Operating expenses are compounding on artificial intelligence research and a stock compensation charge that has risen in every quarter of the sequence. The result is that record revenue produced the weakest operating margin of the four quarters. Timeline: already live, with the next confirmation in the October print. Observable: automotive gross margin excluding credits. If it declines again from the anchor-quarter level while deliveries hold, the conclusion is that Tesla is buying volume with price, and the operating margin recovery the consensus multiple assumes for 2027 moves out by at least a year.</p></div>
+        </div>
+
+        <div class="risk risk-hi">
+          <div class="rh"><span class="badge badge-hi">High</span><span class="t">A capital programme the core business no longer funds</span></div>
+          <div class="rb"><p>Mechanism: 2026 capital expenditure guidance has been raised twice and now exceeds twenty-five billion dollars, roughly three times the prior year, spread across six factories, artificial intelligence compute, a semiconductor fab, Cybercab, Semi and Optimus lines. Free cash flow turned negative in the anchor quarter for the first time in over two years, and management has said it will stay negative through the rest of the year. Bank of America models a swing of more than sixteen billion dollars in annual free cash flow between 2025 and 2026. Timeline: through 2027 at minimum, since management has flagged capex growth for a further two to three years. Observable: quarterly capital expenditure holding at the anchor-quarter rate alongside a further draw on cash and short-term investments. Two more quarters of that pace consumes a meaningful share of the net cash position and starts to constrain the roadmap itself.</p></div>
+        </div>
+
+        <div class="risk risk-md">
+          <div class="rh"><span class="badge badge-md">Medium</span><span class="t">Autonomy timing depends on regulators, not engineering</span></div>
+          <div class="rb"><p>Mechanism: the valuation premium rests on robotaxi and Optimus revenue that does not exist yet, and the gating factor is jurisdictional approval rather than software readiness. Tesla operates unsupervised service in a handful of metros with a fleet in the low tens, while the nearest competitor runs thousands of vehicles. Management has said robotaxi revenue will not be material this year. A single serious incident would trigger immediate regulatory action, a risk the chief executive named explicitly on the anchor-quarter call, and at least one state has moved toward restricting the service outright. Timeline: 2027 to 2029. Observable: the count of metros running unsupervised, the size of the deployed Cybercab fleet, and whether Full Self-Driving approvals continue to spread through European markets at the current pace. Stalled approvals push the entire growth architecture back.</p></div>
+        </div>
+      </section>
+
+      <!-- ============ BLOCK G ============ -->
+      <section id="block-g" class="animate">
+        <div class="block-kicker">Block G</div>
+        <h2>Scenarios</h2>
+
+        <div class="scenario-grid">
+          <div class="scen bull">
+            <div class="sh"><div class="t">Bull case</div><div class="d">+88% to the high target in the panel</div></div>
+            <div class="sb">
+              <ul>
+                <li>Automotive gross margin excluding credits troughs in the anchor quarter and recovers through 2027 as battery pack capacity relieves the output constraint and cheaper trims scale.</li>
+                <li>Full Self-Driving becomes a genuine software line, with attach rates rising and European approvals converting into subscriptions at the rate already observed in newly approved markets.</li>
+                <li>Energy storage compounds without another interruption, and Megafactory Texas plus Megapack 3 lift the highest-margin segment toward a fifth of consolidated revenue.</li>
+              </ul>
+              <p class="cond">Conditions: capital expenditure peaks in 2026 rather than continuing to climb, free cash flow returns to positive during 2027, and no serious autonomy incident interrupts the metro rollout. The high target additionally requires the market to underwrite Optimus, for which there is no revenue evidence yet.</p>
+            </div>
+          </div>
+          <div class="scen bear">
+            <div class="sh"><div class="t">Bear case</div><div class="d">-61% to the low target in the panel</div></div>
+            <div class="sb">
+              <ul>
+                <li>Margin compression proves structural rather than cyclical, and the market reprices Tesla against automotive peers instead of against software companies.</li>
+                <li>Capital expenditure keeps rising for the two to three further years management has flagged, while robotaxi, Semi and Optimus stay pre-revenue and the cash position erodes quarter after quarter.</li>
+                <li>Competitive share loss continues in the United States, Europe and China, so volume growth requires deeper price cuts and the mix shift accelerates.</li>
+              </ul>
+              <p class="cond">Conditions: two or three more quarters of negative free cash flow with no margin recovery, a regulatory setback in a major autonomy market, or an incident that halts unsupervised operations. The low target implies valuation on current vehicle economics alone, with essentially no credit for the autonomy and robotics programme.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ BLOCK H ============ -->
+      <section id="block-h" class="animate">
+        <div class="block-kicker">Block H</div>
+        <h2>PGS verdict</h2>
+
+        <div class="verdict">
+          <div class="vstrip">
+            <div><div class="lbl">Rating</div><div class="val"><span class="rating-pill">🟡 NEUTRAL</span></div></div>
+            <div><div class="lbl">Bull target · 18 to 24 months</div><div class="val pos">+33%</div></div>
+            <div><div class="lbl">Bear downside</div><div class="val neg">-30%</div></div>
+            <div><div class="lbl">Risk / reward</div><div class="val">Balanced</div></div>
+          </div>
+
+          <div class="prose">
+            <p><strong>Price dislocation.</strong> The stock has given up more than a third from its December high and the trailing multiple sits at the bottom of its twelve-month band, yet it still trades at a level that only makes sense if autonomy and robotics revenue arrives on schedule. The dislocation is real in relative terms and absent in absolute ones. Buying this drawdown means buying a business with a reported operating margin below two percent at a multiple that assumes it will not stay there.</p>
+            <p><strong>Fundamental quality.</strong> The balance sheet is genuinely strong: net cash above thirty billion dollars, debt that is almost entirely non-recourse, and a services segment that grows mechanically with a fleet approaching ten million vehicles. Revenue growth returned in the anchor quarter after more than a year of decline. Earnings quality, however, is deteriorating. Two of these four quarters had GAAP results materially shaped by mark-to-market swings on Bitcoin and the SpaceX stake, and the gap between GAAP and adjusted earnings keeps widening as stock compensation grows.</p>
+            <p><strong>Primary risk.</strong> The two high-severity risks in Block F are the same risk viewed from two angles. Margin compression removes the internal funding for the capital programme, and the capital programme is what makes the compression tolerable to the story. If both persist through the October and January prints, the market will stop treating the spending as investment and start treating it as burn, and the multiple has a very long way to fall before it meets automotive comparables.</p>
+            <p><strong>Near-term catalysts.</strong> Third-quarter deliveries in early October, then the earnings print on 28 October, are the next two tests, and the margin line matters more than the volume line. Between now and then, watch unsupervised metro additions, the start of production at Megafactory Texas, Semi output from Nevada and the first Optimus builds at Fremont. Risk and reward look balanced: cash protects the downside, and the upside needs evidence that does not yet exist.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ DISCLAIMER ============ -->
+      <div class="disclaimer animate">
+        <p>"This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice."</p>
+        <p>This report was produced with the assistance of artificial intelligence. Generative model: Anthropic · Claude Opus 5 · version claude-opus-5, accessed via the Claude web and mobile chat interface (claude.ai). All figures were sourced from live web search within the same session and cross-checked against the anchoring protocol in Step 1; the model's role was data synthesis, formatting and drafting, not the origination of financial estimates. Human review by the internal analyst precedes publication.</p>
+        <p class="ref">Report Reference: PGS-TSLA-202607 · Date: 24 July 2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: TSLA · Exchange: NASDAQ · AI Model: Anthropic claude-opus-5</p>
+      </div>
+
+    </div><!-- /inner -->
+  </main>
+</div><!-- /layout -->
+
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '';
+          entry.target.style.animationPlayState = 'running';
+          animObserver.unobserve(entry.target);
+        }
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.05});
+
+    animateEls.forEach(function(el){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      animObserver.observe(el);
+    });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var targets = links.map(function(l){ return document.querySelector(l.getAttribute('href')); });
+
+  function setActive(){
+    var pos = window.scrollY + (window.innerHeight * 0.28);
+    var idx = 0;
+    targets.forEach(function(t, i){
+      if (t && t.offsetTop <= pos) { idx = i; }
+    });
+    links.forEach(function(l, i){ l.classList.toggle('active', i === idx); });
+  }
+
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking) {
+      window.requestAnimationFrame(function(){ setActive(); ticking = false; });
+      ticking = true;
+    }
+  }, {passive:true});
+  setActive();
+})();
+</script>
+</body>
+</html>
