@@ -1,6 +1,6 @@
 # Polaris Global Strategies — Manual Técnico e Funcional
 
-**Versão:** 1.8  
+**Versão:** 1.9  
 **Data:** Julho 2026  
 **Domínio:** https://polarisglobal.me
 
@@ -27,7 +27,11 @@ O site é composto por três camadas de páginas:
 
 > **Sub-sites independentes:** `crypto/` e `consulting/` são publicados por este mesmo repositório, mas sua documentação é mantida em projetos separados (ver `consulting/manual-website-ai.md`). Este manual não cobre a estrutura interna deles.
 
-A navegação superior é fixa (*sticky*) em todas as páginas e inclui links para About, Disclaimer, Snapshot, Research e Crypto — nessa ordem. Links de About e Disclaimer nas páginas internas redirecionam para `index.html#about` e `index.html#disclaimer`. O link Crypto aponta para `/crypto/`, subdiretório deste repositório.
+A navegação superior é fixa (*sticky*) em todas as páginas e inclui links para About, Snapshot, Research e Crypto — nessa ordem. O link About nas páginas internas redireciona para `index.html#about`. O link Crypto aponta para `/crypto/`, subdiretório deste repositório. O rodapé repete exatamente o mesmo conjunto de links.
+
+O Disclaimer **não possui entrada de menu**. Por ser uma âncora da própria home e não uma página, não disputa espaço na navegação: a seção permanece inalterada na `index.html`, como último bloco antes do rodapé, alcançável por rolagem.
+
+> **Nota:** carregar `index.html#disclaimer` direto na barra de endereços não rola até a seção. É comportamento pré-existente (anterior à remoção do link), causado pela combinação de `scroll-behavior: smooth` com a imagem de fundo da hero, que só define a altura final da página após o salto nativo do browser. A rolagem suave a partir de links internos na mesma página funciona normalmente.
 
 Cada relatório possui uma barra de navegação de volta ao site no topo (`✦ POLARIS GLOBAL / Research / PGS-XXX-YYYYMM`), que desaparece ao imprimir.
 
@@ -39,7 +43,7 @@ Seções acessadas via rolagem suave:
 |---|---|---|
 | Hero | `#home` | Apresentação principal da empresa |
 | About | `#about` | Descrição institucional, diferenciais e filosofia de investimento |
-| Disclaimer | `#disclaimer` | Aviso legal completo + linha de contato |
+| Disclaimer | `#disclaimer` | Aviso legal completo + linha de contato — sem link de menu, acessível por rolagem |
 | Footer | — | Logo, links e copyright |
 
 A seção `#about` contém dois blocos internos em sequência: o bloco institucional (texto + cards "Global Perspective" / "Private Capital") e o bloco "Como Investimos" / "How We Invest" (três parágrafos sobre filosofia, disciplina e paciência), separados por uma linha divisória.
@@ -192,7 +196,7 @@ O arquivo `js/main.js` contém o objeto `i18n` com traduções EN e PT indexadas
 
 | Namespace | Descrição |
 |---|---|
-| `nav.*` | Links de navegação (about, disclaimer, snapshot, research, crypto) |
+| `nav.*` | Links de navegação (about, snapshot, research, crypto) |
 | `hero.*` | Textos da seção Hero |
 | `about.*` | Textos institucionais, cards e bloco "Como Investimos" |
 | `about.invest.*` | Heading e 3 parágrafos da filosofia de investimento |

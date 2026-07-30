@@ -3,7 +3,6 @@
 const i18n = {
   en: {
     'nav.about':      'About',
-    'nav.disclaimer': 'Disclaimer',
     'nav.snapshot':   'Snapshot',
     'nav.research':   'Research',
     'nav.crypto':     'Crypto',
@@ -59,7 +58,6 @@ const i18n = {
 
   pt: {
     'nav.about':      'Sobre',
-    'nav.disclaimer': 'Aviso Legal',
     'nav.snapshot':   'Snapshot',
     'nav.research':   'Pesquisa',
     'nav.crypto':     'Cripto',
