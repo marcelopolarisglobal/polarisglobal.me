@@ -1,6 +1,6 @@
 # Polaris Global Strategies — Manual Técnico e Funcional
 
-**Versão:** 1.9  
+**Versão:** 2.0  
 **Data:** Julho 2026  
 **Domínio:** https://polarisglobal.me
 
@@ -21,13 +21,15 @@ O site é composto por três camadas de páginas:
 | Página | Arquivo | Descrição |
 |---|---|---|
 | Home | `index.html` | Página principal com Hero, About, Como Investimos e Disclaimer |
+| Letters | `letters.html` | Listagem das cartas periódicas aos sócios |
+| Carta | `letters/PGS-LETTER-YYYYMM.html` | Carta individual sobre a condução da carteira |
 | Snapshot | `snapshot.html` | Cotações e retornos do último fechamento de mercado |
 | Research | `research.html` | Listagem de todos os relatórios de investimento |
 | Relatório | `reports/PGS-XXX-YYYYMM.html` | Relatório individual de tese de investimento |
 
 > **Sub-sites independentes:** `crypto/` e `consulting/` são publicados por este mesmo repositório, mas sua documentação é mantida em projetos separados (ver `consulting/manual-website-ai.md`). Este manual não cobre a estrutura interna deles.
 
-A navegação superior é fixa (*sticky*) em todas as páginas e inclui links para About, Snapshot, Research e Crypto — nessa ordem. O link About nas páginas internas redireciona para `index.html#about`. O link Crypto aponta para `/crypto/`, subdiretório deste repositório. O rodapé repete exatamente o mesmo conjunto de links.
+A navegação superior é fixa (*sticky*) em todas as páginas e inclui links para About, Letters, Snapshot, Research e Crypto — nessa ordem. O link About nas páginas internas redireciona para `index.html#about`. O link Crypto aponta para `/crypto/`, subdiretório deste repositório. O rodapé repete exatamente o mesmo conjunto de links.
 
 O Disclaimer **não possui entrada de menu**. Por ser uma âncora da própria home e não uma página, não disputa espaço na navegação: a seção permanece inalterada na `index.html`, como último bloco antes do rodapé, alcançável por rolagem.
 
@@ -55,9 +57,23 @@ O site suporta dois idiomas com troca instantânea sem recarregar a página:
 - **EN** — Inglês americano (padrão)
 - **PT** — Português brasileiro
 
-O idioma selecionado é salvo no `localStorage` do navegador. O atributo `lang` do HTML (`en-US` / `pt-BR`) é atualizado dinamicamente. A página `research.html` participa do sistema i18n (rótulos e botões são traduzidos). O conteúdo dos relatórios individuais permanece no idioma em que foi gerado (indicado pelo badge PT/EN no card).
+O idioma selecionado é salvo no `localStorage` do navegador. O atributo `lang` do HTML (`en-US` / `pt-BR`) é atualizado dinamicamente. As páginas `research.html` e `letters.html` participam do sistema i18n (rótulos e botões são traduzidos). O conteúdo dos relatórios e das cartas permanece no idioma em que foi produzido (indicado pelo badge PT/EN no card).
 
-### 2.4 Seção Research
+### 2.4 Seção Letters
+
+A página `letters.html` lista as cartas periódicas em que a gestão comenta a **condução da carteira como um todo** — a lógica das decisões do período, o que mudou na leitura de cenário e o que se manteve. É conteúdo complementar aos relatórios por ativo de `research.html`, não substituto.
+
+O nome "Partner Letters" / "Cartas aos Sócios" é deliberado: o disclaimer afirma que a PGS não possui clientes e não presta serviços a terceiros, de modo que termos como *Investor* ou *Shareholder Letters* seriam incompatíveis com o posicionamento legal do site. Pelo mesmo motivo, as cartas se dirigem aos sócios ("Dear partners") e não a investidores externos.
+
+As cartas são publicadas **apenas em inglês**. O corpo do documento não possui atributos `data-i18n` — apenas a navegação, o rodapé e os textos da página de listagem traduzem. A página de listagem exibe uma nota explícita sobre essa política (`letters.note`).
+
+Cada carta é assinada institucionalmente como *Management Team · Polaris Global Strategies Ltd.*, sem nome de pessoa física.
+
+Diferentemente dos relatórios em `reports/` (autocontidos, com CSS próprio), as cartas **usam o design system compartilhado** (`css/styles.css` + `js/main.js`), pois são páginas do site. O bloco `/* ── Letters ── */` em `styles.css` concentra os estilos, incluindo um `@media print` que inverte o documento para fundo branco — necessário porque o tema escuro imprime mal.
+
+Cada card em `letters.html` exibe: badge `LETTER`, data, badge de idioma, título, subtítulo do período e o link "Read Letter →" / "Ler Carta →". Cards ordenados do mais recente para o mais antigo.
+
+### 2.5 Seção Research
 
 A página `research.html` lista os relatórios disponíveis em cards com:
 
@@ -74,7 +90,7 @@ A ordem dos cards dentro de "Invested Companies" é curada manualmente (não est
 
 A pasta `reports/not-invested/` guarda os relatórios de empresas avaliadas e não investidas. Eles permanecem versionados, acessíveis por URL direta, e **recebem card** em `research.html`, exibidos na segunda seção da página.
 
-### 2.5 Convenção de Nomenclatura dos Relatórios
+### 2.6 Convenção de Nomenclatura dos Relatórios
 
 ```
 PGS-{TICKER}-{YYYYMM}.html
@@ -84,7 +100,15 @@ Exemplos: `PGS-BRKB-202606.html`, `PGS-GOOGL-202607.html`, `PGS-TSLA-202607.html
 
 Relatórios complementares (workbooks, carteiras) usam sufixo descritivo: `PGS-WAGN-202606-Carteira.html`
 
-### 2.6 Responsividade
+As cartas seguem convenção própria, sem ticker:
+
+```
+PGS-LETTER-{YYYYMM}.html
+```
+
+O `{YYYYMM}` é o mês de referência da carta, não o da publicação. Exemplo: `PGS-LETTER-202606.html`.
+
+### 2.7 Responsividade
 
 | Breakpoint | Comportamento |
 |---|---|
@@ -114,6 +138,7 @@ O site é **estático puro** — não utiliza servidor de aplicação, banco de 
 ```
 polarisglobal.me/
 ├── index.html             ← página principal
+├── letters.html           ← listagem de cartas aos sócios
 ├── snapshot.html          ← panorama de mercado (lê data/snapshot.json)
 ├── research.html          ← listagem de relatórios
 ├── IMG_0956.JPG           ← ilustração Wall Street (fundo da hero section)
@@ -132,6 +157,8 @@ polarisglobal.me/
 │       └── market-data.yml ← workflow: roda o script seg–sex às 22:30 UTC
 ├── crypto/                ← sub-site — projeto independente
 ├── consulting/            ← sub-site — projeto independente
+├── letters/               ← cartas HTML individuais (usam styles.css)
+│   └── PGS-LETTER-202606.html
 └── reports/               ← relatórios HTML individuais
     ├── not-invested/      ← avaliados e não investidos (com card em research.html)
     │   ├── PGS-LVBI11-202607.html
@@ -182,6 +209,8 @@ polarisglobal.me/
 
 **Relatórios individuais** possuem tema claro próprio com fontes e variáveis CSS independentes (Playfair Display + DM Sans + JetBrains Mono, paleta laranja/azul por empresa). Não dependem de `css/styles.css`.
 
+**Cartas individuais**, ao contrário, usam o `css/styles.css` compartilhado e o tema escuro do site — são páginas do site, não documentos autocontidos. Isso evita duplicar CSS a cada nova carta da série. O bloco `/* ── Letters ── */` reúne suas classes (`.letter-main`, `.letter-doc`, `.letter-body`, `.letter-sign`, `.letter-note`, `.letter-legal` e as do card) e um `@media print` que inverte o documento para fundo branco.
+
 ### 3.4 Sistema de Internacionalização (i18n)
 
 Cada elemento de texto traduzível possui o atributo `data-i18n` com uma chave única:
@@ -196,7 +225,7 @@ O arquivo `js/main.js` contém o objeto `i18n` com traduções EN e PT indexadas
 
 | Namespace | Descrição |
 |---|---|
-| `nav.*` | Links de navegação (about, snapshot, research, crypto) |
+| `nav.*` | Links de navegação (about, letters, snapshot, research, crypto) |
 | `hero.*` | Textos da seção Hero |
 | `about.*` | Textos institucionais, cards e bloco "Como Investimos" |
 | `about.invest.*` | Heading e 3 parágrafos da filosofia de investimento |
@@ -204,6 +233,7 @@ O arquivo `js/main.js` contém o objeto `i18n` com traduções EN e PT indexadas
 | `disclaimer.*` | Textos da seção Disclaimer |
 | `snapshot.*` | Textos de `snapshot.html` (heading, colunas, stamp, rodapé, avisos) |
 | `research.*` | Textos da página Research (heading, sub, sub2, cta) |
+| `letters.*` | Textos da página Letters (heading, sub, note, sub2, cta) |
 | `footer.*` | Copyright do rodapé |
 
 ---
@@ -379,7 +409,62 @@ git push
 - A topbar usa `../../` em vez de `../` nos links (`../../index.html`, `../../research.html`).
 - O card correspondente entra na segunda seção de `research.html` ("Evaluated · Not Invested" / "Avaliadas · Não Investidas"), não na primeira.
 
-### 5.5 Remover um relatório
+### 5.5 Adicionar uma nova carta
+
+1. Criar o arquivo em `letters/`, seguindo a convenção `PGS-LETTER-{YYYYMM}.html` (mês de referência da carta, não o da publicação).
+
+2. Partir de `letters/PGS-LETTER-202606.html` como modelo. Diferentemente dos relatórios, a carta **não é autocontida**: carrega `../css/styles.css` e `../js/main.js`, e usa nav e rodapé compartilhados com caminhos `../`.
+
+3. Estrutura do documento, toda dentro de `<article class="letter-doc">`:
+
+```html
+<div class="section-tag"><span data-i18n="nav.letters">Letters</span></div>
+<header class="letter-head">
+  <h1 class="letter-title">Partner Letter</h1>
+  <p class="letter-meta">Mês AAAA &middot; PGS-LETTER-AAAAMM &middot; EN</p>
+</header>
+<div class="letter-body">
+  <p>Dear partners,</p>
+  <!-- parágrafos e <h2> de cada subseção -->
+  <p class="letter-sign">
+    Sincerely,<br /><br />
+    <strong>Management Team</strong><br />
+    Polaris Global Strategies Ltd.
+  </p>
+</div>
+<p class="letter-note">…link para ../research.html…</p>
+<p class="letter-legal">…aviso legal…</p>
+```
+
+4. O corpo da carta fica **sem `data-i18n`** — as cartas são publicadas apenas em inglês. Apenas nav, rodapé e a `section-tag` traduzem.
+
+5. Adicionar um `<article class="letter-card">` no topo da `.letter-grid` em `letters.html` (mais recente primeiro):
+
+```html
+<!-- PGS-LETTER-AAAAMM -->
+<article class="letter-card">
+  <div class="letter-card-meta">
+    <span class="letter-badge">LETTER</span>
+    <span class="letter-date">Mês AAAA</span>
+    <span class="letter-lang">EN</span>
+  </div>
+  <h2 class="letter-card-title">Partner Letter</h2>
+  <p class="letter-card-sub">Período de referência</p>
+  <a href="letters/PGS-LETTER-AAAAMM.html" class="letter-cta">
+    <span data-i18n="letters.cta">Read Letter</span> →
+  </a>
+</article>
+```
+
+6. Commitar e fazer push:
+
+```bash
+git add letters/PGS-LETTER-AAAAMM.html letters.html
+git commit -m "feat(letters): add PGS-LETTER-AAAAMM"
+git push
+```
+
+### 5.6 Remover um relatório
 
 1. Deletar o arquivo em `reports/`
 2. Remover o `<article class="report-card">` correspondente em `research.html`

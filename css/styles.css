@@ -404,6 +404,182 @@ body {
 
 .contact-line a:hover { color: var(--gold); }
 
+/* ── Letters ────────────────────────────────────────────────── */
+.letter-main {
+  padding-top: calc(var(--nav-h) + 5rem);
+  padding-bottom: 7rem;
+  border-top: 1px solid var(--border);
+}
+
+.letter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.letter-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  transition: border-color 0.25s, transform 0.25s;
+}
+
+.letter-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-3px);
+}
+
+.letter-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.letter-badge {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  background: var(--gold-dim);
+  border: 1px solid rgba(200, 169, 94, 0.22);
+  border-radius: 4px;
+  padding: 0.2rem 0.55rem;
+}
+
+.letter-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.letter-lang {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  padding: 0.15rem 0.4rem;
+}
+
+.letter-card-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+  margin-top: 0.25rem;
+}
+
+.letter-card-sub {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  flex-grow: 1;
+}
+
+.letter-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--gold);
+  text-decoration: none;
+  margin-top: 0.875rem;
+  transition: gap 0.2s;
+}
+
+.letter-cta:hover { gap: 0.625rem; }
+
+.letters-disclaimer {
+  margin-top: 1rem;
+  color: var(--text-faint);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  border-left: 2px solid var(--border);
+  padding-left: 0.875rem;
+}
+
+/* Letter document */
+.letter-doc { max-width: 68ch; }
+
+.letter-head { margin-bottom: 3rem; }
+
+.letter-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.875rem, 3.4vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+
+.letter-meta {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.letter-body {
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  color: var(--text-muted);
+}
+
+.letter-body p { margin-bottom: 1.5rem; }
+
+.letter-body h2 {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 2.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.letter-sign {
+  margin-top: 2.5rem;
+  color: var(--text);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.letter-sign strong { font-family: var(--font-display); }
+
+.letter-note {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.letter-note a {
+  color: var(--gold);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.letter-note a:hover { opacity: 0.75; }
+
+.letter-legal {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-faint);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  font-style: italic;
+}
+
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .nav-links { display: none; }
@@ -439,4 +615,46 @@ body {
   .container { padding: 0 1.25rem; }
   .hero { padding-bottom: 5rem; }
   .disclaimer-box { padding: 1.5rem; }
+  .letter-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Print (letters) ────────────────────────────────────────── */
+@media print {
+  .nav, .footer, .lang-switch { display: none !important; }
+
+  body { background: #fff; color: #111; }
+
+  .letter-main {
+    padding-top: 0;
+    padding-bottom: 0;
+    border-top: none;
+  }
+
+  .letter-doc { max-width: none; }
+
+  .letter-title,
+  .letter-body h2,
+  .letter-sign { color: #111; }
+
+  .letter-body,
+  .letter-meta,
+  .letter-note { color: #333; }
+
+  .letter-body h2 { page-break-after: avoid; }
+  .letter-body p  { orphans: 3; widows: 3; }
+
+  .letter-note a { color: #111; }
+
+  .letter-legal {
+    color: #555;
+    border-top-color: #ccc;
+  }
+
+  .letter-note { border-top-color: #ccc; }
+
+  .section-tag span {
+    background: none;
+    border-color: #999;
+    color: #111;
+  }
 }

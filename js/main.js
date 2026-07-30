@@ -3,6 +3,7 @@
 const i18n = {
   en: {
     'nav.about':      'About',
+    'nav.letters':    'Letters',
     'nav.snapshot':   'Snapshot',
     'nav.research':   'Research',
     'nav.crypto':     'Crypto',
@@ -54,10 +55,17 @@ const i18n = {
     'research.group.invested':  'Invested Companies',
     'research.group.evaluated': 'Evaluated · Not Invested',
     'research.group.note':      'Companies analyzed under the same methodology, in which no position was taken.',
+
+    'letters.heading': 'Partner Letters',
+    'letters.sub':     'Periodic letters on the conduct of the portfolio as a whole — the reasoning behind the decisions of each period, what changed in our reading of the environment, and what stayed the same. They complement the single-asset studies in Research rather than replacing them, and describe positions already held; they never constitute buy or sell recommendations.',
+    'letters.note':    'Letters are published in English only.',
+    'letters.sub2':    'Disclaimer: Content produced exclusively for internal use by Polaris Global Strategies Ltd. Does not constitute an investment recommendation for third parties, individuals, or legal entities. PGS does not provide asset management, advisory, or consulting services, has no clients, and offers no products to third parties.',
+    'letters.cta':     'Read Letter',
   },
 
   pt: {
     'nav.about':      'Sobre',
+    'nav.letters':    'Cartas',
     'nav.snapshot':   'Snapshot',
     'nav.research':   'Pesquisa',
     'nav.crypto':     'Cripto',
@@ -109,6 +117,12 @@ const i18n = {
     'research.group.invested':  'Empresas Investidas',
     'research.group.evaluated': 'Avaliadas · Não Investidas',
     'research.group.note':      'Empresas analisadas sob a mesma metodologia, nas quais nenhuma posição foi assumida.',
+
+    'letters.heading': 'Cartas aos Sócios',
+    'letters.sub':     'Cartas periódicas sobre a condução da carteira como um todo — a lógica por trás das decisões de cada período, o que mudou na leitura de cenário e o que se manteve. Complementam os estudos por ativo da seção Pesquisa, sem substituí-los, e descrevem posições já assumidas; nunca orientam decisões de compra ou venda.',
+    'letters.note':    'As cartas são publicadas apenas em inglês.',
+    'letters.sub2':    'Aviso: Conteúdo produzido exclusivamente para uso interno da Polaris Global Strategies Ltd. Não constitui recomendação de investimento para terceiros, pessoas físicas ou jurídicas. A PGS não presta serviços de gestão, consultoria ou assessoria, não possui clientes e não oferece produtos a terceiros.',
+    'letters.cta':     'Ler Carta',
   },
 };
 
