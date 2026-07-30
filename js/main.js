@@ -52,6 +52,9 @@ const i18n = {
     'research.sub':     'Each Polaris Global Strategies report is an institutional-grade equity research study on a single asset — B3-listed equities, U.S. stocks and ETFs, and other instruments. Data is sourced from primary sources (SEC filings, earnings calls, and leading financial press) and verified live for each edition, always covering the four most recently reported quarters in continuous sequence. Each document includes earnings analysis, competitive moat assessment, risks, bull and bear scenarios, valuation context, and a directional verdict (🟢 BUY / 🟡 NEUTRAL / 🔴 SELL). Conclusions describe the perceived risk/return profile — they never constitute buy or sell recommendations.',
     'research.sub2':    'Disclaimer: Content produced exclusively for internal use by Polaris Global Strategies Ltd. Does not constitute an investment recommendation for third parties, individuals, or legal entities. PGS does not provide asset management, advisory, or consulting services, has no clients, and offers no products to third parties. Investments in variable income involve risks, including total loss of capital.',
     'research.cta':     'View Report',
+    'research.group.invested':  'Invested Companies',
+    'research.group.evaluated': 'Evaluated · Not Invested',
+    'research.group.note':      'Companies analyzed under the same methodology, in which no position was taken.',
   },
 
   pt: {
@@ -105,6 +108,9 @@ const i18n = {
     'research.sub':     'Cada relatório da Polaris Global Strategies é um estudo de equity research de nível institucional sobre um único ativo — ações da B3, ações e ETFs norte-americanos e outros instrumentos. Os dados vêm de fontes primárias (registros na SEC, teleconferências de resultados e imprensa financeira de primeira linha) e são reapurados ao vivo a cada edição, cobrindo sempre os quatro trimestres reportados mais recentes em sequência contínua. Cada documento reúne análise de resultados, avaliação de fosso competitivo, riscos, cenários bull e bear, contexto de valuation e um veredito direcional (🟢 COMPRA / 🟡 NEUTRO / 🔴 VENDA). As conclusões descrevem a relação risco/retorno percebida — nunca orientam decisões de compra ou venda.',
     'research.sub2':    'Aviso: Conteúdo produzido exclusivamente para uso interno da Polaris Global Strategies Ltd. Não constitui recomendação de investimento para terceiros, pessoas físicas ou jurídicas. A PGS não presta serviços de gestão, consultoria ou assessoria, não possui clientes e não oferece produtos a terceiros. Investimentos em renda variável envolvem riscos, inclusive perda total do capital.',
     'research.cta':     'Ver Relatório',
+    'research.group.invested':  'Empresas Investidas',
+    'research.group.evaluated': 'Avaliadas · Não Investidas',
+    'research.group.note':      'Empresas analisadas sob a mesma metodologia, nas quais nenhuma posição foi assumida.',
   },
 };
 

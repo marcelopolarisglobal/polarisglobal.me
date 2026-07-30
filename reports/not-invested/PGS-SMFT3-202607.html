@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PGS-SMFT3-202607 · Smartfit Escola de Ginástica e Dança S.A.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* superfícies */
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  /* texto */
+  --text:#111827;
+  --text-mute:#6B7280;
+  /* sinais */
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  /* tintas de sinal */
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  /* estrutura */
+  --border:#E5E7EB;
+  --accent:#E0A500;
+  --accent-deep:#6B4E00;
+  --accent-wash:#FEF9E7;
+  /* tipografia */
+  --display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --data:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--canvas);
+  color:var(--text);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- ESTRUTURA ---------- */
+.layout{display:grid;grid-template-columns:220px 1fr;align-items:start;}
+
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  padding:28px 0 40px;
+}
+.sidebar-brand{
+  padding:0 20px 18px;margin-bottom:14px;
+  border-bottom:1px solid var(--border);
+}
+.sidebar-brand .mark{
+  font-family:var(--data);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--text-mute);display:block;
+}
+.sidebar-brand .tick{
+  font-family:var(--display);font-size:26px;font-weight:900;
+  color:var(--text);line-height:1.1;display:block;margin-top:6px;
+}
+.sidebar-brand .ref{
+  font-family:var(--data);font-size:10px;color:var(--accent-deep);
+  letter-spacing:.06em;display:block;margin-top:4px;
+}
+.nav-link{
+  display:block;padding:8px 20px;border-left:3px solid transparent;
+  color:var(--text-mute);text-decoration:none;font-size:13px;font-weight:500;
+  transition:background .18s ease,color .18s ease,border-color .18s ease;
+}
+.nav-link .kicker{
+  font-family:var(--data);font-size:10px;color:var(--accent-deep);
+  margin-right:8px;letter-spacing:.08em;
+}
+.nav-link:hover{color:var(--text);background:var(--card);}
+.nav-link.active{
+  color:var(--text);background:var(--accent-wash);
+  border-left-color:var(--accent);font-weight:700;
+}
+.nav-link:focus-visible{outline:2px solid var(--accent-deep);outline-offset:-2px;}
+
+.main-content{min-width:0;}
+.section{padding:56px 44px;border-bottom:1px solid var(--border);}
+.section:last-of-type{border-bottom:none;}
+
+/* ---------- CAPA ---------- */
+.cover{
+  min-height:96vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:64px 44px;
+  background:var(--surface);
+  background-image:radial-gradient(var(--border) 1.1px,transparent 1.1px);
+  background-size:22px 22px;
+  border-bottom:3px solid var(--accent);
+}
+.cover-inner{max-width:820px;}
+.cover-rule{width:64px;height:3px;background:var(--accent);margin-bottom:26px;}
+.cover-eyebrow{
+  font-family:var(--data);font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--text-mute);margin:0 0 20px;
+}
+.cover h1{
+  font-family:var(--display);font-weight:900;
+  font-size:clamp(38px,6.2vw,68px);line-height:1.02;
+  margin:0 0 8px;color:var(--text);letter-spacing:-.015em;
+}
+.cover h1 em{font-style:normal;color:var(--accent-deep);}
+.cover .legal{
+  font-size:15px;color:var(--text-mute);margin:0 0 34px;max-width:52ch;
+}
+.cover-meta{
+  display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--border);
+  padding-top:22px;
+}
+.cover-meta div{padding-right:44px;}
+.cover-meta dt{
+  font-family:var(--data);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-mute);margin:0 0 5px;
+}
+.cover-meta dd{
+  font-family:var(--data);font-size:15px;font-weight:500;margin:0;color:var(--text);
+}
+
+/* ---------- TÍTULOS ---------- */
+.block-kicker{
+  font-family:var(--data);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--accent-deep);margin:0 0 8px;
+}
+h2{
+  font-family:var(--display);font-weight:700;font-size:clamp(26px,3.4vw,38px);
+  line-height:1.12;margin:0 0 10px;letter-spacing:-.01em;
+}
+h3{
+  font-family:var(--body);font-weight:700;font-size:17px;
+  margin:38px 0 12px;letter-spacing:-.005em;
+}
+.lede{color:var(--text-mute);max-width:68ch;margin:0 0 26px;font-size:15px;}
+p{max-width:68ch;}
+
+/* ---------- TABELAS ---------- */
+.table-wrap{overflow-x:auto;margin:0 0 6px;}
+table{
+  width:100%;border-collapse:collapse;
+  font-size:13.5px;background:var(--canvas);
+  border:1px solid var(--border);
+}
+thead th{
+  background:var(--card);text-align:left;padding:11px 12px;
+  font-family:var(--body);font-weight:700;font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute);
+  border-bottom:1px solid var(--border);white-space:nowrap;
+}
+tbody td{
+  padding:11px 12px;border-bottom:1px solid var(--border);
+  vertical-align:top;word-break:break-word;
+}
+tbody tr:nth-child(odd){background:var(--canvas);}
+tbody tr:nth-child(even){background:var(--surface);}
+tbody tr:hover{background:var(--accent-wash);transition:background .18s ease;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr.total-row{background:var(--card);font-weight:700;}
+tbody tr.total-row:hover{background:var(--card);}
+.num{font-family:var(--data);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.q-label{font-family:var(--data);font-weight:700;white-space:nowrap;}
+.pos{color:var(--pos);font-weight:700;}
+.neg{color:var(--neg);font-weight:700;}
+.mute{color:var(--text-mute);}
+.src{
+  font-family:var(--data);font-size:10.5px;color:var(--text-mute);
+  margin:0 0 30px;line-height:1.5;max-width:96ch;
+}
+
+.pill{
+  display:inline-block;padding:2px 8px;border-radius:999px;
+  font-family:var(--data);font-size:10px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.pill-beat{background:var(--pill-pos-bg);color:var(--pill-pos-fg);}
+.pill-miss{background:var(--pill-neg-bg);color:var(--pill-neg-fg);}
+.pill-line{background:var(--card);color:var(--text-mute);}
+.stars{font-family:var(--data);letter-spacing:.06em;color:var(--accent-deep);white-space:nowrap;}
+.sig{font-family:var(--data);font-weight:700;white-space:nowrap;}
+.sig-up{color:var(--pos);} .sig-flat{color:var(--text-mute);} .sig-down{color:var(--neg);}
+
+/* ---------- BLOCO A: PAINEL ---------- */
+.panel-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--border);border:1px solid var(--border);
+  border-top:3px solid var(--accent);
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.panel-col{background:var(--card);padding:18px 16px;}
+.panel-col h4{
+  font-family:var(--body);font-size:10px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--text-mute);
+  margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);
+}
+.panel-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  gap:10px;padding:5px 0;
+}
+.panel-row span:first-child{font-size:12px;color:var(--text-mute);}
+.panel-row .v{
+  font-family:var(--data);font-size:13px;font-weight:500;
+  text-align:right;font-variant-numeric:tabular-nums;
+}
+
+/* ---------- BLOCO C: LEITURA ---------- */
+.quarters{border-left:3px solid var(--accent);padding-left:22px;margin-top:26px;}
+.quarter + .quarter{margin-top:30px;}
+.q-kicker{
+  font-family:var(--data);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent-deep);margin:0 0 4px;
+}
+.q-head{
+  font-family:var(--body);font-weight:700;font-size:15px;margin:0 0 8px;
+}
+.quarter p{margin:0;}
+
+/* ---------- BLOCO D ---------- */
+.pattern-list{margin:22px 0 0;padding:0;list-style:none;counter-reset:pat;}
+.pattern-list li{
+  padding:14px 0 14px 0;border-top:1px solid var(--border);max-width:72ch;
+}
+.pattern-list li:last-child{border-bottom:1px solid var(--border);}
+.pattern-claim{font-weight:700;display:block;margin-bottom:3px;}
+.pattern-ev{color:var(--text-mute);font-size:14.5px;}
+
+/* ---------- BLOCO F: RISCOS ---------- */
+.risk{margin-top:22px;border:1px solid var(--border);background:var(--canvas);}
+.risk-high{border-left:3px solid var(--neg);}
+.risk-med{border-left:3px solid var(--caution);}
+.risk-head{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:12px 18px;border-bottom:1px solid var(--border);
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.risk-high .risk-head{background:var(--neg-tint);}
+.risk-med .risk-head{background:var(--caution-tint);}
+.risk-head h4{margin:0;font-size:15.5px;font-weight:700;font-family:var(--body);}
+.badge{
+  font-family:var(--data);font-size:10px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;padding:3px 9px;border-radius:3px;color:#FFFFFF;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.badge-high{background:var(--neg);}
+.badge-med{background:var(--caution);}
+.risk-body{padding:16px 18px;background:var(--canvas);}
+.risk-body p{margin:0;}
+
+/* ---------- BLOCO G: CENÁRIOS ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px;}
+.scenario{border:1px solid var(--border);background:var(--canvas);}
+.scenario-head{
+  padding:12px 18px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.scenario-bull .scenario-head{background:var(--pos-tint);border-top:3px solid var(--pos);}
+.scenario-bear .scenario-head{background:var(--neg-tint);border-top:3px solid var(--neg);}
+.scenario-head h4{margin:0;font-family:var(--body);font-weight:700;font-size:16px;}
+.scenario-delta{font-family:var(--data);font-size:15px;font-weight:700;}
+.scenario-bull .scenario-delta{color:var(--pos);}
+.scenario-bear .scenario-delta{color:var(--neg);}
+.scenario-body{padding:16px 18px;}
+.scenario-body ul{margin:0 0 14px;padding-left:18px;}
+.scenario-body li{margin-bottom:6px;font-size:14.5px;}
+.scenario-body p{margin:0;font-size:14.5px;}
+
+/* ---------- BLOCO H: VEREDITO ---------- */
+.verdict{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--accent);padding:26px;margin-top:24px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.verdict-strip{
+  display:flex;flex-wrap:wrap;gap:1px;background:var(--border);
+  border:1px solid var(--border);margin-bottom:24px;
+}
+.verdict-metric{background:var(--card);padding:14px 18px;flex:1 1 150px;}
+.verdict-metric dt{
+  font-family:var(--data);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-mute);margin:0 0 6px;
+}
+.verdict-metric dd{font-family:var(--data);font-size:19px;font-weight:700;margin:0;}
+.rating-pill{
+  display:inline-block;background:var(--accent);color:#1A1400;
+  font-family:var(--data);font-weight:700;font-size:15px;letter-spacing:.08em;
+  padding:6px 16px;border-radius:3px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.verdict p{margin:0 0 14px;}
+.verdict p:last-child{margin-bottom:0;}
+.verdict h4{
+  font-family:var(--data);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent-deep);margin:22px 0 6px;font-weight:700;
+}
+
+/* ---------- DISCLAIMER ---------- */
+.disclaimer{padding:44px;background:var(--surface);border-top:3px solid var(--accent);}
+.disclaimer p{
+  font-size:12px;line-height:1.7;color:var(--text-mute);max-width:96ch;margin:0 0 18px;
+}
+.disclaimer p:last-child{margin-bottom:0;font-family:var(--data);font-size:11px;}
+
+/* ---------- ANIMAÇÃO ---------- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@media (prefers-reduced-motion:reduce){
+  .animate{opacity:1!important;transform:none!important;animation:none!important;}
+  html{scroll-behavior:auto;}
+}
+
+/* ---------- RESPONSIVO ---------- */
+@media (max-width:767px){
+  .layout{display:block;}
+  .sidebar{
+    position:sticky;top:0;height:auto;z-index:20;
+    display:flex;gap:0;overflow-x:auto;white-space:nowrap;
+    border-right:none;border-bottom:1px solid var(--border);padding:0;
+  }
+  .sidebar-brand{display:none;}
+  .nav-link{
+    border-left:none;border-bottom:3px solid transparent;padding:12px 14px;
+  }
+  .nav-link.active{border-left:none;border-bottom-color:var(--accent);}
+  .section,.cover,.disclaimer{padding-left:20px;padding-right:20px;}
+  .panel-grid{grid-template-columns:1fr;}
+  .scenario-grid{grid-template-columns:1fr;}
+  .cover-meta div{padding-right:26px;}
+}
+@media (min-width:768px) and (max-width:1023px){
+  .panel-grid{grid-template-columns:repeat(2,1fr);}
+}
+
+/* ---------- IMPRESSÃO ---------- */
+@media print{
+  @page{size:A4;margin:15mm 12mm;}
+  html,body{background-color:#FFFFFF!important;color:#111827!important;font-size:10.5pt;}
+  .layout{display:block!important;}
+  .sidebar,.nav-link{display:none!important;}
+  .main-content{display:block!important;width:100%!important;}
+  .section{padding:16pt 0!important;page-break-inside:auto;}
+  .cover{
+    min-height:auto!important;height:auto!important;display:block!important;
+    padding:0 0 20pt!important;background-color:#FFFFFF!important;
+    background-image:none!important;page-break-after:always;
+  }
+  .company-section{page-break-before:always;}
+  .cover-inner,.verdict,.risk,.risk-body,.scenario,.scenario-body,.panel-col,
+  .disclaimer,table,thead th,tbody td{background-color:#FFFFFF!important;color:#111827!important;}
+  .panel-grid{
+    display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:1px!important;
+  }
+  .scenario-grid{
+    display:grid!important;grid-template-columns:1fr 1fr!important;gap:12pt!important;
+  }
+  .panel-col,tbody tr:nth-child(even),tbody tr.total-row,.verdict-metric{
+    background-color:#F9FAFB!important;
+  }
+  .risk-high .risk-head{background-color:#FEE2E2!important;}
+  .risk-med .risk-head{background-color:#FFFBEB!important;}
+  .scenario-bull .scenario-head{background-color:#F0FDF4!important;}
+  .scenario-bear .scenario-head{background-color:#FEE2E2!important;}
+  .pill,.badge,.rating-pill{print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important;}
+  p,li{orphans:3;widows:3;}
+  .risk,.scenario,.quarter,.verdict{page-break-inside:avoid;}
+  table{page-break-inside:auto;}
+  tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .table-wrap{overflow:visible!important;}
+  td,th{word-break:break-word;}
+  *{box-shadow:none!important;backdrop-filter:none!important;}
+  .animate{opacity:1!important;transform:none!important;animation:none!important;}
+}
+.pgs-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 24px; background: #07090F;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-family: system-ui, sans-serif; font-size: 12px;
+}
+.pgs-topbar a { color: #94A3B8; text-decoration: none; }
+.pgs-topbar a:hover { color: #F1F5F9; }
+.pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+.pgs-topbar .pgs-sep { color: #334155; }
+@media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-SMFT3-202607</span>
+</div>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Navegação do relatório">
+    <div class="sidebar-brand">
+      <span class="mark">Polaris Global Strategies</span>
+      <span class="tick">SMFT3</span>
+      <span class="ref">PGS-SMFT3-202607</span>
+    </div>
+    <a class="nav-link" href="#capa"><span class="kicker">00</span>Capa</a>
+    <a class="nav-link" href="#painel"><span class="kicker">A</span>Painel consolidado</a>
+    <a class="nav-link" href="#trimestres"><span class="kicker">B</span>Tabela trimestral</a>
+    <a class="nav-link" href="#leitura"><span class="kicker">C</span>Leitura dos trimestres</a>
+    <a class="nav-link" href="#padroes"><span class="kicker">D</span>Padrões e vigilância</a>
+    <a class="nav-link" href="#arquitetura"><span class="kicker">E</span>Arquitetura estratégica</a>
+    <a class="nav-link" href="#riscos"><span class="kicker">F</span>Riscos</a>
+    <a class="nav-link" href="#cenarios"><span class="kicker">G</span>Cenários</a>
+    <a class="nav-link" href="#veredito"><span class="kicker">H</span>Veredito PGS</a>
+    <a class="nav-link" href="#disclaimer"><span class="kicker">--</span>Disclaimer</a>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- ============ CAPA ============ -->
+    <header class="cover animate" id="capa">
+      <div class="cover-inner">
+        <div class="cover-rule"></div>
+        <p class="cover-eyebrow">Polaris Global Strategies Ltd. · Pesquisa interna</p>
+        <h1>Smartfit Escola de Ginástica e Dança <em>S.A.</em></h1>
+        <p class="legal">Relatório institucional de análise de investimento.</p>
+        <dl class="cover-meta">
+          <div><dt>Ticker</dt><dd>SMFT3</dd></div>
+          <div><dt>Bolsa</dt><dd>B3</dd></div>
+          <div><dt>Referência</dt><dd>PGS-SMFT3-202607</dd></div>
+          <div><dt>Publicação</dt><dd>30/07/2026</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <div class="company-section">
+
+    <!-- ============ BLOCO A ============ -->
+    <section class="section animate" id="painel">
+      <p class="block-kicker">Bloco A</p>
+      <h2>Painel consolidado</h2>
+      <p class="lede">Todos os preços, múltiplos e números de consenso do relatório residem neste painel. Os demais blocos os referenciam pelo nome.</p>
+
+      <div class="panel-grid">
+        <div class="panel-col">
+          <h4>Mercado</h4>
+          <div class="panel-row"><span>Preço na análise</span><span class="v">R$ 19,99</span></div>
+          <div class="panel-row"><span>Valor de mercado</span><span class="v">R$ 12,32 bi</span></div>
+          <div class="panel-row"><span>vs. máx. 52 sem.</span><span class="v neg">-27,5% (est.)</span></div>
+          <div class="panel-row"><span>vs. mín. 52 sem.</span><span class="v pos">+20,4% (est.)</span></div>
+        </div>
+        <div class="panel-col">
+          <h4>Fundamentos</h4>
+          <div class="panel-row"><span>Receita líq. UDM</span><span class="v">R$ 7.670,0 M</span></div>
+          <div class="panel-row"><span>LPA UDM contábil</span><span class="v">R$ 1,12</span></div>
+          <div class="panel-row"><span>LPA UDM recorrente</span><span class="v">R$ 1,31 (est.)</span></div>
+          <div class="panel-row"><span>Margem EBIT UDM</span><span class="v">23,7%</span></div>
+          <div class="panel-row"><span>Mg. EBITDA aj. UDM</span><span class="v">31,9%</span></div>
+          <div class="panel-row"><span>Yield de FCL</span><span class="v neg">negativo</span></div>
+          <div class="panel-row"><span>Dív. líq. aj./EBITDA</span><span class="v">1,14x</span></div>
+        </div>
+        <div class="panel-col">
+          <h4>Valuation</h4>
+          <div class="panel-row"><span>P/L UDM</span><span class="v">17,9x</span></div>
+          <div class="panel-row"><span>P/L projetado 2026</span><span class="v">12,7x</span></div>
+          <div class="panel-row"><span>EV/Receita</span><span class="v">2,2x</span></div>
+          <div class="panel-row"><span>PEG</span><span class="v">0,40x (est.)</span></div>
+          <div class="panel-row"><span>Faixa P/L 2023-25</span><span class="v">14,5x – 27,8x</span></div>
+        </div>
+        <div class="panel-col">
+          <h4>Consenso</h4>
+          <div class="panel-row"><span>Analistas</span><span class="v">13</span></div>
+          <div class="panel-row"><span>Distribuição</span><span class="v">compra dominante</span></div>
+          <div class="panel-row"><span>Alvo médio</span><span class="v">R$ 32,35</span></div>
+          <div class="panel-row"><span>Alvo máximo</span><span class="v">R$ 38,00</span></div>
+          <div class="panel-row"><span>Alvo mínimo</span><span class="v">R$ 26,00</span></div>
+          <div class="panel-row"><span>Próximo resultado</span><span class="v">05/08/2026</span></div>
+        </div>
+      </div>
+      <p class="src">Fontes: cotação e contagem de ações, Dados de Mercado (fechamento de 28/07/2026); indicadores de rentabilidade e faixa histórica de P/L, Dados de Mercado; receita, EBITDA ajustado e alavancagem, releases de resultados da Companhia (1T26 e 4T25); P/L projetado, Empiricus e BTG Pactual; consenso de analistas e alvos, Investing.com; data do próximo resultado, calendário 2T26 da B3 (Suno, InvestTalk). Faixa de 52 semanas referenciada em ADVFN (28/05/2026), marcada (est.) por defasagem. LPA recorrente e PEG derivados pela PGS a partir de números divulgados.</p>
+
+      <p>O papel opera abaixo do ponto médio da própria faixa de múltiplo dos últimos três exercícios e distante do topo de 2024, num momento em que receita e EBITDA ajustado crescem perto de trinta por cento ao ano. A compressão do múltiplo projetado contra o P/L dos últimos doze meses mostra que o mercado já embutiu crescimento de lucro e ainda assim manteve o desconto contra o alvo médio do consenso.</p>
+    </section>
+
+    <!-- ============ BLOCO B ============ -->
+    <section class="section animate" id="trimestres">
+      <p class="block-kicker">Bloco B</p>
+      <h2>Os quatro trimestres</h2>
+      <p class="lede">Sequência contínua: 1T26 (âncora), 4T25, 3T25 e 2T25. Valores em R$ milhões, exceto LPA e percentuais.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Trimestre</th>
+              <th>Receita líq. vs. consenso</th>
+              <th>LPA contábil vs. consenso</th>
+              <th>LPA recorrente vs. consenso</th>
+              <th>Mg. EBIT reportada</th>
+              <th>Mg. EBITDA ajustada</th>
+              <th>FCL (caixa op. − capex)</th>
+              <th>Reação na sessão seguinte</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="q-label">1T26<br><span class="mute">31/03/2026</span></td>
+              <td class="num">2.102,1<br><span class="mute">cons. n.d.</span> <span class="pill pill-line">Em linha</span></td>
+              <td class="num">0,279 (est.)<br><span class="mute">cons. 0,29</span> <span class="pill pill-miss">Abaixo</span></td>
+              <td class="num">0,336 (est.)<br><span class="mute">cons. n.d.</span> <span class="pill pill-beat">Acima</span></td>
+              <td class="num">23,8%</td>
+              <td class="num">32,0%</td>
+              <td class="num pos">+69,0 (est.)</td>
+              <td class="num pos">+11,7%</td>
+            </tr>
+            <tr>
+              <td class="q-label">4T25<br><span class="mute">31/12/2025</span></td>
+              <td class="num">1.948,2<br><span class="mute">cons. n.d.</span> <span class="pill pill-line">Em linha</span></td>
+              <td class="num">0,359 (est.)<br><span class="mute">cons. n.d.</span> <span class="pill pill-line">n.d.</span></td>
+              <td class="num">0,393 (est.)<br><span class="mute">cons. n.d.</span> <span class="pill pill-line">Em linha</span></td>
+              <td class="num">23,4%</td>
+              <td class="num">31,3%</td>
+              <td class="num neg">-321,1 (est.)</td>
+              <td class="num pos">+2,0% (est.)</td>
+            </tr>
+            <tr>
+              <td class="q-label">3T25<br><span class="mute">30/09/2025</span></td>
+              <td class="num">1.824,2<br><span class="mute">cons. n.d.</span> <span class="pill pill-line">Em linha</span></td>
+              <td class="num">0,241 (est.)<br><span class="mute">cons. n.d.</span> <span class="pill pill-line">n.d.</span></td>
+              <td class="num">0,296 (est.)<br><span class="mute">cons. n.d.</span> <span class="pill pill-line">Em linha</span></td>
+              <td class="num">23,6%</td>
+              <td class="num">32,1%</td>
+              <td class="num pos">+92,4 (est.)</td>
+              <td class="num mute">(dado não encontrado)</td>
+            </tr>
+            <tr>
+              <td class="q-label">2T25<br><span class="mute">30/06/2025</span></td>
+              <td class="num">1.789,8 (est.)<br><span class="mute">cons. 1.750,0</span> <span class="pill pill-beat">Acima</span></td>
+              <td class="num">0,268 (est.)<br><span class="mute">cons. n.d.</span> <span class="pill pill-line">n.d.</span></td>
+              <td class="num">0,316 (est.)<br><span class="mute">cons. n.d.</span> <span class="pill pill-beat">Acima</span></td>
+              <td class="num">24,0%</td>
+              <td class="num">32,1%</td>
+              <td class="num pos">+63,5 (est.)</td>
+              <td class="num pos">+7,8%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">Fontes: receita líquida, EBITDA ajustado e margens ex-IFRS-16, releases de resultados 1T26, 4T25, 3T25 e 2T25 da Companhia. Lucro líquido contábil e EBIT reportado (base CVM, com IFRS-16), Dados de Mercado. Lucro líquido recorrente, releases da Companhia. LPA calculado pela PGS sobre 616.129.844 ações após o aumento de capital homologado em fevereiro de 2026 e 597.250.053 ações nos trimestres anteriores, marcado (est.). Consenso de LPA do 1T26, TradingView; consenso de receita do 2T25, Empiricus. FCL derivado pela PGS a partir da geração de caixa operacional e do capex divulgados. Reações: InfoMoney (1T26), Empiricus (4T25), Suno (2T25). Qualificações de superação e desempenho em linha conforme relatórios publicados de XP, Itaú BBA, BTG Pactual, Safra e Goldman Sachs.</p>
+    </section>
+
+    <!-- ============ BLOCO C ============ -->
+    <section class="section animate" id="leitura">
+      <p class="block-kicker">Bloco C</p>
+      <h2>Leitura dos trimestres</h2>
+      <p class="lede">O que produziu cada número, e por que o mercado leu como leu.</p>
+
+      <div class="quarters">
+
+        <article class="quarter">
+          <p class="q-kicker">Trimestre âncora</p>
+          <h3 class="q-head" style="margin-top:0">1T26 · a linha que interrompeu o ciclo de revisões</h3>
+          <p>A receita cruzou a marca de dois bilhões pela primeira vez, e o mercado reagiu com a maior variação de sessão da janela coberta. A composição explica a reação melhor que o total. O crescimento veio do repasse de preço no plano de maior valor, da maturação das safras recentes e, sobretudo, da linha Outras, que praticamente dobrou de tamanho na comparação anual com a consolidação contábil da FitMaster e da operação mexicana do TotalPass. O Brasil, ponto que vinha sendo monitorado com desconfiança havia vários trimestres, entregou acima das estimativas das principais casas. A expansão de margem nasceu da margem bruta da linha Outras, enquanto a marca Smart Fit seguiu pressionada pelo ritmo de inaugurações, e o México voltou a ceder. O detalhe que a manchete escondeu está na tabela B: o lucro por ação contábil ficou abaixo da estimativa publicada, porque a depreciação de arrendamento e a despesa financeira do IFRS-16 crescem com o ciclo de aberturas. O mercado precificou a linha recorrente.</p>
+        </article>
+
+        <article class="quarter">
+          <p class="q-kicker">Âncora menos um</p>
+          <h3 class="q-head">4T25 · expansão recorde comprada com caixa</h3>
+          <p>Foi o trimestre de maior adição líquida de unidades da história da Companhia, com a maior parte concentrada em dezembro. Isso produz um efeito mecânico e previsível: academia aberta no último mês do ano gera custo pré-operacional integral e receita quase nula, o que derrubou a margem bruta caixa na comparação anual. O EBITDA ajustado ainda assim superou a marca de seiscentos milhões, sustentado por diluição de despesas comerciais. O lucro recorrente cresceu menos que o EBITDA por causa da tributação em bases universais sobre os resultados fora do Brasil, efeito parcialmente compensado por uma declaração maior de juros sobre capital próprio. O ponto de dor está na coluna de caixa da tabela B, a única leitura negativa da janela: o capex atingiu o pico do ano e o fluxo de caixa livre virou fortemente negativo. A alavancagem subiu. A reação do papel foi discretamente positiva, porque o resultado operacional veio como esperado. O guidance de aberturas para 2026, inferior ao do ano anterior, foi lido por parte do sell-side como sinal sobre a intensidade competitiva.</p>
+        </article>
+
+        <article class="quarter">
+          <p class="q-kicker">Âncora menos dois</p>
+          <h3 class="q-head">3T25 · a margem no ponto mais alto da janela</h3>
+          <p>A margem EBITDA ajustada empatou no topo da janela de quatro trimestres, um ponto percentual acima do mesmo período do ano anterior. A origem foi diluição de despesas, com vendas e administrativas crescendo abaixo da receita, e não expansão de lucro bruto. A margem bruta consolidada ficou estável porque o mix geográfico compensou duas pressões simultâneas: despesas pré-operacionais no Brasil e um ciclo mais fraco de novas unidades no México. A conversão de EBITDA em caixa operacional passou de cem por cento, o melhor patamar da janela, e o capex estava no vale sazonal, o que explica o fluxo de caixa livre positivo da linha correspondente na tabela B. O lucro recorrente foi ajudado por alíquota efetiva de imposto menor, um componente de qualidade inferior ao operacional. Nesse trimestre começou a aparecer a fraqueza sequencial da base de clientes por academia no Brasil, tema que se tornaria o eixo do debate sobre a ação nos meses seguintes. A reação do papel à divulgação não pôde ser apurada em fonte pública.</p>
+        </article>
+
+        <article class="quarter">
+          <p class="q-kicker">Âncora menos três</p>
+          <h3 class="q-head">2T25 · a superação mais limpa da janela</h3>
+          <p>Único trimestre da janela com superação verificável de receita contra consenso publicado, e o único em que a surpresa veio da operação central. A margem bruta caixa do Brasil expandiu de forma relevante na bandeira Smart Fit, algo que a XP registrou como alívio de duas preocupações simultâneas dos investidores, a pressão competitiva doméstica e o desempenho mexicano. A margem operacional reportada foi a mais alta das quatro leituras. Duas ressalvas de qualidade merecem registro. O lucro recorrente incorporou recuperação de créditos tributários, item que embeleza a comparação sem indicar capacidade operacional. E a participação do México nas inaugurações do ano havia recuado, o que reduzia temporariamente a pressão de custo pré-operacional. O papel subiu com força. Lida de trás para frente, essa foi a última divulgação em que a tese ainda era discutida quase inteiramente em termos de economia unitária de academia, antes de o TotalPass se tornar o eixo do debate.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============ BLOCO D ============ -->
+    <section class="section animate" id="padroes">
+      <p class="block-kicker">Bloco D</p>
+      <h2>Padrões estruturais e lista de vigilância</h2>
+
+      <h3>Quatro padrões que atravessam a janela</h3>
+      <ul class="pattern-list">
+        <li>
+          <span class="pattern-claim">O crescimento migrou das academias para a linha Outras.</span>
+          <span class="pattern-ev">A participação dessa linha na receita subiu em cada um dos quatro trimestres, e seu lucro bruto caixa cresceu em ritmo múltiplo do consolidado.</span>
+        </li>
+        <li>
+          <span class="pattern-claim">A margem consolidada é sustentada pela composição geográfica, com a região Outros Países carregando o resultado.</span>
+          <span class="pattern-ev">Essa região entregou a maior margem bruta caixa entre as três geografias de academias, compensando as quedas de Brasil e México.</span>
+        </li>
+        <li>
+          <span class="pattern-claim">O ritmo de inauguração determina a margem bruta reportada do trimestre.</span>
+          <span class="pattern-ev">Os dois períodos com maior concentração de aberturas foram os de menor margem bruta caixa da janela, sem exceção.</span>
+        </li>
+        <li>
+          <span class="pattern-claim">Lucro contábil e lucro recorrente descolaram de forma persistente, sempre no mesmo sentido.</span>
+          <span class="pattern-ev">A diferença entre as duas linhas de LPA da tabela B se manteve nos quatro trimestres, porque o IFRS-16 amplia depreciação e despesa financeira na proporção do ciclo de aberturas.</span>
+        </li>
+      </ul>
+
+      <h3>Lista de vigilância para a próxima divulgação</h3>
+      <ul class="pattern-list">
+        <li>
+          <span class="pattern-claim">Densidade de alunos por academia madura no Brasil <span class="sig sig-down">↓ deteriorando</span></span>
+          <span class="pattern-ev">Confirma se a base sequencial recuar de novo; quebra se a densidade, computados os acessos do agregador, estabilizar.</span>
+        </li>
+        <li>
+          <span class="pattern-claim">Margem bruta caixa do México <span class="sig sig-down">↓ deteriorando</span></span>
+          <span class="pattern-ev">Confirma se a margem regional ceder pelo quarto período anual seguido; quebra se um novo repasse de preço chegar à região.</span>
+        </li>
+        <li>
+          <span class="pattern-claim">Monetização por acesso do TotalPass <span class="sig sig-up">↑ melhorando</span></span>
+          <span class="pattern-ev">Confirma se a receita por visita convergir para a do canal direto; quebra se o repasse às parceiras crescer acima da receita da plataforma.</span>
+        </li>
+        <li>
+          <span class="pattern-claim">Consumo de caixa e alavancagem <span class="sig sig-flat">→ estável</span></span>
+          <span class="pattern-ev">Confirma se o indicador do painel ficar sob o teto das debêntures com capex no guidance; quebra se uma nova emissão financiar expansão.</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ============ BLOCO E ============ -->
+    <section class="section animate" id="arquitetura">
+      <p class="block-kicker">Bloco E</p>
+      <h2>Arquitetura estratégica</h2>
+
+      <h3>E.1 · Modelo de negócio e arquitetura de receita</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Segmento</th>
+              <th>Receita 2025 (R$ M)</th>
+              <th>% do total</th>
+              <th>Var. a/a</th>
+              <th>Margem bruta caixa antes de pré-operacionais</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Smart Fit Outros Países</td>
+              <td class="num">2.488,2</td><td class="num">34,4%</td>
+              <td class="num pos">+41%</td><td class="num">55,0%</td>
+            </tr>
+            <tr>
+              <td>Smart Fit Brasil</td>
+              <td class="num">2.390,2</td><td class="num">33,0%</td>
+              <td class="num pos">+21%</td><td class="num">47,8%</td>
+            </tr>
+            <tr>
+              <td>Smart Fit México</td>
+              <td class="num">1.554,1</td><td class="num">21,5%</td>
+              <td class="num pos">+14%</td><td class="num">45,6%</td>
+            </tr>
+            <tr>
+              <td>Outras (TotalPass, Studios, Queima Diária, FitMaster, royalties)</td>
+              <td class="num">601,8</td><td class="num">8,3%</td>
+              <td class="num pos">+88%</td><td class="num">68,8%</td>
+            </tr>
+            <tr>
+              <td>Bio Ritmo e outras</td>
+              <td class="num">207,5</td><td class="num">2,9%</td>
+              <td class="num pos">+26%</td><td class="num">43,8%</td>
+            </tr>
+            <tr class="total-row">
+              <td>Total consolidado</td>
+              <td class="num">7.241,7</td><td class="num">100,0%</td>
+              <td class="num">+30%</td><td class="num">51,4%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">Fonte: Release de Resultados 4T25 da Companhia, seções Receita Líquida por Marca e Região e Lucro Bruto Caixa por Segmento. Margens excluem os efeitos do IFRS-16 e os custos pré-operacionais. Percentuais do total calculados pela PGS.</p>
+
+      <p>A companhia se organiza em duas máquinas com funções financeiras distintas. A primeira é a rede de academias próprias da bandeira principal, distribuída por três geografias que hoje se aproximam de terços. Ela consome capital: cada unidade exige investimento inicial pesado e leva vinte e quatro meses para atingir margem madura. A segunda é a linha Outras, que reúne o agregador corporativo, os estúdios, a plataforma digital e a operação mexicana adquirida. Ela quase não consome capital fixo e opera com margem bruta caixa muito superior à de qualquer geografia de academia, porque vende acesso a uma rede que em grande parte pertence a terceiros.</p>
+      <p>A interdependência é o ponto. O agregador só tem proposta de valor para o comprador corporativo porque existe uma malha densa de unidades atrás dele, e a malha densa só se paga porque o agregador injeta frequência incremental em academias que já estão com custo fixo pago. Cada acesso adicional vindo da plataforma entra na unidade com custo marginal próximo de zero, o que significa que a alavancagem operacional do grupo nasce nesse encontro, e não na diluição clássica de despesa corporativa.</p>
+      <p>O fluxo de capital vai na direção oposta ao fluxo de margem. A geração de caixa das academias maduras, principalmente da região Outros Países, financia as novas unidades e a estrutura do agregador. A linha Outras devolve margem e crescimento, e ainda é pequena demais para financiar o ciclo de expansão sozinha. Enquanto essa assimetria durar, o consolidado permanece refém do calendário de inaugurações.</p>
+
+      <h3>E.2 · Fosso competitivo</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Pilar</th><th>Força</th><th>Risco de erosão</th><th>Nota</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Densidade de rede e efeito cluster geográfico</td><td>Alta</td><td>Baixo</td><td class="stars">★★★★☆</td></tr>
+            <tr><td>Custo por unidade e poder de compra de equipamento</td><td>Alta</td><td>Médio</td><td class="stars">★★★★☆</td></tr>
+            <tr><td>Agregador corporativo bilateral (oferta e demanda)</td><td>Média-alta</td><td>Médio</td><td class="stars">★★★★☆</td></tr>
+            <tr><td>Acesso imobiliário preferencial em complexos comerciais</td><td>Média</td><td>Médio</td><td class="stars">★★★☆☆</td></tr>
+            <tr><td>Marca e poder de repasse de preço</td><td>Média</td><td>Alto</td><td class="stars">★★★☆☆</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">Fonte: avaliação PGS a partir dos releases de resultados 2T25 a 1T26 da Companhia, do relatório da Fitch Ratings de julho de 2026 e da cobertura de BTG Pactual, XP e Itaú BBA. Escala de notas de 1 a 5 estrelas, sendo 5 uma vantagem durável e praticamente inatacável.</p>
+
+      <p>O mecanismo mais durável aqui não é a marca. É a densidade. Quando a companhia coloca cinco ou mais unidades numa mesma praça, o cliente compra conveniência de acesso a várias academias sob a mesma assinatura, e o custo de replicar isso para um entrante é o custo de abrir a praça inteira ao mesmo tempo. É por isso que a estratégia de clusters no México foi levada até a cobertura de todas as entidades federativas, e é por isso que a penetração do plano de maior valor sobe justamente onde a densidade é maior. Esse pilar resiste bem porque não depende de preferência do consumidor, e sim de aritmética de rede.</p>
+      <p>O segundo pilar, custo por unidade, é forte mas datado. A escala de compra de equipamento e a padronização de projeto entregam capex por academia que um operador independente não alcança. A erosão aqui é gradual e vem de dois lados: a inflação de capex por unidade tem subido com a atualização do produto, e a concorrência de academias de bairro não precisa igualar o custo, precisa apenas aceitar retorno menor num raio pequeno. Foi exatamente esse ponto que o mercado castigou quando a administração reconheceu maior competição local no início de 2026.</p>
+      <p>O agregador é o pilar com maior valor incremental e o mais frágil no papel. Ele é bilateral de verdade, com efeito de rede em ambos os lados, e a participação de mercado em usuários ativos no Brasil vem subindo. A fragilidade está em quem controla a demanda: são departamentos de recursos humanos com contratos renováveis e um concorrente global bem capitalizado do outro lado. A nota quatro reflete a mecânica, com a ressalva de que a durabilidade ainda não foi testada num ciclo de renegociação adverso. Marca e repasse de preço recebem a nota mais baixa porque o modelo se define por preço acessível, o que limita estruturalmente até onde o reajuste pode ir sem devolver alunos ao concorrente de bairro.</p>
+
+      <h3>E.3 · Arquitetura de crescimento de longo prazo</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Vetor</th><th>Horizonte</th><th>Estado atual</th><th>Potencial</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Expansão da rede (guidance de 330 a 350 aberturas líquidas em 2026)</td>
+              <td>1 a 3 anos</td><td>2.113 academias em 16 países</td><td>Alto</td><td>em linha</td>
+            </tr>
+            <tr>
+              <td>Maturação das safras de 2024 a 2026</td>
+              <td>2 a 3 anos</td><td>57% da base própria já madura</td><td>Alto</td><td>em linha</td>
+            </tr>
+            <tr>
+              <td>Monetização do agregador corporativo</td>
+              <td>2 a 4 anos</td><td>2,1 mi de usuários; 34% de share em usuários ativos no Brasil</td><td>Alto</td><td>em linha</td>
+            </tr>
+            <tr>
+              <td>Plataforma de estúdios BeOn</td>
+              <td>3 a 5 anos</td><td>180 unidades, majoritariamente franquias</td><td>Médio</td><td>emergente</td>
+            </tr>
+            <tr>
+              <td>Reposicionamento da Bio Ritmo no segmento alto</td>
+              <td>3 a 5 anos</td><td>36 unidades, entrada recente em Chile e Peru</td><td>Médio</td><td>emergente</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">Fontes: releases de resultados 4T25 e 1T26 da Companhia; Fato Relevante de guidance de aberturas de março de 2026; dados de participação em usuários ativos citados por BTG Pactual com base em Sensor Tower (março de 2026). Escala de status: em linha · emergente · em risco.</p>
+
+      <p>O sequenciamento não é opcional. A maturação das safras recentes precisa acontecer primeiro, porque é ela que converte o capital já enterrado nos últimos dois anos em geração de caixa. Sem isso, nenhum dos outros vetores importa: a expansão continua consumindo mais caixa do que a base madura produz, e o balanço continua dependente de refinanciamento. As safras de 2023 e 2024 vêm entregando margem em linha ou acima do patamar das unidades maduras, o que é o sinal mais concreto disponível de que o vetor está funcionando.</p>
+      <p>O segundo na fila é o agregador. Ele resolve o problema que a maturação sozinha não resolve, que é a densidade estagnada por academia no Brasil. Cada acesso corporativo adicional recupera receita numa unidade que já existe, sem capex. A questão aberta migrou de escala para preço: a plataforma já provou que agrega academias parceiras e usuários, e o que falta demonstrar é que a receita por visita converge de forma sustentada para a do canal direto.</p>
+      <p>Estúdios e o reposicionamento da marca de alto padrão vêm por último e devem ser tratados como opcionalidade. Ambos são pequenos demais para mover o consolidado em dois anos e dependem de execução em franquia e serviço premium, com histórico curto. Se a expansão principal saturar, esses vetores viram necessidade, e a classificação de emergente deve ser revisitada.</p>
+    </section>
+
+    <!-- ============ BLOCO F ============ -->
+    <section class="section animate" id="riscos">
+      <p class="block-kicker">Bloco F</p>
+      <h2>Registro de riscos</h2>
+
+      <div class="risk risk-high">
+        <div class="risk-head">
+          <span class="badge badge-high">Alto</span>
+          <h4>Consumo estrutural de caixa e dependência de refinanciamento</h4>
+        </div>
+        <div class="risk-body">
+          <p>O mecanismo é direto: o capex de expansão excede a geração operacional em anos de abertura recorde, como mostra a única leitura negativa da coluna de fluxo de caixa livre da tabela B. A companhia financia a diferença com emissões de dívida de prazo longo, e vem fazendo isso com regularidade crescente. Enquanto o custo de captação local ficar contido e o rating for preservado, o arranjo funciona. O risco materializa se coincidirem janela de crédito fechada e ciclo de abertura já contratado, com obras que não podem parar sem perda. O horizonte relevante são os próximos dois exercícios, período em que a Fitch projeta fluxo de caixa livre ainda negativo antes do ponto de equilíbrio. O observável é a destinação declarada das novas emissões. Refinanciamento de séries anteriores é rotina de gestão de passivo. Emissão destinada a capital de giro e a expansão indica que a geração interna deixou de cobrir o plano.</p>
+        </div>
+      </div>
+
+      <div class="risk risk-high">
+        <div class="risk-head">
+          <span class="badge badge-high">Alto</span>
+          <h4>Erosão de densidade e competição local no Brasil</h4>
+        </div>
+        <div class="risk-body">
+          <p>O Brasil responde por cerca de um terço da receita e é a geografia com a base de clientes mais estagnada da tabela de segmentos. O mecanismo tem dois componentes que se somam. O primeiro é canibalização própria: abrir unidades novas em praças já cobertas divide a mesma base entre mais endereços. O segundo é competição de operadores independentes de bairro, que aceitam retorno inferior num raio curto e não precisam replicar a escala nacional. A administração reconheceu esse componente com analistas no início de 2026, e o papel caiu perto de dois dígitos na sessão. O horizonte é imediato, com leitura já na próxima divulgação. O observável é a densidade de alunos por academia madura no país, computados os acessos do agregador. Se a receita média por unidade madura recuar em termos reais por dois trimestres seguidos, a economia unitária que sustenta o múltiplo do papel passa a ser questionada de forma legítima.</p>
+        </div>
+      </div>
+
+      <div class="risk risk-med">
+        <div class="risk-head">
+          <span class="badge badge-med">Médio</span>
+          <h4>Deterioração de margem no México e exposição cambial regional</h4>
+        </div>
+        <div class="risk-body">
+          <p>O México é a segunda maior geografia isolada e apresenta a menor margem bruta caixa da tabela de segmentos, com queda relevante na comparação anual. O mecanismo combina três forças: custo de pessoal e serviços de terceiros subindo acima da receita por unidade, reforço deliberado de equipe de recepção para melhorar conversão de vendas, e um ciclo de aberturas concentrado no fim do exercício que empurra custo pré-operacional para dentro do trimestre. Some-se a exposição cambial, já que parcela relevante da dívida é contratada em moeda mexicana e nas moedas da região Outros Países. O horizonte é de doze a dezoito meses. O observável é a margem bruta caixa regional antes dos custos pré-operacionais: uma quarta leitura consecutiva de queda anual indicaria problema de economia unitária, e não efeito de calendário de inaugurações. O contra-indicador seria a chegada de um novo repasse de preço no plano de maior valor à região.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCO G ============ -->
+    <section class="section animate" id="cenarios">
+      <p class="block-kicker">Bloco G</p>
+      <h2>Cenários</h2>
+
+      <div class="scenario-grid">
+
+        <div class="scenario scenario-bull">
+          <div class="scenario-head">
+            <h4>Cenário construtivo</h4>
+            <span class="scenario-delta">+50% ao alvo</span>
+          </div>
+          <div class="scenario-body">
+            <ul>
+              <li>As safras de 2024 a 2026 maturam dentro do padrão histórico e a base madura passa a cobrir o capex de expansão.</li>
+              <li>O agregador corporativo converte escala em preço, com receita por visita convergindo para a do canal direto.</li>
+              <li>A margem consolidada resiste ao pico de aberturas, sustentada pela região Outros Países e pela linha Outras.</li>
+            </ul>
+            <p>Para que essas premissas se sustentem, é preciso que o risco de erosão de densidade no Brasil se revele efeito de calendário de inaugurações, e não de perda de participação para operadores locais. É preciso também que a janela de crédito permaneça aberta ao longo do ciclo, permitindo que o refinanciamento continue sendo gestão de passivo. Nesse arranjo, o papel reencontra a metade superior da própria faixa histórica de múltiplo do painel, com o consumo de caixa deixando de ser o argumento dominante contra a tese.</p>
+          </div>
+        </div>
+
+        <div class="scenario scenario-bear">
+          <div class="scenario-head">
+            <h4>Cenário adverso</h4>
+            <span class="scenario-delta">-23% ao alvo</span>
+          </div>
+          <div class="scenario-body">
+            <ul>
+              <li>A densidade por academia madura no Brasil segue caindo e a competição local se prova estrutural.</li>
+              <li>A margem mexicana registra uma quarta queda anual consecutiva, revelando problema de economia unitária.</li>
+              <li>O custo de captação sobe e a companhia precisa escolher entre desacelerar aberturas e ampliar alavancagem.</li>
+            </ul>
+            <p>As condições para esse desfecho são menos exigentes do que parecem, porque duas delas já estão parcialmente em curso. Basta que o repasse de preço encontre resistência de demanda, forçando escolha entre volume e ticket, e que o ciclo de maturação das safras recentes atrase. Nesse arranjo, o mercado passa a precificar o negócio pela geração de caixa e não pelo crescimento de receita, e o múltiplo migra para a metade inferior da faixa histórica registrada no painel, com o risco de refinanciamento assumindo o primeiro plano.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ BLOCO H ============ -->
+    <section class="section animate" id="veredito">
+      <p class="block-kicker">Bloco H</p>
+      <h2>Veredito PGS</h2>
+
+      <div class="verdict">
+        <dl class="verdict-strip">
+          <div class="verdict-metric">
+            <dt>Classificação</dt>
+            <dd><span class="rating-pill">🟢 COMPRA</span></dd>
+          </div>
+          <div class="verdict-metric">
+            <dt>Alvo construtivo · 18 a 24 meses</dt>
+            <dd>R$ 30,00</dd>
+          </div>
+          <div class="verdict-metric">
+            <dt>Piso adverso</dt>
+            <dd>R$ 15,50</dd>
+          </div>
+          <div class="verdict-metric">
+            <dt>Risco e retorno</dt>
+            <dd>Favorável</dd>
+          </div>
+        </dl>
+
+        <h4>Deslocamento de preço</h4>
+        <p>O papel opera bem abaixo do alvo médio do consenso registrado no painel, apesar de receita, EBITDA ajustado e lucro recorrente terem crescido nos quatro trimestres cobertos. A mudança está na narrativa: o mercado migrou de uma tese de expansão de rede para uma tese de qualidade de crescimento, descontando densidade estagnada no Brasil e consumo de caixa. O múltiplo projetado para 2026 comprimiu contra o dos últimos doze meses sem ruptura na trajetória de resultado, o que caracteriza deslocamento de percepção.</p>
+
+        <h4>Qualidade fundamental</h4>
+        <p>A economia unitária das academias maduras se manteve estável ao longo da janela, com as safras recentes entregando margem em linha ou superior ao patamar maduro. A diversificação geográfica amorteceu pressões simultâneas em Brasil e México em todos os trimestres. A linha Outras adicionou margem superior e, no trimestre âncora, foi a origem principal da expansão. O balanço opera com alavancagem contida e vencimentos alongados.</p>
+
+        <h4>Risco principal</h4>
+        <p>O risco alto de erosão de densidade e competição local no Brasil decide a tese, porque ataca a premissa que sustenta tudo o mais: a de que cada nova academia encontra demanda incremental. O risco alto de consumo estrutural de caixa é o amplificador; enquanto o fluxo de caixa livre permanecer negativo, qualquer fragilidade unitária vira questionamento sobre a capacidade de financiar o plano.</p>
+
+        <h4>Catalisadores de curto prazo</h4>
+        <p>A divulgação do segundo trimestre, na data registrada no painel, trará a primeira leitura completa da densidade brasileira após o trimestre âncora. Seguem-se a liquidação da emissão de debêntures aprovada em julho, cuja destinação declarada é o observável do risco de refinanciamento, e a evolução da participação do agregador. Perfil de risco e retorno favorável, com a assimetria dependendo da leitura de densidade.</p>
+      </div>
+    </section>
+
+    </div><!-- /company-section -->
+
+    <!-- ============ DISCLAIMER ============ -->
+    <footer class="disclaimer animate" id="disclaimer">
+      <p>"Este relatório foi produzido exclusivamente para uso interno da Polaris Global Strategies Ltd. (PGS), sociedade constituída nas Ilhas Virgens Britânicas (BVI), atuando como veículo privado de pesquisa e análise de investimentos em nome de seus sócios. Este documento não constitui recomendação de investimento para qualquer terceiro, seja pessoa física ou jurídica, e não deve ser interpretado como tal. A PGS não presta serviços de gestão de recursos, assessoria ou consultoria de investimentos a qualquer cliente externo, não possui base de clientes e não oferece produtos ou serviços a terceiros. Eventual acesso a este documento por partes não autorizadas não lhe confere validade como aconselhamento ou recomendação de investimento. As informações e análises aqui contidas baseiam-se em fontes públicas consideradas confiáveis, mas a PGS não oferece garantia quanto à sua integralidade ou exatidão. Investimentos em instrumentos de renda variável envolvem riscos, incluindo a possibilidade de perda total do capital investido. As opiniões expressas refletem julgamento analítico interno na data de publicação e estão sujeitas a alteração sem aviso prévio."</p>
+
+      <p>Este relatório foi produzido com o auxílio de inteligência artificial. Modelo generativo: Anthropic · Claude Opus · versão Opus 5, acessado via aplicativo Claude (claude.ai). Todos os números foram obtidos por busca web ao vivo na mesma sessão e checados contra o protocolo de ancoragem da Etapa 1; o papel do modelo foi síntese de dados, formatação e redação, e não a originação de estimativas financeiras. A revisão humana pelo analista interno precede a publicação.</p>
+
+      <p>Referência do relatório: PGS-SMFT3-202607 · Data: 30 de julho de 2026 · Analista interno: Polaris Global Strategies Ltd. · Ticker: SMFT3 · Bolsa: B3 · Modelo de IA: Anthropic Opus 5</p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry, i){
+        if (entry.isIntersecting) {
+          entry.target.style.animationDelay = (i * 0.08) + 's';
+          entry.target.style.animationPlayState = 'running';
+          entry.target.style.opacity = '';
+          animObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    animateEls.forEach(function(el){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      animObserver.observe(el);
+    });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var targets = links.map(function(l){ return document.querySelector(l.getAttribute('href')); })
+                     .filter(Boolean);
+
+  function setActive(){
+    var pos = window.scrollY + (window.innerHeight * 0.25);
+    var current = targets[0];
+    targets.forEach(function(t){ if (t.offsetTop <= pos) current = t; });
+    links.forEach(function(l){
+      l.classList.toggle('active', current && l.getAttribute('href') === '#' + current.id);
+    });
+  }
+
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking) {
+      window.requestAnimationFrame(function(){ setActive(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+  setActive();
+})();
+</script>
+
+</body>
+</html>

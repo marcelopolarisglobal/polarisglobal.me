@@ -1,7 +1,7 @@
 # Polaris Global Strategies — Manual Técnico e Funcional
 
-**Versão:** 1.6  
-**Data:** Junho 2026  
+**Versão:** 1.7  
+**Data:** Julho 2026  
 **Domínio:** https://polarisglobal.me
 
 ---
@@ -25,7 +25,9 @@ O site é composto por três camadas de páginas:
 | Research | `research.html` | Listagem de todos os relatórios de investimento |
 | Relatório | `reports/PGS-XXX-YYYYMM.html` | Relatório individual de tese de investimento |
 
-A navegação superior é fixa (*sticky*) em todas as páginas e inclui links para About, Disclaimer, Snapshot, Research e Crypto — nessa ordem. Links de About e Disclaimer nas páginas internas redirecionam para `index.html#about` e `index.html#disclaimer`. O link Crypto aponta para `/crypto/` (página externa ao site estático).
+> **Sub-sites independentes:** `crypto/` e `consulting/` são publicados por este mesmo repositório, mas sua documentação é mantida em projetos separados (ver `consulting/manual-website-ai.md`). Este manual não cobre a estrutura interna deles.
+
+A navegação superior é fixa (*sticky*) em todas as páginas e inclui links para About, Disclaimer, Snapshot, Research e Crypto — nessa ordem. Links de About e Disclaimer nas páginas internas redirecionam para `index.html#about` e `index.html#disclaimer`. O link Crypto aponta para `/crypto/`, subdiretório deste repositório.
 
 Cada relatório possui uma barra de navegação de volta ao site no topo (`✦ POLARIS GLOBAL / Research / PGS-XXX-YYYYMM`), que desaparece ao imprimir.
 
@@ -55,14 +57,16 @@ O idioma selecionado é salvo no `localStorage` do navegador. O atributo `lang` 
 
 A página `research.html` lista os relatórios disponíveis em cards com:
 
-- Badge do ticker (ex: `BRK.B`, `GOOGL`, `TSLA`, `EQTL3`)
+- Badge do ticker (ex: `BRK.B`, `GOOGL`, `TSLA`, `ITSA4`)
 - Data do relatório (ex: `Jun 2026`)
 - Badge de idioma (`EN` ou `PT`)
 - Nome da empresa
 - Tipo do relatório
 - Link "View Report →" / "Ver Relatório →"
 
-Os relatórios são exibidos do mais recente para o mais antigo.
+Os relatórios são exibidos do mais recente para o mais antigo, em duas seções sequenciais, cada uma com um cabeçalho de grupo (`.report-group-head`) acima da grade: "Invested Companies" / "Empresas Investidas" e "Evaluated · Not Invested" / "Avaliadas · Não Investidas". Os cards são visualmente idênticos entre as duas seções — a distinção é apenas o cabeçalho.
+
+A pasta `reports/not-invested/` guarda os relatórios de empresas avaliadas e não investidas. Eles permanecem versionados, acessíveis por URL direta, e **recebem card** em `research.html`, exibidos na segunda seção da página.
 
 ### 2.5 Convenção de Nomenclatura dos Relatórios
 
@@ -70,7 +74,7 @@ Os relatórios são exibidos do mais recente para o mais antigo.
 PGS-{TICKER}-{YYYYMM}.html
 ```
 
-Exemplos: `PGS-BRKB-202606.html`, `PGS-GOOGL-202606.html`, `PGS-TSLA-202606.html`, `PGS-EQTL3-202606.html`
+Exemplos: `PGS-BRKB-202606.html`, `PGS-GOOGL-202607.html`, `PGS-TSLA-202607.html`, `PGS-ITSA4-202606.html`
 
 Relatórios complementares (workbooks, carteiras) usam sufixo descritivo: `PGS-WAGN-202606-Carteira.html`
 
@@ -120,15 +124,16 @@ polarisglobal.me/
 ├── .github/
 │   └── workflows/
 │       └── market-data.yml ← workflow: roda o script seg–sex às 22:30 UTC
+├── crypto/                ← sub-site — projeto independente
+├── consulting/            ← sub-site — projeto independente
 └── reports/               ← relatórios HTML individuais
+    ├── not-invested/      ← avaliados e não investidos (com card em research.html)
     ├── PGS-BRKB-202606.html
-    ├── PGS-EQTL3-202606.html
-    ├── PGS-GOOGL-202606.html
+    ├── PGS-GOOGL-202607.html
     ├── PGS-ITSA4-202606.html
     ├── PGS-KLBN11-202606.html
-    ├── PGS-MSFT-202606.html
     ├── PGS-PSSA3-202606.html
-    ├── PGS-TSLA-202606.html
+    ├── PGS-TSLA-202607.html
     ├── PGS-VULC3-202606.html
     ├── PGS-WAGN-202606.html
     └── PGS-WAGN-202606-Carteira.html
@@ -355,6 +360,12 @@ git add reports/PGS-TICKER-YYYYMM.html research.html
 git commit -m "feat(reports): add PGS-TICKER-YYYYMM"
 git push
 ```
+
+**Relatórios de empresas avaliadas e não investidas:** seguem o mesmo fluxo, mas com três diferenças:
+
+- O arquivo vai em `reports/not-invested/PGS-TICKER-YYYYMM.html` (um nível mais fundo).
+- A topbar usa `../../` em vez de `../` nos links (`../../index.html`, `../../research.html`).
+- O card correspondente entra na segunda seção de `research.html` ("Evaluated · Not Invested" / "Avaliadas · Não Investidas"), não na primeira.
 
 ### 5.5 Remover um relatório
 

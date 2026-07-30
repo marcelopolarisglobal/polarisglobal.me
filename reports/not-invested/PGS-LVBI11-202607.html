@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PGS-LVBI11-202607 · FII VBI Logístico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  --text:#111827;
+  --text-mute:#6B7280;
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#0F5F55;
+  --display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --data:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--canvas);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+
+.layout{display:grid;grid-template-columns:220px 1fr;align-items:start}
+
+/* sidebar */
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:28px 0}
+.sidebar .brand{font-family:var(--display);font-size:19px;line-height:1.2;padding:0 18px 6px;color:var(--accent)}
+.sidebar .brand small{display:block;font-family:var(--data);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mute);margin-top:8px}
+.nav-list{list-style:none;margin:22px 0 0;padding:0}
+.nav-link{display:block;padding:8px 18px;border-left:3px solid transparent;color:var(--text-mute);text-decoration:none;font-size:13px;letter-spacing:.01em}
+.nav-link:hover{color:var(--text)}
+.nav-link.active{border-left-color:var(--accent);background:var(--card);color:var(--text);font-weight:500}
+.nav-kicker{font-family:var(--data);font-size:10px;color:var(--accent);margin-right:7px}
+
+.main-content{min-width:0}
+.wrap{max-width:940px;padding:0 32px 90px}
+
+/* cover */
+.cover{min-height:96vh;background:var(--surface);
+  background-image:radial-gradient(var(--border) 1px, transparent 1px);
+  background-size:22px 22px;
+  display:flex;flex-direction:column;justify-content:center;padding:64px 32px;border-bottom:1px solid var(--border)}
+.cover-inner{max-width:820px}
+.cover .eyebrow{font-family:var(--data);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.cover h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,6vw,68px);line-height:1.03;margin:20px 0 6px}
+.cover h2{font-family:var(--body);font-weight:400;font-size:clamp(16px,2vw,20px);color:var(--text-mute);margin:0 0 34px}
+.cover .rule{width:74px;height:3px;background:var(--accent);margin:0 0 26px}
+.cover-meta{display:flex;flex-wrap:wrap;gap:34px;font-family:var(--data);font-size:12px;color:var(--text-mute)}
+.cover-meta b{display:block;color:var(--text);font-weight:500;font-size:14px;margin-top:4px}
+
+/* section chrome */
+section{padding-top:56px}
+.kicker{font-family:var(--data);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+h3.block-title{font-family:var(--display);font-weight:700;font-size:clamp(24px,3.4vw,34px);line-height:1.15;margin:0 0 18px;border-bottom:1px solid var(--border);padding-bottom:14px}
+h4{font-family:var(--body);font-weight:700;font-size:15px;letter-spacing:.02em;margin:34px 0 12px;text-transform:uppercase}
+p{max-width:68ch;margin:0 0 15px}
+.lede{color:var(--text-mute)}
+
+/* panel */
+.panel{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--accent);padding:24px}
+.panel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.panel-col{padding:0 20px;border-left:1px solid var(--border)}
+.panel-col:first-child{border-left:0;padding-left:0}
+.panel-col h5{margin:0 0 14px;font-family:var(--body);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-mute)}
+.row{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dotted var(--border);font-size:12px}
+.row:last-child{border-bottom:0}
+.row span{color:var(--text-mute);max-width:58%}
+.row b{font-family:var(--data);font-weight:500;font-size:12.5px;text-align:right}
+.up{color:var(--pos)} .down{color:var(--neg)} .warn{color:var(--caution)}
+
+/* tables */
+.table-wrap{overflow-x:auto;border:1px solid var(--border)}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:640px}
+thead th{background:var(--card);text-align:left;padding:11px 12px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mute);border-bottom:1px solid var(--border);font-weight:700}
+tbody td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tbody tr:nth-child(odd){background:var(--canvas)}
+tbody tr:nth-child(even){background:var(--surface)}
+tbody tr:hover{background:var(--card);transition:background .18s ease}
+td.num,th.num{font-family:var(--data);white-space:nowrap}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-family:var(--data);font-size:10.5px;font-weight:700;letter-spacing:.04em;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.pill.pos{background:var(--pill-pos-bg);color:var(--pill-pos-fg)}
+.pill.neg{background:var(--pill-neg-bg);color:var(--pill-neg-fg)}
+.pill.mute{background:var(--card);color:var(--text-mute)}
+.stars{font-family:var(--data);letter-spacing:.08em;color:var(--accent)}
+.src{font-family:var(--data);font-size:10.5px;color:var(--text-mute);margin:8px 0 0;line-height:1.5;max-width:none}
+
+/* block C */
+.quarter{border-left:3px solid var(--accent);padding-left:20px;margin:26px 0}
+.q-label{font-family:var(--data);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+
+/* block D */
+.obs{border-top:1px solid var(--border);padding-top:12px;margin-top:16px}
+.obs .claim{font-weight:700}
+.watch{display:flex;gap:12px;border-top:1px solid var(--border);padding:12px 0;align-items:flex-start}
+.sig{font-family:var(--data);font-size:15px;line-height:1.2;min-width:22px}
+
+/* risks */
+.risk{border:1px solid var(--border);border-left:3px solid var(--neg);margin:18px 0;page-break-inside:avoid}
+.risk.med{border-left-color:var(--caution)}
+.risk header{background:var(--neg-tint);padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:14px;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.risk.med header{background:var(--caution-tint)}
+.risk header h5{margin:0;font-size:15px;font-family:var(--body);font-weight:700}
+.badge{font-family:var(--data);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border:1px solid var(--neg);color:var(--neg);print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.risk.med .badge{border-color:var(--caution);color:var(--caution)}
+.risk .body{background:var(--canvas);padding:16px 18px}
+.risk .body p{margin:0}
+
+/* scenarios */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.scen{border:1px solid var(--border);page-break-inside:avoid}
+.scen header{padding:12px 18px;border-top:3px solid var(--pos);background:var(--pos-tint);print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.scen.bear header{border-top-color:var(--neg);background:var(--neg-tint)}
+.scen header h5{margin:0;font-family:var(--display);font-size:20px}
+.scen header .delta{font-family:var(--data);font-size:12px;color:var(--text-mute)}
+.scen .body{background:var(--canvas);padding:16px 18px}
+.scen ul{margin:0 0 12px;padding-left:18px;font-size:13.5px}
+.scen li{margin-bottom:5px}
+.scen p{font-size:13.5px;margin:0}
+
+/* verdict */
+.verdict{background:var(--surface);border:1px solid var(--border);padding:26px}
+.metrics{display:flex;flex-wrap:wrap;gap:1px;background:var(--border);margin:0 0 24px}
+.metric{background:var(--card);padding:14px 18px;flex:1 1 150px}
+.metric span{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute)}
+.metric b{font-family:var(--data);font-size:17px;font-weight:700;display:block;margin-top:5px}
+.rating{display:inline-block;background:var(--accent);color:#fff;font-family:var(--data);font-weight:700;font-size:13px;letter-spacing:.1em;padding:8px 16px;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+
+/* disclaimer */
+.disclaimer{margin-top:60px;border-top:3px solid var(--accent);padding-top:22px}
+.disclaimer p{font-size:11.5px;line-height:1.6;color:var(--text-mute);max-width:none}
+.disclaimer .ref{font-family:var(--data);font-size:10.5px}
+
+/* motion */
+.animate{opacity:1;animation:fadeUp .6s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.animate{animation:none!important;opacity:1!important;transform:none!important}}
+
+@media (max-width:768px){
+  .layout{display:block}
+  .sidebar{position:sticky;top:0;height:auto;z-index:20;border-right:0;border-bottom:1px solid var(--border);padding:10px 0;display:flex;align-items:center;gap:10px;overflow-x:auto;white-space:nowrap}
+  .sidebar .brand{display:none}
+  .nav-list{display:flex;margin:0}
+  .nav-link{border-left:0;border-bottom:3px solid transparent;padding:6px 12px}
+  .nav-link.active{border-left:0;border-bottom-color:var(--accent)}
+  .panel-grid{grid-template-columns:1fr}
+  .panel-col{border-left:0;border-top:1px solid var(--border);padding:16px 0 0}
+  .panel-col:first-child{border-top:0;padding-top:0}
+  .scenario-grid{grid-template-columns:1fr}
+  .wrap{padding:0 18px 60px}
+  .cover{padding:48px 18px}
+}
+
+@media print{
+  @page{size:A4;margin:15mm 12mm}
+  .layout{display:block!important}
+  .sidebar,.nav-link{display:none!important}
+  .main-content{display:block!important;width:100%!important}
+  .wrap{max-width:none!important;padding:0!important}
+  body,.panel,.verdict,.risk .body,.scen .body,.cover{background-color:#FFFFFF;color:#111827}
+  .cover{min-height:auto!important;height:auto!important;display:block!important;background-image:none;padding:0 0 24px!important;border-bottom:1px solid var(--border)}
+  .panel-grid{display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:16px!important}
+  .scenario-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:14px!important}
+  section{padding-top:26px}
+  p{orphans:3;widows:3}
+  .risk,.scen,.quarter,.table-wrap{page-break-inside:avoid}
+  .table-wrap{overflow:visible!important}
+  table{min-width:0!important;font-size:10.5px}
+  td,th{word-break:break-word}
+  .animate{opacity:1!important;transform:none!important;animation:none!important}
+  *{box-shadow:none!important;backdrop-filter:none!important}
+}
+.pgs-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 24px; background: #07090F;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-family: system-ui, sans-serif; font-size: 12px;
+}
+.pgs-topbar a { color: #94A3B8; text-decoration: none; }
+.pgs-topbar a:hover { color: #F1F5F9; }
+.pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+.pgs-topbar .pgs-sep { color: #334155; }
+@media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-LVBI11-202607</span>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">Polaris Global Strategies<small>PGS-LVBI11-202607</small></div>
+    <ul class="nav-list">
+      <li><a class="nav-link" href="#bloco-a"><span class="nav-kicker">A</span>Painel</a></li>
+      <li><a class="nav-link" href="#bloco-b"><span class="nav-kicker">B</span>Trimestres</a></li>
+      <li><a class="nav-link" href="#bloco-c"><span class="nav-kicker">C</span>Leitura</a></li>
+      <li><a class="nav-link" href="#bloco-d"><span class="nav-kicker">D</span>Padrões</a></li>
+      <li><a class="nav-link" href="#bloco-e"><span class="nav-kicker">E</span>Arquitetura</a></li>
+      <li><a class="nav-link" href="#bloco-f"><span class="nav-kicker">F</span>Riscos</a></li>
+      <li><a class="nav-link" href="#bloco-g"><span class="nav-kicker">G</span>Cenários</a></li>
+      <li><a class="nav-link" href="#bloco-h"><span class="nav-kicker">H</span>Veredito</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+
+    <div class="cover animate">
+      <div class="cover-inner">
+        <div class="eyebrow">Polaris Global Strategies Ltd. · Pesquisa interna</div>
+        <h1>FII VBI Logístico</h1>
+        <div class="rule"></div>
+        <h2>Fundo de Investimento Imobiliário VBI Logístico · Responsabilidade Limitada</h2>
+        <div class="cover-meta">
+          <div>Ticker<b>LVBI11</b></div>
+          <div>Bolsa<b>B3 (Brasil, Bolsa, Balcão)</b></div>
+          <div>Referência<b>PGS-LVBI11-202607</b></div>
+          <div>Publicação<b>29 de julho de 2026</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+
+      <!-- BLOCO A -->
+      <section id="bloco-a" class="animate">
+        <div class="kicker">Bloco A</div>
+        <h3 class="block-title">Painel consolidado</h3>
+
+        <div class="panel">
+          <div class="panel-grid">
+            <div class="panel-col">
+              <h5>Mercado</h5>
+              <div class="row"><span>Preço em análise (28/07/2026)</span><b>R$ 102,52</b></div>
+              <div class="row"><span>Valor de mercado</span><b>R$ 1.652,5 mi (est.)</b></div>
+              <div class="row"><span>Máxima de 52 semanas</span><b>R$ 112,24</b></div>
+              <div class="row"><span>Distância da máxima</span><b class="down">-8,7%</b></div>
+              <div class="row"><span>Mínima de 52 semanas</span><b>R$ 100,24</b></div>
+              <div class="row"><span>Distância da mínima</span><b class="up">+2,3%</b></div>
+            </div>
+            <div class="panel-col">
+              <h5>Fundamentos</h5>
+              <div class="row"><span>Receita 12 meses</span><b>R$ 170,2 mi</b></div>
+              <div class="row"><span>FFO 12 meses</span><b>R$ 144,5 mi</b></div>
+              <div class="row"><span>Margem de FFO 12 meses</span><b>84,9% (est.)</b></div>
+              <div class="row"><span>Rendimento pago 12 meses</span><b>R$ 9,00 / cota</b></div>
+              <div class="row"><span>Patrimônio líquido (jun/26)</span><b>R$ 1.941,6 mi</b></div>
+              <div class="row"><span>Valor patrimonial por cota</span><b>R$ 120,41</b></div>
+            </div>
+            <div class="panel-col">
+              <h5>Valuation</h5>
+              <div class="row"><span>P/VP corrente</span><b>0,85x</b></div>
+              <div class="row"><span>P/VP médio (36 meses)</span><b>0,91x</b></div>
+              <div class="row"><span>Faixa histórica de P/VP</span><b>0,73x a 1,02x</b></div>
+              <div class="row"><span>DY 12 meses sobre preço</span><b>8,8% (est.)</b></div>
+              <div class="row"><span>DY 12 meses sobre patrimônio</span><b>7,5%</b></div>
+              <div class="row"><span>Dívida sobre patrimônio (jun/26)</span><b>0,5%</b></div>
+            </div>
+            <div class="panel-col">
+              <h5>Referências de mercado</h5>
+              <div class="row"><span>Cobertura sell-side pública com preço-alvo</span><b class="warn">não localizada</b></div>
+              <div class="row"><span>Preço justo de plataforma (média de dois métodos)</span><b>R$ 108,02</b></div>
+              <div class="row"><span>Relação de troca indicativa por cota</span><b>0,72 HGLG11 (est.)</b></div>
+              <div class="row"><span>HGLG11: cota de mercado (mai/26)</span><b>R$ 154,85</b></div>
+              <div class="row"><span>HGLG11: valor patrimonial por cota (dez/25)</span><b>R$ 162,24</b></div>
+              <div class="row"><span>Cotistas (mai/26)</span><b>124.082</b></div>
+              <div class="row"><span>Volume médio diário (jun/26)</span><b>R$ 3,2 mi</b></div>
+              <div class="row"><span>Próximo evento: informe trimestral do 2T26</span><b>até 15/08/2026</b></div>
+            </div>
+          </div>
+        </div>
+        <p class="src">Fontes: relatório gerencial do fundo (competência junho de 2026), Fundamentus, Meus Dividendos, Status Invest, BrFiis e editais de assembleia divulgados no Fundos.NET. Valores marcados (est.) foram calculados por PGS a partir de dados públicos e não constam de divulgação oficial do fundo.</p>
+
+        <p style="margin-top:20px">O múltiplo patrimonial está abaixo da média de três anos e na metade inferior da faixa observada desde 2023, sem que vacância, endividamento ou qualidade de crédito dos locatários expliquem o desconto. A leitura relevante do painel está na coluna de referências: a incorporação aprovada converte cotas por valor patrimonial, de modo que o deságio da cota incorporada só vira ganho se o fundo incorporador estiver negociando mais próximo do próprio patrimônio na data-base.</p>
+      </section>
+
+      <!-- BLOCO B -->
+      <section id="bloco-b" class="animate">
+        <div class="kicker">Bloco B</div>
+        <h3 class="block-title">Os quatro trimestres</h3>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Trimestre</th>
+                <th class="num">Receita / cota<br>(média mensal)</th>
+                <th class="num">Resultado / cota<br>(média mensal)</th>
+                <th class="num">Rendimento / cota<br>(mensal)</th>
+                <th class="num">Payout</th>
+                <th class="num">Vacância física<br>(fim do período)</th>
+                <th class="num">P/VP<br>(fim do período)</th>
+                <th class="num">Variação da cota<br>no trimestre</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>2T26</b><br><span style="color:var(--text-mute);font-size:11.5px">abr a jun/26 · âncora</span></td>
+                <td class="num">R$ 0,93</td>
+                <td class="num">R$ 0,74</td>
+                <td class="num">R$ 0,75</td>
+                <td class="num"><span class="pill neg">101,4%</span></td>
+                <td class="num">0,4%</td>
+                <td class="num">0,87x</td>
+                <td class="num down">-4,4%</td>
+              </tr>
+              <tr>
+                <td><b>1T26</b><br><span style="color:var(--text-mute);font-size:11.5px">jan a mar/26</span></td>
+                <td class="num">R$ 0,89 (est.)</td>
+                <td class="num">R$ 0,73 (est.)</td>
+                <td class="num">R$ 0,75</td>
+                <td class="num"><span class="pill neg">102,7%</span></td>
+                <td class="num">0,0%</td>
+                <td class="num">0,91x</td>
+                <td class="num up">+1,3%</td>
+              </tr>
+              <tr>
+                <td><b>4T25</b><br><span style="color:var(--text-mute);font-size:11.5px">out a dez/25</span></td>
+                <td class="num">(dado não encontrado)</td>
+                <td class="num">R$ 0,76 (est.)</td>
+                <td class="num">R$ 0,75</td>
+                <td class="num"><span class="pill pos">98,7%</span></td>
+                <td class="num">(dado não encontrado)</td>
+                <td class="num">0,90x (est.)</td>
+                <td class="num down">-0,5% (est.)</td>
+              </tr>
+              <tr>
+                <td><b>3T25</b><br><span style="color:var(--text-mute);font-size:11.5px">jul a set/25</span></td>
+                <td class="num">R$ 0,88 (est.)</td>
+                <td class="num">R$ 0,75</td>
+                <td class="num">R$ 0,75</td>
+                <td class="num"><span class="pill pos">100,0%</span></td>
+                <td class="num">1,7%</td>
+                <td class="num">0,92x</td>
+                <td class="num up">+5,7%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Fontes: relatórios gerenciais mensais do LVBI11 (competências de julho de 2025 a junho de 2026) e notícias de cobertura primária desses relatórios em Status Invest, Suno, BrFiis, Funds Explorer e Fiis.com.br. Médias trimestrais calculadas por PGS sobre os meses efetivamente divulgados; julho de 2025, novembro e dezembro de 2025 e fevereiro de 2026 não foram localizados em fonte pública e estão excluídos das médias, o que motiva a marcação (est.). Payout calculado como rendimento distribuído sobre resultado do período.</p>
+      </section>
+
+      <!-- BLOCO C -->
+      <section id="bloco-c" class="animate">
+        <div class="kicker">Bloco C</div>
+        <h3 class="block-title">Lendo os trimestres</h3>
+
+        <div class="quarter">
+          <div class="q-label">2T26 · abril a junho de 2026 · trimestre âncora</div>
+          <p>O trimestre âncora tem três meses de comportamento diferente. Abril repetiu a receita do mês anterior e carregou uma taxa de comercialização não recorrente ligada à locação da Interbrands Foods, item que comprime resultado sem tocar na receita contratada. Maio trouxe a primeira desocupação depois de um período de ocupação plena, com a saída da QUBIT do módulo de Itapevi, e o resultado ficou novamente abaixo do rendimento pago. Junho foi o melhor mês do período: os reajustes aplicados sobre quase setenta mil metros quadrados de área locável entraram na receita e o resultado voltou a superar a distribuição. Com o rendimento mantido nos três meses, a reserva acumulada financiou parte do que foi pago em abril e maio. No mercado, a cota caiu mais que o índice de referência do setor, movimento que tem pouca relação com o que o portfólio entregou e muita com a ausência de notícia sobre a incorporação.</p>
+        </div>
+
+        <div class="quarter">
+          <div class="q-label">1T26 · janeiro a março de 2026</div>
+          <p>O primeiro trimestre foi o da normalização operacional. Janeiro ainda registrou vacância física e financeira, herança das saídas mapeadas no fim de 2025, e a gestão já sinalizava ocupação total para a competência seguinte com contratos assinados: ampliação da Gocase em Extrema, entrada da WGL em Cajamar e da Ollie Cosméticos em Extrema. Fevereiro e março confirmaram a ocupação integral. O resultado de março, ainda assim, recuou, novamente pela taxa de comercialização da locação da Interbrands Foods, o mesmo tipo de despesa que aparece sempre que a gestão fecha contrato relevante. A leitura correta é que o fundo pagou custo comercial adiantado para eliminar a vacância, e a receita correspondente entra depois, com carência contratual pelo meio. Foi também o trimestre em que o mercado passou a tratar a cota como via indireta de entrada no fundo incorporador, o que sustentou o preço apesar de o resultado recorrente estar abaixo do rendimento distribuído.</p>
+        </div>
+
+        <div class="quarter">
+          <div class="q-label">4T25 · outubro a dezembro de 2025</div>
+          <p>O trimestre foi dominado pela agenda societária. Outubro ainda mostrou resultado ligeiramente superior ao de setembro e distribuição integralmente coberta, mas a gestão formalizou no mesmo relatório a devolução do espaço da Solistica em Extrema e o distrato da Elfa Medicamentos em Aratu, elevando a vacância projetada para o início de 2026. Em dezembro, a assembleia aprovou a incorporação pelo fundo logístico do mesmo grupo gestor, com rejeição mínima entre os presentes e quórum acima do mínimo qualificado exigido. A partir daí o ativo deixou de ser negociado apenas pelos seus imóveis. Liquidez diária e base de cotistas recuaram no período, sinal de que parte do investidor de renda saiu antes da conversão. As competências de novembro e dezembro não foram localizadas em fonte pública, e a coluna de receita do trimestre ficou sem valor por isso.</p>
+        </div>
+
+        <div class="quarter">
+          <div class="q-label">3T25 · julho a setembro de 2025</div>
+          <p>Este foi o único trimestre da janela em que a distribuição saiu inteiramente do resultado gerado no período, sem consumo de reserva. A receita por cota cedeu de agosto para setembro, movimento explicado por carências e pela composição da base locada, e não por perda de contrato. No campo comercial, a Engage Eletro assumiu o módulo antes ocupado pela Nestlé em Extrema, o que estabilizou a vacância física em patamar baixo e manteve a vacância financeira zerada. O mercado reagiu bem: a cota subiu com força no trimestre, o desconto patrimonial encolheu e a liquidez média diária aumentou. A base de cotistas, porém, caiu pelo segundo mês seguido, um descolamento entre preço e adesão que costuma indicar rotação de perfil de investidor. Foi o último trimestre em que o fundo pôde ser avaliado exclusivamente pela sua operação, antes de a discussão societária passar ao centro.</p>
+        </div>
+      </section>
+
+      <!-- BLOCO D -->
+      <section id="bloco-d" class="animate">
+        <div class="kicker">Bloco D</div>
+        <h3 class="block-title">Padrões e lista de vigilância</h3>
+
+        <h4>Padrões estruturais</h4>
+        <div class="obs"><p><span class="claim">A distribuição virou um número fixo, descolado do resultado do mês.</span> O rendimento não se moveu em nenhum dos quatro trimestres, enquanto o resultado oscilou acima e abaixo dele, com a reserva absorvendo a diferença.</p></div>
+        <div class="obs"><p><span class="claim">A operação imobiliária não é a fonte do problema.</span> A vacância física ficou abaixo de dois por cento em todo trimestre com dado disponível, e a financeira permaneceu quase zerada mesmo nos meses de troca de locatário.</p></div>
+        <div class="obs"><p><span class="claim">O custo de recompor a ocupação aparece antes da receita que ele gera.</span> Em dois dos quatro trimestres o resultado foi comprimido por taxas de comercialização, despesa reconhecida à vista contra aluguel que entra depois da carência.</p></div>
+        <div class="obs"><p><span class="claim">O preço passou a responder ao regulador, não ao portfólio.</span> O maior recuo da cota na janela ocorreu justamente no trimestre de melhor evolução operacional, período em que nenhuma notícia sobre a incorporação foi divulgada.</p></div>
+
+        <h4>Lista de vigilância para o próximo relatório</h4>
+        <div class="watch"><div class="sig down">↓</div><div><b>Reserva acumulada por cota.</b> Confirma se cair de novo com a distribuição mantida; quebra se o resultado cobrir o rendimento por dois meses seguidos.</div></div>
+        <div class="watch"><div class="sig">→</div><div><b>Manifestação da CVM sobre a dispensa de reembolso.</b> Confirma se o relatório repetir a fórmula de espera; quebra com fato relevante em qualquer direção.</div></div>
+        <div class="watch"><div class="sig up">↑</div><div><b>Recolocação do módulo da Elfa Medicamentos em Aratu.</b> Confirma se a minuta em negociação virar contrato assinado antes de setembro; quebra se a vacância projetada se materializar sem substituto.</div></div>
+        <div class="watch"><div class="sig down">↓</div><div><b>Sinalização de distribuição para o segundo semestre.</b> Confirma se a gestão mantiver o patamar; quebra se o guidance for realinhado ao resultado recorrente.</div></div>
+      </section>
+
+      <!-- BLOCO E -->
+      <section id="bloco-e" class="animate">
+        <div class="kicker">Bloco E</div>
+        <h3 class="block-title">Arquitetura estratégica</h3>
+
+        <h4>1. Modelo de negócio e arquitetura de receita</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Eixo de receita contratada</th><th class="num">% da receita</th><th>Locatários de referência</th><th>Modalidade predominante</th><th class="num">Sinal</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Comércio eletrônico</td><td class="num">26%</td><td>Amazon, Magazine Luiza</td><td>Típico, indexado a IPCA</td><td class="num">→</td></tr>
+              <tr><td>Operadores logísticos</td><td class="num">17%</td><td>DHL, IBL Logística</td><td>Típico, prazo curto a médio</td><td class="num">↑</td></tr>
+              <tr><td>Automobilístico</td><td class="num">15%</td><td>Scania</td><td>Atípico, prazo longo</td><td class="num">→</td></tr>
+              <tr><td>Bebidas</td><td class="num">10%</td><td>Ambev</td><td>Atípico, prazo longo</td><td class="num">→</td></tr>
+              <tr><td>Demais setores</td><td class="num">32%</td><td>Varejo, saúde, indústria e alimentos</td><td>Misto</td><td class="num">↑</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Fonte: composição setorial e principais locatários conforme divulgação do fundo compilada por Investidor de FIIs (competência de meados de 2025) e relatório de cobertura da XP Investimentos. A repartição setorial não é atualizada mensalmente pelo fundo; percentuais referem-se à receita contratada e não à receita caixa do período. Sinais seguem a escala controlada do Bloco D.</p>
+
+        <p style="margin-top:20px">O fundo é um veículo de renda pura sobre galpões logísticos, sem pipeline de desenvolvimento e sem receita financeira relevante. Isso significa que existem exatamente três alavancas de resultado: ocupação, preço do metro quadrado locado e custo fixo da estrutura. A carteira se organiza em torno do ativo de Extrema, na divisa entre Minas Gerais e São Paulo, que é ao mesmo tempo o maior empreendimento em área e o de maior participação na receita imobiliária, seguido pelo anel metropolitano paulista, onde estão Pirituba, Mauá, Itapevi, Cajamar, Jandira e a participação em São Bernardo do Campo detida por meio de outro fundo. Aratu, na Bahia, e Araucária, no Paraná, completam a exposição fora do eixo Sudeste.</p>
+        <p>A interação entre esses blocos é assimétrica. Extrema e os ativos de contrato atípico, ocupados por Scania e Ambev, funcionam como o piso de caixa: prazo longo, multa cheia em caso de saída antecipada e reajuste automático por índice de preços. É esse piso que sustenta a distribuição enquanto os módulos de contrato típico giram. Os ativos de perfil last mile, sobretudo Itapevi, são o oposto: prazo médio curto, alta rotatividade e sensibilidade imediata ao ciclo de comércio eletrônico. Eles carregam mais risco de vacância e, ao mesmo tempo, são a única fonte real de crescimento orgânico, porque cada troca de locatário permite recontratar a preços correntes.</p>
+        <p>A alavancagem operacional vem de dois lugares e nenhum deles é receita nova. O primeiro é o spread de recolocação: quando um módulo devolvido é relocado acima do aluguel anterior, todo o diferencial cai no resultado, já que o custo de propriedade é praticamente fixo. O segundo é a diluição da taxa de administração e gestão sobre base patrimonial estável, e é aqui que a incorporação importa mais que qualquer negociação comercial. A dívida do fundo, restrita a uma obrigação atrelada ao ativo de Aratu com vencimento em 2032, é pequena demais para produzir efeito financeiro em qualquer direção.</p>
+
+        <h4>2. Fosso competitivo</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Pilar</th><th>Força</th><th>Risco de erosão</th><th class="num">Avaliação</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Escassez de terreno e topografia em Extrema</td><td>Alta</td><td>Baixo</td><td class="num stars">★★★★</td></tr>
+              <tr><td>Estrutura de capital praticamente sem dívida</td><td>Alta</td><td>Baixo</td><td class="num stars">★★★★★</td></tr>
+              <tr><td>Pulverização de locatários e setores</td><td>Alta</td><td>Baixo</td><td class="num stars">★★★★</td></tr>
+              <tr><td>Indexação inflacionária dos contratos</td><td>Média-alta</td><td>Médio</td><td class="num stars">★★★</td></tr>
+              <tr><td>Especificação técnica classe A dos galpões</td><td>Média</td><td>Alto</td><td class="num stars">★★</td></tr>
+              <tr><td>Plataforma e escala da gestora</td><td>Média</td><td>Médio</td><td class="num stars">★★★</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Fonte: avaliação qualitativa PGS construída sobre dados de portfólio dos relatórios gerenciais do fundo e sobre a descrição de ativos publicada pela gestora. A escala de estrelas segue o vocabulário controlado deste relatório, de uma a cinco, sendo cinco vantagem durável e de difícil ataque.</p>
+
+        <p style="margin-top:20px">Galpão logístico é, por natureza, um ativo de fosso curto. A oferta responde rápido ao aluguel: quando o preço do metro quadrado sobe o suficiente, alguém constrói ao lado. Qualquer avaliação de durabilidade neste setor precisa separar o que é do imóvel do que é do terreno e do contrato, porque só os dois últimos resistem à entrada de concorrência.</p>
+        <p>O pilar mais durável do portfólio é geográfico. A região de Extrema combina posição de entreposto entre a região metropolitana de São Paulo e o Sul de Minas com relevo acidentado, o que encarece terraplenagem e limita fisicamente o desenvolvimento de novos condomínios de padrão equivalente. Essa restrição não expira com o contrato e não pode ser replicada por capital. O segundo pilar é financeiro: um fundo com dívida quase nula atravessa ciclo de juros alto sem precisar vender ativo nem cortar distribuição para honrar amortização, e essa capacidade de esperar é uma vantagem real contra concorrentes alavancados em janela de estresse.</p>
+        <p>A pulverização merece nota alta pelo mecanismo, não pelos nomes. Nenhum locatário isolado responde por parcela capaz de derrubar o fundo, e a distribuição setorial mistura ciclos distintos, o que reduz correlação entre as saídas. Já a especificação técnica dos galpões, o item que costuma ser vendido como diferencial, é o pilar mais fraco: padrão construtivo classe A é replicável por qualquer incorporador com capital, e o próprio histórico do fundo mostra locatários de primeira linha deixando módulos de altíssimo padrão quando a operação deles muda. A indexação protege o poder de compra do aluguel, mas só até o limite do que o mercado local aceita pagar na renovação, e revisionais para baixo aparecem sempre que a inflação corrige acima do preço de reposição da praça.</p>
+
+        <h4>3. Arquitetura de crescimento de longo prazo</h4>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Vetor</th><th>Horizonte</th><th>Estado atual</th><th>Potencial</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Conclusão da incorporação pelo fundo logístico do mesmo grupo</td><td>6 a 18 meses</td><td>Aprovada em assembleia, aguardando manifestação da CVM</td><td>Alto</td><td><span class="pill neg">em risco</span></td></tr>
+              <tr><td>Redução da taxa de gestão na estrutura consolidada</td><td>12 a 24 meses</td><td>Condicionada à conclusão da incorporação</td><td>Médio</td><td><span class="pill neg">em risco</span></td></tr>
+              <tr><td>Reajustes indexados e revisionais de contratos típicos</td><td>Contínuo</td><td>Executados mensalmente sobre lotes relevantes de área</td><td>Médio</td><td><span class="pill pos">no rumo</span></td></tr>
+              <tr><td>Recolocação do módulo de Aratu e do espaço de Itapevi</td><td>2 a 6 meses</td><td>Minuta contratual em negociação avançada</td><td>Baixo</td><td><span class="pill mute">emergente</span></td></tr>
+              <tr><td>Recuperação de inadimplência de períodos anteriores</td><td>6 a 24 meses</td><td>Concentrada em locatários em processo de recuperação</td><td>Baixo</td><td><span class="pill neg">em risco</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Fonte: relatórios gerenciais do fundo de janeiro a junho de 2026, edital de convocação da consulta formal de voto divulgado no Fundos.NET em dezembro de 2025 e material de assembleia compilado por BrFiis. Status conforme vocabulário controlado deste relatório: no rumo, emergente ou em risco.</p>
+
+        <p style="margin-top:20px">A sequência importa mais que a lista. Nenhum dos vetores de valor deste fundo tem escala suficiente para mover a cota sozinho, com uma exceção: a incorporação. Ela é o único evento capaz de alterar simultaneamente estrutura de custo, liquidez da cota e múltiplo de negociação, e todos os outros vetores dependem dela para importar.</p>
+        <p>A redução de taxa é consequência direta da fusão e não existe fora dela. A recolocação dos módulos vagos é gestão ordinária, resolve alguns centavos por cota e não muda tese. Os reajustes indexados preservam poder de compra, o que é valioso e insuficiente para justificar reavaliação de múltiplo. A recuperação de inadimplência antiga depende de processos de terceiros e não deve entrar em projeção.</p>
+        <p>O ponto delicado é que o vetor dominante está fora do controle da gestão. A operação depende de manifestação da CVM sobre a dispensa do direito de reembolso a cotistas dissidentes, pedido protocolado ainda em 2025 e sem prazo regulatório público. Enquanto isso não se resolve, o fundo opera em compasso de espera: não faz aquisições, não emite cotas, não reposiciona portfólio. Um fundo de renda parado gera renda, e o que deixa de gerar é reavaliação. Daí o desconto patrimonial não ter se fechado apesar da reconstrução da ocupação no período analisado.</p>
+      </section>
+
+      <!-- BLOCO F -->
+      <section id="bloco-f" class="animate">
+        <div class="kicker">Bloco F</div>
+        <h3 class="block-title">Riscos</h3>
+
+        <div class="risk">
+          <header><h5>Risco regulatório e de execução da incorporação</h5><span class="badge">Alta</span></header>
+          <div class="body"><p>O mecanismo é jurídico e binário. A incorporação já foi aprovada nas assembleias dos dois fundos, mas sua implementação está condicionada à dispensa, pela CVM, do direito de reembolso a cotistas dissidentes previsto na regulação de fundos de investimento. Sem essa manifestação, a operação não avança e a gestora declarou que nenhum passo societário será executado antes de clareza regulatória. O prazo é indefinido: o pedido foi protocolado no fim de 2025 e seguia pendente no relatório mais recente. O intervalo relevante é de seis a dezoito meses, com cauda longa. O observável é a repetição, nos relatórios seguintes, da mesma redação de espera sem atualização processual, acompanhada de ampliação do desconto patrimonial. Uma negativa da autarquia obrigaria a reestruturar a operação ou abandoná-la, devolvendo o fundo à condição de veículo autônomo, com estrutura de custo mais cara e sem o catalisador que hoje sustenta parte do preço.</p></div>
+        </div>
+
+        <div class="risk med">
+          <header><h5>Distribuição descoberta e esgotamento da reserva</h5><span class="badge">Média</span></header>
+          <div class="body"><p>O fundo mantém o rendimento mensal estável desde abril de 2025, e em parte dos meses recentes esse valor superou o resultado gerado no período. A diferença sai da reserva acumulada, que encolheu em meses consecutivos e hoje equivale a poucos meses de complemento no ritmo atual. O mecanismo é aritmético e o desfecho tem apenas duas saídas: o resultado recorrente sobe até cobrir a distribuição, ou a distribuição é realinhada para baixo. O horizonte é curto, de três a nove meses, e coincide com a saída programada da Elfa Medicamentos em setembro. O observável é a linha de reserva acumulada por cota no relatório gerencial mensal, somada à redação do guidance de distribuição para o segundo semestre. Um corte de rendimento em um fundo cuja base de cotistas é majoritariamente de pessoas físicas voltadas à renda tende a produzir pressão vendedora desproporcional ao valor econômico do ajuste.</p></div>
+        </div>
+
+        <div class="risk med">
+          <header><h5>Concentração de ativos e vacância prospectiva</h5><span class="badge">Média</span></header>
+          <div class="body"><p>Apesar da boa pulverização de locatários, a concentração por imóvel é elevada: um único empreendimento responde pela maior fatia da receita imobiliária e o anel metropolitano paulista concentra a maior parte do restante. O mecanismo de risco é local, não sistêmico: um choque de oferta em Extrema ou uma deterioração da demanda por last mile na Grande São Paulo atinge o fundo com muito mais força do que a média do setor sugeriria. Some-se a isso a saída já mapeada de um locatário em Aratu para setembro e a existência de inadimplência acumulada de períodos anteriores concentrada em empresas sob recuperação. O horizonte é de seis a vinte e quatro meses. O observável é a combinação de vacância física realizada acima da projetada com queda do aluguel médio por metro quadrado do portfólio, indicador que separa perda de ocupação de perda de poder de precificação.</p></div>
+        </div>
+      </section>
+
+      <!-- BLOCO G -->
+      <section id="bloco-g" class="animate">
+        <div class="kicker">Bloco G</div>
+        <h3 class="block-title">Cenários</h3>
+
+        <div class="scenario-grid">
+          <div class="scen">
+            <header><h5>Otimista</h5><div class="delta">+15,1% até o alvo de alta</div></header>
+            <div class="body">
+              <ul>
+                <li>A CVM concede a dispensa de reembolso e a incorporação é implementada dentro do prazo societário previsto.</li>
+                <li>O fundo incorporador negocia mais próximo do próprio valor patrimonial que o incorporado na data-base da relação de troca.</li>
+                <li>O módulo de Aratu é recolocado antes da saída programada e o resultado recorrente volta a cobrir a distribuição.</li>
+              </ul>
+              <p>As condições são encadeadas e a primeira é eliminatória. O ganho neste cenário não vem de crescimento de aluguel: vem da conversão de uma cota negociada com desconto patrimonial elevado em cota de um veículo maior, mais líquido, com taxa de gestão menor e desconto próprio mais estreito. É uma arbitragem de múltiplo, não de fundamento. Some-se o carrego do rendimento mensal ao longo da espera e o retorno total supera confortavelmente o alvo de preço isolado.</p>
+            </div>
+          </div>
+          <div class="scen bear">
+            <header><h5>Pessimista</h5><div class="delta">-11,2% até o alvo de baixa</div></header>
+            <div class="body">
+              <ul>
+                <li>A dispensa regulatória é negada ou a operação é abandonada, devolvendo o fundo à condição autônoma.</li>
+                <li>A reserva acumulada se esgota e a distribuição mensal é realinhada ao resultado recorrente.</li>
+                <li>A vacância projetada se materializa sem substituto e a recolocação ocorre a preço abaixo do contrato anterior.</li>
+              </ul>
+              <p>Aqui o fundo perde os dois pilares que sustentam o preço atual: o catalisador societário e a estabilidade do rendimento. O desconto patrimonial se amplia em direção ao piso da faixa histórica e a saída do investidor de renda acelera o movimento. A proteção contra um cenário pior que este vem da estrutura de capital: sem dívida relevante, o fundo não é forçado a vender ativo em janela ruim, e o valor dos imóveis apoia o preço mesmo com distribuição menor.</p>
+            </div>
+          </div>
+        </div>
+        <p class="src">Fonte: construção PGS. Alvos derivados do preço em análise do Bloco A aplicando o múltiplo patrimonial implícito de cada cenário sobre o valor patrimonial por cota mais recente. Deltas expressos em relação ao preço em análise.</p>
+      </section>
+
+      <!-- BLOCO H -->
+      <section id="bloco-h" class="animate">
+        <div class="kicker">Bloco H</div>
+        <h3 class="block-title">Veredito PGS</h3>
+
+        <div class="verdict">
+          <div style="margin-bottom:22px"><span class="rating">🟡 NEUTRA</span></div>
+          <div class="metrics">
+            <div class="metric"><span>Alvo otimista (18 a 24 meses)</span><b>R$ 118,00</b></div>
+            <div class="metric"><span>Risco de baixa</span><b>R$ 91,00</b></div>
+            <div class="metric"><span>Relação risco/retorno</span><b>Equilibrada</b></div>
+          </div>
+
+          <p>O deslocamento de preço é real e mensurável. A cota negocia abaixo da média histórica de múltiplo patrimonial e perto da mínima de doze meses, ao mesmo tempo em que a ocupação foi reconstruída, a vacância financeira permanece próxima de zero e o endividamento é irrelevante. A explicação do desconto está na indefinição regulatória que paralisou a estratégia do fundo. É o tipo de deslocamento que corrige com uma única notícia, e também o tipo que pode durar mais que a paciência de quem carrega a posição.</p>
+
+          <p>A qualidade fundamental sustenta a espera. O portfólio é de padrão elevado, com o piso de caixa dos contratos atípicos de prazo longo e uma barreira geográfica genuína no ativo de maior peso, conforme a avaliação de pilares do Bloco E. A fragilidade está no elo entre resultado e distribuição: o rendimento fixo há mais de um ano deixou de ser inteiramente coberto pela geração recorrente, e o colchão que financia a diferença tem prazo de validade curto. O problema é de calibragem e a correção provável é um realinhamento modesto do rendimento.</p>
+
+          <p>O risco primário é o regulatório descrito no Bloco F, e ele determina o rating. Uma tese cujo principal vetor de retorno depende do calendário de uma autarquia, sem prazo público e já pendente há mais de seis meses, não comporta classificação positiva por mais atraente que seja o desconto. O risco de distribuição descoberta é secundário em magnitude, embora seja o mais provável de se materializar primeiro e o mais visível para a base de cotistas.</p>
+
+          <p>Os catalisadores de curto prazo são três: o informe trimestral do segundo trimestre, o relatório gerencial de julho e a competência de setembro, quando a saída mapeada em Aratu passa de projeção a fato. Qualquer fato relevante sobre a manifestação da CVM antecipa a resolução da tese em qualquer direção e torna as demais referências secundárias. A classificação neutra reflete assimetria moderadamente favorável combinada a um gatilho fora do controle da gestão; a manifestação regulatória favorável é o evento que justificaria revisão para cima.</p>
+        </div>
+      </section>
+
+      <!-- DISCLAIMER -->
+      <div class="disclaimer">
+        <p>"Este relatório foi produzido exclusivamente para uso interno da Polaris Global Strategies Ltd. (PGS), empresa constituída nas Ilhas Virgens Britânicas (BVI), atuando como veículo privado de pesquisa e análise de investimentos em nome de seus sócios. Este documento não constitui recomendação de investimento para qualquer terceiro, seja pessoa física ou jurídica, e não deve ser interpretado como tal. A PGS não presta serviços de gestão de recursos, assessoria ou consultoria de investimentos a qualquer cliente externo, não possui base de clientes e não oferece produtos ou serviços a terceiros. Eventual acesso a este documento por partes não autorizadas não lhe confere validade como assessoria ou recomendação de investimento. As informações e análises aqui contidas baseiam-se em fontes públicas consideradas confiáveis, mas a PGS não oferece garantia quanto à sua integralidade ou exatidão. Investimentos em instrumentos de renda variável envolvem riscos, incluindo a possibilidade de perda total do capital investido. As opiniões expressas refletem o julgamento analítico interno na data de publicação e estão sujeitas a alteração sem aviso prévio."</p>
+
+        <p>Este relatório foi produzido com auxílio de inteligência artificial. Modelo generativo: Anthropic · Claude Opus 5 · versão claude-opus-5, acessado via aplicativo Claude (claude.ai). Todos os números foram obtidos por busca web ao vivo na mesma sessão e checados contra o protocolo de ancoragem do Passo 1; o papel do modelo foi síntese de dados, formatação e redação, não a originação de estimativas financeiras. A revisão humana pelo analista interno precede a publicação.</p>
+
+        <p class="ref">Referência do relatório: PGS-LVBI11-202607 · Data: 29 de julho de 2026 · Analista interno: Polaris Global Strategies Ltd. · Ticker: LVBI11 · Bolsa: B3 · Modelo de IA: Anthropic claude-opus-5</p>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry, i){
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '';
+          entry.target.style.animationPlayState = 'running';
+          entry.target.style.animationDelay = (i * 0.06) + 's';
+          animObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    animateEls.forEach(function(el){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      animObserver.observe(el);
+    });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var sections = links.map(function(l){ return document.querySelector(l.getAttribute('href')); });
+
+  function setActive(){
+    var pos = window.scrollY + (window.innerHeight * 0.28);
+    var current = 0;
+    sections.forEach(function(s, i){ if (s && s.offsetTop <= pos) current = i; });
+    links.forEach(function(l, i){ l.classList.toggle('active', i === current); });
+  }
+  window.addEventListener('scroll', setActive, { passive: true });
+  setActive();
+})();
+</script>
+</body>
+</html>

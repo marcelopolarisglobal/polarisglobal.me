@@ -23,7 +23,35 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.25rem;
-      margin-top: 3rem;
+      margin-top: 1.5rem;
+    }
+
+    .report-group-head {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 3.5rem;
+    }
+    .report-group-head::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .report-group-title {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+    .report-group-note {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-top: 0.75rem;
     }
 
     .report-card {
@@ -166,6 +194,9 @@
             Disclaimer: Content produced exclusively for internal use by Polaris Global Strategies Ltd. Does not constitute an investment recommendation for third parties, individuals, or legal entities. PGS does not provide asset management, advisory, or consulting services, has no clients, and offers no products to third parties. Investments in variable income involve risks, including total loss of capital.
           </p>
 
+          <div class="report-group-head">
+            <span class="report-group-title" data-i18n="research.group.invested">Invested Companies</span>
+          </div>
           <div class="report-grid">
 
             <!-- PGS-BRKB-202606 -->
@@ -290,6 +321,58 @@
               <h2 class="report-company">Pabrai Wagons ETF</h2>
               <p class="report-type">Portfolio Workbook · Companion</p>
               <a href="reports/PGS-WAGN-202606-Carteira.html" class="report-cta">
+                <span data-i18n="research.cta">View Report</span> →
+              </a>
+            </article>
+
+          </div>
+
+          <div class="report-group-head">
+            <span class="report-group-title" data-i18n="research.group.evaluated">Evaluated · Not Invested</span>
+          </div>
+          <p class="report-group-note" data-i18n="research.group.note">
+            Companies analyzed under the same methodology, in which no position was taken.
+          </p>
+          <div class="report-grid">
+
+            <!-- PGS-LVBI11-202607 -->
+            <article class="report-card">
+              <div class="report-card-meta">
+                <span class="report-ticker">LVBI11</span>
+                <span class="report-date">Jul 2026</span>
+                <span class="report-lang">PT</span>
+              </div>
+              <h2 class="report-company">FII VBI Logístico</h2>
+              <p class="report-type">REIT Research</p>
+              <a href="reports/not-invested/PGS-LVBI11-202607.html" class="report-cta">
+                <span data-i18n="research.cta">View Report</span> →
+              </a>
+            </article>
+
+            <!-- PGS-SMFT3-202607 -->
+            <article class="report-card">
+              <div class="report-card-meta">
+                <span class="report-ticker">SMFT3</span>
+                <span class="report-date">Jul 2026</span>
+                <span class="report-lang">PT</span>
+              </div>
+              <h2 class="report-company">Smartfit S.A.</h2>
+              <p class="report-type">Equity Research</p>
+              <a href="reports/not-invested/PGS-SMFT3-202607.html" class="report-cta">
+                <span data-i18n="research.cta">View Report</span> →
+              </a>
+            </article>
+
+            <!-- PGS-MGM-202606 -->
+            <article class="report-card">
+              <div class="report-card-meta">
+                <span class="report-ticker">MGM</span>
+                <span class="report-date">Jun 2026</span>
+                <span class="report-lang">EN</span>
+              </div>
+              <h2 class="report-company">MGM Resorts International</h2>
+              <p class="report-type">Equity Research</p>
+              <a href="reports/not-invested/PGS-MGM-202606.html" class="report-cta">
                 <span data-i18n="research.cta">View Report</span> →
               </a>
             </article>
