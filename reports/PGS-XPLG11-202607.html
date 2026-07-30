@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGS-XPLG11-202607 | XP Log FII</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --canvas:    #FFFFFF;
+  --surface:   #F9FAFB;
+  --card:      #F3F4F6;
+  --text:      #111827;
+  --text-mute: #6B7280;
+  --pos:       #16A34A;
+  --neg:       #DC2626;
+  --caution:   #D97706;
+  --pos-tint:  #F0FDF4;
+  --neg-tint:  #FEE2E2;
+  --caution-tint: #FFFBEB;
+  --pill-pos-bg: #DCFCE7; --pill-pos-fg: #15803D;
+  --pill-neg-bg: #FEE2E2; --pill-neg-fg: #B91C1C;
+  --border:    #E5E7EB;
+  --accent:    #B7791F;
+  --accent-dark: #8A5A14;
+  --font-display: 'Playfair Display', 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --font-body: 'DM Sans', 'Barlow', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--canvas);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 28px 0;
+}
+.sidebar-brand {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.sidebar-brand .mark { font-family: var(--font-display); font-weight: 800; font-size: 15px; letter-spacing: 0.03em; color: var(--text); }
+.sidebar-brand .sub { font-family: var(--font-mono); font-size: 10px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+.nav-link {
+  display: block;
+  padding: 9px 20px;
+  font-size: 12.5px;
+  color: var(--text-mute);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: background 0.15s, color 0.15s;
+}
+.nav-link:hover { background: var(--card); color: var(--text); }
+.nav-link.active { border-left-color: var(--accent); background: var(--card); color: var(--text); font-weight: 600; }
+.nav-kicker { padding: 14px 20px 6px; font-family: var(--font-mono); font-size: 9.5px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ===== MAIN ===== */
+.main-content { width: 100%; overflow-x: hidden; }
+.section { padding: 64px 56px; max-width: 980px; margin: 0 auto; border-bottom: 1px solid var(--border); }
+.section:last-of-type { border-bottom: none; }
+.prose { max-width: 68ch; line-height: 1.65; }
+.prose p { margin-bottom: 14px; font-size: 15px; color: #1F2937; }
+.prose p:last-child { margin-bottom: 0; }
+
+/* ===== COVER ===== */
+.cover {
+  min-height: 96vh;
+  background: var(--surface);
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 22px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 64px 56px;
+}
+.cover-eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-dark); margin-bottom: 20px; }
+.cover-title { font-family: var(--font-display); font-weight: 800; font-size: 58px; line-height: 1.04; color: var(--text); max-width: 780px; }
+.cover-title .accent-word { color: var(--accent); font-style: italic; font-weight: 700; }
+.cover-sub { font-family: var(--font-body); font-size: 17px; color: var(--text-mute); margin-top: 18px; max-width: 560px; }
+.cover-meta { display: flex; gap: 40px; margin-top: 48px; flex-wrap: wrap; }
+.cover-meta-item .label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-mute); }
+.cover-meta-item .value { font-family: var(--font-mono); font-size: 15px; color: var(--text); margin-top: 4px; font-weight: 600; }
+.cover-divider { width: 64px; height: 3px; background: var(--accent); margin-top: 40px; }
+
+/* ===== TYPOGRAPHY ===== */
+h2.block-title { font-family: var(--font-display); font-weight: 700; font-size: 30px; color: var(--text); margin-bottom: 6px; }
+.block-eyebrow { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-dark); margin-bottom: 10px; }
+.block-intro { color: var(--text-mute); font-size: 14.5px; margin-bottom: 32px; max-width: 62ch; }
+
+/* ===== PANEL (Block A) ===== */
+.panel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-top: 3px solid var(--accent); margin-bottom: 20px; }
+.panel-group { background: var(--card); padding: 20px 18px; }
+.panel-group .group-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-mute); margin-bottom: 14px; }
+.panel-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; gap: 8px; }
+.panel-row:last-child { margin-bottom: 0; }
+.panel-row .k { font-size: 11.5px; color: var(--text-mute); }
+.panel-row .v { font-family: var(--font-mono); font-size: 13.5px; font-weight: 600; color: var(--text); text-align: right; }
+.panel-note { font-size: 13.5px; color: #374151; margin-top: 18px; max-width: 68ch; }
+.source-caption { font-family: var(--font-mono); font-size: 10px; color: var(--text-mute); margin-top: 8px; }
+
+/* ===== TABLES ===== */
+.table-wrap { overflow-x: auto; margin-bottom: 6px; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.data-table th { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-mute); text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--border); background: var(--surface); }
+table.data-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); font-family: var(--font-mono); font-size: 12.5px; color: var(--text); }
+table.data-table td.label-cell { font-family: var(--font-body); font-weight: 600; }
+table.data-table tbody tr:nth-child(even) { background: var(--surface); }
+table.data-table tbody tr:hover { background: var(--caution-tint); transition: background 0.15s; }
+
+.pill { display: inline-block; padding: 2px 9px; border-radius: 3px; font-size: 11px; font-weight: 700; font-family: var(--font-mono); print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+.pill-pos { background: var(--pill-pos-bg); color: var(--pill-pos-fg); }
+.pill-neg { background: var(--pill-neg-bg); color: var(--pill-neg-fg); }
+.pill-neutral { background: var(--card); color: var(--text-mute); }
+.delta-pos { color: var(--pos); }
+.delta-neg { color: var(--neg); }
+.stars { color: var(--accent); letter-spacing: 1px; }
+.stars .off { color: var(--border); }
+
+/* ===== BLOCK C - readings ===== */
+.reading-group { border-left: 3px solid var(--accent); padding: 4px 0 4px 22px; margin-bottom: 30px; }
+.reading-group:last-child { margin-bottom: 0; }
+.reading-kicker { font-family: var(--font-mono); font-size: 11px; color: var(--accent-dark); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+
+/* ===== BLOCK D - patterns/watchlist ===== */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.mini-list { list-style: none; }
+.mini-item { padding: 14px 0; border-bottom: 1px solid var(--border); }
+.mini-item:last-child { border-bottom: none; }
+.mini-item .claim { font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.mini-item .evidence { font-size: 12.5px; color: var(--text-mute); }
+.direction { font-family: var(--font-mono); font-weight: 700; margin-right: 6px; }
+.dir-up { color: var(--pos); } .dir-flat { color: var(--caution); } .dir-down { color: var(--neg); }
+.subhead { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-mute); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+/* ===== BLOCK E ===== */
+.arch-sub { margin-bottom: 44px; }
+.arch-sub:last-child { margin-bottom: 0; }
+.arch-sub-title { font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--text); margin-bottom: 14px; }
+
+/* ===== BLOCK F - risks ===== */
+.risk-card { border-left: 3px solid var(--neg); margin-bottom: 18px; background: var(--canvas); page-break-inside: avoid; }
+.risk-card.medium { border-left-color: var(--caution); }
+.risk-head { padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; background: var(--neg-tint); }
+.risk-card.medium .risk-head { background: var(--caution-tint); }
+.risk-title { font-weight: 700; font-size: 14.5px; }
+.risk-body { padding: 16px 20px; font-size: 13.5px; color: #374151; }
+.severity-badge { font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 9px; border-radius: 3px; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+.severity-high { background: var(--neg); color: white; }
+.severity-medium { background: var(--caution); color: white; }
+
+/* ===== BLOCK G - scenarios ===== */
+.scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border); page-break-inside: avoid; }
+.scenario-card { background: var(--canvas); }
+.scenario-head { padding: 18px 22px; border-top: 3px solid var(--pos); background: var(--pos-tint); }
+.scenario-card.bear .scenario-head { border-top-color: var(--neg); background: var(--neg-tint); }
+.scenario-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-mute); }
+.scenario-delta { font-family: var(--font-mono); font-size: 26px; font-weight: 700; margin-top: 4px; }
+.scenario-card:not(.bear) .scenario-delta { color: var(--pos); }
+.scenario-card.bear .scenario-delta { color: var(--neg); }
+.scenario-body { padding: 18px 22px; font-size: 13px; color: #374151; }
+.scenario-body ul { padding-left: 18px; margin: 10px 0; }
+.scenario-body li { margin-bottom: 6px; }
+
+/* ===== BLOCK H - verdict ===== */
+.verdict-block { background: var(--surface); padding: 36px; border: 1px solid var(--border); }
+.verdict-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 28px; }
+.rating-pill { font-family: var(--font-mono); font-weight: 700; font-size: 15px; padding: 8px 20px; background: var(--accent); color: white; border-radius: 4px; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+.verdict-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 28px; }
+.vm-item { background: var(--card); padding: 16px 18px; }
+.vm-item .k { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; color: var(--text-mute); letter-spacing: 0.06em; }
+.vm-item .v { font-family: var(--font-mono); font-size: 19px; font-weight: 700; margin-top: 6px; }
+
+/* ===== DISCLAIMER ===== */
+.disclaimer-block { font-size: 11.5px; color: var(--text-mute); line-height: 1.65; margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
+.disclaimer-block:last-child { border-bottom: none; }
+.disclaimer-title { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); margin-bottom: 8px; font-weight: 700; }
+.ref-line { font-family: var(--font-mono); font-size: 11px; color: var(--text); }
+
+/* ===== ANIMATION ===== */
+.animate { opacity: 1; animation: fadeUp 0.6s ease forwards; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: sticky; top: 0; height: auto; width: 100%; display: flex; overflow-x: auto; padding: 10px 0; z-index: 10; }
+  .sidebar-brand { display: none; }
+  .nav-kicker { display: none; }
+  .nav-link { white-space: nowrap; border-left: none; border-bottom: 3px solid transparent; padding: 10px 14px; }
+  .nav-link.active { border-left: none; border-bottom-color: var(--accent); }
+  .section { padding: 40px 20px; }
+  .panel-grid, .two-col, .scenario-grid, .verdict-metrics { grid-template-columns: 1fr; }
+  .cover-title { font-size: 36px; }
+  .cover-meta { gap: 24px; }
+}
+
+@media print {
+  .layout { display: block !important; }
+  .sidebar, .nav-link, .scroll-indicator { display: none !important; }
+  .main-content { display: block !important; width: 100% !important; }
+  .section { page-break-before: always; background-color: #FFFFFF; color: #111827; max-width: 100%; padding: 30px 10px; }
+  .cover { page-break-before: avoid; min-height: auto !important; height: auto !important; display: block !important; }
+  .panel-grid { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 1px !important; }
+  .scenario-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 0 !important; }
+  .verdict-metrics { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; }
+  .risk-card, .scenario-card { page-break-inside: avoid; }
+  p { orphans: 3; widows: 3; }
+  .animate { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .table-wrap { overflow: visible !important; word-break: break-word; }
+  .pill, .severity-badge, .rating-pill, .scenario-head, .risk-head { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  * { box-shadow: none !important; backdrop-filter: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <div class="mark">POLARIS GLOBAL STRATEGIES</div>
+    <div class="sub">PGS-XPLG11-202607</div>
+  </div>
+  <div class="nav-kicker">Relatório</div>
+  <a href="#cover" class="nav-link">Capa</a>
+  <a href="#block-a" class="nav-link">A · Painel Consolidado</a>
+  <a href="#block-b" class="nav-link">B · Tabela Mensal</a>
+  <a href="#block-c" class="nav-link">C · Leitura dos Meses</a>
+  <a href="#block-d" class="nav-link">D · Padrões e Monitoramento</a>
+  <a href="#block-e" class="nav-link">E · Arquitetura Estratégica</a>
+  <a href="#block-f" class="nav-link">F · Riscos</a>
+  <a href="#block-g" class="nav-link">G · Cenários</a>
+  <a href="#block-h" class="nav-link">H · Veredito PGS</a>
+  <a href="#comparativo" class="nav-link">Comparativo Setorial</a>
+  <a href="#disclaimer" class="nav-link">Avisos Legais</a>
+</nav>
+
+<main class="main-content">
+
+  <!-- COVER -->
+  <section class="cover" id="cover">
+    <div class="cover-eyebrow">Polaris Global Strategies Ltd. · Pesquisa Interna</div>
+    <h1 class="cover-title">XP Log <span class="accent-word">FII</span><br>XPLG11 · B3</h1>
+    <p class="cover-sub">Fundo de investimento imobiliário do segmento logístico, gestão ativa pela XP Gestão de Recursos, negociado sob o ticker XPLG11 na B3.</p>
+    <div class="cover-divider"></div>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="label">Referência</div><div class="value">PGS-XPLG11-202607</div></div>
+      <div class="cover-meta-item"><div class="label">Publicação</div><div class="value">30/07/2026</div></div>
+      <div class="cover-meta-item"><div class="label">Ticker</div><div class="value">XPLG11</div></div>
+      <div class="cover-meta-item"><div class="label">Segmento</div><div class="value">Logística / Galpões</div></div>
+    </div>
+  </section>
+
+  <!-- BLOCK A -->
+  <section class="section animate" id="block-a">
+    <div class="block-eyebrow">Bloco A</div>
+    <h2 class="block-title">Painel Consolidado</h2>
+    <p class="block-intro">Ancoragem: mês de referência junho de 2026, relatório gerencial divulgado em julho de 2026. Fundo de tijolo, sem consenso formal de casas de análise (cobertura pulverizada entre corretoras, sem preço-alvo agregado publicamente disponível).</p>
+
+    <div class="panel-grid">
+      <div class="panel-group">
+        <div class="group-label">Mercado</div>
+        <div class="panel-row"><span class="k">Preço atual</span><span class="v">R$ 91,83</span></div>
+        <div class="panel-row"><span class="k">Valor de mercado</span><span class="v">R$ 4.719,2 mi (est.)</span></div>
+        <div class="panel-row"><span class="k">Vs. máxima 52 sem.</span><span class="v delta-neg">-10,1%</span></div>
+        <div class="panel-row"><span class="k">Vs. mínima 52 sem.</span><span class="v delta-pos">+5,4%</span></div>
+      </div>
+      <div class="panel-group">
+        <div class="group-label">Fundamentos (FII)</div>
+        <div class="panel-row"><span class="k">Patrimônio líquido</span><span class="v">R$ 5.397,5 mi</span></div>
+        <div class="panel-row"><span class="k">VP por cota</span><span class="v">R$ 105,03</span></div>
+        <div class="panel-row"><span class="k">Cotistas</span><span class="v">347.304</span></div>
+        <div class="panel-row"><span class="k">Vacância fís. / fin.</span><span class="v">8,1% / 3,9%</span></div>
+      </div>
+      <div class="panel-group">
+        <div class="group-label">Valuation</div>
+        <div class="panel-row"><span class="k">P/VP atual</span><span class="v">0,87</span></div>
+        <div class="panel-row"><span class="k">Faixa P/VP 52 sem. (est.)</span><span class="v">0,83 – 0,97</span></div>
+        <div class="panel-row"><span class="k">Dividend yield 12M</span><span class="v">10,72%</span></div>
+        <div class="panel-row"><span class="k">Distribuição corrente</span><span class="v">R$ 0,82/cota</span></div>
+      </div>
+      <div class="panel-group">
+        <div class="group-label">Liquidez e Calendário</div>
+        <div class="panel-row"><span class="k">Volume negociado (jun.)</span><span class="v">R$ 229,8 mi</span></div>
+        <div class="panel-row"><span class="k">Negócios (jun.)</span><span class="v">2.490.916</span></div>
+        <div class="panel-row"><span class="k">Retorno total 12M</span><span class="v delta-pos">4,16%</span></div>
+        <div class="panel-row"><span class="k">Próximo relatório (est.)</span><span class="v">ago/2026</span></div>
+      </div>
+    </div>
+    <div class="source-caption">Fontes: Status Invest, Investidor10, BrFiis, Investing.com (30/07/2026). Valor de mercado calculado sobre 51.390.097 cotas em circulação.</div>
+
+    <p class="panel-note">O desconto de 13 pontos percentuais entre o preço de mercado e o valor patrimonial por cota coloca o XPLG11 acima da média do desconto observado no segmento logístico de tijolo, que gira perto de 0,81 conforme comparação do Investidor10, o que indica que o mercado precifica o fundo com um prêmio de risco superior ao de seus pares diretos. Dentro da própria faixa de 52 semanas, a cota de hoje está mais próxima do piso do que do teto, reflexo direto da queda acumulada de 2026 puxada por ruído de crédito e não por deterioração da carteira física.</p>
+  </section>
+
+  <!-- BLOCK B -->
+  <section class="section animate" id="block-b">
+    <div class="block-eyebrow">Bloco B</div>
+    <h2 class="block-title">Tabela Mensal</h2>
+    <p class="block-intro">Adaptação FII: o mês de referência substitui o trimestre como unidade de leitura, alinhado à periodicidade dos relatórios gerenciais. Sequência contínua, sem lacunas de competência.</p>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th>Distribuição/cota</th>
+            <th>Resultado caixa</th>
+            <th>Margem (resultado/receita)</th>
+            <th>Vacância fís. / fin.</th>
+            <th>Cota no fechamento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">Junho/26</td>
+            <td>R$ 0,82 <span class="pill pill-pos">dentro do guidance</span></td>
+            <td>R$ 45,0 mi</td>
+            <td>81,2%</td>
+            <td>(data not found)</td>
+            <td class="delta-neg">R$ 93,79 (-3,3%)</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Maio/26</td>
+            <td>R$ 0,82 <span class="pill pill-pos">dentro do guidance</span></td>
+            <td>(data not found)</td>
+            <td>(data not found)</td>
+            <td>8,1% / 3,9%</td>
+            <td class="delta-neg">R$ 97,00 (-3,7%)</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Abril/26</td>
+            <td>R$ 0,82 <span class="pill pill-pos">dentro do guidance</span></td>
+            <td>(data not found)</td>
+            <td>(data not found)</td>
+            <td>8,1% / 3,9%</td>
+            <td class="delta-pos">R$ 100,75 (+0,2%)</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Março/26</td>
+            <td>R$ 0,82 <span class="pill pill-pos">dentro do guidance</span></td>
+            <td>(data not found)</td>
+            <td>(data not found)</td>
+            <td>8,7% / 4,3%</td>
+            <td>R$ 100,59</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="source-caption">Fontes: BrFiis (relatórios gerenciais mensais), Clube FII, Suno Notícias, Status Invest. Variação da cota calculada sobre o fechamento do mês anterior.</div>
+  </section>
+
+  <!-- BLOCK C -->
+  <section class="section animate" id="block-c">
+    <div class="block-eyebrow">Bloco C</div>
+    <h2 class="block-title">Leitura dos Meses</h2>
+
+    <div class="reading-group">
+      <div class="reading-kicker">Março/2026</div>
+      <div class="prose"><p>O mês marcou a virada mais fraca do trimestre em termos operacionais. Devoluções simultâneas em dois ativos, o CD Piracicaba e o Syslog RJ, elevaram a vacância física para o patamar mais alto da sequência, com a financeira acompanhando o movimento de forma proporcional, sinal de que as áreas devolvidas tinham valor de locação em linha com a média da carteira e não representavam posições de baixo aluguel sendo descartadas. A gestão direcionou os espaços à comercialização imediatamente, sem alteração na distribuição, que seguiu em R$ 0,82 por cota. No mercado secundário, o volume negociado ficou abaixo da média dos meses seguintes, e a cota fechou próxima da mínima do trimestre. O desempenho relativo ante o IFIX no acumulado de doze meses até março já mostrava um atraso de quase quatro pontos percentuais, o que antecipava a tensão entre a narrativa de fundo defensivo e a realidade de um portfólio em fase de digestão de crescimento acelerado via emissões recentes.</p></div>
+    </div>
+
+    <div class="reading-group">
+      <div class="reading-kicker">Abril/2026</div>
+      <div class="prose"><p>Abril foi o mês de maior movimento de capital do período coberto. A conclusão da nona emissão de cotas trouxe mais de um bilhão de reais em novos recursos, direcionados de forma quase integral para a aquisição de seis imóveis logísticos por cerca de novecentos e vinte milhões de reais, adicionando mais de trezentos mil metros quadrados de área bruta locável e levando o portfólio total a ultrapassar 1,7 milhão de metros quadrados distribuídos em trinta e um condomínios. A vacância recuou frente ao pico de março, estabilizando em 8,1% física e 3,9% financeira, mas a inadimplência subiu para 8,0% da receita de locação mensal, concentrada em seis locatários. A cota reagiu com estabilidade, fechando praticamente no mesmo nível de março, o que sugere que o mercado tratou a diluição da nova emissão e o ganho de escala como eventos que se compensam no curto prazo, deixando a leitura de mérito para os meses seguintes.</p></div>
+    </div>
+
+    <div class="reading-group">
+      <div class="reading-kicker">Maio/2026</div>
+      <div class="prose"><p>O dado mais relevante do mês não veio da vacância, que se manteve estável, mas da inadimplência, que caiu de 8,0% para 5,9% mesmo com a entrada de um fator de risco concentrado: 3,1 pontos percentuais da receita em atraso passaram a estar associados à Mobly, que protocolou pedido de recuperação judicial no período. A leitura correta é de dois movimentos opostos dentro do mesmo número, uma melhora ampla na base de locatários regulares somada a um evento pontual de crédito em um nome específico. O patrimônio líquido recuou ligeiramente com a marcação a mercado das novas aquisições, e o número de cotistas seguiu em expansão, ultrapassando 344 mil. A cota, no entanto, continuou cedendo, fechando o mês com queda de quase quatro por cento ante abril, evidenciando que o mercado precificou o risco de crédito da Mobly com mais peso do que a melhora agregada da inadimplência.</p></div>
+    </div>
+
+    <div class="reading-group">
+      <div class="reading-kicker">Junho/2026</div>
+      <div class="prose"><p>Junho trouxe o primeiro conjunto de dados financeiros detalhados do período, com receita de R$ 55,4 milhões contra despesas de R$ 10,4 milhões, produzindo um resultado de R$ 45,0 milhões, ligeiramente acima de maio. No operacional, o mês combinou notícias boas e ruins no mesmo ativo: o Syslog Galeão viu expansão e renovações de contrato com Premier Pet e Tac Franquia, enquanto o HGLG WL perdeu a Memodoc, que devolveu quase quatro mil metros quadrados. O retorno acumulado de 2026 aprofundou a divergência ante o IFIX, fechando o semestre em queda de 6,7% contra alta de 1,5% do índice, com o retorno total de doze meses caindo para 4,2%, bem abaixo do 10% do benchmark. A cota fechou o mês em R$ 93,79, e o volume negociado no mercado secundário superou R$ 229 milhões, mantendo o XPLG11 entre os fundos logísticos mais líquidos da B3 mesmo em um mês de queda de preço.</p></div>
+    </div>
+  </section>
+
+  <!-- BLOCK D -->
+  <section class="section animate" id="block-d">
+    <div class="block-eyebrow">Bloco D</div>
+    <h2 class="block-title">Padrões e Monitoramento</h2>
+
+    <div class="two-col">
+      <div>
+        <div class="subhead">Padrões estruturais</div>
+        <ul class="mini-list">
+          <li class="mini-item"><div class="claim">A distribuição funciona como âncora de política, não como termômetro de resultado.</div><div class="evidence">R$ 0,82 por cota se manteve idêntico nos quatro meses cobertos, mesmo com vacância oscilando entre 8,1% e 8,7% e inadimplência entre 5,9% e 8,0%.</div></li>
+          <li class="mini-item"><div class="claim">O crescimento do portfólio antecede a maturação dos ativos incorporados.</div><div class="evidence">A nona emissão e a aquisição de seis imóveis em abril elevaram a base de ABL em cerca de 18% sem que a vacância refletisse de imediato a integração.</div></li>
+          <li class="mini-item"><div class="claim">A rotatividade de locatários é dispersa entre ativos, não concentrada em uma única praça.</div><div class="evidence">Devoluções em Piracicaba e Syslog RJ em março, saída da Memodoc no HGLG WL em junho, cada evento em um condomínio diferente.</div></li>
+          <li class="mini-item"><div class="claim">A cota descola do resultado operacional e segue o ruído de crédito.</div><div class="evidence">O anúncio da recuperação judicial da Mobly em maio coincidiu com a maior queda mensal da cota do período, superior à reação a qualquer dado de vacância.</div></li>
+        </ul>
+      </div>
+      <div>
+        <div class="subhead">Pontos de monitoramento</div>
+        <ul class="mini-list">
+          <li class="mini-item"><span class="direction dir-down">↓</span><div class="claim" style="display:inline">Desfecho da recuperação judicial da Mobly</div><div class="evidence">Confirma se os 3,1 pontos percentuais de inadimplência associados ao caso se tornam perda definitiva ou são recuperados por meio de garantias contratuais.</div></li>
+          <li class="mini-item"><span class="direction dir-up">↑</span><div class="claim" style="display:inline">Absorção das áreas devolvidas em Piracicaba e Syslog RJ</div><div class="evidence">Nova locação nesses espaços confirmaria reversão da vacância para o patamar de 8,1% ou abaixo.</div></li>
+          <li class="mini-item"><span class="direction dir-flat">→</span><div class="claim" style="display:inline">Maturação dos seis imóveis adquiridos em abril</div><div class="evidence">Relatórios dos próximos meses devem mostrar a contribuição de receita desses ativos de forma destacada, hoje ainda não segregada nos comunicados públicos.</div></li>
+          <li class="mini-item"><span class="direction dir-down">↓</span><div class="claim" style="display:inline">Distância entre preço e valor patrimonial</div><div class="evidence">Compressão do desconto atual de 13% dependeria de estabilização do fluxo de notícias de crédito e retomada de fluxo comprador no segmento logístico.</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOCK E -->
+  <section class="section animate" id="block-e">
+    <div class="block-eyebrow">Bloco E</div>
+    <h2 class="block-title">Arquitetura Estratégica</h2>
+
+    <div class="arch-sub">
+      <div class="arch-sub-title">Arquitetura de capital e expansão do portfólio</div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Evento</th><th>Mês</th><th>Volume</th><th>Efeito no portfólio</th></tr></thead>
+          <tbody>
+            <tr><td class="label-cell">9ª emissão de cotas</td><td>Abril/26</td><td>R$ 1,2 bi</td><td>Funding para aquisições</td></tr>
+            <tr><td class="label-cell">Aquisição de 6 imóveis logísticos</td><td>Abril/26</td><td>R$ 919 mi</td><td>+306 mil m² de ABL</td></tr>
+            <tr><td class="label-cell">Recebimento de cotas na liquidação do XPIN11</td><td>Maio/26</td><td>(data not found)</td><td>Exposição indireta adicional ao segmento</td></tr>
+            <tr><td class="label-cell">Ajuste de denominação de ativos (Jundiaí)</td><td>Maio/26</td><td>–</td><td>Governança de portfólio, sem efeito financeiro</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="source-caption">Fontes: Clube FII, BrFiis, Investidor10. Volume da participação recebida na liquidação do XPIN11 não divulgado nos comunicados consultados.</div>
+      <div class="prose" style="margin-top:16px;">
+        <p>O XPLG11 financia seu crescimento predominantemente por emissões primárias de cotas, uma escolha coerente com o desconto persistente que a cota carrega frente ao valor patrimonial: emitir abaixo do valor de referência do próprio mercado seria diluitivo, e a gestão optou por essa via justamente em um momento em que o preço de mercado ainda guardava proximidade suficiente com o patrimonial para tornar a operação defensável perante a base de cotistas. A alavancagem operacional do fundo nasce menos de dívida e mais de escala física, cada novo galpão adicionado dilui o peso proporcional de despesas fixas de gestão e administração sobre a receita total, efeito que só aparece nos números com defasagem de um a dois trimestres após a aquisição.</p>
+        <p>A movimentação simultânea de crescimento por aquisição e de reciclagem indireta via liquidação do XPIN11 aponta para uma estratégia de consolidação dentro do próprio universo de fundos geridos ou próximos à gestora, em vez de competição direta por ativos no mercado aberto contra outros grandes fundos logísticos. Essa rota tende a produzir aquisições com menos disputa de preço, mas também levanta a necessidade de acompanhar se os critérios de qualidade dos imóveis absorvidos por essa via seguem o mesmo padrão dos ativos adquiridos competitivamente.</p>
+      </div>
+    </div>
+
+    <div class="arch-sub">
+      <div class="arch-sub-title">Vantagem competitiva</div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Pilar</th><th>Força</th><th>Risco de erosão</th><th>Nota</th></tr></thead>
+          <tbody>
+            <tr><td class="label-cell">Escala e diversificação de portfólio</td><td>Alta</td><td>Baixo</td><td class="stars">★★★★<span class="off">★</span></td></tr>
+            <tr><td class="label-cell">Marca e capacidade de captação (XP)</td><td>Alta</td><td>Baixo</td><td class="stars">★★★★<span class="off">★</span></td></tr>
+            <tr><td class="label-cell">Qualidade e localização dos ativos</td><td>Média-alta</td><td>Médio</td><td class="stars">★★★<span class="off">★★</span></td></tr>
+            <tr><td class="label-cell">Disciplina de crédito na base locatária</td><td>Média</td><td>Médio-alto</td><td class="stars">★★★<span class="off">★★</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="source-caption">Avaliação qualitativa PGS com base nos dados operacionais reportados nos relatórios gerenciais de março a junho de 2026.</div>
+      <div class="prose" style="margin-top:16px;">
+        <p>A durabilidade da vantagem competitiva do XPLG11 repousa sobre dois pilares que se reforçam mutuamente: a escala do portfólio, hoje acima de 1,7 milhão de metros quadrados distribuídos por múltiplos estados, e o acesso a capital em condições favoráveis, viabilizado pela marca XP e por uma base de mais de 347 mil cotistas que sustenta liquidez elevada no mercado secundário. Esses dois fatores não são facilmente replicáveis por fundos menores, que enfrentam custo de capital mais alto e menor poder de barganha na aquisição de portfólios inteiros, como ficou evidente na transação de abril.</p>
+        <p>O ponto mais frágil da tese não está na propriedade física, mas na qualidade de crédito da base locatária. O episódio da Mobly demonstra que a diversificação geográfica não protege automaticamente contra concentração de risco em nomes específicos, e a magnitude do impacto, 3,1 pontos percentuais de inadimplência em um único mês, é grande o suficiente para pesar de forma perceptível no resultado caixa caso o processo de recuperação judicial se estenda. A vantagem competitiva de escala continua intacta, mas sua tradução em previsibilidade de caixa depende de uma gestão de crédito mais apurada do que a exigida em portfólios menores e mais concentrados.</p>
+      </div>
+    </div>
+
+    <div class="arch-sub">
+      <div class="arch-sub-title">Vetores de crescimento de longo prazo</div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Vetor</th><th>Horizonte</th><th>Estágio atual</th><th>Potencial</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="label-cell">Maturação dos 6 imóveis adquiridos em abril</td><td>6-12 meses</td><td>Integração inicial</td><td>Médio-alto</td><td>emerging</td></tr>
+            <tr><td class="label-cell">Recomposição das áreas devolvidas (Piracicaba, Syslog RJ, HGLG WL)</td><td>3-9 meses</td><td>Em comercialização</td><td>Médio</td><td>emerging</td></tr>
+            <tr><td class="label-cell">Resolução do caso Mobly</td><td>6-18 meses</td><td>Recuperação judicial em curso</td><td>Assimétrico</td><td>at risk</td></tr>
+            <tr><td class="label-cell">Absorção de ativos via ecossistema XP (caso XPIN11)</td><td>12-24 meses</td><td>Recebimento de cotas concluído</td><td>Médio</td><td>on track</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="source-caption">Fonte: PGS, com base em relatórios gerenciais XPLG11 e XPIN11, março a junho de 2026.</div>
+      <div class="prose" style="margin-top:16px;">
+        <p>A sequência que importa para o cotista começa pela resolução do caso Mobly, não pela maturação dos novos imóveis. Um desfecho negativo na recuperação judicial adicionaria pressão de caixa justamente no momento em que o fundo ainda digere a diluição da nona emissão, criando um efeito combinado que a distribuição constante de R$ 0,82 por cota não consegue absorver indefinidamente sem eventual uso de reservas. Resolvido esse ponto, a recomposição das áreas devolvidas e a maturação dos ativos de abril operam em paralelo e tendem a se refletir de forma mais visível na vacância a partir do segundo semestre de 2026, com o vetor de absorção via XPIN11 funcionando como complemento de escala de menor urgência.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOCK F -->
+  <section class="section animate" id="block-f">
+    <div class="block-eyebrow">Bloco F</div>
+    <h2 class="block-title">Riscos</h2>
+
+    <div class="risk-card">
+      <div class="risk-head"><span class="risk-title">Concentração de inadimplência em locatário único</span><span class="severity-badge severity-high">Alto</span></div>
+      <div class="risk-body">O pedido de recuperação judicial da Mobly concentra 3,1 pontos percentuais da receita de locação mensal em um processo de desfecho incerto. O mecanismo de risco é direto: caso o plano de recuperação judicial imponha deságio sobre valores em atraso ou renegociação de longo prazo do contrato de locação, o fundo perde parte do fluxo de caixa que hoje sustenta a distribuição em R$ 0,82 por cota. O horizonte de observação é de seis a dezoito meses, prazo típico de tramitação inicial de processos dessa natureza no Brasil. O observável que sinalizaria materialização do risco é a manutenção ou elevação da inadimplência atribuída à Mobly nos próximos relatórios gerenciais, em vez da recuperação gradual que caracterizou os demais locatários entre abril e maio.</div>
+    </div>
+
+    <div class="risk-card medium">
+      <div class="risk-head"><span class="risk-title">Rotatividade de locatários em ativos-chave</span><span class="severity-badge severity-medium">Médio</span></div>
+      <div class="risk-body">Três eventos de devolução de área em quatro meses, Piracicaba e Syslog RJ em março, Memodoc no HGLG WL em junho, sugerem um ritmo de rotatividade acima do desejável para um portfólio maduro. O mecanismo é operacional: cada devolução gera um intervalo sem receita até a nova locação, pressionando tanto a vacância física quanto a financeira. O horizonte relevante é de três a nove meses, tempo médio de comercialização de galpões logísticos de porte médio em praças competitivas. O observável a acompanhar é a velocidade de recolocação dessas áreas nos relatórios de julho a setembro, e se a vacância financeira volta a divergir da física, o que indicaria que as novas locações saem a valores de aluguel inferiores aos contratos extintos.</div>
+    </div>
+
+    <div class="risk-card medium">
+      <div class="risk-head"><span class="risk-title">Sensibilidade a taxa de juros e custo de capital</span><span class="severity-badge severity-medium">Médio</span></div>
+      <div class="risk-body">Fundos imobiliários de tijolo negociam seu prêmio sobre o valor patrimonial em função direta do spread contra a taxa livre de risco. O mecanismo de transmissão passa pela atratividade relativa da distribuição mensal frente a títulos públicos indexados, e qualquer elevação nas expectativas de juros futuros tende a ampliar o desconto sobre o valor patrimonial, dificultando novas emissões em condições não diluitivas para o cotista atual. O horizonte é contínuo e não tem prazo de resolução definido, por depender de política monetária. O observável mais direto é a evolução do próprio P/VP do fundo em comparação com a média do segmento logístico, hoje já abaixo da média de pares como HGLG11 e BTLG11, o que, se aprofundado, restringiria a capacidade de captação a custo baixo.</div>
+    </div>
+  </section>
+
+  <!-- BLOCK G -->
+  <section class="section animate" id="block-g">
+    <div class="block-eyebrow">Bloco G</div>
+    <h2 class="block-title">Cenários</h2>
+    <p class="block-intro">Construção analítica interna da PGS, na ausência de consenso público de preço-alvo para o ativo. Ancoragem no valor patrimonial por cota (bull) e na mínima recente de 52 semanas (bear), horizonte de 18 a 24 meses.</p>
+
+    <div class="scenario-grid">
+      <div class="scenario-card">
+        <div class="scenario-head"><div class="scenario-label">Cenário otimista</div><div class="scenario-delta">+14,3%</div></div>
+        <div class="scenario-body">
+          <p>Convergência da cota para próximo do valor patrimonial por cota, hoje em R$ 105,03, condicionada a:</p>
+          <ul>
+            <li>Resolução da recuperação judicial da Mobly sem perda relevante de crédito para o fundo</li>
+            <li>Recomposição integral das áreas devolvidas em Piracicaba, Syslog RJ e HGLG WL até o quarto trimestre de 2026</li>
+            <li>Estabilização do custo de capital, permitindo compressão do desconto médio do segmento logístico</li>
+          </ul>
+        </div>
+      </div>
+      <div class="scenario-card bear">
+        <div class="scenario-head"><div class="scenario-label">Cenário pessimista</div><div class="scenario-delta">-10,7%</div></div>
+        <div class="scenario-body">
+          <p>Retorno da cota à faixa da mínima de 52 semanas, próxima de R$ 82,00, condicionado a:</p>
+          <ul>
+            <li>Agravamento do processo da Mobly, com deságio formal sobre valores em atraso</li>
+            <li>Novas devoluções de área em ativos adicionais, elevando a vacância física acima de 9%</li>
+            <li>Manutenção de um ambiente de juros elevados, sustentando o desconto sobre o valor patrimonial no segmento</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOCK H -->
+  <section class="section animate" id="block-h">
+    <div class="block-eyebrow">Bloco H</div>
+    <h2 class="block-title">Veredito PGS</h2>
+
+    <div class="verdict-block">
+      <div class="verdict-top">
+        <div class="rating-pill">🟡 NEUTRO</div>
+        <div style="font-family: var(--font-mono); font-size: 13px; color: var(--text-mute);">Relação risco/retorno: <strong style="color: var(--text)">Balanceada</strong></div>
+      </div>
+      <div class="verdict-metrics">
+        <div class="vm-item"><div class="k">Alvo otimista (18-24m)</div><div class="v delta-pos">R$ 105,00</div></div>
+        <div class="vm-item"><div class="k">Piso pessimista</div><div class="v delta-neg">R$ 82,00</div></div>
+        <div class="vm-item"><div class="k">Preço atual</div><div class="v">R$ 91,83</div></div>
+      </div>
+      <div class="prose">
+        <p>O XPLG11 negocia com desconto de 13% sobre o valor patrimonial por cota, superior à média do próprio segmento logístico de tijolo, em um portfólio que cresceu quase um quinto em área bruta locável ao longo do trimestre coberto sem que a vacância tenha se deteriorado de forma estrutural. A dislocação entre preço e patrimônio parece menos ligada à qualidade dos ativos físicos e mais ao ruído de crédito concentrado em um único evento, a recuperação judicial da Mobly, que o mercado tratou com peso desproporcional frente à melhora simultânea da inadimplência nos demais locatários.</p>
+        <p>A qualidade fundamental do fundo permanece sólida. Escala acima de 1,7 milhão de metros quadrados, diversificação geográfica em seis estados, base de cotistas em expansão contínua e capacidade demonstrada de captar mais de um bilhão de reais em uma única emissão são atributos que a maioria dos pares diretos não replica com a mesma facilidade. A distribuição mensal permaneceu inalterada nos quatro meses cobertos mesmo diante de oscilações na inadimplência, o que indica reservas suficientes para absorver ruído de curto prazo sem comprometer a previsibilidade de renda que sustenta a tese de longo prazo.</p>
+        <p>O risco primário é isolado e nomeável: o desfecho do processo da Mobly. Trata-se de um evento binário, com potencial de resolução favorável via garantias contratuais ou de perda parcial via deságio formal, e o tamanho da exposição, 3,1 pontos percentuais da receita, é relevante o suficiente para justificar cautela até que o processo avance. Os demais riscos, rotatividade de locatários e sensibilidade a juros, são estruturais ao segmento e não específicos do XPLG11.</p>
+        <p>Os catalisadores de curto prazo a acompanhar são o relatório gerencial de julho, esperado em agosto, que deve trazer o primeiro dado de vacância pós-Memodoc, e qualquer atualização formal sobre o plano de recuperação judicial da Mobly protocolado nos tribunais competentes. Uma leitura estável nesses dois pontos tende a reduzir o desconto atual sobre o valor patrimonial mais rapidamente do que qualquer novo ciclo de aquisições. Vale ainda observar o ritmo de novas emissões: uma eventual décima captação em condições diluitivas, feita com a cota ainda descontada frente ao patrimônio, seria um sinal de que a gestão prioriza escala sobre o interesse imediato do cotista atual, e mereceria peso maior do que qualquer dado isolado de vacância na revisão seguinte deste relatório.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARATIVO -->
+  <section class="section animate" id="comparativo">
+    <div class="block-eyebrow">Anexo</div>
+    <h2 class="block-title">Painel Comparativo · FIIs Logísticos</h2>
+    <p class="block-intro">Comparação do XPLG11 contra os principais fundos imobiliários do segmento logístico negociados na B3, indicadores mais recentes disponíveis a 30/07/2026.</p>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr><th>Fundo</th><th>Gestora</th><th>Preço</th><th>P/VP</th><th>DY 12M</th><th>Patrimônio líq.</th><th>Vacância física (aprox.)</th></tr>
+        </thead>
+        <tbody>
+          <tr style="background: var(--caution-tint);">
+            <td class="label-cell">XPLG11</td><td>XP Gestão de Recursos</td><td>R$ 91,83</td><td>0,87</td><td>10,72%</td><td>R$ 5,40 bi</td><td>8,1%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">HGLG11</td><td>Pátria</td><td>R$ 147,00</td><td>0,88</td><td>8,98%</td><td>R$ 7,60 bi</td><td>2,4% (est.)</td>
+          </tr>
+          <tr>
+            <td class="label-cell">BTLG11</td><td>BTG Pactual</td><td>R$ 100,37</td><td>0,94</td><td>9,55%</td><td>R$ 7,43 bi</td><td>3,2% (est.)</td>
+          </tr>
+          <tr>
+            <td class="label-cell">VILG11</td><td>Vinci Real Estate</td><td>R$ 92,15</td><td>0,84</td><td>10,00%</td><td>R$ 1,64 bi</td><td>0,5% (est.)</td>
+          </tr>
+          <tr>
+            <td class="label-cell">BRCO11</td><td>Bresco</td><td>R$ 113,72</td><td>0,99</td><td>9,59%</td><td>R$ 2,07 bi (est.)</td><td>7,4%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="source-caption">Fontes: Investidor10, Status Invest, Meus Dividendos, Suno Notícias (julho de 2026). Vacância de pares marcada como estimativa quando a data de referência do dado difere do mês-base do XPLG11.</div>
+
+    <div class="prose" style="margin-top:22px;">
+      <p>O XPLG11 aparece como o fundo mais descontado do grupo em P/VP depois do VILG11, e o segundo maior pagador de dividend yield da amostra, atrás apenas do próprio VILG11. A combinação de desconto elevado com yield elevado é coerente com o perfil de risco identificado ao longo deste relatório, o mercado exige um retorno maior para compensar a incerteza de crédito pontual, não para compensar problemas na qualidade física do portfólio. Em vacância, o XPLG11 reporta o segundo maior número do grupo, atrás apenas do BRCO11, o que reforça a tese de que a integração dos ativos adquiridos em abril e a recomposição das áreas devolvidas são, de fato, a variável operacional mais relevante para acompanhar nos próximos trimestres.</p>
+    </div>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <section class="section" id="disclaimer">
+    <div class="block-eyebrow">Avisos</div>
+    <h2 class="block-title" style="margin-bottom: 28px;">Disclaimer e Atribuição</h2>
+
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">Aviso de Compliance</div>
+      <p>Este relatório foi produzido exclusivamente para uso interno da Polaris Global Strategies Ltd. (PGS), sociedade constituída nas Ilhas Virgens Britânicas (BVI), operando como veículo privado de pesquisa e análise de investimentos em nome de seus sócios. Este documento não constitui recomendação de investimento para qualquer terceiro, seja pessoa física ou jurídica, e não deve ser interpretado como tal. A PGS não presta serviços de gestão de ativos, assessoria ou consultoria de investimentos a qualquer cliente externo, não possui base de clientes e não oferece produtos ou serviços a terceiros. Eventual acesso a este documento por partes não autorizadas não confere validade como aconselhamento ou recomendação de investimento. As informações e análises aqui contidas baseiam-se em fontes públicas consideradas confiáveis, mas a PGS não garante sua completude ou exatidão. Investimentos em renda variável envolvem riscos, incluindo a possibilidade de perda total do capital investido. As opiniões expressas refletem o julgamento analítico interno na data de publicação e estão sujeitas a alteração sem aviso prévio.</p>
+    </div>
+
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">Atribuição de IA</div>
+      <p>Este relatório foi produzido com o auxílio de inteligência artificial. Modelo generativo: Anthropic · Claude Sonnet 5 · versão claude-sonnet-5, acessado via Claude.ai. Todos os dados foram obtidos por meio de busca na web ao vivo dentro da mesma sessão e verificados contra o protocolo de ancoragem descrito na etapa 1 deste processo; o papel do modelo foi a síntese de dados, formatação e redação, não a origem de estimativas financeiras. Revisão humana pelo analista interno precede a publicação.</p>
+    </div>
+
+    <div class="disclaimer-block">
+      <div class="disclaimer-title">Referência do Relatório</div>
+      <p class="ref-line">Referência: PGS-XPLG11-202607 · Data: 30/07/2026 · Analista Interno: Polaris Global Strategies Ltd. · Ticker: XPLG11 · Bolsa: B3 · Modelo de IA: Anthropic Claude Sonnet 5 (claude-sonnet-5)</p>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<script>
+(function() {
+  const navLinks = document.querySelectorAll('.nav-link');
+  const sections = document.querySelectorAll('.section, .cover');
+
+  function setActive() {
+    let current = sections[0].id;
+    const scrollPos = window.scrollY + 140;
+    sections.forEach(sec => {
+      if (sec.offsetTop <= scrollPos) current = sec.id;
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', setActive, { passive: true });
+  setActive();
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  const animateEls = document.querySelectorAll('.animate');
+  if ('IntersectionObserver' in window) {
+    animateEls.forEach(el => { el.style.opacity = '0'; el.style.animationPlayState = 'paused'; });
+    const animObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '';
+          entry.target.style.animationPlayState = 'running';
+          animObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    animateEls.forEach(el => animObserver.observe(el));
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGS-BTLG11-202607 | BTG Pactual Logística (BTLG11)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --canvas:    #FFFFFF;
+  --surface:   #F9FAFB;
+  --card:      #F3F4F6;
+  --text:      #111827;
+  --text-mute: #6B7280;
+  --pos:       #16A34A;
+  --neg:       #DC2626;
+  --caution:   #D97706;
+  --pos-tint:  #F0FDF4;
+  --neg-tint:  #FEE2E2;
+  --caution-tint: #FFFBEB;
+  --pill-pos-bg: #DCFCE7; --pill-pos-fg: #15803D;
+  --pill-neg-bg: #FEE2E2; --pill-neg-fg: #B91C1C;
+  --pill-neu-bg: #E5E7EB; --pill-neu-fg: #374151;
+  --border:    #E5E7EB;
+  --accent:    #0B3D63;
+  --accent-tint: #EAF1F6;
+  --font-display: 'Playfair Display', 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --font-body: 'DM Sans', 'Barlow', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+}
+* { box-sizing: border-box; }
+body { margin:0; font-family: var(--font-body); color: var(--text); background: var(--canvas); }
+.layout { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+.sidebar {
+  position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+  background: var(--surface); border-right: 1px solid var(--border);
+  padding: 24px 0;
+}
+.sidebar .brand { padding: 0 20px 18px 20px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+.sidebar .brand .tag { font-family: var(--font-mono); font-size: 11px; color: var(--text-mute); letter-spacing: 0.06em; }
+.sidebar .brand .ticker { font-family: var(--font-display); font-weight:700; font-size: 22px; color: var(--accent); margin-top: 2px; }
+.nav-link {
+  display: block; padding: 9px 20px; font-size: 13px; color: var(--text-mute);
+  text-decoration: none; border-left: 3px solid transparent; font-weight: 500;
+}
+.nav-link:hover { background: var(--card); color: var(--text); }
+.nav-link.active { border-left-color: var(--accent); background: var(--accent-tint); color: var(--accent); }
+.main-content { width: 100%; min-width: 0; }
+.section { padding: 56px 48px; max-width: 980px; margin: 0 auto; }
+.section + .section { border-top: 1px solid var(--border); }
+.prose { max-width: 68ch; line-height: 1.65; }
+.prose p { margin: 0 0 16px 0; font-size: 15.5px; }
+h1, h2, h3 { font-family: var(--font-display); color: var(--text); }
+h2.block-title { font-size: 26px; font-weight: 700; margin: 0 0 6px 0; }
+.block-eyebrow { font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 6px; font-weight:700; }
+.block-sub { color: var(--text-mute); font-size: 14.5px; margin-bottom: 28px; }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+th { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-mute); font-weight: 600; }
+td { font-family: var(--font-mono); font-size: 13px; }
+td.label-cell { font-family: var(--font-body); font-weight: 500; }
+tbody tr:nth-child(odd) { background: var(--canvas); }
+tbody tr:nth-child(even) { background: var(--surface); }
+tbody tr:hover { background: var(--accent-tint); transition: background 0.2s; }
+.source-cap { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-mute); margin-top: 8px; }
+.pill { display:inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11.5px; font-weight: 700; font-family: var(--font-mono); }
+.pill-pos { background: var(--pill-pos-bg); color: var(--pill-pos-fg); }
+.pill-neg { background: var(--pill-neg-bg); color: var(--pill-neg-fg); }
+.pill-neu { background: var(--pill-neu-bg); color: var(--pill-neu-fg); }
+.pos-txt { color: var(--pos); font-weight: 700; }
+.neg-txt { color: var(--neg); font-weight: 700; }
+
+/* COVER */
+.cover {
+  min-height: 96vh; display:flex; flex-direction: column; justify-content: center;
+  background: var(--surface);
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 22px 22px;
+  padding: 64px 64px;
+}
+.cover .kicker { font-family: var(--font-mono); font-size: 12px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; font-weight: 700;}
+.cover h1 { font-size: 54px; margin: 0 0 8px 0; color: var(--accent); font-weight: 700; }
+.cover .sub { font-size: 18px; color: var(--text-mute); margin-bottom: 34px; }
+.cover .meta-grid { display:flex; gap: 40px; flex-wrap: wrap; border-top: 1px solid var(--border); padding-top: 22px; }
+.cover .meta-item .k { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; color: var(--text-mute); letter-spacing: 0.05em; }
+.cover .meta-item .v { font-family: var(--font-mono); font-size: 14.5px; color: var(--text); margin-top: 3px; font-weight: 600; }
+
+/* BLOCK A - PANEL */
+.panel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; background: var(--card); border-top: 3px solid var(--accent); }
+.panel-group { padding: 18px 16px; border-right: 1px solid var(--border); }
+.panel-group:last-child { border-right: none; }
+.panel-group .group-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-mute); margin-bottom: 12px; font-weight: 700; }
+.panel-row { margin-bottom: 10px; }
+.panel-row .pk { font-size: 11.5px; color: var(--text-mute); }
+.panel-row .pv { font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--text); }
+.panel-note { max-width: 68ch; margin-top: 18px; font-size: 14px; color: var(--text-mute); line-height: 1.6; }
+
+/* BLOCK C - QUARTER READING */
+.q-block { border-left: 3px solid var(--accent); padding-left: 20px; margin-bottom: 30px; }
+.q-kicker { font-family: var(--font-mono); font-size: 12px; color: var(--accent); font-weight: 700; margin-bottom: 8px; }
+
+/* BLOCK D */
+.d-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 8px; }
+.d-col-title { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; color: var(--text-mute); letter-spacing: 0.05em; margin-bottom: 14px; font-weight: 700; }
+.d-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.d-item:last-child { border-bottom: none; }
+.d-item .d-claim { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.d-item .d-evi { font-size: 13px; color: var(--text-mute); }
+.signal { font-family: var(--font-mono); font-weight: 700; margin-right: 6px; }
+.signal-up { color: var(--pos); }
+.signal-stable { color: var(--caution); }
+.signal-down { color: var(--neg); }
+
+/* BLOCK E */
+.subsection { margin-bottom: 44px; }
+.subsection h3 { font-size: 18px; margin: 0 0 14px 0; }
+.stars { color: var(--accent); letter-spacing: 1px; }
+
+/* BLOCK F */
+.risk-block { border-left: 3px solid var(--caution); margin-bottom: 20px; }
+.risk-block.high { border-left-color: var(--neg); }
+.risk-header { padding: 12px 18px; background: var(--caution-tint); display:flex; justify-content: space-between; align-items:center; }
+.risk-block.high .risk-header { background: var(--neg-tint); }
+.risk-header .r-title { font-weight: 700; font-size: 14.5px; }
+.risk-body { background: var(--canvas); padding: 16px 18px; border: 1px solid var(--border); border-top: none; }
+.badge { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; padding: 3px 10px; border-radius: 3px; text-transform: uppercase; }
+.badge-high { background: var(--neg); color: white; }
+.badge-medium { background: var(--caution); color: white; }
+.badge-low { background: var(--text-mute); color: white; }
+
+/* BLOCK G */
+.scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 8px; }
+.scenario-card { border: 1px solid var(--border); }
+.scenario-head { padding: 16px 18px; border-top: 3px solid; }
+.scenario-card.bull .scenario-head { background: var(--pos-tint); border-top-color: var(--pos); }
+.scenario-card.bear .scenario-head { background: var(--neg-tint); border-top-color: var(--neg); }
+.scenario-head .s-label { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; font-weight: 700; }
+.scenario-card.bull .s-label { color: var(--pos); }
+.scenario-card.bear .s-label { color: var(--neg); }
+.scenario-head .s-delta { font-family: var(--font-mono); font-size: 26px; font-weight: 700; margin-top: 4px; }
+.scenario-body { padding: 18px; background: var(--canvas); font-size: 13.5px; line-height: 1.6; }
+.scenario-body ul { padding-left: 18px; margin: 0 0 12px 0; }
+.scenario-body li { margin-bottom: 6px; }
+
+/* BLOCK H */
+.verdict-strip { display: flex; gap: 0; background: var(--card); border-top: 3px solid var(--accent); margin-bottom: 28px; }
+.verdict-item { flex:1; padding: 18px 20px; border-right: 1px solid var(--border); }
+.verdict-item:last-child { border-right: none; }
+.verdict-item .vk { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; color: var(--text-mute); letter-spacing: 0.05em;}
+.verdict-item .vv { font-family: var(--font-mono); font-size: 17px; font-weight: 700; margin-top: 4px; }
+.rating-pill { display:inline-block; background: var(--accent); color: white; padding: 5px 16px; border-radius: 4px; font-weight: 700; font-family: var(--font-mono); font-size: 13px; print-color-adjust: exact; -webkit-print-color-adjust: exact;}
+
+/* DISCLAIMER */
+.disclaimer { font-size: 11.5px; color: var(--text-mute); line-height: 1.6; background: var(--surface); padding: 24px; border: 1px solid var(--border); margin-bottom: 16px; }
+.disclaimer h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); margin: 0 0 8px 0; font-family: var(--font-mono); }
+
+.animate { opacity: 1; animation: fadeUp 0.6s ease forwards; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
+
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: sticky; top:0; height: auto; width: 100%; display:flex; overflow-x:auto; padding: 10px 0; z-index: 10;}
+  .sidebar .brand { display:none; }
+  .nav-link { white-space:nowrap; border-left:none; border-bottom: 3px solid transparent; padding: 8px 14px;}
+  .nav-link.active { border-left:none; border-bottom-color: var(--accent); }
+  .section { padding: 32px 20px; }
+  .panel-grid { grid-template-columns: 1fr 1fr; }
+  .panel-group { border-bottom: 1px solid var(--border); }
+  .d-grid, .scenario-grid { grid-template-columns: 1fr; }
+  .cover { padding: 40px 24px; }
+  .cover h1 { font-size: 34px; }
+  .verdict-strip { flex-wrap: wrap; }
+  .verdict-item { flex: 1 1 45%; border-bottom: 1px solid var(--border); }
+}
+
+@media print {
+  .layout { display: block !important; }
+  .sidebar, .nav-link { display: none !important; }
+  .main-content { display: block !important; width: 100% !important; }
+  .section { page-break-before: always; padding: 24px 8px; max-width: 100%; }
+  .cover { page-break-before: avoid; min-height: auto !important; height: auto !important; display: block !important; }
+  body, .section, .cover, .risk-body, .scenario-body { background-color: #FFFFFF !important; color: #111827 !important; }
+  .panel-grid { display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 0 !important; }
+  .scenario-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
+  .table-wrap { overflow: visible !important; }
+  table { word-break: break-word; }
+  p, .risk-block, .scenario-card { orphans: 3; widows: 3; page-break-inside: avoid; }
+  .animate { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .rating-pill, .pill, .badge, .accent-bar, .scenario-head, .risk-header { print-color-adjust: exact !important; -webkit-print-color-adjust: exact !important; }
+  * { box-shadow: none !important; backdrop-filter: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <nav class="sidebar">
+    <div class="brand">
+      <div class="tag">PGS-BTLG11-202607</div>
+      <div class="ticker">BTLG11</div>
+    </div>
+    <a href="#cover" class="nav-link">Capa</a>
+    <a href="#block-a" class="nav-link">A · Painel Consolidado</a>
+    <a href="#block-comp" class="nav-link">Comparativo Setorial</a>
+    <a href="#block-b" class="nav-link">B · Quadro Mensal</a>
+    <a href="#block-c" class="nav-link">C · Leitura dos Meses</a>
+    <a href="#block-d" class="nav-link">D · Padrões e Watchlist</a>
+    <a href="#block-e" class="nav-link">E · Arquitetura Estratégica</a>
+    <a href="#block-f" class="nav-link">F · Riscos</a>
+    <a href="#block-g" class="nav-link">G · Cenários</a>
+    <a href="#block-h" class="nav-link">H · Veredito PGS</a>
+    <a href="#disclaimer" class="nav-link">Disclaimer</a>
+  </nav>
+
+  <main class="main-content">
+
+    <section class="cover" id="cover">
+      <div class="kicker">Polaris Global Strategies · Relatório Institucional</div>
+      <h1>BTG Pactual Logística</h1>
+      <div class="sub">BTLG11 · B3 · Fundo de Investimento Imobiliário, segmento Logístico / Indústria / Galpões</div>
+      <div class="meta-grid">
+        <div class="meta-item"><div class="k">Referência</div><div class="v">PGS-BTLG11-202607</div></div>
+        <div class="meta-item"><div class="k">Data de publicação</div><div class="v">30 de julho de 2026</div></div>
+        <div class="meta-item"><div class="k">Ticker</div><div class="v">BTLG11</div></div>
+        <div class="meta-item"><div class="k">Bolsa</div><div class="v">B3</div></div>
+      </div>
+    </section>
+
+    <section class="section animate" id="block-a">
+      <div class="block-eyebrow">Bloco A</div>
+      <h2 class="block-title">Painel Consolidado</h2>
+      <div class="block-sub">Preço, indicadores fundamentalistas e valuation do BTLG11 na data de análise.</div>
+
+      <div class="panel-grid">
+        <div class="panel-group">
+          <div class="group-label">Mercado</div>
+          <div class="panel-row"><div class="pk">Cotação atual</div><div class="pv">R$ 100,63</div></div>
+          <div class="panel-row"><div class="pk">Valor de mercado</div><div class="pv">R$ 6.982,7 mi</div></div>
+          <div class="panel-row"><div class="pk">Distância da máxima 52 sem.</div><div class="pv neg-txt">-3,2%</div></div>
+          <div class="panel-row"><div class="pk">Distância da mínima 52 sem.</div><div class="pv pos-txt">+10,1%</div></div>
+        </div>
+        <div class="panel-group">
+          <div class="group-label">Fundamentos (FII)</div>
+          <div class="panel-row"><div class="pk">Rendimento distribuído 12M/cota</div><div class="pv">R$ 9,57</div></div>
+          <div class="panel-row"><div class="pk">Cota patrimonial</div><div class="pv">R$ 107,04</div></div>
+          <div class="panel-row"><div class="pk">Vacância financeira</div><div class="pv">2,1%</div></div>
+          <div class="panel-row"><div class="pk">Número de cotistas</div><div class="pv">505.908</div></div>
+        </div>
+        <div class="panel-group">
+          <div class="group-label">Valuation</div>
+          <div class="panel-row"><div class="pk">P/VP</div><div class="pv">0,94</div></div>
+          <div class="panel-row"><div class="pk">Dividend yield 12M</div><div class="pv">9,50%</div></div>
+          <div class="panel-row"><div class="pk">Liquidez média diária</div><div class="pv">R$ 10,26 mi</div></div>
+          <div class="panel-row"><div class="pk">Participação no IFIX</div><div class="pv">4,51%</div></div>
+        </div>
+        <div class="panel-group">
+          <div class="group-label">Cobertura e Agenda</div>
+          <div class="panel-row"><div class="pk">Recomendação sell-side</div><div class="pv">Compra (est., cobertura limitada)</div></div>
+          <div class="panel-row"><div class="pk">Caixa sobre patrimônio</div><div class="pv">19,5%</div></div>
+          <div class="panel-row"><div class="pk">Patrimônio líquido</div><div class="pv">R$ 7.427,4 mi</div></div>
+          <div class="panel-row"><div class="pk">Próxima divulgação</div><div class="pv">Informe mensal, competência jul/26 (est.)</div></div>
+        </div>
+      </div>
+      <div class="source-cap">Fonte: Status Invest, dados de 28/07/2026, e relatório gerencial BTLG11 competência 06/2026.</div>
+
+      <div class="panel-note">A cota negocia com desconto de 6% sobre o valor patrimonial, patamar que se estreitou nos últimos doze meses à medida que a vacância recuou e a gestão sustentou a distribuição mensal. Frente à própria história recente do fundo, o P/VP atual está próximo da banda inferior observada desde a 16ª emissão, o que reflete o período de digestão do capital recém-captado mais do que uma deterioração operacional.</div>
+    </section>
+
+    <section class="section animate" id="block-comp">
+      <div class="block-eyebrow">Painel Comparativo Setorial</div>
+      <h2 class="block-title">BTLG11 frente aos principais FIIs logísticos</h2>
+      <div class="block-sub">Cotação, prêmio ou desconto sobre o valor patrimonial e dividend yield dos pares diretos de galpões logísticos negociados na B3.</div>
+
+      <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Fundo</th><th>Cotação</th><th>P/VP</th><th>DY 12M</th><th>Vacância</th><th>Nota</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="label-cell">BTLG11 (BTG Pactual Logística)</td><td>R$ 101,18</td><td>0,95</td><td>10,23%</td><td>2,1% fin.</td><td>Maior fundo do grupo por patrimônio</td></tr>
+          <tr><td class="label-cell">HGLG11 (CSHG Logística)</td><td>R$ 156,16</td><td>0,94</td><td>9,16%</td><td>3,9% física</td><td>Absorvendo ativos do PATL11</td></tr>
+          <tr><td class="label-cell">XPLG11 (XP Log)</td><td>R$ 101,00</td><td>0,95</td><td>9,74%</td><td>(dado não encontrado)</td><td>-</td></tr>
+          <tr><td class="label-cell">BRCO11 (Bresco Logística)</td><td>R$ 114,21</td><td>0,99</td><td>10,45%</td><td>7,4% física</td><td>Portfólio last mile concentrado em SP</td></tr>
+          <tr><td class="label-cell">VILG11 (Vinci Logística)</td><td>R$ 94,24</td><td>0,86</td><td>9,80%</td><td>(dado não encontrado)</td><td>Exposição a inquilino em recuperação judicial</td></tr>
+          <tr><td class="label-cell">LVBI11 (VBI Logístico)</td><td>R$ 103,75</td><td>0,86</td><td>8,64%</td><td>0,0% (1T26)</td><td>Aguarda decisão da CVM sobre incorporação pelo HGLG11</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="source-cap">Fonte: BrFiis (BTLG11, HGLG11, XPLG11, BRCO11, VILG11, snapshot 29/07/2026) e Investidor10 (LVBI11). Cotações de fontes e horários distintos das utilizadas no Bloco A.</div>
+
+      <div class="panel-note">Dentro do grupo, o BTLG11 ocupa posição intermediária de valuation: negocia com desconto sobre o valor patrimonial semelhante ao de XPLG11 e HGLG11, mas com yield superior a ambos e vacância financeira mais baixa que a de BRCO11. O LVBI11 destoa por negociar sem vacância registrada, efeito direto do processo de incorporação pendente junto à CVM, o que reduz a comparabilidade operacional direta com os demais fundos da amostra.</div>
+    </section>
+
+    <section class="section animate" id="block-b">
+      <div class="block-eyebrow">Bloco B</div>
+      <h2 class="block-title">Quadro Mensal</h2>
+      <div class="block-sub">Sequência contínua dos quatro relatórios gerenciais mais recentes, com a competência de junho de 2026 como âncora. Métrica adaptada ao formato mensal de divulgação dos FIIs, em substituição ao trimestre de divulgação típico de ações.</div>
+
+      <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Competência</th><th>Distribuição/cota</th><th>Vacância financeira</th><th>Resultado imobiliário</th><th>Variação da cota no mês</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label-cell">Jun/26 (âncora)</td>
+            <td>R$ 0,81 <span class="pill pill-neu">ESTÁVEL</span></td>
+            <td>2,1%</td>
+            <td>(dado não encontrado)</td>
+            <td class="neg-txt">-1,61%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Mai/26</td>
+            <td>R$ 0,81 <span class="pill pill-neu">ESTÁVEL</span></td>
+            <td>2,6%</td>
+            <td>(dado não encontrado)</td>
+            <td>(dado não encontrado)</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Abr/26</td>
+            <td>R$ 0,81 <span class="pill pill-pos">ALTA</span></td>
+            <td>2,6%</td>
+            <td>R$ 39,57 mi</td>
+            <td class="neg-txt">-0,34%</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Mar/26</td>
+            <td>R$ 0,80 <span class="pill pill-neu">ESTÁVEL</span></td>
+            <td>2,9%</td>
+            <td>(dado não encontrado)</td>
+            <td>(dado não encontrado)</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="source-cap">Fonte: BTG Pactual, relatórios gerenciais BTLG11 (competências 03/2026 a 06/2026), Status Invest, Suno Notícias.</div>
+    </section>
+
+    <section class="section animate" id="block-c">
+      <div class="block-eyebrow">Bloco C</div>
+      <h2 class="block-title">Leitura dos Meses</h2>
+      <div class="block-sub">O que produziu cada número, mês a mês.</div>
+
+      <div class="prose">
+        <div class="q-block">
+          <div class="q-kicker">JUN/26</div>
+          <p>A competência de junho marcou o mês mais movimentado do semestre em gestão de contratos, e ao mesmo tempo o de receita imobiliária mais fraca entre os quatro períodos cobertos. A queda de receita não veio de vacância, que na verdade recuou para o menor nível do ano, mas das carências concedidas nas revisões contratuais recentes, um custo de curto prazo pago para travar reajustes mais altos e prazos mais longos à frente. A renovação do imóvel de Cotia trocou um contrato atípico por um típico com aluguel acima do valor projetado na aquisição, encerrando uma das principais pendências comerciais do portfólio. Louveira III renovou com ganho real de 9,2%, e a nova locação em Cabreúva, por dez anos, reduziu a vacância local de 36% para 24%. A distribuição por cota permaneceu no mesmo patamar do mês anterior, sustentada por reservas acumuladas, e não pela geração de caixa do mês. A cota recuou 1,61% no período, movimento mais coerente com a digestão da 16ª emissão do que com o conteúdo operacional do relatório.</p>
+        </div>
+        <div class="q-block">
+          <div class="q-kicker">MAI/26</div>
+          <p>Maio foi definido por um evento de capital, não por locação. A gestão assinou um memorando de entendimentos não vinculante para a venda de três ativos em São Paulo e Pernambuco, somando 102,6 mil m² de ABL, com lucro por cota estimado em patamar relevante caso a operação se concretize. Em paralelo, avançou a etapa de direito de preferência da 16ª emissão, movimento que antecipava a captação maior liquidada nas semanas seguintes. Na frente operacional, a locação de dois módulos em Ribeirão Preto trouxe ganho real de 39% sobre o contrato anterior e manteve a vacância do ativo zerada. A vacância consolidada do fundo permaneceu em 2,6%, o mesmo nível de abril, sinal de que o mês serviu mais para preparar movimentos futuros do fundo, tanto de desinvestimento quanto de captação, do que para gerar variação relevante na carteira já existente.</p>
+        </div>
+        <div class="q-block">
+          <div class="q-kicker">ABR/26</div>
+          <p>Abril concentrou dois marcos estruturais que não se repetem todo mês. O fundo quitou a parcela final de R$ 661,1 milhões do portfólio Prime, treze ativos majoritariamente em São Paulo, eliminando uma obrigação de R$ 614,2 milhões que constava do relatório anterior como pendência para o segundo trimestre. No mesmo mês, anunciou o início da 16ª emissão, com captação inicial prevista de R$ 1,6 bilhão. A vacância financeira caiu de 2,9% para 2,6%, puxada pela nova locação de 4.603 m² no ativo Cabreúva, que ampliou a exposição a inquilinos de e-commerce. A receita de locações, o NOI e o resultado imobiliário do mês formaram a base de dados mais completa disponível entre os quatro períodos cobertos. A distribuição avançou frente ao mês anterior, e a cota patrimonial recuou ligeiramente refletindo o efeito diluidor inicial da nova emissão sobre uma base ainda pequena de cotas emitidas.</p>
+        </div>
+        <div class="q-block">
+          <div class="q-kicker">MAR/26</div>
+          <p>Março foi o mês mais tranquilo da sequência em termos operacionais, com destaque concentrado no resultado financeiro e não em locação. O fundo reconheceu R$ 9,5 milhões em lucro com vendas de SPEs no período, quase o dobro do R$ 5,0 milhões apurado no mês anterior, reforço de caixa vindo do desinvestimento residual de ativos corporativos já em processo de saída. Na frente comercial, a locação de 2,7 mil m² em Ribeirão Preto para varejo, com prazo de cinco anos e valor 43% superior ao contrato anterior, e a renovação em Mauá, que elevou o aluguel em 25% e estendeu o prazo a partir de 2027, levaram a área revisada do ativo a 80% do total, com ganho médio de 24%. A vacância financeira permaneceu estável em 2,9%, e a distribuição também não se alterou frente ao mês anterior. O portfólio seguiu com 34 imóveis e 1,435 milhão de m² de ABL, sem alteração de composição ou geografia, um mês de manutenção antes da aceleração de capital que viria em abril.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section animate" id="block-d">
+      <div class="block-eyebrow">Bloco D</div>
+      <h2 class="block-title">Padrões Estruturais e Watchlist</h2>
+
+      <div class="d-grid">
+        <div>
+          <div class="d-col-title">Padrões Estruturais</div>
+          <div class="d-item"><div class="d-claim">Reciclagem de capital segue como motor recorrente de resultado, não como evento isolado.</div><div class="d-evi">Lucro com vendas de SPEs em março, MOU de venda de três ativos em maio, ambos alimentando a distribuição fora da receita de locação pura.</div></div>
+          <div class="d-item"><div class="d-claim">A vacância financeira está em trajetória de queda ininterrupta nos quatro meses.</div><div class="d-evi">2,9% em março e abril, recuo para 2,6% em abril e maio, e 2,1% em junho, puxada por renegociações em Cotia, Louveira III e Cabreúva.</div></div>
+          <div class="d-item"><div class="d-claim">A distribuição por cota é mais estável do que a receita subjacente.</div><div class="d-evi">Junho registrou queda de receita por carências contratuais, mas a distribuição do mês, mostrada no quadro mensal, foi mantida com apoio de reservas.</div></div>
+          <div class="d-item"><div class="d-claim">A expansão patrimonial via 16ª emissão ainda não se traduziu em geração de receita adicional.</div><div class="d-evi">Caixa em 19,5% do patrimônio ao fim do período, com parte relevante do capital captado na 16ª emissão ainda sem destino declarado.</div></div>
+        </div>
+        <div>
+          <div class="d-col-title">Watchlist para o Próximo Relatório</div>
+          <div class="d-item"><div class="d-claim"><span class="signal signal-up">↑</span>Conclusão da venda dos três ativos do MOU de maio.</div><div class="d-evi">Confirma-se com a assinatura de instrumento vinculante e cronograma de recebimento do lucro estimado por cota, hoje apenas indicativo.</div></div>
+          <div class="d-item"><div class="d-claim"><span class="signal signal-stable">→</span>Alocação dos recursos da 16ª emissão.</div><div class="d-evi">Quebra-se com anúncio de aquisições concretas nos próximos relatórios; mantém-se em caixa por vários meses seguidos seria um sinal de alerta.</div></div>
+          <div class="d-item"><div class="d-claim"><span class="signal signal-stable">→</span>Reavaliação patrimonial anual, com efeito esperado no relatório de julho.</div><div class="d-evi">Pode mover a cota patrimonial e o P/VP mecanicamente, independente de qualquer evento operacional novo.</div></div>
+          <div class="d-item"><div class="d-claim"><span class="signal signal-up">↑</span>Desfecho dos contratos com vencimento em 2026 ainda em negociação.</div><div class="d-evi">Confirma-se se os ganhos reais observados em Louveira III e Ribeirão Preto se repetirem nas renovações pendentes.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section animate" id="block-e">
+      <div class="block-eyebrow">Bloco E</div>
+      <h2 class="block-title">Arquitetura Estratégica</h2>
+
+      <div class="subsection">
+        <h3>Composição do portfólio e arquitetura de receita</h3>
+        <div class="table-wrap">
+        <table>
+          <thead><tr><th>Categoria</th><th>% da ABL</th><th>Nota</th></tr></thead>
+          <tbody>
+            <tr><td class="label-cell">São Paulo (estado)</td><td>92%</td><td>Concentração geográfica dominante</td></tr>
+            <tr><td class="label-cell">Outros estados (SC, PE, CE, entre outros)</td><td>8%</td><td>Diversificação ainda marginal</td></tr>
+            <tr><td class="label-cell">Uso logístico</td><td>95%</td><td>Núcleo do portfólio</td></tr>
+            <tr><td class="label-cell">Uso industrial</td><td>3%</td><td>Exposição residual</td></tr>
+            <tr><td class="label-cell">Uso varejo</td><td>2%</td><td>Exposição residual</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="source-cap">Fonte: relatório gerencial BTLG11, competência 06/2026, Suno Notícias.</div>
+        <p style="margin-top:16px;">O BTLG11 opera como um fundo essencialmente monotemático em geografia: quase toda a área bruta locável está em São Paulo, o eixo logístico mais denso e mais disputado do país tanto por locatários quanto por outros fundos e incorporadores. Essa concentração não é acidental, é a tese do fundo, construída sobre proximidade a centros de consumo e rodovias primárias. A receita se sustenta em três frentes que se alimentam: locação recorrente de contratos típicos e atípicos, ganhos de reprecificação capturados a cada renovação ou revisão de aluguel, e lucro pontual de reciclagem de ativos vendidos fora do núcleo estratégico. A terceira frente funciona como um amortecedor: quando a receita de locação sofre por carências temporárias, como em junho, o resultado com vendas cobre parte da diferença sem exigir uso de caixa de reserva. A alavancagem operacional do fundo vem do spread entre o aluguel do contrato antigo e o do contrato renovado, não de dívida, já que o fundo não opera com endividamento relevante nesse segmento de galpões.</p>
+      </div>
+
+      <div class="subsection">
+        <h3>Moat competitivo</h3>
+        <div class="table-wrap">
+        <table>
+          <thead><tr><th>Pilar</th><th>Força</th><th>Risco de erosão</th><th>Nota</th></tr></thead>
+          <tbody>
+            <tr><td class="label-cell">Localização e proximidade a eixos logísticos de SP</td><td>Alta</td><td>Baixo</td><td class="stars">★★★★</td></tr>
+            <tr><td class="label-cell">Gestão ativa de reciclagem de portfólio</td><td>Média-Alta</td><td>Médio</td><td class="stars">★★★★</td></tr>
+            <tr><td class="label-cell">Diversificação de inquilinos e setores</td><td>Média</td><td>Médio</td><td class="stars">★★★</td></tr>
+            <tr><td class="label-cell">Escala e acesso a capital via emissões</td><td>Alta</td><td>Baixo</td><td class="stars">★★★★</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="source-cap">Fonte: análise PGS a partir de relatórios gerenciais BTLG11, competências 03/2026 a 06/2026.</div>
+        <p style="margin-top:16px;">A durabilidade da vantagem competitiva do BTLG11 não está numa marca ou numa tecnologia proprietária, está em terra. Ativos bem localizados em São Paulo são um recurso finito, e o fundo já detém posição relevante nesse estoque, o que torna a réplica cara e lenta para qualquer concorrente novo. O segundo pilar, a gestão ativa, é mais frágil por depender de execução contínua: o histórico recente de renegociações bem-sucedidas em Cotia, Louveira e Cabreúva sustenta a nota atual, mas essa capacidade precisa ser reconquistada a cada ciclo de vencimento contratual, não é permanente por definição. A diversificação de inquilinos ainda é limitada e não compensa totalmente a concentração geográfica. O quarto pilar, acesso a capital, ficou mais forte com a 16ª emissão, mas só se converte em vantagem duradoura se os recursos captados forem alocados em ativos com retorno superior ao custo de oportunidade do caixa parado hoje.</p>
+      </div>
+
+      <div class="subsection">
+        <h3>Arquitetura de crescimento de longo prazo</h3>
+        <div class="table-wrap">
+        <table>
+          <thead><tr><th>Driver</th><th>Horizonte</th><th>Estado atual</th><th>Potencial</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="label-cell">Alocação dos recursos da 16ª emissão</td><td>6 a 18 meses</td><td>Caixa em 19,5% do patrimônio</td><td>Expansão de portfólio e diluição de custos fixos</td><td>emerging</td></tr>
+            <tr><td class="label-cell">Reprecificação contratual em renovações</td><td>Contínuo</td><td>Ganhos reais de 9,2% a 39% nas últimas revisões</td><td>Upside recorrente sem capex</td><td>on track</td></tr>
+            <tr><td class="label-cell">Conclusão da venda dos três ativos do MOU</td><td>Próximos meses</td><td>Memorando assinado, não vinculante</td><td>R$ 1,56 por cota em lucro estimado</td><td>emerging</td></tr>
+            <tr><td class="label-cell">Redução adicional da vacância consolidada</td><td>Próximos trimestres</td><td>2,1%, mínima do período coberto</td><td>Suporte direto à receita recorrente</td><td>on track</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="source-cap">Fonte: análise PGS a partir de relatórios gerenciais BTLG11 e comunicados ao mercado, 03/2026 a 07/2026.</div>
+        <p style="margin-top:16px;">A sequência que importa aqui começa pela alocação do capital, não pela reprecificação. Os ganhos de renovação contratual já estão em curso e não dependem de nenhuma outra variável para continuar produzindo resultado incremental, mas seu efeito absoluto sobre o resultado do fundo é pequeno diante do volume de caixa parado após a emissão. É a compra de novos ativos, ou a falta dela, que vai determinar se o crescimento patrimonial recente se traduz em crescimento de distribuição por cota nos próximos quatro a seis relatórios. A venda dos três ativos do MOU e a queda de vacância são reforços importantes, mas secundários: mesmo somados, não compensam o efeito de diluição se o capital da 16ª emissão permanecer ocioso por muitos meses.</p>
+      </div>
+    </section>
+
+    <section class="section animate" id="block-f">
+      <div class="block-eyebrow">Bloco F</div>
+      <h2 class="block-title">Riscos</h2>
+
+      <div class="risk-block">
+        <div class="risk-header"><span class="r-title">Concentração geográfica em São Paulo</span><span class="badge badge-medium">Medium</span></div>
+        <div class="risk-body">
+          <p style="margin:0;">Com 92% da ABL em um único estado, o fundo está exposto a um ciclo de oferta e demanda industrial praticamente único: se o mercado paulista de galpões entrar em sobreoferta, a maior parte do portfólio sente o mesmo choque ao mesmo tempo, sem diversificação geográfica para amortecer. O mecanismo é estrutural e não tem prazo definido, é uma característica permanente da tese do fundo, não um evento a se resolver. O observável a acompanhar é o aumento simultâneo de vacância em múltiplos ativos paulistas em relatórios consecutivos, em vez das vacâncias pontuais e localizadas registradas até aqui, como em Cabreúva ou Campinas Dom Pedro.</p>
+        </div>
+      </div>
+
+      <div class="risk-block">
+        <div class="risk-header"><span class="r-title">Diluição temporária por capital não alocado</span><span class="badge badge-medium">Medium</span></div>
+        <div class="risk-body">
+          <p style="margin:0;">Após a 16ª emissão, o fundo carrega cerca de 19,5% do patrimônio em caixa, recurso que não gera o mesmo retorno de um ativo locado enquanto aguarda destinação. O prazo típico para esse tipo de situação se resolver fica entre seis e dezoito meses, dependendo do ritmo de aquisições da gestão. Quanto mais longo o período sem anúncios de compra, maior a pressão sobre o resultado por cota, já que a base de cotas aumentou antes da base de receita. O observável direto é a manutenção do percentual de caixa em patamar elevado por dois ou três relatórios seguidos, sem contrapartida de aquisições concretas.</p>
+        </div>
+      </div>
+
+      <div class="risk-block high">
+        <div class="risk-header"><span class="r-title">Dependência de ganhos não recorrentes para sustentar a distribuição</span><span class="badge badge-high">High</span></div>
+        <div class="risk-body">
+          <p style="margin:0;">Parte da distribuição recente se apoiou em lucro de venda de SPEs e na expectativa de lucro com o MOU de três ativos, receitas que não se repetem indefinidamente. Em junho, a receita de locação recuou por carências contratuais e a distribuição só se manteve estável por causa de reservas acumuladas em meses anteriores. Se o pipeline de reciclagem de ativos se esgotar antes que a receita recorrente absorva integralmente o efeito das carências concedidas, a distribuição por cota pode precisar se ajustar para baixo. O observável central é a repetição do padrão de junho, receita de locação em queda sem lucro extraordinário compensando, em dois relatórios consecutivos.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section animate" id="block-g">
+      <div class="block-eyebrow">Bloco G</div>
+      <h2 class="block-title">Cenários</h2>
+
+      <div class="scenario-grid">
+        <div class="scenario-card bull">
+          <div class="scenario-head"><div class="s-label">Cenário construtivo</div><div class="s-delta">+11% ao alvo</div></div>
+          <div class="scenario-body">
+            <ul>
+              <li>O MOU de venda dos três ativos se converte em instrumento vinculante dentro do prazo esperado.</li>
+              <li>O capital da 16ª emissão é alocado em aquisições com cap rate acima do custo de oportunidade do caixa.</li>
+              <li>A vacância financeira segue abaixo de 2,5% nos próximos relatórios.</li>
+            </ul>
+            <p style="margin:0;">Essas condições dependem sobretudo do ritmo de decisão da gestão, não de variáveis macroeconômicas externas. Se confirmadas, sustentam reavaliação da cota patrimonial e reaproximação do preço de mercado ao valor patrimonial atual.</p>
+          </div>
+        </div>
+        <div class="scenario-card bear">
+          <div class="scenario-head"><div class="s-label">Cenário adverso</div><div class="s-delta">-9% ao piso</div></div>
+          <div class="scenario-body">
+            <ul>
+              <li>O capital da 16ª emissão permanece majoritariamente em caixa por mais de doze meses.</li>
+              <li>As carências contratuais concedidas em junho se estendem a novas revisões, pressionando a receita recorrente.</li>
+              <li>O MOU de venda dos três ativos não avança para instrumento vinculante.</li>
+            </ul>
+            <p style="margin:0;">Nesse cenário, a distribuição por cota perde o amortecedor das reservas e dos ganhos de reciclagem, expondo o resultado recorrente do portfólio de forma mais direta e potencialmente pressionando o preço de mercado abaixo do piso de 52 semanas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section animate" id="block-h">
+      <div class="block-eyebrow">Bloco H</div>
+      <h2 class="block-title">Veredito PGS</h2>
+
+      <div class="verdict-strip">
+        <div class="verdict-item"><div class="vk">Rating</div><div class="vv"><span class="rating-pill">🟢 BUY</span></div></div>
+        <div class="verdict-item"><div class="vk">Alvo construtivo (18-24m)</div><div class="vv">R$ 112,00</div></div>
+        <div class="verdict-item"><div class="vk">Piso adverso</div><div class="vv">R$ 92,00</div></div>
+        <div class="verdict-item"><div class="vk">Risco/retorno</div><div class="vv">Favorável</div></div>
+      </div>
+
+      <div class="prose">
+        <p>A tese de deslocamento de preço parte de um desconto de 6% sobre o valor patrimonial num fundo cuja vacância caiu de forma consistente nos quatro meses cobertos e cuja gestão vem capturando ganhos reais relevantes em cada renovação contratual. O mercado parece precificar mais o efeito de diluição da 16ª emissão do que a qualidade operacional subjacente do portfólio, o que abre espaço para reaproximação entre preço e valor patrimonial à medida que o capital captado for alocado.</p>
+        <p>Em qualidade fundamentalista, o portfólio de 34 imóveis concentrado em São Paulo combina localização defensável com uma gestão que demonstrou capacidade de renegociar contratos em condições favoráveis repetidamente, não como exceção isolada. A dependência histórica de ganhos de reciclagem para sustentar a distribuição é o contraponto que impede uma nota mais alta.</p>
+        <p>O risco primário do caso é a diluição temporária por capital não alocado, discutida no Bloco F: enquanto os recursos da 16ª emissão permanecerem em caixa, o fundo carrega uma base de cotas maior sem a receita correspondente, o que limita a velocidade de qualquer reprecificação positiva no curto prazo.</p>
+        <p>Os catalisadores mais próximos são a assinatura do instrumento vinculante para a venda dos três ativos do MOU, a divulgação de eventuais aquisições feitas com o capital da 16ª emissão e o efeito da reavaliação patrimonial anual esperada no relatório de julho sobre a cota patrimonial e, por consequência, sobre o P/VP.</p>
+      </div>
+    </section>
+
+    <section class="section" id="disclaimer">
+      <div class="block-eyebrow">Disclaimer</div>
+      <h2 class="block-title">Avisos Obrigatórios</h2>
+
+      <div class="disclaimer">
+        <h4>Aviso de Uso Interno</h4>
+        <p>Este relatório foi produzido exclusivamente para uso interno da Polaris Global Strategies Ltd. (PGS), sociedade constituída nas Ilhas Virgens Britânicas (BVI), que opera como veículo privado de pesquisa e análise de investimentos em nome de seus sócios. Este documento não constitui recomendação de investimento para qualquer terceiro, seja pessoa física ou jurídica, e não deve ser interpretado como tal. A PGS não presta serviços de gestão de ativos, assessoria ou consultoria de investimentos a qualquer cliente externo, não possui base de clientes, e não oferece produtos ou serviços a terceiros. Eventual acesso a este documento por partes não autorizadas não confere a ele validade como aconselhamento ou recomendação de investimento. As informações e análises aqui contidas baseiam-se em fontes públicas consideradas confiáveis, mas a PGS não garante sua completude ou exatidão. Investimentos em renda variável envolvem riscos, incluindo a possibilidade de perda total do capital investido. As opiniões expressas refletem o julgamento analítico interno na data de publicação e estão sujeitas a alteração sem aviso prévio.</p>
+      </div>
+
+      <div class="disclaimer">
+        <h4>Atribuição de IA</h4>
+        <p>Este relatório foi produzido com o auxílio de inteligência artificial. Modelo generativo: Anthropic · Claude Sonnet 5 · versão Sonnet 5, acessado via claude.ai. Todos os dados foram obtidos por busca na web ao vivo dentro da mesma sessão e verificados de acordo com o protocolo de ancoragem descrito na etapa 1; o papel do modelo foi síntese de dados, formatação e redação, não a origem das estimativas financeiras. Revisão humana pelo analista interno precede a publicação.</p>
+      </div>
+
+      <div class="disclaimer">
+        <h4>Referência do Relatório</h4>
+        <p>Report Reference: PGS-BTLG11-202607 · Data: 30 de julho de 2026 · Analista Interno: Polaris Global Strategies Ltd. · Ticker: BTLG11 · Exchange: B3 · AI Model: Anthropic Claude Sonnet 5</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const navLinks = document.querySelectorAll('.nav-link');
+  const sections = document.querySelectorAll('.main-content section[id]');
+
+  const animateEls = document.querySelectorAll('.animate');
+  const animObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+        animObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.05 });
+  animateEls.forEach(el => {
+    el.style.opacity = '0';
+    el.style.animationPlayState = 'paused';
+    animObserver.observe(el);
+  });
+
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector('.nav-link[href="#' + id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(s => navObserver.observe(s));
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
