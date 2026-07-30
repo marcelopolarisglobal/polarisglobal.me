@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGS-AMZN-202607 · Amazon.com, Inc. · Polaris Global Strategies Ltd.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  --text:#111827;
+  --text-mute:#6B7280;
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#FF9900;
+  --display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--canvas);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+
+.layout{display:grid;grid-template-columns:220px 1fr;align-items:start;}
+
+/* ---------- sidebar ---------- */
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:28px 0;}
+.sidebar .brand{font-family:var(--display);font-size:19px;font-weight:700;line-height:1.2;padding:0 20px 6px;}
+.sidebar .brand span{display:block;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);margin-top:8px;}
+.sidebar nav{margin-top:22px;display:flex;flex-direction:column;}
+.nav-link{display:block;padding:9px 20px;border-left:3px solid transparent;color:var(--text-mute);text-decoration:none;font-size:13px;font-weight:500;transition:background .2s,color .2s;}
+.nav-link .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;margin-right:8px;color:var(--accent);}
+.nav-link:hover{color:var(--text);background:var(--card);}
+.nav-link.active{color:var(--text);background:var(--card);border-left-color:var(--accent);}
+.nav-link:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
+
+/* ---------- content ---------- */
+.main-content{min-width:0;padding:0 0 90px;}
+.wrap{max-width:960px;margin:0 auto;padding:0 40px;}
+.prose{max-width:68ch;}
+p{margin:0 0 18px;}
+
+.block{padding:56px 0 8px;}
+.block-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:30px;}
+.block-key{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--accent);}
+.block-head h2{font-family:var(--display);font-size:27px;font-weight:600;margin:0;letter-spacing:-.01em;}
+h3.sub{font-family:var(--body);font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute);margin:38px 0 14px;}
+h3.sub:first-of-type{margin-top:0;}
+
+/* ---------- cover ---------- */
+.cover{min-height:96vh;display:flex;flex-direction:column;justify-content:center;background:var(--surface);
+  background-image:radial-gradient(var(--border) 1px, transparent 1px);background-size:22px 22px;
+  border-bottom:3px solid var(--accent);}
+.cover-inner{max-width:960px;margin:0 auto;padding:60px 40px;width:100%;}
+.cover .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--text-mute);}
+.cover h1{font-family:var(--display);font-size:clamp(44px,7vw,84px);line-height:1.02;font-weight:700;margin:20px 0 0;letter-spacing:-.025em;}
+.cover h1 em{font-style:normal;color:var(--accent);}
+.cover .ticker-rule{display:flex;align-items:center;gap:16px;margin-top:26px;padding-top:22px;border-top:3px solid var(--accent);max-width:640px;}
+.cover .tk{font-family:var(--mono);font-size:32px;font-weight:700;letter-spacing:.02em;}
+.cover .ex{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);}
+.cover-meta{display:flex;flex-wrap:wrap;gap:38px;margin-top:46px;}
+.cover-meta div span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-mute);margin-bottom:5px;}
+.cover-meta div strong{font-family:var(--mono);font-size:15px;font-weight:500;}
+
+/* ---------- panel (Block A) ---------- */
+.panel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-top:3px solid var(--accent);border-bottom:1px solid var(--border);}
+.panel-col{background:var(--card);padding:20px 18px;}
+.panel-col h4{font-family:var(--body);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-mute);margin:0 0 14px;}
+.panel-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px dotted var(--border);}
+.panel-row:last-child{border-bottom:none;}
+.panel-row .lbl{font-size:12px;color:var(--text-mute);}
+.panel-row .val{font-family:var(--mono);font-size:13px;font-weight:500;text-align:right;white-space:nowrap;}
+.val.pos{color:var(--pos);} .val.neg{color:var(--neg);}
+
+/* ---------- tables ---------- */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{font-family:var(--body);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute);
+  text-align:right;padding:10px 12px;border-bottom:2px solid var(--accent);white-space:nowrap;}
+th:first-child{text-align:left;}
+td{padding:11px 12px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12.5px;vertical-align:middle;}
+td:first-child{text-align:left;font-family:var(--body);font-size:13px;font-weight:500;}
+tbody tr{background:var(--canvas);transition:background .18s;}
+tbody tr:nth-child(even){background:var(--surface);}
+tbody tr:hover{background:var(--card);}
+td.wide{text-align:left;font-family:var(--body);font-size:12.5px;white-space:normal;min-width:180px;}
+.pill{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:3px;margin-left:6px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.pill.beat{background:var(--pill-pos-bg);color:var(--pill-pos-fg);}
+.pill.miss{background:var(--pill-neg-bg);color:var(--pill-neg-fg);}
+.rx-pos{color:var(--pos);font-weight:700;} .rx-neg{color:var(--neg);font-weight:700;}
+.stars{color:var(--accent);letter-spacing:.08em;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.src{font-family:var(--mono);font-size:10.5px;line-height:1.5;color:var(--text-mute);margin:10px 0 0;max-width:none;}
+
+/* ---------- Block C ---------- */
+.quarter{border-left:3px solid var(--accent);padding-left:22px;margin-bottom:32px;max-width:68ch;}
+.kicker{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-mute);margin-bottom:8px;}
+.kicker b{color:var(--text);}
+
+/* ---------- Block D ---------- */
+.pattern{max-width:68ch;margin-bottom:18px;padding-left:20px;border-left:1px solid var(--border);}
+.pattern .claim{font-weight:700;}
+.watch{display:flex;gap:14px;align-items:flex-start;max-width:68ch;margin-bottom:14px;padding-left:20px;border-left:1px solid var(--border);}
+.sig{font-family:var(--mono);font-size:11px;font-weight:700;white-space:nowrap;padding-top:3px;}
+.sig.up{color:var(--pos);} .sig.flat{color:var(--text-mute);} .sig.down{color:var(--neg);}
+
+/* ---------- Block F ---------- */
+.risk{border:1px solid var(--border);margin-bottom:20px;page-break-inside:avoid;}
+.risk.high{border-left:3px solid var(--neg);}
+.risk.med{border-left:3px solid var(--caution);}
+.risk-head{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 18px;flex-wrap:wrap;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.risk.high .risk-head{background:var(--neg-tint);}
+.risk.med .risk-head{background:var(--caution-tint);}
+.risk-head h4{font-family:var(--display);font-size:18px;font-weight:600;margin:0;}
+.badge{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:3px;color:#fff;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.badge.high{background:var(--neg);} .badge.med{background:var(--caution);}
+.risk-body{background:var(--canvas);padding:16px 18px 2px;}
+.risk-body p{max-width:68ch;}
+
+/* ---------- Block G ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.scen{border:1px solid var(--border);page-break-inside:avoid;}
+.scen-head{padding:13px 18px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.scen.bull .scen-head{background:var(--pos-tint);border-top:3px solid var(--pos);}
+.scen.bear .scen-head{background:var(--neg-tint);border-top:3px solid var(--neg);}
+.scen-head h4{font-family:var(--display);font-size:19px;margin:0;font-weight:600;}
+.scen-head .delta{font-family:var(--mono);font-size:13px;font-weight:700;margin-top:3px;display:block;}
+.scen.bull .delta{color:var(--pos);} .scen.bear .delta{color:var(--neg);}
+.scen-body{background:var(--canvas);padding:16px 18px 4px;}
+.scen-body ul{margin:0 0 14px;padding-left:18px;}
+.scen-body li{font-size:13.5px;margin-bottom:7px;}
+.scen-body p{font-size:14px;}
+
+/* ---------- Block H ---------- */
+.verdict{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--accent);padding:26px 28px 8px;}
+.verdict-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:26px;}
+.vs-cell{background:var(--card);padding:14px 16px;}
+.vs-cell span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);margin-bottom:6px;}
+.vs-cell strong{font-family:var(--mono);font-size:17px;font-weight:700;}
+.rating-pill{display:inline-block;background:var(--accent);color:#111827;font-family:var(--mono);font-size:14px;font-weight:700;letter-spacing:.08em;padding:6px 14px;border-radius:4px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+
+/* ---------- disclaimer ---------- */
+.legal{margin-top:64px;padding-top:26px;border-top:1px solid var(--border);}
+.legal p{font-size:11.5px;line-height:1.7;color:var(--text-mute);max-width:none;}
+.legal .ref{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--text);}
+
+/* ---------- animation ---------- */
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@media (prefers-reduced-motion:reduce){.animate{animation:none!important;opacity:1!important;transform:none!important;}html{scroll-behavior:auto;}}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .panel-grid{grid-template-columns:repeat(2,1fr);}
+  .verdict-strip{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:768px){
+  .layout{display:block;}
+  .sidebar{position:sticky;top:0;height:auto;z-index:20;border-right:none;border-bottom:1px solid var(--border);padding:12px 0;}
+  .sidebar .brand{font-size:15px;padding:0 16px 8px;}
+  .sidebar .brand span{margin-top:4px;}
+  .sidebar nav{flex-direction:row;overflow-x:auto;margin-top:8px;gap:2px;}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;white-space:nowrap;padding:7px 12px;}
+  .nav-link.active{border-left-color:transparent;border-bottom-color:var(--accent);}
+  .wrap,.cover-inner{padding-left:20px;padding-right:20px;}
+  .scenario-grid{grid-template-columns:1fr;}
+  .panel-grid{grid-template-columns:1fr;}
+  .cover{min-height:auto;padding:50px 0;}
+}
+
+/* ---------- print ---------- */
+@media print{
+  @page{size:A4;margin:15mm 12mm;}
+  html,body{background-color:#FFFFFF!important;color:#111827!important;font-size:10.5pt;}
+  .layout{display:block!important;}
+  .sidebar,.nav-link{display:none!important;}
+  .main-content{display:block!important;width:100%!important;padding:0!important;}
+  .wrap{max-width:100%!important;padding:0!important;}
+  .cover{min-height:auto!important;height:auto!important;display:block!important;background-image:none!important;background-color:#FFFFFF!important;border-bottom:3px solid var(--accent);padding:0 0 18pt;}
+  .cover-inner{padding:0!important;max-width:100%!important;}
+  .cover h1{font-size:40pt;}
+  .block{padding:22pt 0 4pt;page-break-inside:auto;}
+  .block-head{page-break-after:avoid;}
+  h3.sub{page-break-after:avoid;}
+  .panel-grid{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:1px!important;page-break-inside:avoid;}
+  .scenario-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12pt!important;}
+  .panel-col,.vs-cell{background-color:#F3F4F6!important;}
+  .risk-body,.scen-body,tbody tr{background-color:#FFFFFF!important;}
+  .verdict{background-color:#F9FAFB!important;}
+  .prose,.quarter,.pattern,.watch,p{orphans:3;widows:3;}
+  .risk,.scen,.quarter{page-break-inside:avoid;}
+  table{page-break-inside:auto;font-size:8.5pt;}
+  tr{page-break-inside:avoid;}
+  td,th{padding:5pt 6pt;}
+  .table-wrap{overflow:visible!important;}
+  td,th{word-break:break-word;}
+  .animate{opacity:1!important;transform:none!important;animation:none!important;}
+  *{box-shadow:none!important;backdrop-filter:none!important;}
+  .pill,.badge,.rating-pill,.stars,.risk-head,.scen-head{print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">Polaris Global Strategies<span>PGS-AMZN-202607</span></div>
+    <nav>
+      <a class="nav-link" href="#cover"><span class="k">00</span>Cover</a>
+      <a class="nav-link" href="#block-a"><span class="k">A</span>Panel</a>
+      <a class="nav-link" href="#block-b"><span class="k">B</span>Quarters</a>
+      <a class="nav-link" href="#block-c"><span class="k">C</span>Reading</a>
+      <a class="nav-link" href="#block-d"><span class="k">D</span>Patterns</a>
+      <a class="nav-link" href="#block-e"><span class="k">E</span>Architecture</a>
+      <a class="nav-link" href="#block-f"><span class="k">F</span>Risks</a>
+      <a class="nav-link" href="#block-g"><span class="k">G</span>Scenarios</a>
+      <a class="nav-link" href="#block-h"><span class="k">H</span>Verdict</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- ================= COVER ================= -->
+    <section class="cover" id="cover">
+      <div class="cover-inner animate">
+        <div class="eyebrow">Polaris Global Strategies Ltd. · Internal Equity Research</div>
+        <h1>Amazon.com,<br><em>Inc.</em></h1>
+        <div class="ticker-rule">
+          <div class="tk">AMZN</div>
+          <div class="ex">NASDAQ Global Select Market</div>
+        </div>
+        <div class="cover-meta">
+          <div><span>Reference</span><strong>PGS-AMZN-202607</strong></div>
+          <div><span>Publication date</span><strong>July 30, 2026</strong></div>
+          <div><span>Anchor quarter</span><strong>Q2 2026</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+
+      <!-- ================= BLOCK A ================= -->
+      <section class="block animate" id="block-a">
+        <div class="block-head"><span class="block-key">A</span><h2>Consolidated instrument panel</h2></div>
+        <div class="panel-grid">
+
+          <div class="panel-col">
+            <h4>Market</h4>
+            <div class="panel-row"><span class="lbl">Price at analysis</span><span class="val">$235.50</span></div>
+            <div class="panel-row"><span class="lbl">Market cap</span><span class="val">$2,539.4B</span></div>
+            <div class="panel-row"><span class="lbl">52-week high</span><span class="val">$278.56</span></div>
+            <div class="panel-row"><span class="lbl">vs. 52-week high</span><span class="val neg">-15.5%</span></div>
+            <div class="panel-row"><span class="lbl">52-week low</span><span class="val">$196.00</span></div>
+            <div class="panel-row"><span class="lbl">vs. 52-week low</span><span class="val pos">+20.2%</span></div>
+          </div>
+
+          <div class="panel-col">
+            <h4>Fundamentals (TTM)</h4>
+            <div class="panel-row"><span class="lbl">Revenue</span><span class="val">$775,680M</span></div>
+            <div class="panel-row"><span class="lbl">EPS, GAAP diluted</span><span class="val">$12.44</span></div>
+            <div class="panel-row"><span class="lbl">EPS, adjusted</span><span class="val">$7.28 (est.)</span></div>
+            <div class="panel-row"><span class="lbl">Operating margin</span><span class="val">12.1%</span></div>
+            <div class="panel-row"><span class="lbl">Free cash flow</span><span class="val neg">-$7,604M</span></div>
+            <div class="panel-row"><span class="lbl">FCF yield</span><span class="val neg">-0.3%</span></div>
+          </div>
+
+          <div class="panel-col">
+            <h4>Valuation</h4>
+            <div class="panel-row"><span class="lbl">P/E TTM, GAAP</span><span class="val">18.9x</span></div>
+            <div class="panel-row"><span class="lbl">Forward P/E</span><span class="val">29.3x</span></div>
+            <div class="panel-row"><span class="lbl">EV / Revenue</span><span class="val">3.4x</span></div>
+            <div class="panel-row"><span class="lbl">PEG</span><span class="val">1.37</span></div>
+            <div class="panel-row"><span class="lbl">3-year average P/E</span><span class="val">50.8x</span></div>
+            <div class="panel-row"><span class="lbl">5-year average P/E</span><span class="val">54.8x</span></div>
+          </div>
+
+          <div class="panel-col">
+            <h4>Consensus</h4>
+            <div class="panel-row"><span class="lbl">Analysts covering</span><span class="val">64</span></div>
+            <div class="panel-row"><span class="lbl">Buy / Hold / Sell</span><span class="val">42 / 0 / 0</span></div>
+            <div class="panel-row"><span class="lbl">Average target</span><span class="val">$313.07</span></div>
+            <div class="panel-row"><span class="lbl">High target</span><span class="val">$370.00</span></div>
+            <div class="panel-row"><span class="lbl">Low target</span><span class="val">$207.00</span></div>
+            <div class="panel-row"><span class="lbl">Next earnings</span><span class="val">Oct 2026 (est.)</span></div>
+          </div>
+
+        </div>
+        <p class="src">Sources: Amazon.com 8-K Exhibit 99.1, Q2 2026 earnings release (July 30, 2026) for revenue, EPS, operating margin and free cash flow; Yahoo Finance closing quote, July 30, 2026 for price; MacroTrends for 52-week range; StockAnalysis / S&amp;P Global Market Intelligence (July 23, 2026) for market cap, forward P/E, PEG, enterprise value and consensus targets; TipRanks for rating distribution; FinanceCharts for historical multiple averages. Market cap, P/E TTM, EV/Revenue, FCF yield, adjusted EPS TTM and distance from the 52-week range are PGS calculations from those inputs. Adjusted EPS excludes after-tax non-operating revaluation of the Anthropic investment and after-tax special operating charges, taxed at each period's effective rate; the tag (est.) marks that derivation. Forward P/E is quoted on a sell-side non-GAAP basis and is not directly comparable to the GAAP trailing figure beside it.</p>
+
+        <div class="prose" style="margin-top:26px">
+          <p>The trailing multiple looks cheap against a five-year average roughly three times higher, and nearly all of that gap is an artefact: two enormous Anthropic revaluations sit inside trailing GAAP earnings and flatter the denominator. On the adjusted trailing figure in the panel the shares trade in the low thirties, a discount to their own recent history and close to the forward multiple.</p>
+        </div>
+      </section>
+
+      <!-- ================= BLOCK B ================= -->
+      <section class="block animate" id="block-b">
+        <div class="block-head"><span class="block-key">B</span><h2>Four quarters, sequential</h2></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Quarter</th>
+                <th>Revenue vs. consensus</th>
+                <th>GAAP EPS vs. cons.</th>
+                <th>Adj. EPS vs. cons.</th>
+                <th>Op. margin rep. / adj.</th>
+                <th>Capex, net</th>
+                <th>Free cash flow</th>
+                <th>Next-session reaction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Q2 2026<br><span style="font-family:var(--mono);font-size:10px;color:var(--text-mute)">ended Jun 30 · rep. Jul 30</span></td>
+                <td>$200,606M / $196,700M<span class="pill beat">BEAT</span></td>
+                <td>$5.75 / $1.82<span class="pill beat">BEAT</span></td>
+                <td>$1.95 (est.) / $1.82<span class="pill beat">BEAT</span></td>
+                <td>13.7% / 13.7%</td>
+                <td>$53,076M</td>
+                <td class="rx-neg">-$7,689M</td>
+                <td class="rx-pos">+11.6% after hours</td>
+              </tr>
+              <tr>
+                <td>Q1 2026<br><span style="font-family:var(--mono);font-size:10px;color:var(--text-mute)">ended Mar 31 · rep. Apr 29</span></td>
+                <td>$181,519M / $177,300M<span class="pill beat">BEAT</span></td>
+                <td>$2.78 / $1.65<span class="pill beat">BEAT</span></td>
+                <td>$1.61 (est.) / $1.65<span class="pill miss">MISS</span></td>
+                <td>13.1% / 13.1%</td>
+                <td>$43,234M</td>
+                <td class="rx-neg">-$17,202M</td>
+                <td class="rx-pos">+0.8%</td>
+              </tr>
+              <tr>
+                <td>Q4 2025<br><span style="font-family:var(--mono);font-size:10px;color:var(--text-mute)">ended Dec 31 · rep. Feb 5</span></td>
+                <td>$213,386M / $211,500M<span class="pill beat">BEAT</span></td>
+                <td>$1.95 / $1.97<span class="pill miss">MISS</span></td>
+                <td>$2.13 (est.) / $1.97<span class="pill beat">BEAT</span></td>
+                <td>11.7% / 12.8%</td>
+                <td>$38,469M</td>
+                <td class="rx-pos">+$15,990M</td>
+                <td class="rx-neg">-5.6%</td>
+              </tr>
+              <tr>
+                <td>Q3 2025<br><span style="font-family:var(--mono);font-size:10px;color:var(--text-mute)">ended Sep 30 · rep. Oct 30</span></td>
+                <td>$180,169M / $177,800M<span class="pill beat">BEAT</span></td>
+                <td>$1.95 / $1.57<span class="pill beat">BEAT</span></td>
+                <td>$1.59 (est.) / $1.57<span class="pill beat">BEAT</span></td>
+                <td>9.7% / 12.0%</td>
+                <td>$34,228M</td>
+                <td class="rx-pos">+$1,297M</td>
+                <td class="rx-pos">+9.6%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Sources: Amazon.com 8-K Exhibit 99.1 releases for Q3 2025, Q4 2025, Q1 2026 and Q2 2026 (reported figures, segment data, special charges, cash flow statements). Consensus: StreetAccount and LSEG via CNBC (Q1 2026, Q2 2026), StockStory (Q1 2026 GAAP EPS), Barchart and public.com (Q4 2025), LSEG via CNBC and Zacks (Q3 2025). Next-session price reaction: TipRanks earnings reaction table; the Q2 2026 figure is the extended-hours move reported by Yahoo Finance on July 30, 2026, since the following regular session had not occurred at publication. Capex is purchases of property and equipment net of proceeds from sales and incentives. Quarterly capex and free cash flow for Q3 2025 are PGS calculations derived by subtracting the reported Q1, Q2 and Q4 2025 quarterly figures from the audited full-year 2025 totals; all other quarterly figures are read directly from the relevant cash flow statement. Adjusted EPS derivation as described under the panel.</p>
+      </section>
+
+      <!-- ================= BLOCK C ================= -->
+      <section class="block animate" id="block-c">
+        <div class="block-head"><span class="block-key">C</span><h2>Reading the quarters</h2></div>
+
+        <div class="quarter">
+          <div class="kicker"><b>Q2 2026</b> · anchor · the cloud print</div>
+          <p>Prime Day moved into June this year, which loaded the June quarter with retail volume the prior year had booked in September. That shift explains a fair share of the North America line, and it also explains why September guidance reads soft on revenue while reading generously on operating income. The consequential number sits in cloud. AWS growth reaccelerated for a fourth straight quarter, cleared the sell side comfortably, and did so while segment margin climbed back toward its recent peak, which is the combination the market had stopped expecting after two years of deceleration. The headline earnings figure tells you almost nothing about operations. A very large non-operating revaluation of the Anthropic holding runs straight through net income and accounts for most of reported diluted EPS. Strip it out and the quarter still beats, by an ordinary margin rather than a spectacular one. Management framed capacity as demand constrained, pointing to gigawatt-scale silicon commitments from the two leading frontier labs. The extended-hours reaction favoured the cloud print over the guidance quibble.</p>
+        </div>
+
+        <div class="quarter">
+          <div class="kicker"><b>Q1 2026</b> · record margin, vanishing cash</div>
+          <p>The March quarter was the operating high-water mark of the sequence. Company operating margin reached the highest level Amazon has reported, carried by North America retail efficiency and a cloud margin close to its own ceiling, and revenue cleared the top of management's guidance range. AWS reaccelerated to its fastest pace in fifteen quarters and the custom chips business crossed an annualised run rate management chose to headline. The reported earnings figure again carries a large Anthropic mark, and once that is removed the quarter lands broadly where analysts had modelled it. The market read it the same way. Shares moved less than a percentage point in the following session despite a revenue beat and a record margin, because the same release disclosed the largest quarterly capital outlay in the company's history and a trailing free cash flow figure that had all but disappeared. Management also flagged incremental Amazon Leo cost landing in the June quarter. The print was strong. What investors priced was the funding cost of the next two years.</p>
+        </div>
+
+        <div class="quarter">
+          <div class="kicker"><b>Q4 2025</b> · the capital announcement</div>
+          <p>The December quarter beat on revenue and missed on earnings by a cent, and neither fact mattered. What moved the stock was a single sentence on the call: management intended to spend roughly two hundred billion dollars on capital expenditure during 2026, a step up of about half again on the year just closed. Shares fell more than five percent in the next session and kept sliding for weeks afterwards. The underlying quarter was decent. AWS growth accelerated to its fastest in thirteen quarters, advertising held its low-twenties pace, and reported operating margin was suppressed by three separate charges covering an Italian tax settlement, severance, and impairments tied largely to physical stores. Adjusted for those, margin expanded year over year. Free cash flow was still comfortably positive, and this is the last quarter in the sequence for which that holds. The release offered no free cash flow floor and no payback timeline for the capital programme, and the absence of both is what the sell side fixed on.</p>
+        </div>
+
+        <div class="quarter">
+          <div class="kicker"><b>Q3 2025</b> · charges, and a record close</div>
+          <p>The September quarter is the cleanest illustration of how far reported operating income can sit from underlying performance. Two special charges, a settlement with the Federal Trade Commission over Prime enrolment practices and severance tied to planned role eliminations, pushed reported margin below ten percent. Adjusted, margin was more than two points higher and expanding. AWS reaccelerated to its fastest growth in eleven quarters, which was the number the market cared about, and the stock closed nearly ten percent higher the following session at a record. A substantial Anthropic gain sat in non-operating income that quarter as well; excluding both the gain and the charges, earnings landed almost exactly on consensus, which is the pattern that repeats through the whole sequence. Jassy told analysts the company would keep investing aggressively in capacity because the demand was visible. Depreciation had also begun to reflect a shortened useful-life assumption on certain servers, a quiet change with a long tail.</p>
+        </div>
+      </section>
+
+      <!-- ================= BLOCK D ================= -->
+      <section class="block animate" id="block-d">
+        <div class="block-head"><span class="block-key">D</span><h2>Patterns and watch list</h2></div>
+
+        <h3 class="sub">Structural patterns across the four quarters</h3>
+        <div class="pattern"><p><span class="claim">Reported earnings have decoupled from operations.</span> In every quarter, an Anthropic revaluation or a special charge moved diluted EPS by an amount comparable to the whole consensus estimate.</p></div>
+        <div class="pattern"><p><span class="claim">AWS is the only segment whose growth rate is rising.</span> Cloud growth increased in each successive quarter while the two retail segments moved sideways in a narrow band.</p></div>
+        <div class="pattern"><p><span class="claim">Consolidated margin is a cloud mix story more than a retail execution story.</span> AWS carries a segment margin many times the International figure, so consolidated margin tracks cloud share of revenue closely.</p></div>
+        <div class="pattern"><p><span class="claim">The slide into cash deficit was gradual and explained by one line.</span> Trailing free cash flow fell every quarter and turned negative at the anchor, driven entirely by property and equipment purchases.</p></div>
+
+        <h3 class="sub">Watch list for the next print</h3>
+        <div class="watch"><span class="sig up">&uarr; improving</span><p><b>AWS revenue growth.</b> Confirms if it holds near the anchor pace; breaks toward the mid twenties, which would mark the reacceleration as capacity catch-up.</p></div>
+        <div class="watch"><span class="sig down">&darr; deteriorating</span><p><b>Trailing free cash flow.</b> Confirms if the deficit widens in step with backlog conversion; breaks if it widens while backlog growth flattens.</p></div>
+        <div class="watch"><span class="sig flat">&rarr; stable</span><p><b>AWS operating margin.</b> Confirms if margin holds near the anchor level as new depreciation lands; breaks on a fall back toward the mid-sequence trough.</p></div>
+        <div class="watch"><span class="sig flat">&rarr; stable</span><p><b>North America operating margin.</b> Confirms if it holds through the Leo cost ramp and the harder post-Prime-Day comparison; breaks on a return toward the level seen two quarters back.</p></div>
+      </section>
+
+      <!-- ================= BLOCK E ================= -->
+      <section class="block animate" id="block-e">
+        <div class="block-head"><span class="block-key">E</span><h2>Strategic architecture</h2></div>
+
+        <h3 class="sub">E.1 · Business model and revenue architecture</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Segment</th><th>FY2025 revenue</th><th>% of total</th><th>YoY</th><th>FY2025 op. income</th><th>Margin profile</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>North America</td><td>$426,305M</td><td>59.5%</td><td>+10%</td><td>$29,619M</td><td>6.9%</td></tr>
+              <tr><td>International</td><td>$161,894M</td><td>22.6%</td><td>+13%</td><td>$4,750M</td><td>2.9%</td></tr>
+              <tr><td>AWS</td><td>$128,725M</td><td>18.0%</td><td>+20%</td><td>$45,606M</td><td>35.4%</td></tr>
+              <tr><td><b>Consolidated</b></td><td><b>$716,924M</b></td><td><b>100.0%</b></td><td><b>+12%</b></td><td><b>$79,975M</b></td><td><b>11.2%</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Source: Amazon.com 8-K Exhibit 99.1, fourth quarter and full year 2025 results, segment information and supplemental business metrics (filed February 5, 2026). Percentages of total and consolidated margin are PGS calculations from those figures.</p>
+
+        <div class="prose" style="margin-top:24px">
+          <p>Amazon runs three segments and one profit engine. Cloud contributes under a fifth of revenue and well over half of operating income, and the ratio has been widening. North America is a large, low-margin machine that has become steadily more efficient, and International is a thinner version of the same thing with a longer runway and a weaker margin base. The reporting structure hides the two businesses that matter most to the margin trajectory: advertising sits inside the retail segments and carries incremental economics closer to cloud than to logistics, and the custom silicon programme sits inside AWS and is the main lever on cloud gross margin.</p>
+          <p>The funding chain runs in one direction. Retail generates working capital float, because suppliers and third-party sellers are paid after customers pay, and that float plus cloud operating income funds the capital programme. It no longer funds all of it. The capital outlay in the anchor quarter alone exceeded the entire operating cash flow of that quarter, which is why free cash flow turned negative, and the shortfall has been bridged with a step change in long-term debt issuance rather than with retained cash. That is a deliberate choice, and it is the single most important fact about the current financial structure.</p>
+          <p>Operating leverage originates in three places, and the order matters. First, in cloud, where each incremental workload runs across infrastructure whose cost per unit of compute the company is actively lowering through its own chips. Second, in advertising, where inventory is already paid for by the retail business and the incremental cost of a sponsored placement is close to zero. Third, in fulfilment, where regional network redesign, robotics and delivery density lower cost per unit shipped without adding revenue. The first two show up in margin quickly. The third shows up slowly and is the reason North America margin has roughly doubled over three years. Against all of that sits the depreciation schedule on the current buildout, which has begun to land and will keep landing through the end of the decade.</p>
+        </div>
+
+        <h3 class="sub">E.2 · Competitive moat</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Pillar</th><th>Mechanism</th><th>Strength</th><th>Erosion risk</th><th>Rating</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Fulfilment density</td><td class="wide">Fixed-cost network amortised over a unit volume no rival matches</td><td>High</td><td>Low</td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+              <tr><td>Advertising data</td><td class="wide">Purchase intent observed at the point of transaction, not inferred</td><td>High</td><td>Low</td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+              <tr><td>Cloud switching costs</td><td class="wide">Data gravity, committed spend contracts, rewriting cost of migration</td><td>High</td><td>Medium</td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td></tr>
+              <tr><td>Marketplace network</td><td class="wide">Seller supply and buyer demand each raising the other's return</td><td>High</td><td>Medium</td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td></tr>
+              <tr><td>Custom silicon</td><td class="wide">Vertical integration lowering cost per unit of training and inference</td><td>Medium</td><td>Medium</td><td><span class="stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td></tr>
+              <tr><td>Prime bundle</td><td class="wide">Cross-category habit formation raising retention above price sensitivity</td><td>Medium</td><td>Medium</td><td><span class="stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Source: PGS assessment. Mechanism descriptions and durability ratings are internal analytical judgement informed by segment disclosure in Amazon.com 8-K Exhibit 99.1 releases (Q3 2025 through Q2 2026) and the FY2025 Form 10-K business description. Ratings are on the five-point PGS moat scale and carry no consensus equivalent.</p>
+
+        <div class="prose" style="margin-top:24px">
+          <p>Rate the mechanism, not the brand. Fulfilment density earns the top mark because it is arithmetic: the cost of the next delivery falls as the number of deliveries in a postcode rises, and no competitor has the volume to match the denominator. Walmart is the only firm close, and it is closer in groceries than in the long tail. The advertising pillar earns the same mark for a different reason. Amazon observes what people buy rather than inferring what they might want, and an advertiser paying for a placement adjacent to a completed purchase is buying a different product from an impression on a social feed. Neither pillar depends on being liked.</p>
+          <p>Cloud switching costs are strong and slowly weakening. Data gravity is real, committed-spend contracts are real, and the cost of rewriting an application estate around a different set of managed services remains prohibitive for most enterprises. What has changed is that model access has become portable. A customer choosing between frontier models can increasingly run the same model on more than one cloud, which moves the competitive question from lock-in to price and capacity availability. That is a worse fight to be in, and it is why the silicon programme matters beyond its own revenue line.</p>
+          <p>Custom silicon gets three stars rather than four because the advantage is contingent. It works if the chips stay a generation behind the merchant leader on performance while sitting far ahead on cost per unit of useful work, and if the two largest customers keep committing capacity at scale. Both conditions currently hold. Neither is structural. The Prime bundle earns three for a related reason: retention is high, but the bundle has been repeatedly widened with new content and services, which is a sign that the pricing power is being maintained by adding value rather than by charging for it.</p>
+        </div>
+
+        <h3 class="sub">E.3 · Long-term growth architecture</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Driver</th><th>Timeline</th><th>Current state</th><th>Potential</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AI infrastructure buildout</td><td>2026&ndash;2029</td>
+                <td class="wide">Net capex FY2024 $77,658M &rarr; FY2025 $128,320M &rarr; FY2026 guided about $200,000M (set Feb 5, 2026, unrevised at publication); H1 2026 actual $96,310M</td>
+                <td class="wide">AWS contracted backlog $364,000M at Q1 2026, up from $244,000M at FY2025 close</td>
+                <td>on track</td>
+              </tr>
+              <tr>
+                <td>Custom silicon</td><td>2026&ndash;2028</td>
+                <td class="wide">Chips business above a $25,000M annualised run rate, growing triple digits</td>
+                <td class="wide">Multi-gigawatt Trainium commitments from Anthropic and OpenAI, ramping from 2027</td>
+                <td>on track</td>
+              </tr>
+              <tr>
+                <td>Advertising</td><td>continuous</td>
+                <td class="wide">$19,809M in the anchor quarter, up 26% year over year</td>
+                <td class="wide">Retail media plus Prime Video, live sport and third-party inventory such as Netflix audiences</td>
+                <td>on track</td>
+              </tr>
+              <tr>
+                <td>Amazon Leo</td><td>2026&ndash;2030</td>
+                <td class="wide">Close to 400 satellites in orbit; initial service targeted before year end; about $1,000M of incremental annual cost</td>
+                <td class="wide">Constellation of roughly 7,700 satellites; enterprise, aviation and telecom contracts already signed</td>
+                <td>emerging</td>
+              </tr>
+              <tr>
+                <td>Autonomy (Zoox)</td><td>2027 onward</td>
+                <td class="wide">NHTSA Part 555 exemption granted, permitting paid rides in a purpose-built robotaxi</td>
+                <td class="wide">Commercial robotaxi service, with distribution through a third-party ride-hailing app</td>
+                <td>emerging</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Sources: Amazon.com 8-K Exhibit 99.1 releases, Q4 2025 (FY2024 and FY2025 capex, FY2026 capex guidance), Q1 2026 and Q2 2026 (chips run rate, advertising, Leo, Zoox, half-year capex). AWS backlog figures as reported by Amazon management and cited by Zacks and IND Money in Q1 2026 and Q2 2026 previews. H1 2026 net capex is a PGS calculation from the Q2 2026 six-month cash flow statement. The FY2026 capex figure is the last formally published company guidance; the Q2 2026 conference call had not concluded at the time of publication and any revision made on that call is not reflected here.</p>
+
+        <div class="prose" style="margin-top:24px">
+          <p>Sequencing decides everything here, and the sequence has one gate. Silicon must work first. If Trainium delivers acceptable performance at a materially lower cost per unit of useful work than merchant accelerators, then the capital programme buys more sellable capacity per dollar, cloud gross margin holds while volume compounds, and the backlog converts at margins that justify the depreciation. If it does not, Amazon is buying the same accelerators as everyone else at the same prices, the buildout becomes a commodity capacity race, and the returns compress toward the cost of capital. Everything downstream depends on which of those is true, and the evidence so far points the right way without being conclusive.</p>
+          <p>Advertising is the second gate and a much easier one. It is already large, already growing faster than the company, and already the reason consolidated margin can expand while retail volumes grow at single digits. It needs no capital. Its practical constraint is inventory quality, which is why the push into live sport, Prime Video and third-party placements matters more than it looks.</p>
+          <p>Leo and Zoox are options, not drivers. Both consume cash now and will not contribute meaningfully inside the horizon of this report. They earn the emerging tag because each has cleared a real gate this year, orbit count for one and a federal exemption for the other, and because each attaches to distribution Amazon already owns. Rate them as call options funded from the retail float, and price them at close to nothing until the capital programme has visibly turned.</p>
+        </div>
+      </section>
+
+      <!-- ================= BLOCK F ================= -->
+      <section class="block animate" id="block-f">
+        <div class="block-head"><span class="block-key">F</span><h2>Risk register</h2></div>
+
+        <div class="risk high">
+          <div class="risk-head"><h4>Capital cycle outrunning monetisation</h4><span class="badge high">High</span></div>
+          <div class="risk-body">
+            <p>The mechanism is depreciation, and it is arithmetic rather than opinion. Assets bought during the buildout begin depreciating on installation, whereas the revenue they support arrives across the following years as capacity fills. Install faster than you contract and the expense lands ahead of the revenue, compressing consolidated margin even while cloud revenue grows. A shortened useful-life assumption on certain servers accelerates the effect. Timeline is immediate and runs through 2029. The observable is the relationship between two disclosures: the sequential change in quarterly capital outlay and the sequential change in AWS operating margin. Capex rising while cloud margin falls for two consecutive quarters is the signal the cycle has turned. A widening cash deficit funded by long-term debt is tolerable while backlog compounds, and stops being tolerable the moment backlog growth flattens.</p>
+          </div>
+        </div>
+
+        <div class="risk high">
+          <div class="risk-head"><h4>Counterparty concentration in the AI backlog</h4><span class="badge high">High</span></div>
+          <div class="risk-body">
+            <p>Much of the contracted backlog that justifies the capital programme sits with a small number of frontier AI laboratories, two of which account for the gigawatt-scale silicon commitments management cites most often. Those counterparties are loss-making and dependent on continued external funding. A funding shock at either converts a committed multi-year contract into a renegotiation, leaving Amazon holding purpose-built capacity with a thinner secondary market than general-purpose compute. Amazon is also an equity holder in one of them, so the same shock would hit reported earnings twice, through the contract and through the revaluation flattering GAAP results. Timeline is 2027 to 2028, when the largest commitments ramp. The observable is disclosed backlog composition and any change of language on customer concentration in the annual filing.</p>
+          </div>
+        </div>
+
+        <div class="risk med">
+          <div class="risk-head"><h4>Retail margin and policy exposure</h4><span class="badge med">Medium</span></div>
+          <div class="risk-body">
+            <p>North America margin expansion has come from cost per unit shipped falling faster than price competition erodes gross margin. Three things break that: tariff and trade policy raising landed cost on a heavily import-weighted assortment, a consumer trade-down shifting mix toward lower-ticket everyday essentials, and regulatory settlements of the kind that hit reported operating income twice in two years. Scrutiny of advertising and marketplace practices continues. The mechanism is margin rather than revenue: volume has proved resilient across cycles, and the gap between what a unit sells for and what it costs to move is thin enough that a few hundred basis points of input cost matters. Timeline is continuous. The observables are shipping cost growth against paid unit growth, and any new charge disclosed under other operating expense.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= BLOCK G ================= -->
+      <section class="block animate" id="block-g">
+        <div class="block-head"><span class="block-key">G</span><h2>Scenarios</h2></div>
+        <div class="scenario-grid">
+
+          <div class="scen bull">
+            <div class="scen-head"><h4>Bull</h4><span class="delta">+38.0% to the bull target</span></div>
+            <div class="scen-body">
+              <ul>
+                <li>Cloud growth holds near the anchor quarter pace through 2027 as backlog converts.</li>
+                <li>Custom silicon keeps cost per unit of useful work below merchant accelerators, protecting cloud margin as depreciation lands.</li>
+                <li>Free cash flow troughs within the next two quarters and inflects as installed capacity fills.</li>
+              </ul>
+              <p>These hold only if the two frontier laboratory commitments ramp on schedule and no third-party capacity glut appears in 2027. They also require advertising to keep growing at roughly double the company rate, since that is what funds margin expansion while the depreciation schedule peaks. Under those conditions the market stops valuing Amazon on a cash flow figure distorted by a one-off buildout and returns to valuing it on operating earnings, which is the multiple re-rating that does most of the work in this case.</p>
+            </div>
+          </div>
+
+          <div class="scen bear">
+            <div class="scen-head"><h4>Bear</h4><span class="delta">-19.3% to the bear case</span></div>
+            <div class="scen-body">
+              <ul>
+                <li>Cloud growth decelerates back toward the mid twenties as capacity catch-up completes and demand normalises.</li>
+                <li>Depreciation lands ahead of revenue and compresses consolidated margin for four or more consecutive quarters.</li>
+                <li>One large AI counterparty renegotiates or defers, and backlog growth flattens.</li>
+              </ul>
+              <p>These hold if the AI capacity cycle behaves like previous infrastructure cycles, where industry-wide capital commitments made at the same moment produce a supply overhang two to three years later. The Anthropic revaluations that have supported reported earnings would reverse in the same environment, removing the optical support from GAAP EPS at precisely the point operations weaken. The multiple compresses toward the low end of the peer range and the shares retest the lower part of the 52-week band in the panel.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= BLOCK H ================= -->
+      <section class="block animate" id="block-h">
+        <div class="block-head"><span class="block-key">H</span><h2>PGS verdict</h2></div>
+        <div class="verdict">
+          <div class="verdict-strip">
+            <div class="vs-cell"><span>Rating</span><strong><span class="rating-pill">&#128994; BUY</span></strong></div>
+            <div class="vs-cell"><span>Bull target, 18 to 24 months</span><strong>$325.00</strong></div>
+            <div class="vs-cell"><span>Bear downside</span><strong>$190.00</strong></div>
+            <div class="vs-cell"><span>Risk / reward</span><strong>Favourable</strong></div>
+          </div>
+          <div class="prose">
+            <p>The dislocation is specific. Since February the market has priced Amazon on a free cash flow figure the company deliberately destroyed by pulling a decade of infrastructure spending into three years. The shares sit well below their 52-week high while the segment that drives the multiple has accelerated four quarters running. That gap exists because the capital programme carries no published payback schedule, so investors cannot time the return. Absence of a schedule is not absence of a return.</p>
+            <p>Underlying quality improved over the same period, and it becomes visible once reported figures are cleaned of investment marks and special charges. Consolidated margin expanded, retail cost per unit keeps falling, advertising compounds at roughly double the company rate with no capital attached, and cloud margin recovered from its trough while growth accelerated. This is a business earning more on each dollar of revenue than it did two years ago, while spending as though it were earning less.</p>
+            <p>The primary risk is the capital cycle set out in the risk register, and it deserves to be taken seriously rather than argued away. Depreciation is contractual and revenue is not. Counterparty concentration compounds it, because the funding shock that would slow backlog conversion would also reverse the Anthropic marks propping up reported earnings. The bear case is what previous infrastructure cycles have actually done.</p>
+            <p>Catalysts cluster around three disclosures. First, any revision to the 2026 capital figure and the framing around it, which may already have changed on the call held the evening this report was published. Second, the next backlog disclosure and whether its growth still outpaces revenue. Third, the free cash flow trough, which on the current trajectory should be visible within two or three quarters and would remove the objection doing most of the work in the bear case.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= LEGAL ================= -->
+      <section class="legal animate">
+        <p>"This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice."</p>
+        <p>This report was produced with the assistance of artificial intelligence. Generative model: Anthropic · Claude Opus · version Claude Opus 5, accessed via claude.ai. All figures were sourced from live web search within the same session and cross-checked against the anchoring protocol in Step 1; the model's role was data synthesis, formatting and drafting, not the origination of financial estimates. Human review by the internal analyst precedes publication.</p>
+        <p class="ref">Report Reference: PGS-AMZN-202607 · Date: July 30, 2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: AMZN · Exchange: NASDAQ · AI Model: Anthropic Claude Opus 5</p>
+      </section>
+
+    </div><!-- /wrap -->
+  </main>
+</div>
+
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '';
+          entry.target.style.animationPlayState = 'running';
+          animObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    animateEls.forEach(function(el, i){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      el.style.animationDelay = (Math.min(i, 4) * 0.06) + 's';
+      animObserver.observe(el);
+    });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var sections = links.map(function(l){ return document.querySelector(l.getAttribute('href')); }).filter(Boolean);
+
+  function setActive(){
+    var pos = window.scrollY + (window.innerHeight * 0.28);
+    var current = sections[0];
+    sections.forEach(function(s){ if (s.offsetTop <= pos) current = s; });
+    links.forEach(function(l){
+      l.classList.toggle('active', current && l.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', setActive, { passive: true });
+  window.addEventListener('resize', setActive);
+  setActive();
+})();
+</script>
+</body>
+</html>
