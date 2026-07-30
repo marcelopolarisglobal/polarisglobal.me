@@ -1,6 +1,6 @@
 # Polaris Global Strategies — Manual Técnico e Funcional
 
-**Versão:** 1.7  
+**Versão:** 1.8  
 **Data:** Julho 2026  
 **Domínio:** https://polarisglobal.me
 
@@ -64,7 +64,9 @@ A página `research.html` lista os relatórios disponíveis em cards com:
 - Tipo do relatório
 - Link "View Report →" / "Ver Relatório →"
 
-Os relatórios são exibidos do mais recente para o mais antigo, em duas seções sequenciais, cada uma com um cabeçalho de grupo (`.report-group-head`) acima da grade: "Invested Companies" / "Empresas Investidas" e "Evaluated · Not Invested" / "Avaliadas · Não Investidas". Os cards são visualmente idênticos entre as duas seções — a distinção é apenas o cabeçalho.
+Os relatórios são exibidos em duas seções sequenciais, cada uma com um cabeçalho de grupo (`.report-group-head`) acima da grade: "Invested Companies" / "Empresas Investidas" e "Evaluated · Not Invested" / "Avaliadas · Não Investidas". Os cards são visualmente idênticos entre as duas seções — a distinção é apenas o cabeçalho.
+
+A ordem dos cards dentro de "Invested Companies" é curada manualmente (não estritamente cronológica) — reflete a relevância/peso da posição na carteira, definida caso a caso ao adicionar um novo relatório. A seção "Evaluated · Not Invested" segue ordem de inclusão.
 
 A pasta `reports/not-invested/` guarda os relatórios de empresas avaliadas e não investidas. Eles permanecem versionados, acessíveis por URL direta, e **recebem card** em `research.html`, exibidos na segunda seção da página.
 
@@ -128,7 +130,12 @@ polarisglobal.me/
 ├── consulting/            ← sub-site — projeto independente
 └── reports/               ← relatórios HTML individuais
     ├── not-invested/      ← avaliados e não investidos (com card em research.html)
+    │   ├── PGS-LVBI11-202607.html
+    │   ├── PGS-MGM-202606.html
+    │   └── PGS-SMFT3-202607.html
+    ├── PGS-AMZN-202607.html
     ├── PGS-BRKB-202606.html
+    ├── PGS-BTLG11-202607.html
     ├── PGS-GOOGL-202607.html
     ├── PGS-ITSA4-202606.html
     ├── PGS-KLBN11-202606.html
@@ -136,7 +143,8 @@ polarisglobal.me/
     ├── PGS-TSLA-202607.html
     ├── PGS-VULC3-202606.html
     ├── PGS-WAGN-202606.html
-    └── PGS-WAGN-202606-Carteira.html
+    ├── PGS-WAGN-202606-Carteira.html
+    └── PGS-XPLG11-202607.html
 ```
 
 ### 3.3 Design System
@@ -335,7 +343,7 @@ pt: { 'namespace.chave': 'Texto em português' }
 @media print { .pgs-topbar { display: none !important; } }
 ```
 
-4. Adicionar um novo `<article class="report-card">` em `research.html` (mais recentes no topo):
+4. Adicionar um novo `<article class="report-card">` em `research.html`. Na seção "Invested Companies", a posição do card não segue ordem cronológica fixa — é definida manualmente conforme a relevância da posição na carteira (confirmar com o gestor onde inserir). Na seção "Evaluated · Not Invested", adicionar ao final:
 
 ```html
 <!-- PGS-TICKER-YYYYMM -->
