@@ -5,9 +5,15 @@
 
 const BINANCE_BASE = 'https://api.binance.com/api/v3';
 
-let _charts   = [];
-let _observer = null;
-let _rendered = false;
+const HASHRATE_URL = 'https://mempool.space/api/v1/mining/hashrate/all';
+// cors=true e sampled=false são obrigatórios: sem cors o header Access-Control-Allow-Origin
+// não é enviado; sem sampled=false a série é reamostrada a cada 4 dias e fica desatualizada
+const HASHRATE_FALLBACK_URL = 'https://api.blockchain.info/charts/hash-rate?timespan=all&sampled=false&format=json&cors=true';
+
+let _charts        = [];
+let _observer      = null;
+let _rendered      = false;
+let _geometryCheck = null;
 
 // ── Ponto de entrada público ──────────────────────────────────────────────────
 
@@ -36,6 +42,7 @@ function _ensureSection() {
         <p class="btc-val-intro">${t('bv_intro')}</p>
         <div class="btc-val-loading" id="bv-loading">${t('bv_loading')}</div>
         <div class="btc-val-cards" id="bv-cards" style="display:none">
+            ${_cardHtml('hashrate', t('bv_hashrate_title'), t('bv_hashrate_legend'), t('bv_hashrate_disc'))}
             ${_cardHtml('picycle',  t('bv_picycle_title'),  t('bv_picycle_legend'),  t('bv_picycle_disc'))}
             ${_cardHtml('powerlaw', t('bv_powerlaw_title'), t('bv_powerlaw_legend'), t('bv_powerlaw_disc'))}
             ${_cardHtml('mm200w',   t('bv_mm200w_title'),   t('bv_mm200w_legend'),   t('bv_mm200w_disc'))}
@@ -60,19 +67,51 @@ function _cardHtml(id, title, legend, disclaimer) {
 // ── Lazy render via IntersectionObserver ──────────────────────────────────────
 
 function _setupLazyRender() {
-    if (_observer) _observer.disconnect();
+    _teardownTriggers();
+
     const section = document.getElementById('btc-valuation');
     if (!section) return;
 
     _observer = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting && !_rendered) {
-            _rendered = true;
-            _observer.disconnect();
-            _loadAndRender();
-        }
+        if (entries[0].isIntersecting) _startRender();
     }, { threshold: 0.05 });
-
     _observer.observe(section);
+
+    // Aba em segundo plano: o Chrome suspende o ciclo de renderização, e com ele
+    // o IntersectionObserver, o evento scroll e o requestAnimationFrame. Sem
+    // nenhum sinal de rolagem disponível não há como adiar o carregamento, e a
+    // seção ficaria presa em "carregando" indefinidamente. Renderiza de imediato:
+    // os gráficos ficam prontos para quando a aba for aberta.
+    if (document.hidden) {
+        _startRender();
+        return;
+    }
+
+    // Se a aba for aberta depois, o observer volta a funcionar sozinho — mas o
+    // visibilitychange cobre o caso da seção já estar visível nesse momento.
+    _geometryCheck = () => {
+        if (document.hidden) return;
+        const el = document.getElementById('btc-valuation');
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) _startRender();
+    };
+    document.addEventListener('visibilitychange', _geometryCheck);
+}
+
+function _startRender() {
+    if (_rendered) return;
+    _rendered = true;
+    _teardownTriggers();
+    _loadAndRender();
+}
+
+function _teardownTriggers() {
+    if (_observer) { _observer.disconnect(); _observer = null; }
+    if (_geometryCheck) {
+        document.removeEventListener('visibilitychange', _geometryCheck);
+        _geometryCheck = null;
+    }
 }
 
 // ── Dados ─────────────────────────────────────────────────────────────────────
@@ -83,6 +122,13 @@ async function _loadAndRender() {
         _destroyCharts();
         document.getElementById('bv-loading').style.display  = 'none';
         document.getElementById('bv-cards').style.display    = '';
+
+        // Bloco isolado: indisponibilidade da API de hashrate não derruba os demais gráficos
+        try {
+            _renderHashrate(await _fetchHashrate());
+        } catch (err) {
+            console.error('[btc-valuation] hashrate', err);
+        }
 
         _renderPiCycle(series);
         _renderPowerLaw(series);
@@ -109,6 +155,18 @@ async function _buildSeries() {
     return Array.from(map.values()).sort((a, b) => a[0] - b[0]);
 }
 
+async function _fetchHashrate() {
+    try {
+        const resp = await fetch(HASHRATE_URL);
+        const json = await resp.json();
+        return json.hashrates.map(p => [p.timestamp * 1000, p.avgHashrate / 1e18]);  // H/s → EH/s
+    } catch (_) {
+        const resp = await fetch(HASHRATE_FALLBACK_URL);
+        const json = await resp.json();
+        return json.values.map(p => [p.x * 1000, p.y / 1e6]);                        // TH/s → EH/s
+    }
+}
+
 function _dayKey(ts) {
     return new Date(ts).toISOString().slice(0, 10);
 }
@@ -127,7 +185,21 @@ function _fmtPrice(v) {
     return '$' + v.toFixed(4);
 }
 
-function _baseOptions(yMin) {
+// Escada completa de unidades: a série cobre ~16 ordens de grandeza (2009 → hoje)
+const HASHRATE_UNITS = ['H/s', 'kH/s', 'MH/s', 'GH/s', 'TH/s', 'PH/s', 'EH/s'];
+
+function _fmtHashrate(v) {
+    if (v == null || !isFinite(v) || v <= 0) return '';
+
+    let hs = v * 1e18; // EH/s → H/s
+    let u  = 0;
+    while (hs >= 1000 && u < HASHRATE_UNITS.length - 1) { hs /= 1000; u++; }
+
+    const n = hs >= 100 ? hs.toFixed(0) : hs >= 10 ? hs.toFixed(1) : hs.toFixed(2);
+    return (n.includes('.') ? n.replace(/\.?0+$/, '') : n) + ' ' + HASHRATE_UNITS[u];
+}
+
+function _baseOptions(yMin, fmt = _fmtPrice) {
     const gridColor = 'rgba(255,255,255,0.06)';
     const tickColor = _cssVar('--muted') || '#888';
     const tooltipBg = _cssVar('--card-bg') || '#1a1a2e';
@@ -148,7 +220,7 @@ function _baseOptions(yMin) {
                 titleColor: textColor,
                 bodyColor: dimColor,
                 callbacks: {
-                    label: ctx => `${ctx.dataset.label}: ${_fmtPrice(ctx.parsed.y)}`
+                    label: ctx => `${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`
                 }
             }
         },
@@ -170,7 +242,7 @@ function _baseOptions(yMin) {
                 ticks: {
                     color: tickColor,
                     font: { size: 10 },
-                    callback: v => _fmtPrice(v),
+                    callback: v => fmt(v),
                 },
                 grid: { color: gridColor }
             }
@@ -181,10 +253,46 @@ function _baseOptions(yMin) {
 function _destroyCharts() {
     _charts.forEach(c => { try { c.destroy(); } catch (_) {} });
     _charts = [];
-    if (_observer) { _observer.disconnect(); _observer = null; }
+    _teardownTriggers();
 }
 
-// ── 1. Pi Cycle Top ───────────────────────────────────────────────────────────
+// ── 1. Hashrate da Rede ───────────────────────────────────────────────────────
+
+function _renderHashrate(series) {
+    const canvas = document.getElementById('bv-chart-hashrate');
+    if (!canvas) return;
+
+    const labels = series.map(p => _dayKey(p[0]));
+    const values = series.map(p => p[1]);
+
+    const datasets = [
+        {
+            label: t('bv_hashrate_label'),
+            data: values,
+            borderColor: '#f7931a',
+            backgroundColor: 'rgba(247,147,26,0.10)',
+            borderWidth: 1.5,
+            pointRadius: 0,
+            fill: true,
+            tension: 0,
+        },
+    ];
+
+    const opts = _baseOptions(null, _fmtHashrate);
+    opts.scales.y.ticks.maxTicksLimit = 8; // sem isso a escala log gera um rótulo por década (16)
+    opts.plugins.subtitle = {
+        display: true,
+        text: `${t('bv_hashrate_sub')} ${_fmtHashrate(values[values.length - 1])}`,
+        color: _cssVar('--muted'),
+        font: { size: 11 },
+        padding: { bottom: 8 },
+    };
+
+    const chart = new Chart(canvas, { type: 'line', data: { labels, datasets }, options: opts });
+    _charts.push(chart);
+}
+
+// ── 2. Pi Cycle Top ───────────────────────────────────────────────────────────
 
 function _renderPiCycle(series) {
     const canvas = document.getElementById('bv-chart-picycle');
@@ -269,7 +377,7 @@ function _findCrossings(line1, line2) {
     return idx;
 }
 
-// ── 2. Power Law / Rainbow ────────────────────────────────────────────────────
+// ── 3. Power Law / Rainbow ────────────────────────────────────────────────────
 // Metodologia idêntica ao blockchaincenter.net/bitcoin-rainbow-chart:
 // • Regressão OLS em espaço log-log: Price = 10^(n·log10(dias) + b)
 // • 9 faixas com multiplicadores 1.3^(4-e) do fair value, e = 0..8
@@ -342,7 +450,7 @@ function _renderPowerLaw(series) {
     _charts.push(chart);
 }
 
-// ── 3. MM200 Semanas + Heatmap ────────────────────────────────────────────────
+// ── 4. MM200 Semanas + Heatmap ────────────────────────────────────────────────
 
 function _renderMm200w(series) {
     const canvas = document.getElementById('bv-chart-mm200w');
@@ -398,7 +506,7 @@ function _renderMm200w(series) {
     _charts.push(chart);
 }
 
-// ── 4. Múltiplo da Média de 2 Anos ────────────────────────────────────────────
+// ── 5. Múltiplo da Média de 2 Anos ────────────────────────────────────────────
 
 function _renderMm2a(series) {
     const canvas = document.getElementById('bv-chart-mm2a');
