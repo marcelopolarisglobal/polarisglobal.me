@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PGS-VULC3-202608 · Vulcabras S.A. · Relatório de Análise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  --text:#111827;
+  --text-mute:#6B7280;
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#B8901A;
+  --accent-soft:#FBF4DF;
+  --display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--canvas);color:var(--text);
+  font-family:var(--body);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:grid;grid-template-columns:220px 1fr;align-items:start;}
+
+/* ---------- navegação ---------- */
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--surface);border-right:1px solid var(--border);padding:28px 0;
+}
+.sidebar .brand{padding:0 20px 18px 20px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+.sidebar .brand strong{
+  display:block;font-family:var(--display);font-size:19px;letter-spacing:.01em;line-height:1.15;
+}
+.sidebar .brand span{
+  display:block;font-family:var(--mono);font-size:10px;text-transform:uppercase;
+  letter-spacing:.14em;color:var(--text-mute);margin-top:6px;
+}
+.nav-link{
+  display:block;padding:8px 20px;border-left:3px solid transparent;
+  color:var(--text-mute);text-decoration:none;font-size:13.5px;line-height:1.35;
+}
+.nav-link:hover{color:var(--text);}
+.nav-link.active{border-left-color:var(--accent);background:var(--accent-soft);color:var(--text);font-weight:500;}
+.nav-link .kicker{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--accent);
+  display:block;text-transform:uppercase;
+}
+.main-content{min-width:0;padding:0 0 90px 0;}
+
+/* ---------- tipografia ---------- */
+.wrap{max-width:980px;padding:0 44px;margin:0 auto;}
+.prose{max-width:68ch;line-height:1.65;}
+.prose p{margin:0 0 17px 0;}
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;letter-spacing:-0.01em;margin:0;}
+.block{padding:56px 0 8px 0;border-top:1px solid var(--border);}
+.block:first-of-type{border-top:none;}
+.block-kicker{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:10px;
+}
+.block h2{font-size:30px;line-height:1.15;margin-bottom:8px;}
+.block h3{font-size:20px;margin:34px 0 12px 0;}
+.lead{color:var(--text-mute);font-size:15px;max-width:68ch;margin:0 0 26px 0;}
+
+/* ---------- capa ---------- */
+.cover{
+  min-height:96vh;display:flex;flex-direction:column;justify-content:center;
+  background:var(--surface);
+  background-image:radial-gradient(var(--border) 1.15px,transparent 1.15px);
+  background-size:22px 22px;
+  border-bottom:1px solid var(--border);padding:80px 44px;
+}
+.cover-inner{max-width:980px;margin:0 auto;width:100%;}
+.cover .rule{width:64px;height:3px;background:var(--accent);margin-bottom:26px;}
+.cover h1{
+  font-family:var(--display);font-weight:900;font-size:clamp(44px,7.4vw,86px);
+  line-height:0.98;letter-spacing:-0.025em;color:var(--text);margin-bottom:6px;
+}
+.cover h1 em{font-style:normal;color:var(--accent);}
+.cover .sub{
+  font-family:var(--mono);font-size:13px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-mute);margin-bottom:44px;
+}
+.cover-meta{display:flex;flex-wrap:wrap;gap:36px;border-top:1px solid var(--border);padding-top:22px;}
+.cover-meta div span{
+  display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-mute);margin-bottom:4px;
+}
+.cover-meta div strong{font-family:var(--mono);font-size:15px;font-weight:500;}
+
+/* ---------- painel bloco A ---------- */
+.panel-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);
+  border:1px solid var(--border);border-top:3px solid var(--accent);margin-bottom:10px;
+}
+.panel-col{background:var(--card);padding:18px 18px 20px 18px;}
+.panel-col h4{
+  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--text-mute);margin-bottom:14px;
+}
+.panel-row{display:flex;justify-content:space-between;gap:10px;padding:5px 0;align-items:baseline;}
+.panel-row + .panel-row{border-top:1px dotted var(--border);}
+.panel-row span{font-size:12.5px;color:var(--text-mute);line-height:1.3;}
+.panel-row b{font-family:var(--mono);font-size:13px;font-weight:500;text-align:right;white-space:nowrap;}
+.val-pos{color:var(--pos);} .val-neg{color:var(--neg);} .val-mute{color:var(--text-mute);}
+
+/* ---------- tabelas ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);}
+table{border-collapse:collapse;width:100%;font-size:13px;}
+th{
+  background:var(--card);text-align:left;padding:11px 12px;
+  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-mute);border-bottom:1px solid var(--border);
+  white-space:nowrap;vertical-align:bottom;
+}
+td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+tbody tr:nth-child(odd){background:var(--canvas);}
+tbody tr:nth-child(even){background:var(--surface);}
+tbody tr:hover{background:var(--accent-soft);transition:background .18s ease;}
+td.num{font-family:var(--mono);white-space:nowrap;}
+td.qtr{font-family:var(--mono);font-weight:700;color:var(--text);white-space:nowrap;}
+tr.total td{font-weight:700;background:var(--card);}
+.pill{
+  display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:2px;letter-spacing:.06em;text-transform:uppercase;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.pill-pos{background:var(--pill-pos-bg);color:var(--pill-pos-fg);}
+.pill-neg{background:var(--pill-neg-bg);color:var(--pill-neg-fg);}
+.pill-mute{background:var(--card);color:var(--text-mute);}
+.src{
+  font-family:var(--mono);font-size:10.5px;color:var(--text-mute);
+  margin:8px 0 0 0;line-height:1.5;
+}
+.stars{font-family:var(--mono);letter-spacing:.06em;color:var(--accent);white-space:nowrap;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+
+/* ---------- bloco C ---------- */
+.qtr-group{border-left:3px solid var(--accent);padding-left:20px;margin-bottom:30px;max-width:68ch;}
+.qtr-kicker{
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--text-mute);margin-bottom:6px;
+}
+.qtr-kicker b{color:var(--text);}
+
+/* ---------- bloco D ---------- */
+.obs{max-width:68ch;margin-bottom:14px;padding-bottom:14px;border-bottom:1px dotted var(--border);}
+.obs p{margin:0;}
+.obs .claim{font-weight:500;}
+.obs .ev{color:var(--text-mute);font-size:14.5px;}
+.dir{
+  font-family:var(--mono);font-size:12px;font-weight:700;margin-right:8px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.dir-up{color:var(--pos);} .dir-flat{color:var(--text-mute);} .dir-down{color:var(--neg);}
+
+/* ---------- bloco F ---------- */
+.risk{border:1px solid var(--border);margin-bottom:18px;max-width:78ch;}
+.risk-high{border-left:3px solid var(--neg);}
+.risk-med{border-left:3px solid var(--caution);}
+.risk-head{
+  padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:14px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.risk-high .risk-head{background:var(--neg-tint);}
+.risk-med .risk-head{background:var(--caution-tint);}
+.risk-head h4{font-family:var(--display);font-size:17px;}
+.badge{
+  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:2px;white-space:nowrap;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.badge-high{background:var(--neg);color:#FFFFFF;}
+.badge-med{background:var(--caution);color:#FFFFFF;}
+.risk-body{background:var(--canvas);padding:16px 18px;}
+.risk-body p{margin:0;font-size:14.5px;}
+
+/* ---------- bloco G ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.scenario{border:1px solid var(--border);}
+.scenario.bull{border-top:3px solid var(--pos);}
+.scenario.bear{border-top:3px solid var(--neg);}
+.scenario-head{
+  padding:12px 18px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.bull .scenario-head{background:var(--pos-tint);}
+.bear .scenario-head{background:var(--neg-tint);}
+.scenario-head h4{font-size:18px;}
+.scenario-head .delta{font-family:var(--mono);font-size:14px;font-weight:700;}
+.bull .delta{color:var(--pos);} .bear .delta{color:var(--neg);}
+.scenario-body{background:var(--canvas);padding:16px 18px;}
+.scenario-body ul{margin:0 0 12px 0;padding-left:18px;}
+.scenario-body li{font-size:14px;margin-bottom:5px;}
+.scenario-body p{margin:0;font-size:14.5px;}
+
+/* ---------- bloco H ---------- */
+.verdict{background:var(--surface);border:1px solid var(--border);padding:28px;}
+.rating-pill{
+  display:inline-block;background:var(--accent);color:#FFFFFF;font-family:var(--mono);
+  font-size:14px;font-weight:700;letter-spacing:.14em;padding:8px 18px;border-radius:2px;
+  margin-bottom:20px;print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.metrics-strip{
+  display:flex;flex-wrap:wrap;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:24px;
+}
+.metric{background:var(--card);padding:14px 18px;flex:1 1 150px;}
+.metric span{
+  display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-mute);margin-bottom:5px;
+}
+.metric b{font-family:var(--mono);font-size:18px;font-weight:700;}
+
+/* ---------- rodapé ---------- */
+.disclaimer{margin-top:56px;border-top:1px solid var(--border);padding-top:28px;}
+.disclaimer p{font-size:12px;color:var(--text-mute);line-height:1.6;max-width:82ch;margin:0 0 16px 0;}
+.disclaimer .ref{font-family:var(--mono);font-size:11px;color:var(--text-mute);}
+
+/* ---------- animação ---------- */
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@media (prefers-reduced-motion:reduce){
+  .animate{animation:none !important;opacity:1 !important;transform:none !important;}
+  html{scroll-behavior:auto;}
+}
+a:focus-visible,.nav-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+/* ---------- responsivo ---------- */
+@media (max-width:900px){
+  .panel-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:768px){
+  .layout{display:block;}
+  .sidebar{
+    position:sticky;top:0;height:auto;z-index:20;display:flex;gap:0;overflow-x:auto;
+    white-space:nowrap;border-right:none;border-bottom:1px solid var(--border);padding:0;
+  }
+  .sidebar .brand{display:none;}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:12px 14px;}
+  .nav-link.active{border-left:none;border-bottom-color:var(--accent);}
+  .nav-link .kicker{display:inline;margin-right:6px;}
+  .wrap{padding:0 20px;}
+  .cover{padding:60px 20px;}
+  .panel-grid{grid-template-columns:1fr;}
+  .scenario-grid{grid-template-columns:1fr;}
+}
+
+/* ---------- impressão ---------- */
+@media print{
+  @page{size:A4;margin:15mm 12mm;}
+  html,body{background-color:#FFFFFF;color:#111827;font-size:10.5pt;}
+  .layout{display:block !important;}
+  .sidebar,.nav-link{display:none !important;}
+  .main-content{display:block !important;width:100% !important;padding:0 !important;}
+  .wrap{max-width:100% !important;padding:0 !important;}
+  .cover{
+    min-height:auto !important;height:auto !important;display:block !important;
+    padding:0 0 18pt 0 !important;background-color:#FFFFFF !important;background-image:none !important;
+    border-bottom:1px solid #E5E7EB !important;
+  }
+  .cover h1{font-size:38pt !important;}
+  .block{padding-top:20pt !important;page-break-inside:auto;}
+  .block h2{page-break-after:avoid;}
+  .prose,.qtr-group,.obs{orphans:3;widows:3;}
+  .risk,.scenario,.qtr-group,.verdict,.metrics-strip{page-break-inside:avoid;}
+  .panel-grid{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important;}
+  .scenario-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:12pt !important;}
+  .panel-col,.metric,th,tr.total td{background-color:#F3F4F6 !important;}
+  .risk-body,.scenario-body,tbody tr:nth-child(odd){background-color:#FFFFFF !important;}
+  tbody tr:hover{background-color:transparent !important;}
+  .table-wrap{overflow:visible !important;border:1px solid #E5E7EB !important;}
+  table{font-size:8.5pt !important;}
+  td,th{word-break:break-word;}
+  .animate{opacity:1 !important;transform:none !important;animation:none !important;}
+  *{box-shadow:none !important;backdrop-filter:none !important;}
+  .disclaimer{page-break-before:auto;}
+}
+.pgs-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 24px; background: #07090F;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-family: system-ui, sans-serif; font-size: 12px;
+}
+.pgs-topbar a { color: #94A3B8; text-decoration: none; }
+.pgs-topbar a:hover { color: #F1F5F9; }
+.pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+.pgs-topbar .pgs-sep { color: #334155; }
+@media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-VULC3-202608</span>
+</div>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Sumário do relatório">
+    <div class="brand">
+      <strong>Polaris Global Strategies</strong>
+      <span>PGS-VULC3-202608</span>
+    </div>
+    <a class="nav-link" href="#capa"><span class="kicker">Capa</span>Vulcabras S.A.</a>
+    <a class="nav-link" href="#bloco-a"><span class="kicker">Bloco A</span>Painel consolidado</a>
+    <a class="nav-link" href="#bloco-b"><span class="kicker">Bloco B</span>Trimestres</a>
+    <a class="nav-link" href="#bloco-c"><span class="kicker">Bloco C</span>Leitura dos trimestres</a>
+    <a class="nav-link" href="#bloco-d"><span class="kicker">Bloco D</span>Padrões e vigilância</a>
+    <a class="nav-link" href="#bloco-e"><span class="kicker">Bloco E</span>Arquitetura estratégica</a>
+    <a class="nav-link" href="#bloco-f"><span class="kicker">Bloco F</span>Riscos</a>
+    <a class="nav-link" href="#bloco-g"><span class="kicker">Bloco G</span>Cenários</a>
+    <a class="nav-link" href="#bloco-h"><span class="kicker">Bloco H</span>Veredito PGS</a>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- ============ CAPA ============ -->
+    <header class="cover" id="capa">
+      <div class="cover-inner animate">
+        <div class="rule"></div>
+        <h1>Vulcabras <em>S.A.</em></h1>
+        <div class="sub">VULC3 · B3 · Novo Mercado</div>
+        <div class="cover-meta">
+          <div><span>Referência</span><strong>PGS-VULC3-202608</strong></div>
+          <div><span>Publicação</span><strong>05/08/2026</strong></div>
+          <div><span>Ticker</span><strong>VULC3</strong></div>
+          <div><span>Bolsa</span><strong>B3</strong></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="wrap">
+
+      <!-- ============ BLOCO A ============ -->
+      <section class="block animate" id="bloco-a">
+        <div class="block-kicker">Bloco A</div>
+        <h2>Painel consolidado</h2>
+        <p class="lead">Mercado, fundamentos, valuation e consenso na data de análise. Todo preço, múltiplo e estimativa de mercado do relatório vive aqui.</p>
+
+        <div class="panel-grid">
+          <div class="panel-col">
+            <h4>Mercado</h4>
+            <div class="panel-row"><span>Preço (05/08/2026, intradia)</span><b>R$ 13,75</b></div>
+            <div class="panel-row"><span>Valor de mercado</span><b>R$ 4.372,3 mi</b></div>
+            <div class="panel-row"><span>Máxima 52 semanas</span><b>R$ 20,08</b></div>
+            <div class="panel-row"><span>Distância da máxima</span><b class="val-neg">-31,5%</b></div>
+            <div class="panel-row"><span>Mínima 52 semanas</span><b>R$ 13,75</b></div>
+            <div class="panel-row"><span>Distância da mínima</span><b>0,0%</b></div>
+            <div class="panel-row"><span>Free float</span><b>34,0%</b></div>
+            <div class="panel-row"><span>Ações ordinárias</span><b>318,0 mi</b></div>
+          </div>
+
+          <div class="panel-col">
+            <h4>Fundamentos UDM</h4>
+            <div class="panel-row"><span>Receita líquida UDM</span><b>R$ 3.735,2 mi (est.)</b></div>
+            <div class="panel-row"><span>EBITDA recorrente UDM</span><b>R$ 797,4 mi</b></div>
+            <div class="panel-row"><span>Margem EBITDA rec. UDM</span><b>21,3% (est.)</b></div>
+            <div class="panel-row"><span>Lucro societário UDM</span><b>R$ 929,9 mi</b></div>
+            <div class="panel-row"><span>Lucro recorrente UDM</span><b>R$ 551,8 mi</b></div>
+            <div class="panel-row"><span>LPA societário UDM</span><b>R$ 2,97 (est.)</b></div>
+            <div class="panel-row"><span>LPA recorrente UDM</span><b>R$ 1,76 (est.)</b></div>
+            <div class="panel-row"><span>Dívida líquida / EBITDA rec.</span><b>0,72x (est.)</b></div>
+            <div class="panel-row"><span>Fluxo de caixa livre 6M26</span><b>R$ 192,4 mi (est.)</b></div>
+            <div class="panel-row"><span>FCF yield anualizado</span><b>8,8% (est.)</b></div>
+          </div>
+
+          <div class="panel-col">
+            <h4>Valuation</h4>
+            <div class="panel-row"><span>P/L UDM societário</span><b>4,6x (est.)</b></div>
+            <div class="panel-row"><span>P/L UDM recorrente</span><b>7,8x (est.)</b></div>
+            <div class="panel-row"><span>Valor de firma</span><b>R$ 4.949,0 mi (est.)</b></div>
+            <div class="panel-row"><span>EV / EBITDA rec. UDM</span><b>6,2x (est.)</b></div>
+            <div class="panel-row"><span>EV / Receita UDM</span><b>1,32x (est.)</b></div>
+            <div class="panel-row"><span>P / Receita UDM</span><b>1,17x (est.)</b></div>
+            <div class="panel-row"><span>P / VP</span><b>1,74x</b></div>
+            <div class="panel-row"><span>PEG</span><b class="val-mute">0,04 (distorcido)</b></div>
+            <div class="panel-row"><span>Referência de múltiplo</span><b>8,0x P/L 2026E</b></div>
+            <div class="panel-row"><span>Faixa histórica plurianual</span><b class="val-mute">(dado não encontrado)</b></div>
+            <div class="panel-row"><span>Dividend yield 12 meses</span><b>33,3%</b></div>
+          </div>
+
+          <div class="panel-col">
+            <h4>Consenso e capital</h4>
+            <div class="panel-row"><span>Analistas cobrindo</span><b>6</b></div>
+            <div class="panel-row"><span>Compra / neutro / venda</span><b>6 / 0 / 0</b></div>
+            <div class="panel-row"><span>Preço-alvo médio</span><b class="val-pos">R$ 23,00</b></div>
+            <div class="panel-row"><span>Preço-alvo máximo</span><b>R$ 26,00</b></div>
+            <div class="panel-row"><span>Preço-alvo mínimo</span><b>R$ 21,00</b></div>
+            <div class="panel-row"><span>Próxima divulgação (3T26)</span><b>fim de out/2026 (est.)</b></div>
+            <div class="panel-row"><span>Recompra autorizada</span><b>15,0 mi ações</b></div>
+            <div class="panel-row"><span>Recompra sobre free float</span><b>13,6%</b></div>
+            <div class="panel-row"><span>Vigência do programa</span><b>até 04/02/2028</b></div>
+            <div class="panel-row"><span>Tesouraria (30/06/2026)</span><b>3,9 mi ações</b></div>
+            <div class="panel-row"><span>Custo da tesouraria</span><b>R$ 56,9 mi</b></div>
+          </div>
+        </div>
+        <p class="src">Fontes: Status Invest (preço, máxima e mínima de 52 semanas, valor de mercado, P/VP, PEG, free float, acesso em 05/08/2026); Investing.com (consenso de 6 analistas); Vulcabras, Apresentação de Resultados 2T26 de 04/08/2026 (tesouraria, programa de recompra, quantidade de ações); Money Times e Seu Dinheiro, 04/03/2026 (referência de 8,0x P/L 2026E atribuída ao BTG Pactual). Agregados UDM (3T25 a 2T26), LPA sobre 313,5 milhões de ações em circulação, valor de firma, múltiplos derivados e fluxo de caixa livre do 6M26: cálculo PGS sobre números reportados. Valores em reais.</p>
+
+        <div class="prose" style="margin-top:22px">
+          <p>A ação negocia na mínima de 52 semanas, cerca de um terço abaixo do topo, enquanto a alavancagem caiu. O múltiplo societário está deprimido por uma base contábil inflada por créditos tributários de 2025, de modo que o P/L recorrente e o EV sobre EBITDA recorrente são as leituras utilizáveis, ambos abaixo da referência citada pelo mercado em março de 2026 e do piso do consenso.</p>
+        </div>
+      </section>
+
+      <!-- ============ BLOCO B ============ -->
+      <section class="block animate" id="bloco-b">
+        <div class="block-kicker">Bloco B</div>
+        <h2>Sequência trimestral</h2>
+        <p class="lead">Quatro trimestres contínuos, do mais recente ao mais antigo, com resultado societário e recorrente separados.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Trimestre</th>
+                <th>Receita líquida</th>
+                <th>Var. a/a</th>
+                <th>Consenso</th>
+                <th>Margem bruta</th>
+                <th>EBITDA rec.</th>
+                <th>Margem EBITDA rec.</th>
+                <th>Lucro societário</th>
+                <th>Lucro recorrente</th>
+                <th>Dívida líquida</th>
+                <th>Reação da ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="qtr">2T26</td>
+                <td class="num">994,8</td>
+                <td class="num val-pos">+11,2%</td>
+                <td><span class="pill pill-mute">não localizado</span></td>
+                <td class="num">40,4%</td>
+                <td class="num">208,6</td>
+                <td class="num">21,0%</td>
+                <td class="num">143,7</td>
+                <td class="num">143,7</td>
+                <td class="num">576,7</td>
+                <td class="num val-neg">-3,0%</td>
+              </tr>
+              <tr>
+                <td class="qtr">1T26</td>
+                <td class="num">776,4</td>
+                <td class="num val-pos">+10,7%</td>
+                <td><span class="pill pill-mute">não localizado</span></td>
+                <td class="num">40,4%</td>
+                <td class="num">156,9</td>
+                <td class="num">20,2%</td>
+                <td class="num">80,2</td>
+                <td class="num">86,1</td>
+                <td class="num">658,9</td>
+                <td class="num val-mute">(dado não encontrado)</td>
+              </tr>
+              <tr>
+                <td class="qtr">4T25</td>
+                <td class="num">1.008,3 (est.)</td>
+                <td class="num val-pos">+11,4%</td>
+                <td><span class="pill pill-pos">acima</span></td>
+                <td class="num">41,4%</td>
+                <td class="num">220,7</td>
+                <td class="num">21,9%</td>
+                <td class="num">158,8</td>
+                <td class="num">158,8</td>
+                <td class="num">769,4</td>
+                <td class="num val-pos">+6,0%</td>
+              </tr>
+              <tr>
+                <td class="qtr">3T25</td>
+                <td class="num">955,7</td>
+                <td class="num val-pos">+21,8%</td>
+                <td><span class="pill pill-mute">não localizado</span></td>
+                <td class="num val-mute">(dado não encontrado)</td>
+                <td class="num">211,2</td>
+                <td class="num">22,1%</td>
+                <td class="num">547,2</td>
+                <td class="num">163,2</td>
+                <td class="num">436,3</td>
+                <td class="num val-mute">(dado não encontrado)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Valores em R$ milhões, exceto percentuais. Fontes: Vulcabras, Apresentação de Resultados 2T26 de 04/08/2026 (2T26, 1T26, séries de dívida líquida e de resultado recorrente); Reuters, InfoMoney e Money Times (3T25 de 30/10/2025 e 4T25 de 03/03/2026); ADVFN, 04/03/2026 (custo dos produtos vendidos do 4T25); Money Times e Seu Dinheiro, 04/03/2026 (consenso Bloomberg de lucro líquido de R$ 152,0 milhões no 4T25 e reação máxima intradia da ação); Status Invest, 05/08/2026 (variação da sessão posterior ao 2T26). Receita líquida do 4T25 derivada da receita de 2025 divulgada menos os trimestres reportados. Consenso de receita e de resultado por trimestre não localizado em fonte pública para 3T25, 1T26 e 2T26.</p>
+      </section>
+
+      <!-- ============ BLOCO C ============ -->
+      <section class="block animate" id="bloco-c">
+        <div class="block-kicker">Bloco C</div>
+        <h2>Leitura dos trimestres</h2>
+        <p class="lead">O que produziu cada número: mix, preço, itens não recorrentes, postura da administração e a distância entre o que o mercado precificou e o que o balanço disse.</p>
+
+        <div class="qtr-group">
+          <div class="qtr-kicker"><b>2T26</b> · divulgado em 04/08/2026, após o fechamento</div>
+          <div class="prose">
+            <p>O vigésimo quarto trimestre consecutivo de crescimento veio com a receita avançando cerca do triplo do volume, o que confirma que a expansão é de preço e de mix, com maior participação de calçados de corrida com tecnologia embarcada. A margem bruta cedeu de forma discreta na comparação anual por dois motivos declarados pela companhia: derivados de petróleo mais caros por conta do agravamento do conflito no Oriente Médio, que encareceram matérias-primas e embalagens, e piora do absenteísmo industrial em junho, mês de festas juninas e de jogos da Copa do Mundo. O mesmo calendário esvaziou o varejo físico nos dias de jogo da seleção. A forte contração do lucro societário é aritmética de base de comparação, já que o segundo trimestre de 2025 carregava créditos de PIS e COFINS de controladas; na régua recorrente o resultado ficou praticamente parado. O que efetivamente encolheu a última linha foi o resultado financeiro, hoje uma despesa relevante. A administração acompanhou o balanço de um novo programa de recompra, e a ação caiu na sessão seguinte.</p>
+          </div>
+        </div>
+
+        <div class="qtr-group">
+          <div class="qtr-kicker"><b>1T26</b> · divulgado em 05/05/2026</div>
+          <div class="prose">
+            <p>Trimestre mais difícil do que o planejado, segundo o próprio presidente da companhia. A receita cresceu em ritmo de dois dígitos e o EBITDA recorrente subiu acima da receita, com ganho de margem, o que descreve uma operação industrial funcionando. O problema apareceu abaixo da linha operacional: as despesas financeiras quase dobraram na comparação anual e derrubaram o lucro reportado. Esse é o custo do perfil de endividamento assumido no fim de 2025 para financiar capital de giro, investimentos fabris e a distribuição extraordinária aos acionistas. O diretor financeiro foi explícito ao dizer que o plano de 2026 é usar a geração de caixa para liquidar essa dívida no curto prazo, e a relação entre dívida líquida e EBITDA recuou já naquele trimestre. Havia ainda o segundo ano de reoneração da folha, um custo conhecido e provisionado, somado à pressão inesperada de insumos vinda do conflito no Oriente Médio. A carteira de pedidos para o primeiro semestre havia sido descrita como recorde na virada do ano, o que ajuda a explicar por que o volume seguiu crescendo em um consumo seletivo.</p>
+          </div>
+        </div>
+
+        <div class="qtr-group">
+          <div class="qtr-kicker"><b>4T25</b> · divulgado em 03/03/2026</div>
+          <div class="prose">
+            <p>Trimestre de receita recorde para a companhia e o único da sequência analisada em que existe consenso público para confrontar: o lucro veio acima da mediana compilada pela Bloomberg. A composição foi peculiar, com volume praticamente estável e preço médio de calçados esportivos subindo com força, resultado direto da migração para modelos de maior valor agregado em todas as três marcas. A margem bruta foi a mais alta dos quatro trimestres, ainda que o custo dos produtos vendidos tenha subido levemente sobre a receita. Foi também o trimestre em que a alavancagem chegou ao pico, consequência do dividendo extraordinário pago em dezembro. O mercado leu o conjunto como positivo: BTG Pactual e XP Investimentos reiteraram compra, Itaú BBA apontou EBITDA e lucro acima do esperado, e a ação subiu no pregão seguinte, como registra a coluna de reação. Foi a última leitura verdadeiramente confortável da sequência.</p>
+          </div>
+        </div>
+
+        <div class="qtr-group">
+          <div class="qtr-kicker"><b>3T25</b> · divulgado em 30/10/2025</div>
+          <div class="prose">
+            <p>O trimestre de maior crescimento de receita da série, com a divisão de calçados esportivos acelerando após as ampliações fabris terem destravado disponibilidade de produto. O lucro societário quase triplicou por causa do reconhecimento de impostos diferidos, evento contábil sem efeito de caixa no período, e é o principal responsável pela distorção que ainda contamina os múltiplos societários dos últimos doze meses. Na régua recorrente o crescimento foi bem mais modesto e a margem EBITDA recuou na comparação anual, pressionada pelos investimentos em pessoal nas fábricas do Nordeste. A leitura da XP foi de trimestre forte com desafios temporários de mão de obra em melhora. O ponto mais relevante para o acionista não estava na demonstração de resultados: no mesmo dia o conselho aprovou um aumento de capital privado com desconto expressivo sobre o preço de tela e, simultaneamente, um dividendo extraordinário de valor equivalente. Essa combinação redesenhou a base acionária, a quantidade de ações e a estrutura de capital que o mercado passaria a precificar nos trimestres seguintes.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ BLOCO D ============ -->
+      <section class="block animate" id="bloco-d">
+        <div class="block-kicker">Bloco D</div>
+        <h2>Padrões e vigilância</h2>
+
+        <h3>Padrões estruturais</h3>
+        <div class="obs">
+          <p class="claim">O crescimento é de preço e mix, e não de volume.</p>
+          <p class="ev">Nos quatro trimestres a receita cresceu mais rápido que os pares e peças faturados, com a diferença mais larga no trimestre de volume estável.</p>
+        </div>
+        <div class="obs">
+          <p class="claim">A margem EBITDA recorrente é notavelmente estável.</p>
+          <p class="ev">Os quatro trimestres cabem em faixa estreita, apesar de choque de insumo, absenteísmo e reoneração da folha.</p>
+        </div>
+        <div class="obs">
+          <p class="claim">O resultado financeiro deixou de somar e passou a subtrair.</p>
+          <p class="ev">A companhia tinha caixa líquido um ano atrás. O serviço da dívida atual explica a distância entre um EBITDA que cresce e um lucro que não cresce.</p>
+        </div>
+        <div class="obs">
+          <p class="claim">A desalavancagem está em curso e é sequencial.</p>
+          <p class="ev">A dívida líquida caiu nos dois trimestres seguintes ao pico de dezembro, por geração operacional e corte de investimentos, sem nova captação.</p>
+        </div>
+
+        <h3>Vigilância para o próximo resultado</h3>
+        <div class="obs">
+          <p class="claim"><span class="dir dir-down">↓</span> Margem bruta</p>
+          <p class="ev">Confirma pressão passageira se voltar ao patamar de dezembro; rompe se cair de novo com preço médio ainda subindo, sinal de repasse esgotado.</p>
+        </div>
+        <div class="obs">
+          <p class="claim"><span class="dir dir-up">↑</span> Desalavancagem</p>
+          <p class="ev">Confirma se a dívida líquida seguir caindo e a despesa financeira recuar; rompe se a redução parar sem retomada de distribuição.</p>
+        </div>
+        <div class="obs">
+          <p class="claim"><span class="dir dir-down">↓</span> Vestuário e acessórios</p>
+          <p class="ev">Confirma estabilização se o faturamento em peças parar de encolher; rompe se a queda alcançar calçados de menor valor agregado.</p>
+        </div>
+        <div class="obs">
+          <p class="claim"><span class="dir dir-flat">→</span> Retorno ao acionista</p>
+          <p class="ev">Confirma se a recompra for executada com o caixa que antes ia a dividendos; rompe se nada avançar até o fim do exercício.</p>
+        </div>
+      </section>
+
+      <!-- ============ BLOCO E ============ -->
+      <section class="block animate" id="bloco-e">
+        <div class="block-kicker">Bloco E</div>
+        <h2>Arquitetura estratégica</h2>
+
+        <h3>1. Modelo de negócio e arquitetura de receita</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Categoria e recorte</th>
+                <th>Receita líquida 6M26</th>
+                <th>% do total</th>
+                <th>Var. a/a</th>
+                <th>Volume 6M26</th>
+                <th>Var. volume a/a</th>
+                <th>Perfil de margem</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Calçados esportivos</td>
+                <td class="num">1.513,0</td>
+                <td class="num">85,4%</td>
+                <td class="num val-pos">+12,2%</td>
+                <td class="num">10.678</td>
+                <td class="num val-pos">+7,8%</td>
+                <td>Núcleo de valor agregado, puxa o preço médio</td>
+              </tr>
+              <tr>
+                <td>Outros calçados e outros</td>
+                <td class="num">124,8</td>
+                <td class="num">7,0%</td>
+                <td class="num val-pos">+12,1%</td>
+                <td class="num">2.397</td>
+                <td class="num val-pos">+2,3%</td>
+                <td>Chinelos e botas profissionais, giro de fábrica</td>
+              </tr>
+              <tr>
+                <td>Vestuário e acessórios</td>
+                <td class="num">133,4</td>
+                <td class="num">7,6%</td>
+                <td class="num val-neg">-2,3%</td>
+                <td class="num">3.313</td>
+                <td class="num val-neg">-0,9%</td>
+                <td>Extensão de marca, mais exposta ao consumo fraco</td>
+              </tr>
+              <tr class="total">
+                <td>Total consolidado</td>
+                <td class="num">1.771,2</td>
+                <td class="num">100,0%</td>
+                <td class="num val-pos">+11,0%</td>
+                <td class="num">16.388</td>
+                <td class="num val-pos">+5,1%</td>
+                <td>Margem bruta consolidada divulgada no bloco B</td>
+              </tr>
+              <tr>
+                <td>Mercado interno</td>
+                <td class="num">1.731,1</td>
+                <td class="num">97,7%</td>
+                <td class="num val-pos">+13,0%</td>
+                <td class="num val-mute">n.d.</td>
+                <td class="num val-mute">n.d.</td>
+                <td>Base de escala e de diluição fixa</td>
+              </tr>
+              <tr>
+                <td>Mercado externo</td>
+                <td class="num">40,1</td>
+                <td class="num">2,3%</td>
+                <td class="num val-neg">-36,9%</td>
+                <td class="num val-mute">n.d.</td>
+                <td class="num val-mute">n.d.</td>
+                <td>Exportação, hoje pressionada pela Argentina</td>
+              </tr>
+              <tr>
+                <td>Comércio eletrônico (recorte de canal)</td>
+                <td class="num">277,8</td>
+                <td class="num">15,7%</td>
+                <td class="num val-pos">+10,9%</td>
+                <td class="num val-mute">n.d.</td>
+                <td class="num val-mute">n.d.</td>
+                <td>Venda direta, ticket maior e dado próprio</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Valores em R$ milhões; volume em milhares de pares e peças; período de seis meses encerrado em 30/06/2026. Fonte: Vulcabras, Apresentação de Resultados 2T26 de 04/08/2026. A linha de comércio eletrônico é recorte de canal e não soma às categorias. Margens por categoria não são divulgadas pela companhia; a coluna de perfil é qualitativa. Mercado interno e externo somam o total consolidado.</p>
+
+        <div class="prose">
+          <p>A companhia é, na prática, um negócio de calçados esportivos com dois apêndices. Quase toda a receita e quase todo o crescimento vêm da categoria de tênis, e é ela que sustenta a ocupação das duas fábricas do Nordeste, o centro de tecnologia no Rio Grande do Sul e a estrutura comercial que cobre o varejo esportivo do país. Vestuário e acessórios existe para completar a proposta de marca no ponto de venda, opera com escala menor e foi a única categoria a encolher no semestre. Chinelos e botas profissionais ocupam capacidade e absorvem custo fixo em períodos de menor demanda esportiva.</p>
+          <p>A verticalização é o mecanismo que converte esse mix em resultado. Como desenvolve, produz e distribui internamente, a companhia captura a margem industrial e a margem de marca no mesmo perímetro, o que permite migrar o portfólio para modelos de maior valor sem depender de fornecedor asiático nem de importação. A alavancagem operacional nasce aí: o volume cresce pouco, o preço médio cresce mais, e a estrutura fabril já instalada absorve a diferença. Foi exatamente esse padrão que segurou a margem EBITDA recorrente estável enquanto insumos e mão de obra subiam.</p>
+          <p>O comércio eletrônico é a peça que ainda pode mudar a equação. Vende direto ao consumidor com ticket mais alto, devolve dado de comportamento de compra para o desenvolvimento de produto e reduz a dependência do humor do varejo multimarcas. Já responde por uma fatia relevante da receita e cresce acima da média sem canibalizar o canal físico. O mercado externo, por sua vez, é opcionalidade barata e hoje negativa, comprimido pela demanda argentina em ambiente macroeconômico adverso, com peso pequeno demais para mover a tese em qualquer direção.</p>
+        </div>
+
+        <h3>2. Fosso competitivo</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Pilar</th>
+                <th>Força</th>
+                <th>Risco de erosão</th>
+                <th>Avaliação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Verticalização industrial</td>
+                <td>Duas fábricas próprias no Nordeste, mais de 23 mil colaboradores diretos e cerca de 800 modelos novos por ano no maior centro de desenvolvimento de calçado esportivo da América Latina</td>
+                <td>Rigidez de custo fixo em queda de demanda; exposição a absenteísmo e a encargos trabalhistas</td>
+                <td class="stars">★★★★☆</td>
+              </tr>
+              <tr>
+                <td>Portfólio de três marcas complementares</td>
+                <td>Uma marca própria líder em venda de tênis no país e duas licenças internacionais em territórios distintos de performance</td>
+                <td>Duas das três marcas dependem de contrato renovável com terceiros</td>
+                <td class="stars">★★★☆☆</td>
+              </tr>
+              <tr>
+                <td>Distribuição capilar</td>
+                <td>Base de mais de 10 mil clientes atendidos no varejo multimarcas, somada a lojas próprias das marcas e a canal digital integrado</td>
+                <td>Concentração crescente do varejo esportivo e entrada de operadores verticalizados de marcas globais</td>
+                <td class="stars">★★★★☆</td>
+              </tr>
+              <tr>
+                <td>Autoridade na comunidade de corrida</td>
+                <td>Domínio de pódios e de participação nas principais maratonas do país, com produtos de performance desenvolvidos localmente</td>
+                <td>Atributo reconstruído a cada ciclo de produto; concorrentes globais investem pesado na mesma comunidade</td>
+                <td class="stars">★★★☆☆</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Fontes: Vulcabras, Apresentação de Resultados 2T26 de 04/08/2026 (parque industrial, colaboradores, modelos por ano, desempenho nas maratonas, gestão de marcas); NeoFeed e Diário do Nordeste, setembro de 2020 (estrutura de licenciamento). Escala de avaliação de 1 a 5 estrelas, sendo 5 uma vantagem durável e de difícil ataque. Classificação atribuída pela PGS.</p>
+
+        <div class="prose">
+          <p>O fosso mais durável não é a marca, é a fábrica. Produzir calçado esportivo de performance no Brasil, em escala, com desenvolvimento local e prazo de reposição curto é algo que nenhum concorrente relevante faz hoje da mesma forma. Os importadores dependem de ciclos longos de sourcing e de câmbio; os concorrentes nacionais de porte atuam em categorias adjacentes. Essa assimetria explica a capacidade demonstrada de reagir rápido a mudança de comportamento do consumidor e de ajustar preço sem perder colocação no varejo. É um ativo que leva anos e capital para ser replicado.</p>
+          <p>O pilar de marcas merece leitura mais fria. A marca própria pertence à companhia e responde pela maior parte do valor; as outras duas são direitos contratuais. A licença japonesa tem prazo declarado até dezembro de 2033, com possibilidade de renovação, o que oferece visibilidade longa. A licença americana nasceu em 2018 dentro de uma estrutura descrita publicamente como decenal, e os termos vigentes de renovação não foram localizados em fonte pública. Rotular isso de fosso exige cuidado: o mecanismo real é a capacidade industrial e comercial de operar marcas de terceiros melhor do que os próprios donos operavam no país, e essa capacidade é que se torna difícil de substituir quando chega a hora de renegociar.</p>
+          <p>A autoridade em corrida é o pilar mais vivo e o mais frágil ao mesmo tempo. Vitórias em maratonas, recordes e lançamentos com repercussão real geram demanda que se traduz em preço médio, e é isso que aparece na receita crescendo acima do volume. Também é o pilar que precisa ser reconquistado a cada coleção, contra concorrentes globais com orçamento de marketing muito maior. A distribuição, discreta, é o que transforma essas duas coisas em caixa: sem estar em todos os pontos de venda relevantes do país, nenhuma das outras vantagens se monetiza.</p>
+        </div>
+
+        <h3>3. Arquitetura de crescimento de longo prazo</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Vetor</th>
+                <th>Horizonte</th>
+                <th>Estado atual</th>
+                <th>Potencial</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Corrida de alta performance sob a marca própria</td>
+                <td>1 a 3 anos</td>
+                <td>Linha renovada, liderança em maratonas, forte repercussão de lançamento</td>
+                <td>Elevação continuada do preço médio sem depender de volume</td>
+                <td><span class="pill pill-pos">on track</span></td>
+              </tr>
+              <tr>
+                <td>Expansão multiesportiva da marca japonesa</td>
+                <td>2 a 4 anos</td>
+                <td>Entrada em vôlei, futebol e sportstyle com patrocínios e colaborações</td>
+                <td>Diversificação de categorias com o mesmo parque fabril</td>
+                <td><span class="pill pill-mute">emergente</span></td>
+              </tr>
+              <tr>
+                <td>Retomada da marca americana em corrida</td>
+                <td>2 a 4 anos</td>
+                <td>Lançamentos desenvolvidos para o corredor brasileiro e presença em provas internacionais</td>
+                <td>Recomposição de relevância em um segmento premium</td>
+                <td><span class="pill pill-mute">emergente</span></td>
+              </tr>
+              <tr>
+                <td>Canal digital e venda direta</td>
+                <td>Contínuo</td>
+                <td>Crescimento consistente acima da média consolidada</td>
+                <td>Ganho de margem e conhecimento direto do consumidor</td>
+                <td><span class="pill pill-pos">on track</span></td>
+              </tr>
+              <tr>
+                <td>Crescimento inorgânico</td>
+                <td>1 a 3 anos</td>
+                <td>Balanço reconstruído, sem operação anunciada</td>
+                <td>Adição de marca ou categoria ao mesmo perímetro industrial</td>
+                <td><span class="pill pill-mute">emergente</span></td>
+              </tr>
+              <tr>
+                <td>Mercado externo</td>
+                <td>3 a 5 anos</td>
+                <td>Em retração, com demanda argentina deprimida</td>
+                <td>Opcionalidade regional de baixo custo de manutenção</td>
+                <td><span class="pill pill-neg">em risco</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Fontes: Vulcabras, Apresentação de Resultados 2T26 de 04/08/2026 (iniciativas por marca, canal digital, mercado externo); Seu Dinheiro e Money Times, 04/03/2026 (leitura do BTG Pactual sobre capacidade de crescimento inorgânico). Vocabulário de status conforme escala controlada da PGS. Horizontes e potencial: julgamento analítico interno.</p>
+
+        <div class="prose">
+          <p>A sequência importa mais do que a lista. O vetor de corrida de alta performance precisa continuar funcionando primeiro, porque é ele que sustenta o preço médio, e o preço médio é o que financia tudo o mais. Se a demanda por tênis de tecnologia esfriar, a companhia volta a ser uma fabricante de volume disputando ponto de venda por preço, e nenhum dos outros vetores compensa isso na escala necessária.</p>
+          <p>Com esse motor ligado, a expansão multiesportiva da marca japonesa é a alavanca seguinte, porque usa capacidade fabril já instalada para entrar em categorias onde a companhia hoje não compete. Vôlei e futebol têm calendário próprio e ciclos de reposição diferentes de corrida, o que suaviza sazonalidade. A retomada da marca americana ocupa o mesmo lugar lógico, em um patamar de preço mais alto e com risco contratual maior.</p>
+          <p>O canal digital atravessa todos os vetores e deve ser lido como multiplicador de margem, não como vetor autônomo. O crescimento inorgânico só entra na conta depois que a desalavancagem terminar, e é justamente por isso que a política de retorno ao acionista deste ano importa: cada real usado para reduzir dívida hoje é o que restaura a capacidade de comprar marca ou categoria amanhã. O mercado externo fica no fim da fila, com peso pequeno demais para alterar a tese enquanto a Argentina não se reorganizar.</p>
+        </div>
+      </section>
+
+      <!-- ============ BLOCO F ============ -->
+      <section class="block animate" id="bloco-f">
+        <div class="block-kicker">Bloco F</div>
+        <h2>Registro de riscos</h2>
+
+        <div class="risk risk-high">
+          <div class="risk-head">
+            <h4>Concentração no consumo brasileiro e intensidade competitiva</h4>
+            <span class="badge badge-high">Alta</span>
+          </div>
+          <div class="risk-body">
+            <p>Praticamente toda a receita depende de um único mercado consumidor, em um país com juros altos e crédito caro. O mecanismo é direto: consumo discricionário desacelera, o varejo multimarcas reduz pedidos e alonga prazo, e a companhia perde o efeito de escala que sustenta a diluição de custo fixo das duas fábricas. A concorrência acirrada em canais físico e digital já foi citada pela própria administração como característica do ambiente atual, e operadores verticalizados de marcas globais disputam exatamente o consumidor de corrida que sustenta o preço médio. O horizonte é imediato e permanente, não cíclico de uma só safra. O observável que sinaliza materialização é a receita crescer abaixo do volume por dois trimestres seguidos, o que indicaria que o preço deixou de ser aceito pelo mercado e que o mix premium parou de avançar.</p>
+          </div>
+        </div>
+
+        <div class="risk risk-med">
+          <div class="risk-head">
+            <h4>Custo de insumos e de mão de obra industrial</h4>
+            <span class="badge badge-med">Média</span>
+          </div>
+          <div class="risk-body">
+            <p>A verticalização que protege a margem também prende a companhia à inflação de fábrica. Derivados de petróleo entram em solados, componentes e embalagens, e o conflito no Oriente Médio já pressionou essa cadeia em dois trimestres consecutivos. Do lado do trabalho, a reoneração da folha corre em seu segundo ano e o absenteísmo tem oscilado com o calendário, obrigando a contratação de mão de obra terceirizada no centro de distribuição. O horizonte é de doze a vinte e quatro meses, com resolução dependente de variáveis fora do controle da administração. O observável relevante é a margem bruta: se ela continuar cedendo enquanto o preço médio sobe, significa que os ganhos de produtividade industrial pararam de compensar o custo, e a estabilidade da margem EBITDA recorrente que hoje ancora a tese deixaria de se sustentar.</p>
+          </div>
+        </div>
+
+        <div class="risk risk-med">
+          <div class="risk-head">
+            <h4>Dependência de licenças de marcas de terceiros</h4>
+            <span class="badge badge-med">Média</span>
+          </div>
+          <div class="risk-body">
+            <p>Duas das três marcas do portfólio pertencem a terceiros e operam sob contrato. A licença japonesa tem prazo contratual longo, detalhado no pilar de marcas do bloco anterior, e oferece conforto de médio prazo. A licença americana nasceu sob termo descrito publicamente como decenal, e as condições vigentes de renovação não foram localizadas em fonte pública, o que é em si um risco de informação. O mecanismo de perda é conhecido no setor: o licenciador constata que o mercado brasileiro amadureceu, decide operar diretamente ou trocar de parceiro, e o licenciado perde receita, ocupação fabril e posição de gôndola de uma vez. O horizonte é indeterminado e depende de decisão de terceiro. O observável a acompanhar é qualquer comunicado sobre renovação, extensão de prazo ou mudança de escopo dos contratos de licenciamento, além de investimentos anunciados por essas marcas em estruturas próprias no país.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ BLOCO G ============ -->
+      <section class="block animate" id="bloco-g">
+        <div class="block-kicker">Bloco G</div>
+        <h2>Cenários</h2>
+
+        <div class="scenario-grid">
+          <div class="scenario bull">
+            <div class="scenario-head">
+              <h4>Cenário construtivo</h4>
+              <span class="delta">+49,1% até o alvo</span>
+            </div>
+            <div class="scenario-body">
+              <ul>
+                <li>Pressão de insumos se revela passageira e a margem bruta volta ao patamar de dezembro.</li>
+                <li>A desalavancagem continua e a despesa financeira recua em termos absolutos.</li>
+                <li>A recompra é executada e o mercado reprecifica o lucro recorrente por ação.</li>
+              </ul>
+              <p>As condições para isso são específicas. Exige normalização dos derivados de petróleo e do absenteísmo fabril, exige que a demanda por corrida de performance continue absorvendo preço, e exige que a companhia use o caixa liberado pelo corte de investimentos para dívida e para recompra em vez de reabrir distribuição extraordinária. Se as três coisas ocorrerem juntas, o papel volta a ser avaliado pelo múltiplo de lucro recorrente que o mercado aplicava no início do ano, ainda abaixo do piso do intervalo de preços-alvo publicado pelos analistas que cobrem o nome, e sem exigir nenhuma aceleração de crescimento acima do que a companhia já vem entregando.</p>
+            </div>
+          </div>
+
+          <div class="scenario bear">
+            <div class="scenario-head">
+              <h4>Cenário adverso</h4>
+              <span class="delta">-21,5% até o alvo</span>
+            </div>
+            <div class="scenario-body">
+              <ul>
+                <li>O consumo brasileiro desacelera e o varejo multimarcas corta pedidos.</li>
+                <li>A margem bruta cede outra vez com o preço médio já esticado.</li>
+                <li>A base de acionistas de dividendo continua saindo sem ser substituída.</li>
+              </ul>
+              <p>Este cenário não exige ruptura operacional, apenas que a sequência de crescimento seja interrompida uma vez. Basta que a alta de custos se prove estrutural e que a companhia perca a capacidade de repassar preço para que a estabilidade da margem EBITDA recorrente, que hoje sustenta a tese, desapareça. Some-se a isso a mudança de perfil do papel: a remuneração excepcional do ano passado atraiu um público que não permanece sem distribuição, e a saída desse fluxo pressiona a ação independentemente do que o balanço mostrar. O alvo adverso corresponde a comprimir o múltiplo de EBITDA recorrente para o piso do setor.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ BLOCO H ============ -->
+      <section class="block animate" id="bloco-h">
+        <div class="block-kicker">Bloco H</div>
+        <h2>Veredito PGS</h2>
+
+        <div class="verdict">
+          <div class="rating-pill">🟢 COMPRA</div>
+          <div class="metrics-strip">
+            <div class="metric"><span>Alvo construtivo · 18 a 24 meses</span><b>R$ 20,50</b></div>
+            <div class="metric"><span>Alvo adverso</span><b>R$ 10,80</b></div>
+            <div class="metric"><span>Relação risco e retorno</span><b>Favorável</b></div>
+            <div class="metric"><span>Horizonte</span><b>18 a 24 meses</b></div>
+          </div>
+
+          <div class="prose">
+            <p><b>Deslocamento de preço.</b> O papel foi comprado por um público de dividendo durante um ano de distribuição excepcional, financiada por ganhos tributários que não se repetem, e esse público começou a sair quando a distribuição parou. O que sobrou é um negócio industrial que segue crescendo em receita e em EBITDA recorrente, precificado por um múltiplo que embute deterioração operacional que o balanço não mostra.</p>
+            <p><b>Qualidade fundamental.</b> Vinte e quatro trimestres consecutivos de crescimento, margem EBITDA recorrente estável, retorno sobre capital investido elevado e uma estrutura verticalizada que dá controle real sobre custo e prazo. A desalavancagem avança trimestre a trimestre, sem emissão e sem venda de ativo, apenas com caixa operacional e disciplina de investimento.</p>
+            <p><b>Risco principal.</b> A concentração no consumo brasileiro governa a tese, porque combina exposição a um só mercado com concorrência intensa no segmento que sustenta o preço médio. O custo industrial decide a margem no curto prazo, e a licença decide quanto do portfólio existirá adiante. Todos aparecem primeiro na margem bruta.</p>
+            <p><b>Catalisadores próximos.</b> A execução do programa de recompra recém aprovado, com autorização que alcança parcela relevante das ações em circulação, é o gatilho mais imediato. Em seguida vêm o resultado do terceiro trimestre, que dirá se a pressão de custos de junho foi calendário ou tendência, e qualquer definição sobre retomada de distribuição. A relação entre risco e retorno é favorável nos preços atuais, com a ressalva de que a tese se decide na margem.</p>
+          </div>
+        </div>
+
+        <div class="disclaimer">
+          <p>"This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice."</p>
+          <p>This report was produced with the assistance of artificial intelligence. Generative model: Anthropic · Claude Opus 5 · version claude-opus-5, accessed via Claude (aplicativo web e móvel da Anthropic). All figures were sourced from live web search within the same session and cross-checked against the anchoring protocol in Step 1; the model's role was data synthesis, formatting and drafting, not the origination of financial estimates. Human review by the internal analyst precedes publication.</p>
+          <p class="ref">Report Reference: PGS-VULC3-202608 · Date: 05/08/2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: VULC3 · Exchange: B3 · AI Model: Anthropic claude-opus-5</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce && 'IntersectionObserver' in window){
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry, i){
+        if(entry.isIntersecting){
+          entry.target.style.transitionDelay = (i * 60) + 'ms';
+          entry.target.style.opacity = '';
+          entry.target.style.animationPlayState = 'running';
+          animObserver.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.08, rootMargin: '0px 0px -40px 0px'});
+    animateEls.forEach(function(el){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      animObserver.observe(el);
+    });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var sections = links.map(function(l){ return document.querySelector(l.getAttribute('href')); });
+  function setActive(){
+    var pos = window.scrollY + window.innerHeight * 0.25;
+    var current = 0;
+    sections.forEach(function(sec, i){
+      if(sec && sec.offsetTop <= pos){ current = i; }
+    });
+    links.forEach(function(l, i){ l.classList.toggle('active', i === current); });
+  }
+  window.addEventListener('scroll', setActive, {passive:true});
+  window.addEventListener('resize', setActive);
+  setActive();
+})();
+</script>
+</body>
+</html>

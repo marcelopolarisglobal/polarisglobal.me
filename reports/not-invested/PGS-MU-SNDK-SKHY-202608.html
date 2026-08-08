@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PGS-MU-SNDK-SKHY-202608 &middot; Memory Sector Research &middot; Polaris Global Strategies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* surfaces */
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  /* text */
+  --text:#111827;
+  --text-mute:#6B7280;
+  /* signals */
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  /* signal tints */
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  /* structure */
+  --border:#E5E7EB;
+  --accent:#2B3A67;
+  /* type */
+  --display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --data:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+.sec-mu{--accent:#0A5CB8;}
+.sec-sndk{--accent:#C8102E;}
+.sec-skhy{--accent:#E35205;}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--canvas);color:var(--text);
+  font-family:var(--body);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.2;margin:0;}
+p{margin:0 0 1.05em 0;max-width:68ch;}
+a{color:var(--accent);}
+
+/* ---------- layout ---------- */
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:96vh;}
+.sidebar{
+  position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;
+  background:var(--surface);border-right:1px solid var(--border);
+  padding:26px 0 40px 0;
+}
+.sidebar-brand{padding:0 20px 18px 20px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+.sidebar-brand .mark{font-family:var(--display);font-size:19px;letter-spacing:.01em;}
+.sidebar-brand .sub{font-family:var(--data);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);margin-top:5px;}
+.nav-group{font-family:var(--data);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-mute);padding:16px 20px 6px 20px;}
+.nav-link{
+  display:block;padding:7px 20px;text-decoration:none;color:var(--text);
+  font-size:13.5px;border-left:3px solid transparent;transition:background .18s ease,border-color .18s ease;
+}
+.nav-link:hover{background:var(--card);}
+.nav-link.active{border-left-color:var(--accent);background:var(--card);font-weight:500;}
+.nav-link .tk{font-family:var(--data);font-size:11px;color:var(--text-mute);margin-left:6px;}
+.main-content{min-width:0;padding:0;}
+
+/* ---------- cover ---------- */
+.cover{
+  background:var(--surface);
+  background-image:radial-gradient(var(--border) 1px, transparent 1px);
+  background-size:22px 22px;
+  border-bottom:1px solid var(--border);
+  min-height:96vh;display:flex;flex-direction:column;justify-content:center;
+  padding:72px 56px;
+}
+.cover-eyebrow{font-family:var(--data);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-mute);}
+.cover h1{font-size:clamp(38px,5.2vw,68px);margin:22px 0 10px 0;letter-spacing:-.015em;}
+.cover .cover-sub{font-family:var(--display);font-style:italic;font-size:clamp(19px,2.2vw,27px);color:var(--accent);margin-bottom:34px;}
+.cover-meta{font-family:var(--data);font-size:12px;color:var(--text-mute);letter-spacing:.03em;line-height:2;border-top:1px solid var(--border);padding-top:18px;max-width:640px;}
+.cover-meta b{color:var(--text);font-weight:500;}
+.ticker-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:38px 0 30px 0;max-width:860px;}
+.ticker-card{
+  background:var(--canvas);border:1px solid var(--border);border-top:3px solid var(--accent);
+  padding:18px 18px 16px 18px;text-decoration:none;color:var(--text);display:block;
+  transition:transform .18s ease;
+}
+.ticker-card:hover{transform:translateY(-2px);}
+.ticker-card .tc-tk{font-family:var(--data);font-size:22px;font-weight:700;letter-spacing:.02em;color:var(--accent);}
+.ticker-card .tc-name{font-size:14px;margin-top:4px;}
+.ticker-card .tc-line{font-family:var(--data);font-size:10.5px;color:var(--text-mute);margin-top:9px;letter-spacing:.03em;}
+.tc-mu{border-top-color:#0A5CB8;} .tc-mu .tc-tk{color:#0A5CB8;}
+.tc-sndk{border-top-color:#C8102E;} .tc-sndk .tc-tk{color:#C8102E;}
+.tc-skhy{border-top-color:#E35205;} .tc-skhy .tc-tk{color:#E35205;}
+
+/* ---------- sections ---------- */
+.company-section{padding:64px 56px 76px 56px;border-bottom:1px solid var(--border);}
+.sec-head{border-bottom:3px solid var(--accent);padding-bottom:16px;margin-bottom:34px;}
+.sec-head .eyebrow{font-family:var(--data);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);}
+.sec-head h2{font-size:clamp(30px,3.6vw,44px);margin-top:10px;letter-spacing:-.01em;}
+.sec-head .sh-meta{font-family:var(--data);font-size:11.5px;color:var(--text-mute);margin-top:9px;letter-spacing:.04em;}
+.block{margin:0 0 46px 0;}
+.block-label{
+  font-family:var(--data);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--text-mute);margin-bottom:8px;
+}
+.block h3{font-size:23px;margin-bottom:16px;}
+.block h4{font-size:16.5px;margin:26px 0 10px 0;font-family:var(--body);font-weight:700;letter-spacing:-.005em;}
+
+/* ---------- tables ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);}
+table{border-collapse:collapse;width:100%;font-size:13px;}
+th{
+  background:var(--card);text-align:left;padding:9px 11px;font-size:10px;
+  font-family:var(--data);letter-spacing:.08em;text-transform:uppercase;color:var(--text-mute);
+  border-bottom:1px solid var(--border);white-space:nowrap;font-weight:500;
+}
+td{padding:9px 11px;border-bottom:1px solid var(--border);vertical-align:top;}
+tbody tr:nth-child(odd){background:var(--canvas);}
+tbody tr:nth-child(even){background:var(--surface);}
+tbody tr:hover{background:var(--card);transition:background .15s ease;}
+td.num,th.num{font-family:var(--data);font-variant-numeric:tabular-nums;white-space:nowrap;}
+td.lbl{font-weight:500;white-space:nowrap;}
+td.up{color:var(--pos);font-family:var(--data);font-weight:500;}
+td.down{color:var(--neg);font-family:var(--data);font-weight:500;}
+.src{
+  font-family:var(--data);font-size:10px;color:var(--text-mute);
+  margin-top:7px;line-height:1.55;letter-spacing:.01em;
+}
+.pill{
+  display:inline-block;font-family:var(--data);font-size:9.5px;font-weight:700;
+  letter-spacing:.07em;padding:2px 7px;border-radius:2px;text-transform:uppercase;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.pill-beat{background:var(--pill-pos-bg);color:var(--pill-pos-fg);}
+.pill-miss{background:var(--pill-neg-bg);color:var(--pill-neg-fg);}
+.pill-na{background:var(--card);color:var(--text-mute);}
+.star{color:var(--accent);font-family:var(--data);letter-spacing:.06em;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.na{color:var(--text-mute);font-style:italic;font-size:12px;}
+
+/* ---------- Block A panel ---------- */
+.panel{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--accent);padding:0;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.panel-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;}
+.panel-col{padding:20px 20px 22px 20px;border-right:1px solid var(--border);}
+.panel-col:last-child{border-right:none;}
+.panel-col .grp{font-family:var(--data);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-mute);margin-bottom:14px;}
+.panel-row{display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px dotted var(--border);}
+.panel-row:last-child{border-bottom:none;}
+.panel-row .k{font-size:11.5px;color:var(--text-mute);}
+.panel-row .v{font-family:var(--data);font-size:12.5px;font-weight:500;text-align:right;white-space:nowrap;}
+.panel-row .v.pos{color:var(--pos);} .panel-row .v.neg{color:var(--neg);}
+
+/* ---------- Block C ---------- */
+.quarters{border-left:3px solid var(--accent);padding-left:22px;}
+.qtr{margin-bottom:26px;}
+.qtr .kicker{font-family:var(--data);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.qtr p{margin-bottom:0;}
+
+/* ---------- Block D ---------- */
+.dlist{list-style:none;padding:0;margin:0;}
+.dlist li{padding:11px 0;border-bottom:1px solid var(--border);max-width:68ch;font-size:15px;}
+.dlist li:last-child{border-bottom:none;}
+.dlist .claim{font-weight:500;}
+.sig{font-family:var(--data);font-size:12px;font-weight:700;margin-right:8px;}
+.sig-up{color:var(--pos);} .sig-flat{color:var(--text-mute);} .sig-down{color:var(--neg);}
+
+/* ---------- Block F ---------- */
+.risk{border:1px solid var(--border);border-left:3px solid var(--caution);margin-bottom:18px;page-break-inside:avoid;}
+.risk.high{border-left-color:var(--neg);}
+.risk-head{background:var(--caution-tint);padding:11px 18px;display:flex;justify-content:space-between;align-items:center;gap:14px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.risk.high .risk-head{background:var(--neg-tint);}
+.risk-head .rt{font-weight:700;font-size:15px;}
+.badge{font-family:var(--data);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.badge-high{background:var(--neg);color:#fff;}
+.badge-med{background:var(--caution);color:#fff;}
+.badge-low{background:var(--card);color:var(--text-mute);}
+.risk-body{background:var(--canvas);padding:16px 18px 4px 18px;}
+
+/* ---------- Block G ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.scen{border:1px solid var(--border);page-break-inside:avoid;}
+.scen-head{padding:12px 18px;font-weight:700;font-size:15px;display:flex;justify-content:space-between;align-items:center;gap:12px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.scen.bull{border-top:3px solid var(--pos);}
+.scen.bull .scen-head{background:var(--pos-tint);}
+.scen.bear{border-top:3px solid var(--neg);}
+.scen.bear .scen-head{background:var(--neg-tint);}
+.scen-head .delta{font-family:var(--data);font-size:12.5px;font-weight:700;}
+.scen.bull .delta{color:var(--pos);} .scen.bear .delta{color:var(--neg);}
+.scen-body{background:var(--canvas);padding:15px 18px 4px 18px;}
+.scen-body ul{margin:0 0 12px 0;padding-left:17px;font-size:14px;}
+.scen-body li{margin-bottom:5px;}
+.scen-body p{font-size:14.5px;}
+
+/* ---------- Block H ---------- */
+.verdict{background:var(--surface);border:1px solid var(--border);padding:26px 26px 10px 26px;}
+.verdict-strip{display:flex;flex-wrap:wrap;gap:1px;background:var(--border);margin-bottom:24px;}
+.vs-item{background:var(--card);padding:13px 18px;flex:1 1 150px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.vs-item .k{font-family:var(--data);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-mute);}
+.vs-item .v{font-family:var(--data);font-size:16px;font-weight:700;margin-top:5px;}
+.rating-pill{
+  display:inline-block;background:var(--accent);color:#fff;font-family:var(--data);
+  font-size:13px;font-weight:700;letter-spacing:.1em;padding:8px 16px;border-radius:2px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+
+/* ---------- disclaimer ---------- */
+.disclaimer{padding:56px 56px 80px 56px;background:var(--surface);}
+.disclaimer h3{font-size:19px;margin-bottom:16px;}
+.disc-block{border-left:3px solid var(--border);padding-left:18px;margin-bottom:22px;font-size:13px;color:var(--text-mute);line-height:1.72;}
+.disc-block p{max-width:none;}
+.disc-ref{font-family:var(--data);font-size:11px;color:var(--text-mute);letter-spacing:.02em;}
+
+/* ---------- animation (visible without JS) ---------- */
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@media (prefers-reduced-motion:reduce){
+  .animate{animation:none !important;opacity:1 !important;transform:none !important;}
+  html{scroll-behavior:auto;}
+}
+.nav-link:focus-visible,.ticker-card:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .panel-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .panel-col:nth-child(2){border-right:none;}
+  .panel-col:nth-child(1),.panel-col:nth-child(2){border-bottom:1px solid var(--border);}
+  .ticker-cards{grid-template-columns:1fr;}
+}
+@media (max-width:768px){
+  .layout{display:block;}
+  .sidebar{position:sticky;top:0;height:auto;width:100%;z-index:20;
+    border-right:none;border-bottom:1px solid var(--border);
+    display:flex;overflow-x:auto;white-space:nowrap;padding:0;align-items:stretch;}
+  .sidebar-brand,.nav-group{display:none;}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:12px 15px;font-size:12.5px;}
+  .nav-link.active{border-left:none;border-bottom-color:var(--accent);}
+  .cover,.company-section,.disclaimer{padding-left:22px;padding-right:22px;}
+  .cover{min-height:auto;padding-top:52px;padding-bottom:52px;}
+  .scenario-grid{grid-template-columns:1fr;}
+  .panel-grid{grid-template-columns:1fr;}
+  .panel-col{border-right:none;border-bottom:1px solid var(--border);}
+  .panel-col:last-child{border-bottom:none;}
+}
+
+/* ---------- print ---------- */
+@media print{
+  @page{size:A4;margin:15mm 12mm;}
+  html,body{background-color:#FFFFFF !important;color:#111827 !important;font-size:10.5pt;}
+  .layout{display:block !important;min-height:auto !important;}
+  .sidebar,.nav-link,.nav-group,.sidebar-brand{display:none !important;}
+  .main-content{display:block !important;width:100% !important;padding:0 !important;}
+  .cover{min-height:auto !important;height:auto !important;display:block !important;
+    background-color:#FFFFFF !important;background-image:none !important;padding:0 0 18mm 0 !important;
+    border-bottom:1px solid #E5E7EB !important;}
+  .company-section{padding:0 !important;padding-top:6mm !important;padding-bottom:8mm !important;
+    background-color:#FFFFFF !important;page-break-before:always;border-bottom:none !important;}
+  #sector{page-break-before:always;}
+  .disclaimer{padding:0 !important;padding-top:8mm !important;background-color:#FFFFFF !important;page-break-before:always;}
+  .panel-grid{display:grid !important;grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:0 !important;}
+  .scenario-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:6mm !important;}
+  .ticker-cards{display:grid !important;grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:4mm !important;}
+  .panel,.verdict,.risk-body,.scen-body,.ticker-card{background-color:#FFFFFF !important;}
+  .table-wrap{overflow:visible !important;}
+  table{font-size:8.5pt;}
+  td,th{word-break:break-word;}
+  p,.dlist li{orphans:3;widows:3;}
+  .risk,.scen,.qtr,.verdict{page-break-inside:avoid;}
+  .block{page-break-inside:auto;}
+  .sec-head{page-break-after:avoid;}
+  h3,h4{page-break-after:avoid;}
+  .animate{opacity:1 !important;transform:none !important;animation:none !important;}
+  *{box-shadow:none !important;backdrop-filter:none !important;}
+  a{color:#111827 !important;text-decoration:none;}
+}
+.pgs-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 24px; background: #07090F;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-family: system-ui, sans-serif; font-size: 12px;
+}
+.pgs-topbar a { color: #94A3B8; text-decoration: none; }
+.pgs-topbar a:hover { color: #F1F5F9; }
+.pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+.pgs-topbar .pgs-sep { color: #334155; }
+@media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-MU-SNDK-SKHY-202608</span>
+</div>
+
+<div class="layout">
+<nav class="sidebar" aria-label="Report sections">
+  <div class="sidebar-brand">
+    <div class="mark">Polaris Global Strategies</div>
+    <div class="sub">Internal Research &middot; BVI</div>
+  </div>
+  <div class="nav-group">Report</div>
+  <a class="nav-link" href="#cover">Cover</a>
+  <a class="nav-link" href="#sector">Memory sector primer</a>
+  <div class="nav-group">Coverage</div>
+  <a class="nav-link" href="#mu">Micron <span class="tk">MU</span></a>
+  <a class="nav-link" href="#sndk">Sandisk <span class="tk">SNDK</span></a>
+  <a class="nav-link" href="#skhy">SK hynix <span class="tk">SKHY</span></a>
+  <div class="nav-group">Back matter</div>
+  <a class="nav-link" href="#disclaimer">Disclaimer</a>
+</nav>
+<main class="main-content">
+
+<section id="cover" class="cover">
+  <div class="animate">
+    <div class="cover-eyebrow">Polaris Global Strategies Ltd. &middot; Internal Investment Research</div>
+    <h1>The Memory Complex</h1>
+    <div class="cover-sub">Three positions in the AI memory cycle</div>
+    <div class="ticker-cards">
+      <a class="ticker-card tc-mu" href="#mu">
+        <div class="tc-tk">MU</div>
+        <div class="tc-name">Micron Technology, Inc.</div>
+        <div class="tc-line">NASDAQ &middot; PGS-MU-202608</div>
+      </a>
+      <a class="ticker-card tc-sndk" href="#sndk">
+        <div class="tc-tk">SNDK</div>
+        <div class="tc-name">Sandisk Corporation</div>
+        <div class="tc-line">NASDAQ &middot; PGS-SNDK-202608</div>
+      </a>
+      <a class="ticker-card tc-skhy" href="#skhy">
+        <div class="tc-tk">SKHY</div>
+        <div class="tc-name">SK hynix Inc. (ADR)</div>
+        <div class="tc-line">NASDAQ &middot; PGS-SKHY-202608</div>
+      </a>
+    </div>
+    <div class="cover-meta">
+      <b>Reference</b> PGS-MU-SNDK-SKHY-202608<br>
+      <b>Publication date</b> 6 August 2026<br>
+      <b>Coverage</b> Micron Technology (MU) &middot; Sandisk Corporation (SNDK) &middot; SK hynix Inc. (SKHY)<br>
+      <b>Exchange</b> NASDAQ (all three instruments)
+    </div>
+  </div>
+</section>
+
+<section id="sector" class="company-section">
+  <div class="sec-head animate">
+    <div class="eyebrow">Sector primer</div>
+    <h2>Memory stopped being a commodity</h2>
+    <div class="sh-meta">DRAM &middot; NAND &middot; HBM &middot; demand architecture through 2027</div>
+  </div>
+
+  <div class="block animate">
+    <p>Memory has spent four decades as the most reliably cyclical business in semiconductors. Capacity arrived in waves, prices collapsed, the weakest producer bled, and the cycle restarted. What has happened since late 2025 breaks that pattern in one specific way: the marginal buyer of a DRAM wafer is no longer a PC maker with a fixed bill of materials. It is a hyperscaler building inference capacity, and that buyer is price-insensitive in a way the consumer supply chain never was.</p>
+
+    <p>The mechanism is allocation, not scarcity in the ordinary sense. High bandwidth memory consumes far more wafer area and far more advanced packaging capacity per delivered bit than conventional DRAM, and it sells at a large multiple of conventional pricing. Tech Insider reports an HBM3E module at roughly sixty to one hundred dollars against five to ten dollars for a comparable quantity of standard DDR5. Faced with that spread, every rational producer moves capacity toward HBM and high-density server modules, and the wafers that leave the commodity pool do not come back. IDC put 2026 DRAM supply growth at sixteen percent and NAND at seventeen percent, both below the twenty to thirty percent range that governed the market after 2018.</p>
+
+    <p>The pricing consequence has been violent. TrendForce recorded conventional DRAM contract prices rising fifty-eight to sixty-three percent in the second quarter of 2026 and NAND contract prices rising seventy to seventy-five percent, following a first quarter in which conventional DRAM contracts moved roughly ninety to ninety-five percent higher. Lead times on DRAM have stretched past forty weeks. Memory now accounts for around thirty-five percent of a PC bill of materials against roughly twenty percent a year earlier, which is the clearest available signal that the shortage has begun taxing the end markets that used to set the price.</p>
+
+    <p>Forecast revisions have been correspondingly aggressive. TrendForce raised its 2026 global memory market estimate to $889.3 billion from $551.6 billion and its 2027 estimate to more than $1.28 trillion, with DRAM alone projected at $618.7 billion in 2026 and $903.3 billion in 2027. Those are the numbers of an industry that has repriced rather than merely grown. The demand side of the revision rests on a specific technical argument, which SK hynix stated plainly in its first-quarter commentary: as artificial intelligence moves from training runs to agentic inference performed continuously across live services, each query becomes an iterative cycle that touches memory repeatedly, and the memory footprint per unit of compute rises structurally. Enterprise storage has become the second bottleneck, since retrieval-augmented systems need high-IOPS solid state capacity in volume alongside the DRAM.</p>
+
+    <p>Two things follow for the equities in this report. First, the supply response is slow and visible. Capital expenditure has been raised across all three producers, but meaningful new capacity is not expected before late 2027 or 2028, and Micron told investors on its most recent call that demand should exceed supply beyond calendar 2027. Second, and more consequential for how these businesses should be valued, the producers have used the shortage to change their contract structure. Micron has signed multi-year strategic customer agreements, Sandisk has signed a series of new business model agreements, and SK hynix has long-term arrangements with roughly ten major customers. Each converts spot exposure into contracted volume and floor pricing. That trades some upside in a spike for a great deal of visibility in a downturn, and it is the single most important variable in deciding whether the current earnings power is a peak or a plateau.</p>
+
+    <p>The market has not settled the question. All three stocks have fallen sharply from summer highs even as reported results reached records, and the bear case has acquired specific content rather than remaining a general worry about cyclicality: Chinese capacity expansion at ChangXin Memory, the durability of eighty percent gross margins in a business that has never held them, and the possibility that contracted pricing caps the next leg rather than protecting the last one. The three reports that follow take the same industry backdrop and ask a different question of each company, because the three occupy genuinely different positions within it.</p>
+  </div>
+</section>
+
+<section id="mu" class="company-section sec-mu">
+  <div class="sec-head animate">
+    <div class="eyebrow">PGS-MU-202608 &middot; 6 August 2026</div>
+    <h2>Micron Technology, Inc.</h2>
+    <div class="sh-meta">MU &middot; NASDAQ &middot; Anchor quarter: fiscal Q3 2026, ended 28 May 2026, published 24 June 2026</div>
+  </div>
+
+  <!-- BLOCK A -->
+  <div class="block animate">
+    <div class="block-label">Block A</div>
+    <h3>Consolidated panel</h3>
+    <div class="panel">
+      <div class="panel-grid">
+        <div class="panel-col">
+          <div class="grp">Market</div>
+          <div class="panel-row"><span class="k">Price at analysis</span><span class="v">$893.19</span></div>
+          <div class="panel-row"><span class="k">Market capitalisation</span><span class="v">$1.01T</span></div>
+          <div class="panel-row"><span class="k">vs. 52-week high</span><span class="v neg">-28.8%</span></div>
+          <div class="panel-row"><span class="k">vs. 52-week low</span><span class="v pos">+736.7%</span></div>
+        </div>
+        <div class="panel-col">
+          <div class="grp">Fundamentals</div>
+          <div class="panel-row"><span class="k">Revenue TTM</span><span class="v">$90,270.0M</span></div>
+          <div class="panel-row"><span class="k">EPS TTM (GAAP)</span><span class="v">$44.31</span></div>
+          <div class="panel-row"><span class="k">EPS TTM (adjusted)</span><span class="v">$45.12 (est.)</span></div>
+          <div class="panel-row"><span class="k">Operating margin TTM</span><span class="v">65.7%</span></div>
+          <div class="panel-row"><span class="k">FCF yield</span><span class="v">2.6%</span></div>
+        </div>
+        <div class="panel-col">
+          <div class="grp">Valuation</div>
+          <div class="panel-row"><span class="k">P/E TTM</span><span class="v">20.2x</span></div>
+          <div class="panel-row"><span class="k">Forward P/E</span><span class="v">6.2x</span></div>
+          <div class="panel-row"><span class="k">EV / Revenue</span><span class="v">10.9x</span></div>
+          <div class="panel-row"><span class="k">PEG</span><span class="v">0.04</span></div>
+          <div class="panel-row"><span class="k">Historical multiple range</span><span class="v na">(data not found)</span></div>
+        </div>
+        <div class="panel-col">
+          <div class="grp">Consensus</div>
+          <div class="panel-row"><span class="k">Analysts covering</span><span class="v">46</span></div>
+          <div class="panel-row"><span class="k">Rating distribution</span><span class="v">40 / 5 / 0</span></div>
+          <div class="panel-row"><span class="k">Average target</span><span class="v">$1,507.79</span></div>
+          <div class="panel-row"><span class="k">High target</span><span class="v">$2,200.00</span></div>
+          <div class="panel-row"><span class="k">Low target</span><span class="v">$361.00</span></div>
+          <div class="panel-row"><span class="k">Next earnings</span><span class="v">22 Sep 2026</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="src">Sources: StockAnalysis / S&amp;P Global Market Intelligence (price, market cap, 52-week range, TTM fundamentals, multiples, analyst count and average target), retrieved 6 Aug 2026, price as of close 5 Aug 2026. Rating distribution (buy / hold / sell) and high and low targets from Investing.com consensus panel (42 analysts), 6 Aug 2026. Adjusted EPS TTM computed as the sum of the four non-GAAP diluted EPS figures in the quarterly table below and tagged (est.). No usable long-run multiple band was located for a company whose trailing earnings have moved by an order of magnitude in four quarters.</div>
+
+    <p style="margin-top:16px">The trailing and forward multiples describe two different companies, and the distance between them is the whole argument over Micron. A PEG reading at this level is an arithmetic artefact of growth rates that cannot repeat rather than a valuation signal, and it is the clearest evidence that the conventional screens have stopped working on this name.</p>
+  </div>
+
+  <!-- BLOCK B -->
+  <div class="block animate">
+    <div class="block-label">Block B</div>
+    <h3>Four quarters</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Quarter</th><th class="num">Quarter end</th><th class="num">Revenue / consensus</th><th>Result</th>
+            <th class="num">GAAP EPS</th><th class="num">Adj. EPS / consensus</th>
+            <th class="num">Op. margin GAAP</th><th class="num">Op. margin adj.</th>
+            <th class="num">Adjusted FCF</th><th class="num">Next session</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="lbl">FQ3 2026</td><td class="num">28 May 2026</td>
+            <td class="num">$41,456.0M / $35,840.0M</td><td><span class="pill pill-beat">Beat</span></td>
+            <td class="num">$24.67</td><td class="num">$25.11 / $20.49</td>
+            <td class="num">80.4%</td><td class="num">81.2%</td>
+            <td class="num">$18,304.0M</td><td class="up">+15.7%</td>
+          </tr>
+          <tr>
+            <td class="lbl">FQ2 2026</td><td class="num">26 Feb 2026</td>
+            <td class="num">$23,860.0M / $19,700.0M</td><td><span class="pill pill-beat">Beat</span></td>
+            <td class="num">$12.07</td><td class="num">$12.20 / $9.00</td>
+            <td class="num">67.6%</td><td class="num">69.0%</td>
+            <td class="num">$6,899.0M</td><td class="down">-4%+</td>
+          </tr>
+          <tr>
+            <td class="lbl">FQ1 2026</td><td class="num">27 Nov 2025</td>
+            <td class="num">$13,643.0M / $12,882.0M (est.)</td><td><span class="pill pill-beat">Beat</span></td>
+            <td class="num">$4.60</td><td class="num">$4.78 / $3.94</td>
+            <td class="num">45.0%</td><td class="num">47.0%</td>
+            <td class="num">$3,900.0M</td><td class="na">(data not found)</td>
+          </tr>
+          <tr>
+            <td class="lbl">FQ4 2025</td><td class="num">28 Aug 2025</td>
+            <td class="num">$11,317.0M / <span class="na">(data not found)</span></td><td><span class="pill pill-na">n/a</span></td>
+            <td class="num">$2.83</td><td class="num">$3.03 / <span class="na">(data not found)</span></td>
+            <td class="num">32.3%</td><td class="num">35.0%</td>
+            <td class="na">(data not found)</td><td class="na">(data not found)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="src">Sources: Micron 8-K Exhibit 99.1 press releases for fiscal Q3 2026 (24 Jun 2026), Q2 2026 (18 Mar 2026), Q1 2026 (17 Dec 2025) and Q4 2025 (23 Sep 2025), via investors.micron.com and SEC EDGAR. Consensus: LSEG via CNBC (FQ3 2026 revenue); Investing.com (FQ3 2026 and FQ1 2026 adjusted EPS); Yahoo Finance (FQ2 2026 revenue and adjusted EPS); FQ1 2026 revenue consensus backed out from the published surprise in the GlobeNewswire earnings summary and tagged (est.). Next-session reaction: StockTitan (FQ3 2026); Yahoo Finance early-session move (FQ2 2026), reported as a decline of more than four percent rather than a closing figure. No GAAP EPS consensus is published for this name, so the GAAP column shows reported figures only. Adjusted free cash flow is Micron's own defined measure.</div>
+  </div>
+
+  <!-- BLOCK C -->
+  <div class="block animate">
+    <div class="block-label">Block C</div>
+    <h3>Reading the quarters</h3>
+    <div class="quarters">
+      <div class="qtr">
+        <div class="kicker">FQ3 2026 &middot; anchor</div>
+        <p>The quarter that reset the argument. Revenue more than quadrupled against the year-ago period and gross margin arrived above eighty-four percent on a GAAP basis, a level Micron has never held and which management attributed to pricing rather than to cost. The composition matters more than the headline: core data centre revenue rose more than sevenfold, cloud memory more than tripled, and even automotive and embedded, the slowest-moving unit, quadrupled. That breadth removes the usual objection that a memory upcycle is one product line flattering a mediocre franchise. The disclosure carrying the most weight was structural. Micron announced sixteen multi-year strategic customer agreements, expects roughly twenty-two billion dollars in cash deposits and related commitments, and put floor-price revenue under them at one hundred billion dollars across five years. Management framed the guided fourth quarter as a moderation in the rate of price increases rather than a reversal. The market marked the stock up sharply the next session, which turned out to be the high.</p>
+      </div>
+      <div class="qtr">
+        <div class="kicker">FQ2 2026</div>
+        <p>A larger beat than the third quarter in percentage terms, and a worse reaction. Revenue came in almost a fifth above the Street and adjusted earnings roughly a third above, with gross margin moving to the mid-seventies from the mid-fifties in a single quarter. The board raised the dividend by thirty percent, which management presented as a statement about the durability of the business. Shares fell the next morning anyway. Sell-side commentary attributed the reaction to a fear that the growth rate could not be sustained rather than to anything in the numbers, and capital expenditure guidance above twenty-five billion dollars gave that fear something to attach to. This was the first quarter in which the market's response and the print diverged, and it began a drawdown of roughly thirty percent over the following weeks. It establishes the pattern that now governs the name: operating results confirm the thesis while the share price trades on a separate question about how long the pricing holds.</p>
+      </div>
+      <div class="qtr">
+        <div class="kicker">FQ1 2026</div>
+        <p>The inflection quarter, and in retrospect the last one that could be read as a normal cyclical recovery. Revenue rose by more than half year on year and operating margin crossed into the mid-forties on a GAAP basis, roughly twenty points above the year-ago level. Gross margin at fifty-six percent was strong by the standards of any prior Micron cycle and modest by the standards of what followed within six months. Capital expenditure of four and a half billion dollars against operating cash flow of eight and a half billion left adjusted free cash flow positive but unremarkable, and the balance sheet still carried fourteen billion dollars of long-term debt at the fiscal year-end that preceded it. Management commentary centred on high bandwidth memory qualification and node transitions rather than on pricing, which is the correct tell for where the company thought it was in the cycle. The cash generation that would later allow Micron to retire most of that debt had not yet started.</p>
+      </div>
+      <div class="qtr">
+        <div class="kicker">FQ4 2025</div>
+        <p>The base of the sequence and a useful reminder of how recently this was an ordinary business. Micron closed fiscal 2025 with an operating margin in the low thirties on a GAAP basis, having raised its own guidance mid-quarter in August on improved DRAM pricing and then exceeded the raised range. Full-year revenue of $37.4 billion was a company record at the time and would be surpassed by a single quarter eight months later. The gross margin story was already forming, with consolidated gross margin up almost seven percentage points sequentially on product mix and DRAM pricing, but the driver was described as favourable mix rather than as a shortage. Operating expenses rose on research and development, in line with guidance. Nothing signalled the discontinuity ahead, which is the point worth carrying forward: the pricing regime that produced the anchor quarter arrived faster than the company's own guidance framework could describe it, and no reason exists to assume it leaves more slowly.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK D -->
+  <div class="block animate">
+    <div class="block-label">Block D</div>
+    <h3>Patterns and watch list</h3>
+    <h4>Structural patterns across the four quarters</h4>
+    <ul class="dlist">
+      <li><span class="claim">Margin expansion has come from price, not from cost or from operating discipline.</span> Operating expenses rose every quarter while operating margin more than doubled, so the gain sits between price and cost of goods sold.</li>
+      <li><span class="claim">The beat has grown in every quarter and the share price reaction has decoupled from it.</span> The largest beat produced a next-session decline and the smaller one that followed the largest gain, so the market prices duration rather than delivery.</li>
+      <li><span class="claim">Cash conversion improved faster than revenue.</span> Adjusted free cash flow rose from low single-digit billions into the high teens across three quarters while capital expenditure also rose, cutting long-term debt by two thirds.</li>
+      <li><span class="claim">Growth has broadened rather than concentrated.</span> All four units grew by a multiple year on year, and mobile and client, the weakest secular story, added roughly seventy points of operating margin.</li>
+    </ul>
+    <h4>Watch list for the fiscal Q4 2026 print</h4>
+    <ul class="dlist">
+      <li><span class="sig sig-flat">&rarr;</span><span class="claim">Gross margin against the eighty-six percent guide.</span> Delivery at or above the guide confirms contracted pricing; a shortfall is first evidence the agreements bind downward.</li>
+      <li><span class="sig sig-up">&uarr;</span><span class="claim">Data centre solid state drive revenue.</span> It doubled sequentially and reads cleanly on whether Micron takes enterprise NAND share or rides price.</li>
+      <li><span class="sig sig-down">&darr;</span><span class="claim">Fiscal 2027 capital expenditure.</span> An increase beyond the mid-forty-billion range without matching contracted volume pushes the cash flow trough into 2028.</li>
+      <li><span class="sig sig-flat">&rarr;</span><span class="claim">Additional strategic customer agreements and deposit inflows.</span> New signings extend visibility; none after sixteen suggests the counterparty set is covered.</li>
+    </ul>
+  </div>
+
+  <!-- BLOCK E -->
+  <div class="block animate">
+    <div class="block-label">Block E</div>
+    <h3>Strategic architecture</h3>
+
+    <h4>1. Business model and revenue architecture</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Business unit</th><th class="num">FQ3 2026 revenue</th><th class="num">% of total</th><th class="num">YoY</th><th class="num">Gross margin</th><th class="num">Operating margin</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Cloud Memory</td><td class="num">$13,769.0M</td><td class="num">33.2%</td><td class="num up">+306.6%</td><td class="num">83%</td><td class="num">78%</td></tr>
+          <tr><td class="lbl">Core Data Center</td><td class="num">$11,524.0M</td><td class="num">27.8%</td><td class="num up">+653.2%</td><td class="num">87%</td><td class="num">83%</td></tr>
+          <tr><td class="lbl">Mobile and Client</td><td class="num">$11,521.0M</td><td class="num">27.8%</td><td class="num up">+253.9%</td><td class="num">87%</td><td class="num">86%</td></tr>
+          <tr><td class="lbl">Automotive and Embedded</td><td class="num">$4,634.0M</td><td class="num">11.2%</td><td class="num up">+311.2%</td><td class="num">79%</td><td class="num">75%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="src">Source: Micron fiscal Q3 2026 press release, quarterly business unit financial results table, 24 Jun 2026. Micron reorganised its reporting units at the start of fiscal 2026, so no completed fiscal year exists under the current four-unit taxonomy; the anchor quarter is used in place of an annual breakdown and is labelled accordingly. Share of total and year-on-year change computed from the disclosed unit revenues and their year-ago comparatives.</div>
+
+    <p style="margin-top:16px">Micron sells one physical output, wafer capacity, into four demand pools that value it differently, and the fiscal 2026 reorganisation was an accounting acknowledgement of that. Cloud Memory and Core Data Center together account for just over sixty percent of revenue and carry the two highest gross margins in the portfolio. Cloud Memory is the high bandwidth memory franchise and its surrounding products; Core Data Center covers server DRAM modules and enterprise solid state drives, and it grew fastest of the four because enterprise storage inflected later than high bandwidth memory did.</p>
+
+    <p>The interaction between units is a capacity allocation decision rather than a commercial one. Every wafer directed to high bandwidth memory is a wafer denied to the mobile and client pool, and the striking feature of the anchor quarter is that mobile and client nonetheless produced the joint-highest gross margin and the highest operating margin of any unit. That is the signature of a shortage transmitting through a supply chain rather than of Micron winning share in phones. Handset and personal computer customers are paying data centre prices for capacity they cannot substitute, which flatters the segment today and creates the demand destruction risk noted below.</p>
+
+    <p>Operating leverage originates almost entirely in the gap between contract price and a cost base that is fixed in the short run. Operating expenses amount to a small fraction of revenue at current pricing, so incremental price flows almost undiminished to operating income, which is why unit operating margins now sit within a few points of unit gross margins. The mechanism runs symmetrically: if contract pricing reverts toward cost, the same fixed base produces a contraction of similar speed, and the strategic agreements are the only structural feature standing between Micron and that arithmetic.</p>
+
+    <h4>2. Competitive moat</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pillar</th><th>Strength</th><th>Erosion risk</th><th class="num">Rating</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Three-supplier DRAM structure</td><td>Capital and know-how barriers have held the market to three credible producers for a decade</td><td>Chinese entry at scale, led by ChangXin Memory</td><td class="num star">&#9733;&#9733;&#9733;&#9733;</td></tr>
+          <tr><td class="lbl">HBM qualification lock-in</td><td>HBM4 in high-volume shipment on a lead accelerator platform; requalification is slow and customer-initiated</td><td>Samsung regaining qualified status on the same platforms</td><td class="num star">&#9733;&#9733;&#9733;&#9733;</td></tr>
+          <tr><td class="lbl">Leading-edge node execution</td><td>1-gamma DRAM and G9 NAND ramping toward highest-volume node status</td><td>Peer parity at 1c and equivalent NAND generations</td><td class="num star">&#9733;&#9733;&#9733;</td></tr>
+          <tr><td class="lbl">Strategic customer agreements</td><td>Multi-year contracted volume with cash deposits attached</td><td>Floor pricing caps upside; renegotiation on renewal at lower levels</td><td class="num star">&#9733;&#9733;&#9733;</td></tr>
+          <tr><td class="lbl">United States manufacturing base</td><td>Only domestic producer of leading-edge DRAM, with fabs under construction in New York and Idaho</td><td>Policy reversal, subsidy conditionality, construction cost inflation</td><td class="num star">&#9733;&#9733;&#9733;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="src">Source: PGS assessment. Underlying evidence from Micron fiscal Q3 2026 press release and earnings call (24 Jun 2026), Micron corporate announcements Jan to Jul 2026, and Reuters reporting on ChangXin Memory capacity plans (Aug 2026). Star rating is the PGS scale defined in the report conventions: five denotes a durable, near-unassailable advantage.</div>
+
+    <p style="margin-top:16px">The durable pillar here is structural rather than technical. DRAM has supported exactly three producers of consequence because the capital required to reach leading-edge scale exceeds what any new entrant can justify against a normalised return, and that arithmetic has held through several cycles. It is now being tested by a competitor operating under a different objective function. Chinese capacity is being built to a policy target rather than to a return on invested capital, and the appropriate way to rate this pillar is by how quickly that capacity reaches leading-edge nodes rather than by how much of it exists.</p>
+
+    <p>Qualification lock-in is the pillar most often overrated. It is real, since accelerator vendors validate memory suppliers against specific platforms and requalification consumes engineering time on the customer side, but it is a lag rather than a barrier. Samsung has been qualified before and will be again. What genuinely differentiates Micron is the combination of node execution and packaging capacity arriving together, which is a repeatable operating capability rather than a position, and which is why the rating stops at four stars.</p>
+
+    <p>The strategic customer agreements deserve careful handling because they are being marketed as a moat and function as something closer to insurance. They convert a portion of future revenue into a contracted floor and bring cash forward through deposits, which raises the quality of the earnings stream and lowers its ceiling at the same time. A five-year floor-price commitment is protection in a downturn and a constraint in a squeeze. Rated as a mechanism rather than as a headline, that is a three-star feature: valuable, replicable by every competitor, and already being replicated by two of them.</p>
+
+    <h4>3. Long-term growth architecture</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Driver</th><th class="num">Timeline</th><th>Current state</th><th>Potential</th><th class="num">Status</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">HBM4 and HBM4E</td><td class="num">2026&ndash;2028</td><td>HBM4 shipping in volume to lead customer, samples with multiple end-customers; HBM4E volume production targeted for calendar 2027</td><td>Highest-value DRAM tier and the gate to accelerator design wins</td><td class="num">on track</td></tr>
+          <tr><td class="lbl">Enterprise NAND and data centre SSD</td><td class="num">2026&ndash;2029</td><td>Data centre SSD revenue more than doubled sequentially; 245TB QLC drive and PCIe Gen6 SSD in production</td><td>Repricing of NAND away from consumer economics</td><td class="num">on track</td></tr>
+          <tr><td class="lbl">Contracted revenue base</td><td class="num">2026&ndash;2031</td><td>Sixteen strategic customer agreements signed, with deposits and floor pricing attached</td><td>Structurally lower earnings volatility across the next downcycle</td><td class="num">emerging</td></tr>
+          <tr><td class="lbl">Capacity expansion programme</td><td class="num">2027&ndash;2030</td><td>Fab construction in New York and Singapore, Tongluo site acquired in Taiwan, India assembly and test open</td><td>Volume growth once pricing normalises</td><td class="num">at risk</td></tr>
+          <tr><td class="lbl">Edge and automotive AI memory</td><td class="num">2027&ndash;2030</td><td>1-gamma LPDDR5 at automotive readiness, first samples shipped to a robotaxi customer, UFS 4.1 automotive NAND in volume</td><td>Demand diversification away from hyperscaler concentration</td><td class="num">emerging</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="src">Source: Micron fiscal Q3 2026 press release product highlights and earnings call commentary (24 Jun 2026); Micron corporate announcements on Clay NY, Singapore, Tongluo and India facilities (Jan to Mar 2026). Status field uses the PGS three-point scale defined in the report conventions.</div>
+
+    <p style="margin-top:16px">Sequencing here is unusually clean, because one driver gates every other. High bandwidth memory has to keep working. It is the product that justifies the wafer allocation, sets the price umbrella under which conventional DRAM has repriced, and secures the accelerator design positions from which the strategic agreements were negotiated. If Micron loses HBM4E share to Samsung or SK hynix in 2027, the enterprise storage story becomes a commodity NAND story again and the contracted revenue base becomes a set of obligations to supply at floor prices into a weaker market.</p>
+
+    <p>Second in sequence is the capacity programme, which is rated at risk for reasons of timing rather than of execution. Micron is building into a shortage on the assumption that the shortage outlasts the construction, and management has told investors that demand should exceed supply beyond calendar 2027. Fabs under construction now arrive close to that boundary. The capital is already committed, so the question concerns the market the tools inside those buildings will meet rather than whether the buildings finish.</p>
+
+    <p>The two emerging drivers are best understood as hedges against the concentration risk in the first two. Automotive and embedded memory is a slow, qualification-heavy business with long design cycles and pricing that does not swing with hyperscaler capital budgets. It will never carry the company. What it can do, over the second half of this decade, is give Micron a revenue floor that is set by vehicle production and industrial demand rather than by four data centre customers, which is the diversification the equity currently lacks.</p>
+  </div>
+
+  <!-- BLOCK F -->
+  <div class="block animate">
+    <div class="block-label">Block F</div>
+    <h3>Risk register</h3>
+
+    <div class="risk high">
+      <div class="risk-head"><span class="rt">Chinese capacity entering leading-edge DRAM</span><span class="badge badge-high">High</span></div>
+      <div class="risk-body">
+        <p>The mechanism is a supplier that expands against a policy objective rather than a return threshold. ChangXin Memory has been reported by Reuters as considering a second dedicated memory plant in Beijing, and Micron shares fell on that report alone. Chinese output at mature nodes has already absorbed part of the commodity DRAM pool; the material question is the node. If ChangXin reaches DDR5 and high-density server modules at volume, it competes for the same demand that is currently repricing Micron's mobile and client unit, and it does so without needing to earn a cost of capital. Timeline is 2027 to 2029 for meaningful leading-edge output, with earlier effects on pricing sentiment than on physical supply. The observable to track is qualification rather than announced capacity: the first credible report of a Chinese DDR5 server module qualified at a tier-one original equipment manufacturer would mark the point at which this stops being a sentiment risk and becomes a pricing one.</p>
+      </div>
+    </div>
+
+    <div class="risk high">
+      <div class="risk-head"><span class="rt">Margin normalisation and the floor-price ceiling</span><span class="badge badge-high">High</span></div>
+      <div class="risk-body">
+        <p>Micron currently earns a gross margin that no memory producer has sustained, and the entire expansion sits in price rather than in cost, as set out in the revenue architecture. The strategic customer agreements protect the downside by contracting volume at a floor, and the same instrument caps the upside and fixes a reference price that customers will anchor to at renewal. The mechanism of harm is therefore two-sided: a spot correction compresses the uncontracted book immediately, and contracted renewals reset lower with a lag. Timeline is 2027 to 2028, aligned with the first renewal window and with the capacity additions the whole industry has funded. The observable is the guided gross margin rather than the reported one. Micron already described its fourth-quarter outlook as reflecting a moderation in the rate of price increases; a guide that moves from moderating increases to flat pricing is the first hard signal, and it will appear one quarter before it appears in results.</p>
+      </div>
+    </div>
+
+    <div class="risk">
+      <div class="risk-head"><span class="rt">Capital intensity outrunning the cycle</span><span class="badge badge-med">Medium</span></div>
+      <div class="risk-body">
+        <p>Fiscal 2026 capital expenditure has been raised toward twenty-seven billion dollars and management has pointed fiscal 2027 above the mid-forty-billion range, against a company that generated a fraction of that in operating cash flow eighteen months ago. The mechanism is timing rather than solvency: Micron holds a net cash position and a light debt load, so the balance sheet absorbs the programme comfortably while pricing holds. The exposure appears if pricing normalises before the tools are productive, at which point depreciation steps up into a weaker revenue base and free cash flow inverts sharply. Timeline is 2028 onward, since the depreciation charge lags the spend. The observable is the relationship between the capital expenditure guide and incremental contracted volume. Capital committed alongside new strategic agreements is capacity that is already sold; capital committed without them is a bet on the spot market at the point in the cycle when that bet is worst rewarded.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK G -->
+  <div class="block animate">
+    <div class="block-label">Block G</div>
+    <h3>Scenarios</h3>
+    <div class="scenario-grid">
+      <div class="scen bull">
+        <div class="scen-head"><span>Bull</span><span class="delta">+55% to the PGS bull target</span></div>
+        <div class="scen-body">
+          <ul>
+            <li>Agentic inference keeps memory intensity per unit of compute rising through 2027</li>
+            <li>Strategic customer agreements are extended and expanded rather than merely renewed</li>
+            <li>Chinese capacity stays below the leading edge on server-grade parts</li>
+          </ul>
+          <p>The conditions required are narrower than they appear. Micron does not need pricing to rise further; it needs pricing to stop falling before the fiscal 2027 capacity arrives, and it needs the contracted book to grow enough that the uncontracted remainder is small when the correction comes. On that path the forward multiple in the panel is simply wrong, because it discounts a reversion that the contract structure prevents. Re-rating rather than earnings growth does the work, and the market's own average target sits well above the current price on essentially this argument.</p>
+        </div>
+      </div>
+      <div class="scen bear">
+        <div class="scen-head"><span>Bear</span><span class="delta">-45% to the PGS bear case</span></div>
+        <div class="scen-body">
+          <ul>
+            <li>Hyperscaler capital budgets flatten in 2027 as inference efficiency improves faster than usage grows</li>
+            <li>Industry capacity additions from all three producers land together in late 2027</li>
+            <li>Consumer and enterprise demand destruction from current memory pricing pulls volume out of the market</li>
+          </ul>
+          <p>The conditions here do not require a Chinese shock or a demand collapse. They require only that the three incumbents behave the way they have behaved in every prior cycle, which is to add capacity into strength and meet each other on the way down. Floor pricing then becomes the operative price rather than the protective one, depreciation from the current programme steps up into it, and the trailing multiple in the panel proves to have been the accurate one all along. The uncontracted portion of the book takes the first and largest hit.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK H -->
+  <div class="block animate">
+    <div class="block-label">Block H</div>
+    <h3>PGS verdict</h3>
+    <div class="verdict">
+      <div class="verdict-strip">
+        <div class="vs-item"><div class="k">Rating</div><div class="v"><span class="rating-pill">&#128994; BUY</span></div></div>
+        <div class="vs-item"><div class="k">Bull target, 18 to 24 months</div><div class="v">+55%</div></div>
+        <div class="vs-item"><div class="k">Bear downside</div><div class="v">-45%</div></div>
+        <div class="vs-item"><div class="k">Risk / reward</div><div class="v">Favourable</div></div>
+      </div>
+      <p><b>Price dislocation.</b> The stock has given back more than a quarter of its value from the high set the session after the anchor quarter, a period in which Micron reported its best results ever and guided to better. The dislocation is legible in the two multiples in the panel, and it states a view about duration rather than about the numbers. It is wide even against the memory sector's own history of disbelief.</p>
+      <p><b>Fundamental quality.</b> Better than the share price implies and weaker than reported margins suggest. The balance sheet has been transformed inside four quarters, with most long-term debt retired out of operating cash flow and a substantial net cash position rebuilt. Growth is broad across all four business units rather than concentrated in high bandwidth memory, which is the strongest argument that memory has repriced rather than one product booming. The margin structure remains the thinnest part of the case, resting on a price level with no precedent.</p>
+      <p><b>Primary risk.</b> Margin normalisation dominates the Chinese supply question on any horizon shorter than three years. The strategic agreements are why this rates favourable rather than balanced: they change the shape of the downside from a cliff to a slope without removing it. The proposition being bought is that contracted volume at floor prices supports a materially higher earnings base than the last trough, and no downcycle has tested it.</p>
+      <p><b>Near-term catalysts.</b> The fiscal fourth-quarter result is due on 22 September 2026 and carries an unusually high information load, being the first print at which the guided gross margin can be checked against the moderating-price framing introduced in June. Before then, further agreement announcements, the fiscal 2027 capital expenditure figure and qualification news from ChangXin can move the duration argument either way.</p>
+    </div>
+  </div>
+</section>
+
+<section id="sndk" class="company-section sec-sndk">
+  <div class="sec-head animate">
+    <div class="eyebrow">PGS-SNDK-202608 &middot; 6 August 2026</div>
+    <h2>Sandisk Corporation</h2>
+    <div class="sh-meta">SNDK &middot; NASDAQ &middot; Anchor quarter: fiscal Q4 2026, ended 3 July 2026, published 5 August 2026</div>
+  </div>
+
+  <!-- BLOCK A -->
+  <div class="block animate">
+    <div class="block-label">Block A</div>
+    <h3>Consolidated panel</h3>
+    <div class="panel">
+      <div class="panel-grid">
+        <div class="panel-col">
+          <div class="grp">Market</div>
+          <div class="panel-row"><span class="k">Price at analysis</span><span class="v">$1,350.50</span></div>
+          <div class="panel-row"><span class="k">Market capitalisation</span><span class="v">$200.00B</span></div>
+          <div class="panel-row"><span class="k">vs. 52-week high</span><span class="v neg">-42.6%</span></div>
+          <div class="panel-row"><span class="k">vs. 52-week low</span><span class="v na">(data not found)</span></div>
+        </div>
+        <div class="panel-col">
+          <div class="grp">Fundamentals</div>
+          <div class="panel-row"><span class="k">Revenue TTM</span><span class="v">$20,248.0M</span></div>
+          <div class="panel-row"><span class="k">EPS TTM (GAAP)</span><span class="v">$73.76</span></div>
+          <div class="panel-row"><span class="k">EPS TTM (adjusted)</span><span class="v">$70.88</span></div>
+          <div class="panel-row"><span class="k">Operating margin TTM (GAAP)</span><span class="v">61.2%</span></div>
+          <div class="panel-row"><span class="k">Operating margin TTM (adj.)</span><span class="v">62.7%</span></div>
+          <div class="panel-row"><span class="k">FCF yield</span><span class="v">5.7% (est.)</span></div>
+        </div>
+        <div class="panel-col">
+          <div class="grp">Valuation</div>
+          <div class="panel-row"><span class="k">P/E TTM</span><span class="v">18.3x (est.)</span></div>
+          <div class="panel-row"><span class="k">Forward P/E</span><span class="v">6.3x</span></div>
+          <div class="panel-row"><span class="k">EV / Revenue</span><span class="v">9.7x (est.)</span></div>
+          <div class="panel-row"><span class="k">PEG</span><span class="v">0.03</span></div>
+          <div class="panel-row"><span class="k">Historical multiple range</span><span class="v na">standalone since Feb 2025</span></div>
+        </div>
+        <div class="panel-col">
+          <div class="grp">Consensus</div>
+          <div class="panel-row"><span class="k">Analysts covering</span><span class="v">22</span></div>
+          <div class="panel-row"><span class="k">Rating</span><span class="v">Buy</span></div>
+          <div class="panel-row"><span class="k">Average target</span><span class="v">$2,217.77</span></div>
+          <div class="panel-row"><span class="k">High target</span><span class="v na">(data not found)</span></div>
+          <div class="panel-row"><span class="k">Low target</span><span class="v na">(data not found)</span></div>
+          <div class="panel-row"><span class="k">Next earnings</span><span class="v">5 Nov 2026</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="src">Sources: StockAnalysis / S&amp;P Global Market Intelligence (price at close 5 Aug 2026, market cap, forward P/E, PEG, enterprise value, average target and consensus rating), retrieved 6 Aug 2026. Fiscal 2026 revenue, GAAP and non-GAAP diluted EPS and operating income from the Sandisk fiscal Q4 2026 press release (5 Aug 2026). Fifty-two-week high of $2,354.39 intraday on 22 Jun 2026 per Forbes. Analyst count per Simply Wall St panel. Next earnings date per TradingView. P/E TTM, EV/Revenue and FCF yield recomputed by PGS on fiscal 2026 reported figures and tagged (est.), because provider trailing statistics had not yet absorbed the fourth-quarter print at the time of retrieval.</div>
+
+    <p style="margin-top:16px">Sandisk has no usable multiple history, having traded as an independent company for under eighteen months, and the trailing figure in the panel is itself only hours old. The more informative comparison sits on the same page: a NAND pure play is being capitalised on roughly the forward multiple of a diversified DRAM producer, which is either a mispricing or a warning depending on how the contract question resolves.</p>
+  </div>
+
+  <!-- BLOCK B -->
+  <div class="block animate">
+    <div class="block-label">Block B</div>
+    <h3>Four quarters</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Quarter</th><th class="num">Quarter end</th><th class="num">Revenue / consensus</th><th>Result</th>
+            <th class="num">GAAP EPS</th><th class="num">Adj. EPS / consensus</th>
+            <th class="num">Op. margin GAAP</th><th class="num">Op. margin adj.</th>
+            <th class="num">Adjusted FCF</th><th class="num">Next session</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="lbl">FQ4 2026</td><td class="num">3 Jul 2026</td>
+            <td class="num">$8,965.0M / $8,390.0M</td><td><span class="pill pill-beat">Beat</span></td>
+            <td class="num">$43.97</td><td class="num">$39.25 / $34.45</td>
+            <td class="num">78.5%</td><td class="num">79.2%</td>
+            <td class="num">$5,035.0M</td><td class="na">pending</td>
+          </tr>
+          <tr>
+            <td class="lbl">FQ3 2026</td><td class="num">3 Apr 2026</td>
+            <td class="num">$5,950.0M / <span class="na">(data not found)</span></td><td><span class="pill pill-beat">Beat</span></td>
+            <td class="num">$23.03</td><td class="num">$23.41 / $14.62</td>
+            <td class="num">69.1%</td><td class="num">70.9%</td>
+            <td class="num">$2,417.0M</td><td class="up">+8.3%</td>
+          </tr>
+          <tr>
+            <td class="lbl">FQ2 2026</td><td class="num">2 Jan 2026</td>
+            <td class="num">$3,025.0M / <span class="na">(data not found)</span></td><td><span class="pill pill-beat">Beat</span></td>
+            <td class="num">$5.15</td><td class="num">$6.20 / $3.62 (est.)</td>
+            <td class="num">35.2%</td><td class="num">37.5%</td>
+            <td class="num">$843.0M</td><td class="up">+6.9%</td>
+          </tr>
+          <tr>
+            <td class="lbl">FQ1 2026</td><td class="num">3 Oct 2025</td>
+            <td class="num">$2,308.0M / <span class="na">(data not found)</span></td><td><span class="pill pill-beat">Beat</span></td>
+            <td class="num">$0.75</td><td class="num">$1.22 / <span class="na">(data not found)</span></td>
+            <td class="num">7.6%</td><td class="num">10.6%</td>
+            <td class="num">$448.0M</td><td class="up">+15.3%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="src">Sources: Sandisk 8-K Exhibit 99.1 press releases for fiscal Q4 2026 (5 Aug 2026), Q3 2026, Q2 2026 (29 Jan 2026) and Q1 2026 (6 Nov 2025), via investor.sandisk.com, BusinessWire and SEC EDGAR. Operating margins computed from disclosed GAAP and non-GAAP operating income against disclosed revenue. Adjusted free cash flow is Sandisk's own defined measure, being free cash flow adjusted for Flash Ventures activity and for cash prepayments and deposits under new business model agreements. Consensus: revenue and adjusted EPS for fiscal Q4 2026 per TipRanks and CNBC; fiscal Q3 2026 adjusted EPS per Benzinga; fiscal Q2 2026 adjusted EPS backed out from the published surprise percentage and tagged (est.). Where consensus was not located, the beat pill reflects the result against company guidance issued in the prior quarter. Next-session moves per Benzinga; the fiscal Q4 2026 reaction was still in progress at the time of writing, with the shares lower after hours. No GAAP EPS consensus is published for this name.</div>
+  </div>
+
+  <!-- BLOCK C -->
+  <div class="block animate">
+    <div class="block-label">Block C</div>
+    <h3>Reading the quarters</h3>
+    <div class="quarters">
+      <div class="qtr">
+        <div class="kicker">FQ4 2026 &middot; anchor</div>
+        <p>A large beat that the market disliked, for a reason visible only below the headline. Revenue rose roughly half sequentially and management attributed about a third of that increase to volume and two thirds to price, which is the cleanest disclosure of its kind any of the three producers has given. Datacenter revenue doubled sequentially while consumer fell by roughly a third, so the mix shift and the pricing move are the same event: capacity is being pulled out of retail channels and sold to hyperscalers. GAAP earnings exceeded adjusted earnings, a rare inversion here reflecting a gain on marketable equity securities booked below the operating line after Sandisk deployed cash into equity holdings. Strip it out and the operating result is still a record. The disappointment sat in guidance: the first-quarter revenue midpoint landed marginally below the Street, and after two quarters of enormous guidance beats an in-line outlook read as a change in trajectory. The board authorised a further fourteen billion dollars of buyback on the same day.</p>
+      </div>
+      <div class="qtr">
+        <div class="kicker">FQ3 2026</div>
+        <p>The quarter in which Sandisk stopped resembling a memory company. Revenue landed well above a guidance range of $4.40 billion to $4.80 billion, gross margin reached the high seventies against a guide in the mid-sixties, and adjusted earnings arrived at roughly sixty percent above consensus. Non-GAAP operating expenses fell to a single-digit percentage of revenue from the mid-teens in the prior quarter, which is the arithmetic that turns a gross margin beat into an operating margin beat of this size. Management used the call to announce the first five new business model agreements, the contract structure that converts spot exposure into committed volume, and analysts subsequently put the associated backlog in the region of forty billion dollars. The market added a modest single-digit gain the following session, a restrained response to the largest earnings surprise in the company's short standalone history, and the restraint was the correct instinct: what changed in this quarter was the pricing environment, and the contracts were an attempt to hold on to it rather than evidence that it would hold on its own.</p>
+      </div>
+      <div class="qtr">
+        <div class="kicker">FQ2 2026</div>
+        <p>The inflection. Revenue came in above a guidance range of $2.55 billion to $2.65 billion and gross margin crossed fifty percent from just under thirty in a single quarter, which management attributed primarily to pricing across all segments rather than to any change in cost or mix. Datacenter revenue rose sixty-four percent sequentially on adoption by artificial intelligence infrastructure builders and semi-custom customers. Operating expenses fell sequentially. Below the operating line the quarter was noisy, with legal settlement charges and an investment impairment holding GAAP earnings well under adjusted earnings, and interest expense still reflecting the debt carried out of the Western Digital separation. Management described a structural reset that aligned supply with demand, which was accurate as far as it went and understated what was actually happening: the NAND market repriced, and Sandisk happened to be a pure play standing in front of it with an unusually operationally geared cost base.</p>
+      </div>
+      <div class="qtr">
+        <div class="kicker">FQ1 2026</div>
+        <p>The base quarter and the last one that looked like the old business. Revenue was above the guided range and gross margin sat just under thirty percent, which is roughly the level at which a NAND producer covers its cost of capital and no more. A high-single-digit GAAP operating margin is the number to keep in view when assessing the current one, because it is the same company, the same fabs and largely the same product portfolio. Datacenter revenue rose sequentially with two hyperscalers in qualification, and BiCS8 accounted for fifteen percent of bits shipped with a stated path to a majority by the end of the fiscal year. Management's emphasis was on reaching a net cash position ahead of plan, a milestone that reads as modest against what the balance sheet became three quarters later. The stock posted the largest post-earnings gain of the sequence, because at that point the market was repricing the possibility of a cycle rather than the arrival of one.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK D -->
+  <div class="block animate">
+    <div class="block-label">Block D</div>
+    <h3>Patterns and watch list</h3>
+    <h4>Structural patterns across the four quarters</h4>
+    <ul class="dlist">
+      <li><span class="claim">Operating margin has expanded roughly ten times faster than revenue.</span> Revenue grew about fourfold while GAAP operating margin moved from single digits to the high seventies, locating the result in operating gearing against a fixed cost base.</li>
+      <li><span class="claim">Every quarter beat its own guidance, and by a widening margin until the last one.</span> The company delivered above its own guide in all four periods, then guided to a midpoint marginally below consensus, which breaks the pattern.</li>
+      <li><span class="claim">Adjusted free cash flow now runs materially below reported free cash flow.</span> The gap is customer prepayments and deposits under the contract programme, which Sandisk strips out, so headline cash generation is flattered by contract mechanics.</li>
+      <li><span class="claim">The revenue mix has inverted inside one fiscal year.</span> Datacenter became the fastest-growing end market by a wide margin while consumer revenue fell sequentially, so the customer base concentrates as it grows.</li>
+    </ul>
+    <h4>Watch list for the fiscal Q1 2027 print</h4>
+    <ul class="dlist">
+      <li><span class="sig sig-down">&darr;</span><span class="claim">Gross margin against the guided range of 83.0% to 85.0%.</span> A guide that already steps down from the anchor quarter admits peak pricing is behind; delivery at the low end confirms it.</li>
+      <li><span class="sig sig-up">&uarr;</span><span class="claim">Datacenter revenue and the count of new business model agreements.</span> The signing pace is the only observable measure of how much fiscal 2027 volume is contracted rather than exposed.</li>
+      <li><span class="sig sig-down">&darr;</span><span class="claim">Consumer revenue.</span> A second sequential decline confirms the retail channel is being abandoned, which raises margin now and removes the volume buffer later.</li>
+      <li><span class="sig sig-flat">&rarr;</span><span class="claim">Buyback execution against the expanded authorisation.</span> Repurchases at current prices are management's clearest statement about its view of the cycle.</li>
+    </ul>
+  </div>
+
+  <!-- BLOCK E -->
+  <div class="block animate">
+    <div class="block-label">Block E</div>
+    <h3>Strategic architecture</h3>
+
+    <h4>1. Business model and revenue architecture</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>End market</th><th class="num">FY2026 revenue</th><th class="num">% of total</th><th class="num">YoY</th><th>Margin profile</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Edge</td><td class="num">$12,160.0M</td><td class="num">60.1%</td><td class="num up">+195%</td><td>Not disclosed by end market</td></tr>
+          <tr><td class="lbl">Datacenter</td><td class="num">$5,153.0M</td><td class="num">25.4%</td><td class="num up">+437%</td><td>Not disclosed by end market</td></tr>
+          <tr><td class="lbl">Consumer</td><td class="num">$2,935.0M</td><td class="num">14.5%</td><td class="num up">+29%</td><td>Not disclosed by end market</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="src">Source: Sandisk fiscal Q4 2026 press release, fiscal year end market summary, 5 Aug 2026. Share of total computed from disclosed end market revenues. Sandisk does not report gross or operating margin by end market, so no margin profile can be given without estimation; the field is marked accordingly rather than filled.</div>
+
+    <p style="margin-top:16px">Sandisk is a single-technology company with three routes to market, and they matter more than usual because they consume the same bits at very different prices. Edge is the largest by revenue and covers embedded storage in devices, client solid state drives and the original equipment manufacturer channel. Datacenter is enterprise solid state drives sold into hyperscalers and artificial intelligence infrastructure builders. Consumer is the retail Sandisk brand, cards and drives, and it is the only line that grew at a rate resembling a normal business in fiscal 2026.</p>
+
+    <p>Datacenter funds the company's future and Edge still funds the present. The asymmetry in growth rates is the whole story of the fiscal year: enterprise storage grew more than twice as fast as the next fastest line, from a base small enough that its share of revenue rose sharply, and it did so on price and qualification simultaneously as hyperscalers moved through validation on PCIe Gen5 drives. Consumer is being managed downward. Retail revenue fell sequentially while every other line rose, reflecting a deliberate reallocation of constrained bits toward the buyer paying most for them rather than weak demand.</p>
+
+    <p>Operating leverage originates in a cost structure that Sandisk only half controls. Wafer manufacturing sits inside Flash Ventures, the joint venture with Kioxia, so a large share of production cost is shared and a large share of capital expenditure is shared with it. Sandisk's own property and equipment spending is small in relation to revenue, which is why free cash flow converted so violently once pricing moved. The consequence is that the company has very high gearing to price and very little unilateral control over volume. It cannot add capacity alone, and it cannot cut it alone either.</p>
+
+    <h4>2. Competitive moat</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pillar</th><th>Strength</th><th>Erosion risk</th><th class="num">Rating</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Flash Ventures joint venture with Kioxia</td><td>Shared fabs and shared capital burden give scale economics without full balance sheet exposure</td><td>Partner has independent strategic interests; neither side can move capacity alone</td><td class="num star">&#9733;&#9733;&#9733;</td></tr>
+          <tr><td class="lbl">3D NAND bit density leadership</td><td>BiCS10 sampling at industry-leading terabit-class density; tenth-generation production started at Kitakami</td><td>Samsung, SK hynix and Chinese producers close the node gap within one generation</td><td class="num star">&#9733;&#9733;&#9733;</td></tr>
+          <tr><td class="lbl">Hyperscaler qualification position</td><td>PCIe Gen5 drives qualified at multiple hyperscalers with further validations in progress</td><td>Buyers deliberately maintain second and third sources on storage</td><td class="num star">&#9733;&#9733;&#9733;</td></tr>
+          <tr><td class="lbl">New business model agreements</td><td>Ten signed agreements with prepayments and deposits attached, converting spot exposure into committed volume</td><td>Floor pricing anchors renewals lower; concentration in a small counterparty set</td><td class="num star">&#9733;&#9733;&#9733;</td></tr>
+          <tr><td class="lbl">Sandisk consumer brand</td><td>Long-standing retail recognition in cards and portable drives</td><td>Being deliberately de-emphasised as bits move to datacenter</td><td class="num star">&#9733;&#9733;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="src">Source: PGS assessment. Underlying evidence from Sandisk fiscal Q4 2026 and Q1 2026 press releases, Sandisk and Kioxia joint announcements on BiCS10 and Kitakami Fab2 (2 and 3 Jul 2026), and the Sandisk and SK hynix High Bandwidth Flash specification release through the Open Compute Project (3 Aug 2026). Star rating is the PGS scale defined in the report conventions.</div>
+
+    <p style="margin-top:16px">No pillar here reaches four stars, and that is the honest reading. NAND is the weaker half of the memory industry structurally, with more producers, lower switching costs and a customer base that has spent two decades training itself to dual-source storage. Sandisk competes on bit density and cost per gigabyte, both of which are node-cycle advantages that reset every eighteen to twenty-four months. The Kitakami production start and the terabit-class BiCS10 samples are real achievements, and they buy roughly one generation of lead rather than a defensible position.</p>
+
+    <p>The joint venture with Kioxia is the most interesting pillar and the hardest to rate. It halves the capital burden of staying at the leading edge, which is why Sandisk can run a business of this revenue scale on a property and equipment budget that a DRAM producer would spend in a fortnight. It also means Sandisk cannot unilaterally expand into a shortage or unilaterally restrain output in a glut, and that its cost position is only as good as its partner's willingness to keep investing. Rated as a mechanism, it is a genuine structural advantage with a governance constraint attached, which is three stars and not more.</p>
+
+    <p>High Bandwidth Flash, standardised jointly with SK hynix through the Open Compute Project in August, is the one initiative with the potential to change the rating. If flash acquires a role in the inference memory hierarchy analogous to the one high bandwidth memory holds in training, NAND stops being the commodity tier of the stack. That is a 2028 question and it is not in any current number, which is precisely why it belongs in the growth architecture rather than in the moat.</p>
+
+    <h4>3. Long-term growth architecture</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Driver</th><th class="num">Timeline</th><th>Current state</th><th>Potential</th><th class="num">Status</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">Enterprise SSD for AI inference</td><td class="num">2026&ndash;2029</td><td>Datacenter the fastest-growing end market in fiscal 2026; qualified at multiple hyperscalers</td><td>Structural repricing of NAND away from consumer economics</td><td class="num">on track</td></tr>
+          <tr><td class="lbl">New business model contracts</td><td class="num">2026&ndash;2030</td><td>Ten agreements signed, five with the April announcement and five since, including three new customers</td><td>Earnings visibility through the next NAND downcycle</td><td class="num">emerging</td></tr>
+          <tr><td class="lbl">BiCS10 and tenth-generation flash</td><td class="num">2026&ndash;2028</td><td>1Tb TLC sampling with a large bit density gain over BiCS8; production started at Kitakami Fab2</td><td>Cost per bit leadership through the next node cycle</td><td class="num">on track</td></tr>
+          <tr><td class="lbl">High Bandwidth Flash</td><td class="num">2027&ndash;2030</td><td>First technical specification released with SK hynix through the Open Compute Project</td><td>A place for NAND in the AI inference memory hierarchy</td><td class="num">emerging</td></tr>
+          <tr><td class="lbl">Consumer channel wind-down</td><td class="num">2026&ndash;2028</td><td>Retail revenue declining sequentially as bits are reallocated</td><td>Mix-driven margin gain, at the cost of demand diversification</td><td class="num">at risk</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="src">Source: Sandisk fiscal Q4 2026 press release and prior-quarter releases; Sandisk and Kioxia announcements on BiCS10 sampling (2 Jul 2026) and Kitakami Fab2 production (3 Jul 2026); Sandisk and SK hynix Open Compute Project High Bandwidth Flash specification release (3 Aug 2026). Status field uses the PGS three-point scale defined in the report conventions.</div>
+
+    <p style="margin-top:16px">Enterprise storage has to work first, and everything else is downstream of it. It is the driver that justifies the current margin structure, the reason the new business model agreements were signable at all, and the demand pool that makes the consumer wind-down safe rather than reckless. If AI inference storage demand slows, Sandisk is left holding contracted supply obligations, a shrunken retail channel and a node advantage that competitors erase on schedule.</p>
+
+    <p>The contract programme sits second because it is a consequence of the first driver rather than an independent one. Customers signed prepaid, floor-priced agreements because they were frightened of not getting bits, and that fear is a function of inference demand growth. Should demand growth moderate, new signings stop and existing agreements become the price ceiling instead of the price floor. Ten agreements is a meaningful start against a hyperscaler set that numbers under a dozen credible buyers, which also means the addressable list of counterparties is close to exhausted.</p>
+
+    <p>High Bandwidth Flash is the only driver capable of changing what Sandisk is rather than how much it earns, and it is the furthest out. A standard published through an industry body in August 2026 becomes silicon in 2028 at the earliest and revenue later than that. It belongs in the analysis because it is the reason to hold the equity through a downcycle rather than trade it through one, and it should carry no weight at all in a two-year price target.</p>
+  </div>
+
+  <!-- BLOCK F -->
+  <div class="block animate">
+    <div class="block-label">Block F</div>
+    <h3>Risk register</h3>
+
+    <div class="risk high">
+      <div class="risk-head"><span class="rt">Gross margin durability in a NAND pure play</span><span class="badge badge-high">High</span></div>
+      <div class="risk-body">
+        <p>Sandisk is earning a gross margin that no NAND producer has held for more than a few quarters, in a product category with four credible suppliers, low switching costs and a customer base structurally committed to dual sourcing. The mechanism of harm is straightforward operating gearing running in reverse: because the cost base is largely fixed and shared through the joint venture, a price decline flows to operating income almost undiminished, exactly as the increase did. The first-quarter guidance already steps the gross margin range down from the level delivered in the anchor quarter. Timeline is 2027, since NAND capacity responds faster than DRAM capacity and the supply response is already funded across the industry. The observable is the guided gross margin range in each successive quarter. Two consecutive downward steps in the guide, independent of what is reported, would establish that the peak is behind and that the operating gearing has turned.</p>
+      </div>
+    </div>
+
+    <div class="risk high">
+      <div class="risk-head"><span class="rt">Customer concentration and contract asymmetry</span><span class="badge badge-high">High</span></div>
+      <div class="risk-body">
+        <p>The revenue architecture is concentrating rapidly into a handful of hyperscale buyers while the retail channel that once provided diversification is being wound down on purpose. The new business model agreements deepen that concentration by design, since they tie multi-year volume to a small counterparty set at floor prices with prepayments attached. The asymmetry is that the buyer holds the option: a customer facing weaker demand can take minimum volume and renegotiate at renewal, while Sandisk cannot redirect contracted bits to a retail channel it has already exited. Timeline is the first renewal window, plausibly late 2027 into 2028. The observable is the balance sheet rather than the income statement. Refund liabilities and contract liabilities have risen sharply as prepayments arrived; a sequential decline in those balances without a corresponding increase in revenue would indicate that deposits are being drawn down against shipments rather than replenished by new commitments.</p>
+      </div>
+    </div>
+
+    <div class="risk">
+      <div class="risk-head"><span class="rt">Dependence on the Kioxia joint venture</span><span class="badge badge-med">Medium</span></div>
+      <div class="risk-body">
+        <p>Sandisk does not own its wafer capacity outright. Manufacturing sits within Flash Ventures alongside Kioxia, which supplies the scale economics that let a company of this size compete at the leading edge on a very small direct capital budget. The mechanism of harm is strategic rather than operational: capacity decisions require a partner whose ownership, capital position and commercial priorities are set independently, and any change in that partner's circumstances transmits directly into Sandisk's cost position and its ability to serve contracted volume. Timeline is open-ended, with the risk concentrated around capital expenditure decisions for the node after BiCS10. The observable is the notes receivable and investment balance in Flash Ventures together with the cash movements attached to it, which appear in the investing section of the cash flow statement each quarter and are the clearest public read on how the funding burden is being shared.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK G -->
+  <div class="block animate">
+    <div class="block-label">Block G</div>
+    <h3>Scenarios</h3>
+    <div class="scenario-grid">
+      <div class="scen bull">
+        <div class="scen-head"><span>Bull</span><span class="delta">+45% to the PGS bull target</span></div>
+        <div class="scen-body">
+          <ul>
+            <li>AI inference storage demand keeps enterprise solid state drive pricing firm through 2027</li>
+            <li>New business model signings continue past ten and lengthen in duration</li>
+            <li>High Bandwidth Flash gains a second wave of adopters beyond the founding pair</li>
+          </ul>
+          <p>The conditions required are that NAND behaves like a contracted industrial input rather than a commodity for two more years, which is what the agreements are designed to make happen. On that path the operating gearing that produced the current margin does not reverse, the expanded buyback authorisation retires a meaningful share count at depressed prices, and the forward multiple in the panel re-rates toward a specialty semiconductor level. Recovery of the multiple supplies most of the return, with further margin expansion contributing little. The datacenter franchise then reads as an industrial supply business with contracted volume rather than as a commodity producer at a cycle peak.</p>
+        </div>
+      </div>
+      <div class="scen bear">
+        <div class="scen-head"><span>Bear</span><span class="delta">-50% to the PGS bear case</span></div>
+        <div class="scen-body">
+          <ul>
+            <li>NAND supply responds faster than DRAM supply, as it has in every prior cycle</li>
+            <li>Hyperscalers slow storage procurement after building inference capacity ahead of demand</li>
+            <li>Consumer and client demand does not return, having been priced out during the shortage</li>
+          </ul>
+          <p>The conditions do not require anything unusual. NAND has the shortest capacity response time in memory and the weakest structural barriers, and Sandisk has removed its own volume buffer by exiting retail. In that setting the contracts define the price rather than defend it, operating gearing reverses at the speed at which it arrived, and a company with a high-single-digit operating margin in the first quarter of this sequence returns to something nearer that level than to the anchor quarter. The equity carries no dividend and no defensive characteristics into that outcome.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK H -->
+  <div class="block animate">
+    <div class="block-label">Block H</div>
+    <h3>PGS verdict</h3>
+    <div class="verdict">
+      <div class="verdict-strip">
+        <div class="vs-item"><div class="k">Rating</div><div class="v"><span class="rating-pill">&#128993; NEUTRAL</span></div></div>
+        <div class="vs-item"><div class="k">Bull target, 18 to 24 months</div><div class="v">+45%</div></div>
+        <div class="vs-item"><div class="k">Bear downside</div><div class="v">-50%</div></div>
+        <div class="vs-item"><div class="k">Risk / reward</div><div class="v">Balanced</div></div>
+      </div>
+      <p><b>Price dislocation.</b> The shares have lost more than forty percent from the late-June intraday high and had their worst month on record, against a company that just closed a fiscal year in which revenue nearly tripled. The market disputes the denominator rather than the results. What separates Sandisk from Micron here is that the dislocation is smaller in valuation terms than the difference in business quality would justify.</p>
+      <p><b>Fundamental quality.</b> Genuinely improved and structurally capped. The balance sheet has gone from separation debt to net cash with a large buyback authorisation, cash conversion is strong, and the datacenter franchise is a real business rather than a repackaged consumer one. The limits are equally real: no moat pillar rates above three stars, capacity is not under unilateral control, and the margin structure has no precedent in NAND.</p>
+      <p><b>Primary risk.</b> Gross margin durability, as set out in the risk register, and it is the risk the current price is already partially discounting. Sandisk's operating gearing runs higher than Micron's in both directions and its structural protection is weaker, which is why an identical forward multiple produces a different conclusion here. Customer concentration compounds the problem, since the contracts that provide the floor also create the concentration.</p>
+      <p><b>Near-term catalysts.</b> The investor day on 13 August 2026 is the nearest event and the most likely to reset the framing, being management's first chance to lay out a multi-year model. The fiscal first-quarter result on 5 November 2026 then tests the stepped-down gross margin guide, and further contract signings or a second wave of High Bandwidth Flash adopters would speak to the two questions the equity turns on.</p>
+    </div>
+  </div>
+</section>
+
+<section id="skhy" class="company-section sec-skhy">
+  <div class="sec-head animate">
+    <div class="eyebrow">PGS-SKHY-202608 &middot; 6 August 2026</div>
+    <h2>SK hynix Inc.</h2>
+    <div class="sh-meta">SKHY &middot; NASDAQ (American depositary shares) &middot; Anchor quarter: Q2 2026, ended 30 June 2026, published 29 July 2026</div>
+  </div>
+
+  <div class="block animate">
+    <p style="font-size:14.5px;color:var(--text-mute);border-left:3px solid var(--accent);padding-left:16px">
+      <b>Reporting mismatch, flagged before the panel.</b> SK hynix reports under K-IFRS and publishes no non-GAAP reconciliation, no quarterly earnings per share and no free cash flow measure, so adjusted earnings per share and free cash flow yield are shown as unpublished rather than estimated. Operating profit, net profit and the cash balance stand in their place, being what the company discloses each quarter. Reporting currency is the Korean won; the ADS price and multiples are in US dollars, and market capitalisation is reported against the Seoul-listed ordinary shares.
+    </p>
+  </div>
+
+  <!-- BLOCK A -->
+  <div class="block animate">
+    <div class="block-label">Block A</div>
+    <h3>Consolidated panel</h3>
+    <div class="panel">
+      <div class="panel-grid">
+        <div class="panel-col">
+          <div class="grp">Market</div>
+          <div class="panel-row"><span class="k">Price at analysis (ADS)</span><span class="v">$151.03</span></div>
+          <div class="panel-row"><span class="k">Market capitalisation</span><span class="v">$765.73B</span></div>
+          <div class="panel-row"><span class="k">vs. 52-week high</span><span class="v neg">-22.5%</span></div>
+          <div class="panel-row"><span class="k">vs. 52-week low</span><span class="v pos">+21.0%</span></div>
+        </div>
+        <div class="panel-col">
+          <div class="grp">Fundamentals</div>
+          <div class="panel-row"><span class="k">Revenue TTM</span><span class="v">$122,160.0M</span></div>
+          <div class="panel-row"><span class="k">EPS TTM (K-IFRS, per ADS)</span><span class="v">$20.64</span></div>
+          <div class="panel-row"><span class="k">EPS TTM (adjusted)</span><span class="v na">not published</span></div>
+          <div class="panel-row"><span class="k">Operating margin TTM</span><span class="v">68.0% (est.)</span></div>
+          <div class="panel-row"><span class="k">FCF yield</span><span class="v na">not published</span></div>
+        </div>
+        <div class="panel-col">
+          <div class="grp">Valuation</div>
+          <div class="panel-row"><span class="k">P/E TTM</span><span class="v">7.3x</span></div>
+          <div class="panel-row"><span class="k">Forward P/E</span><span class="v">3.6x</span></div>
+          <div class="panel-row"><span class="k">EV / Revenue</span><span class="v na">(data not found)</span></div>
+          <div class="panel-row"><span class="k">PEG</span><span class="v na">(data not found)</span></div>
+          <div class="panel-row"><span class="k">Historical multiple range</span><span class="v na">US listed 10 Jul 2026</span></div>
+        </div>
+        <div class="panel-col">
+          <div class="grp">Consensus</div>
+          <div class="panel-row"><span class="k">Analysts covering</span><span class="v">13</span></div>
+          <div class="panel-row"><span class="k">Rating</span><span class="v">Strong Buy</span></div>
+          <div class="panel-row"><span class="k">Average target</span><span class="v">$244.17</span></div>
+          <div class="panel-row"><span class="k">High target</span><span class="v">$355.00</span></div>
+          <div class="panel-row"><span class="k">Low target</span><span class="v">$152.00</span></div>
+          <div class="panel-row"><span class="k">Next earnings</span><span class="v na">late Oct 2026 (est.)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="src">Sources: StockAnalysis / S&amp;P Global Market Intelligence (ADS price at close 5 Aug 2026, market capitalisation, 52-week range, TTM revenue and earnings per ADS, trailing and forward price to earnings, analyst count, consensus rating and average target), retrieved 6 Aug 2026. High and low targets from the Investing.com consensus panel (12 analysts). Operating margin TTM computed by PGS from the four quarterly operating profit and revenue figures in the table below and tagged (est.). US listing date of 10 Jul 2026 per StockAnalysis company profile. Next earnings date follows the company's established late-October reporting pattern and has not been confirmed.</div>
+
+    <p style="margin-top:16px">SK hynix carries the lowest trailing and forward multiples of the three instruments here by a wide margin, and it is the only one with no history to test them against, the US line having begun trading in July 2026. The forward figure implies an expectation that the current earnings level proves almost entirely transitory, a harsher assumption than the market applies to either US-domiciled producer despite this company holding the strongest position in the industry's highest-value product.</p>
+  </div>
+
+  <!-- BLOCK B -->
+  <div class="block animate">
+    <div class="block-label">Block B</div>
+    <h3>Four quarters</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Quarter</th><th class="num">Quarter end</th><th class="num">Revenue / consensus (KRW bn)</th><th>Result</th>
+            <th class="num">Operating profit / consensus (KRW bn)</th><th>Result</th>
+            <th class="num">Operating margin</th><th class="num">Net profit (KRW bn)</th>
+            <th class="num">Cash and equivalents (KRW bn)</th><th class="num">Next session</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="lbl">Q2 2026</td><td class="num">30 Jun 2026</td>
+            <td class="num">79,318.7 / 84,000.0</td><td><span class="pill pill-miss">Miss</span></td>
+            <td class="num">60,542.6 / 64,000.0</td><td><span class="pill pill-miss">Miss</span></td>
+            <td class="num">76.3%</td><td class="num">93,922.6</td>
+            <td class="num">88,000.0</td><td class="down">-9.0%</td>
+          </tr>
+          <tr>
+            <td class="lbl">Q1 2026</td><td class="num">31 Mar 2026</td>
+            <td class="num">52,576.3 / 53,550.0</td><td><span class="pill pill-miss">Miss</span></td>
+            <td class="num">37,610.3 / 37,920.0</td><td><span class="pill pill-miss">Miss</span></td>
+            <td class="num">71.5%</td><td class="num">40,345.9</td>
+            <td class="num">54,300.0</td><td class="down">-0.9%</td>
+          </tr>
+          <tr>
+            <td class="lbl">Q4 2025</td><td class="num">31 Dec 2025</td>
+            <td class="num">32,826.7 / 32,132.0</td><td><span class="pill pill-beat">Beat</span></td>
+            <td class="num">19,169.6 / 17,729.0</td><td><span class="pill pill-beat">Beat</span></td>
+            <td class="num">58.4%</td><td class="num">15,246.0</td>
+            <td class="num">34,900.0 (est.)</td><td class="up">+6.0%</td>
+          </tr>
+          <tr>
+            <td class="lbl">Q3 2025</td><td class="num">30 Sep 2025</td>
+            <td class="num">24,448.9 / 24,730.0</td><td><span class="pill pill-miss">Miss</span></td>
+            <td class="num">11,383.4 / 11,390.0</td><td><span class="pill pill-miss">Miss</span></td>
+            <td class="num">46.6%</td><td class="num">12,597.5</td>
+            <td class="num">27,900.0</td><td class="up">+5.0%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="src">Sources: SK hynix quarterly results announcements via PRNewswire and news.skhynix.com for Q2 2026 (29 Jul 2026), Q1 2026 (22 Apr 2026), Q4 2025 and FY2025 (28 Jan 2026) and Q3 2025 (28 Oct 2025), and the Form 6-K filed with the SEC for the Q2 2026 preliminary figures. Q1 2026 figures are as disclosed in the company's own prior-quarter comparative tables. Consensus is LSEG SmartEstimates as reported by CNBC for each quarter. Operating margin computed from disclosed operating profit and revenue. Q4 2025 cash balance derived from the disclosed Q1 2026 sequential increase and tagged (est.). Next-session reaction: Investing.com for the Q2 2026 ADS move; CNBC for the Q1 2026 and Q3 2025 Seoul-listed moves; company and press reports of an extended-hours gain following the Q4 2025 release. Both operating profit misses in Q1 2026 and Q3 2025 fall within one percent of the estimate and are better described as in line.</div>
+  </div>
+
+  <!-- BLOCK C -->
+  <div class="block animate">
+    <div class="block-label">Block C</div>
+    <h3>Reading the quarters</h3>
+    <div class="quarters">
+      <div class="qtr">
+        <div class="kicker">Q2 2026 &middot; anchor</div>
+        <p>Record revenue, record operating profit, an operating margin no large-scale memory producer has previously reported, and a sharp sell-off. Reuters attributed the miss against LSEG SmartEstimates to HBM4 shipments arriving below expectations, with recognition pushed into later periods; management confirmed mass shipments began during the quarter with the broader ramp planned for the second half. DRAM average selling prices rose roughly thirty percent sequentially and NAND prices in the mid-fifty percent range, so the shortfall was volume timing in the most important product line rather than pricing. Net profit was inflated by a very large investment gain that analysts linked to the closing of the Kioxia stake sale, which is why it exceeded operating profit by a wide margin. Cumulative first-half revenue passed one hundred trillion won for the first time and the net cash position reached almost seventy trillion won. The shares fell sharply regardless.</p>
+      </div>
+      <div class="qtr">
+        <div class="kicker">Q1 2026</div>
+        <p>The cleanest quarter in the sequence and the one that established the current earnings level. Revenue crossed fifty trillion won for the first time in a seasonally weak quarter, operating profit nearly doubled sequentially, and operating margin reached what was then a record. The result came in fractionally under consensus on both lines, which is as close to in line as a company of this size gets. Management's framing on the call was the most useful commentary any of the three producers has offered: as artificial intelligence moves from training toward agentic inference performed continuously across live services, memory demand expands across both DRAM and NAND, and improving software efficiency widens the addressable service base rather than shrinking the memory requirement. Shares opened higher in Seoul, gave back the gain and closed marginally lower, which was the first sign that record results had stopped being sufficient.</p>
+      </div>
+      <div class="qtr">
+        <div class="kicker">Q4 2025</div>
+        <p>The only clear beat in the sequence and the quarter in which the market's expectations were still behind the industry. Revenue rose about a third sequentially and operating profit rose by more than two thirds, with operating margin crossing into the high fifties. DRAM average selling prices rose in the mid-twenty percent range and NAND prices in the low thirties, while high-density DDR5 module shipments rose about half sequentially, so the beat was pricing and mix rather than volume. Full-year operating profit and HBM revenue both roughly doubled. The company announced an additional cash dividend and the cancellation of treasury shares worth over twelve trillion won. Shares gained ground in extended trading. Read against the two quarters that followed, this is the last print at which consensus was materially too low, and every subsequent quarter has been priced ahead of the result.</p>
+      </div>
+      <div class="qtr">
+        <div class="kicker">Q3 2025</div>
+        <p>The base of the sequence, and the quarter in which quarterly operating profit exceeded ten trillion won for the first time in the company's history. Revenue and operating profit both landed a fraction under consensus, which is worth recording because it establishes that the pattern of small misses predates the extreme pricing environment of the following year rather than being caused by it, and that the sell side had already begun to model this company optimistically. Growth came from twelve-high HBM3E and server DDR5, with shipments of DDR5 modules of 128 gigabytes and above more than doubling sequentially, and from an expanding share of price-premium enterprise solid state drives in the NAND mix. Management stated that HBM supply discussions for the following year were complete and that demand for all DRAM and NAND products for 2026 had been secured, in retrospect the most important disclosure of the quarter. Seoul shares rose on the print.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK D -->
+  <div class="block animate">
+    <div class="block-label">Block D</div>
+    <h3>Patterns and watch list</h3>
+    <h4>Structural patterns across the four quarters</h4>
+    <ul class="dlist">
+      <li><span class="claim">Operating margin has expanded in every quarter of the sequence and the rate of expansion is slowing.</span> The margin gained eleven points, then thirteen, then under five, the first quantitative sign the move is maturing.</li>
+      <li><span class="claim">Consensus has caught up and overshot.</span> The only clear beat came in the earliest quarter; the three since landed at or below estimate, so the sell side forecasts ahead of what the company can ship.</li>
+      <li><span class="claim">The constraint has shifted from demand to execution.</span> The anchor quarter's shortfall was attributed to HBM4 shipment timing rather than orders, so the binding limit on revenue is a product ramp rather than customer appetite.</li>
+      <li><span class="claim">Cash generation has outrun any plausible use for it.</span> The balance more than tripled while debt fell and net cash moved from marginal to very large, and shareholders now press for a share.</li>
+    </ul>
+    <h4>Watch list for the Q3 2026 print</h4>
+    <ul class="dlist">
+      <li><span class="sig sig-up">&uarr;</span><span class="claim">HBM4 shipment volume against the second-half ramp plan.</span> This line caused the anchor quarter miss; delivery converts timing into revenue, while a second delay raises a yield question.</li>
+      <li><span class="sig sig-flat">&rarr;</span><span class="claim">DRAM bit shipments against guidance of roughly ten percent sequential growth.</span> Growth at that rate alongside stable pricing shows volume added without discounting, the healthiest combination available here.</li>
+      <li><span class="sig sig-flat">&rarr;</span><span class="claim">Capital return announcement.</span> The size of any capital return against net cash is the clearest read on how management sees the cycle.</li>
+      <li><span class="sig sig-down">&darr;</span><span class="claim">2026 capital expenditure against the high forty-trillion-won guide.</span> An increase beyond that range without matching agreement coverage signals a shift toward a capacity race.</li>
+    </ul>
+  </div>
+
+  <!-- BLOCK E -->
+  <div class="block animate">
+    <div class="block-label">Block E</div>
+    <h3>Strategic architecture</h3>
+
+    <h4>1. Business model and revenue architecture</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Product line</th><th class="num">Share of Q2 2026 revenue</th><th class="num">Share of Q1 2026 revenue</th><th class="num">ASP move QoQ</th><th>Q3 2026 shipment guidance</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">DRAM, including HBM</td><td class="num">73%</td><td class="num">78%</td><td class="num up">approx. +30%</td><td>Bit shipments up around 10% sequentially</td></tr>
+          <tr><td class="lbl">NAND flash</td><td class="num">27%</td><td class="num">21%</td><td class="num up">mid-50% range</td><td>Bit shipments up low single digits sequentially</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="src">Source: SK hynix Q2 2026 investor presentation and earnings call as reported by Investing.com, 29 Jul 2026. SK hynix does not publish revenue in currency by product line, so the mix is shown as disclosed percentages; the Q1 2026 column sums to ninety-nine percent as published, reflecting rounding in the source. Average selling price movements and third-quarter shipment guidance are management figures from the same call.</div>
+
+    <p style="margin-top:16px">SK hynix runs a two-product business in which one sets the price of the other. DRAM, and within it high bandwidth memory, is the franchise: highest price per wafer in the industry, disproportionate consumption of advanced packaging capacity, and the source of the strongest bargaining position any of the three producers holds with accelerator vendors. NAND is the second business and historically the weaker one, and it has just had its best two quarters because the DRAM shortage pushed enterprise buyers toward whatever storage they could secure.</p>
+
+    <p>The mix shift in the anchor quarter is the detail worth dwelling on. DRAM's share of revenue fell while its average selling price rose, which can only happen if NAND pricing rose faster still, and it did by a wide margin. That inversion of the normal hierarchy flatters the current quarter's operating margin, because NAND at mid-fifty-percent sequential price increases carries very high incremental margin against a cost base built for commodity economics. It will not persist: NAND capacity responds faster than DRAM capacity, and the mix will revert toward DRAM at a lower blended price.</p>
+
+    <p>Operating leverage originates in high bandwidth memory and is transmitted through everything else. Because HBM absorbs wafer starts and packaging capacity that would otherwise produce conventional DRAM, it tightens the market for a product SK hynix also sells, so the company earns twice on one allocation decision. That is the mechanism behind an operating margin above three quarters of revenue. It also explains why the anchor quarter's HBM4 timing problem mattered more than its scale suggested: a delay in the product that sets the price umbrella differs in kind from a delay in ordinary volume.</p>
+
+    <h4>2. Competitive moat</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pillar</th><th>Strength</th><th>Erosion risk</th><th class="num">Rating</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">HBM market leadership</td><td>Roughly 58% of the high bandwidth memory market in Q1 2026, with HBM4 in mass shipment ahead of peers</td><td>Samsung recovering qualified status and Micron ramping HBM4E on a competing node</td><td class="num star">&#9733;&#9733;&#9733;&#9733;</td></tr>
+          <tr><td class="lbl">Accelerator vendor relationships</td><td>Lead supplier position on flagship AI platforms and named exclusive supplier on a hyperscaler in-house processor</td><td>Customers are actively funding second sources to reduce dependence</td><td class="num star">&#9733;&#9733;&#9733;&#9733;</td></tr>
+          <tr><td class="lbl">DRAM three-supplier structure</td><td>Second largest DRAM producer behind Samsung, in a market that has supported only three credible suppliers</td><td>Chinese entry at leading-edge nodes over the second half of the decade</td><td class="num star">&#9733;&#9733;&#9733;&#9733;</td></tr>
+          <tr><td class="lbl">Long-term customer agreements</td><td>Multi-year arrangements with around ten major customers covering supply stability and joint development</td><td>Floor pricing anchors renewals; terms are not publicly disclosed</td><td class="num star">&#9733;&#9733;&#9733;</td></tr>
+          <tr><td class="lbl">Advanced NAND and enterprise SSD</td><td>321-layer QLC developed and record annual NAND revenue on enterprise demand</td><td>The weakest structural position in the portfolio, with four credible competitors</td><td class="num star">&#9733;&#9733;&#9733;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="src">Source: PGS assessment. Underlying evidence from SK hynix Q2 2026, Q1 2026, Q4 2025 and Q3 2025 results announcements and earnings calls; Counterpoint Research DRAM and HBM market share data for Q1 2026 as reported by The Motley Fool (5 Aug 2026); press reporting on the company's exclusive supply arrangement for a hyperscaler in-house AI processor (Jan 2026). Star rating is the PGS scale defined in the report conventions.</div>
+
+    <p style="margin-top:16px">High bandwidth memory share is the pillar that carries the company, and the correct way to rate it is by what protects the share rather than by its size. Two things do: packaging capacity, a physical constraint competitors cannot replicate on a purchase order, and the fact that SK hynix reached HBM4 mass shipment first, since the incumbent writes the specification against which the challenger is then qualified. Neither is permanent. Samsung has held leading share in DRAM overall throughout, a standing reminder that a lead in one tier does not carry across.</p>
+
+    <p>The customer relationships rate alongside the share for a reason that cuts both ways. Being the named supplier on flagship accelerator platforms and on a hyperscaler's in-house processor is the strongest commercial position available in this industry, and it makes SK hynix the counterparty every buyer wants to reduce their dependence on. Every major customer is currently funding a second source, and the buyers have both the capital and the motive to succeed. A four-star rating reflects a lead measured in quarters of qualification time rather than in years of structural protection.</p>
+
+    <p>The long-term agreements deserve a lower rating than the market appears to give them. Around ten counterparties is close to the entire universe of buyers at this scale, so the programme is comprehensive rather than selective, and the terms are undisclosed, which means outside investors cannot assess whether the floors sit above or below a normalised price. The measure of a contract programme is what it pays in a downturn, and none of the three producers' programmes has been tested by one.</p>
+
+    <h4>3. Long-term growth architecture</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Driver</th><th class="num">Timeline</th><th>Current state</th><th>Potential</th><th class="num">Status</th></tr></thead>
+        <tbody>
+          <tr><td class="lbl">HBM4 volume ramp</td><td class="num">2026&ndash;2027</td><td>Mass shipments began in the anchor quarter, meeting customer-required operating speeds; broader ramp planned for the second half</td><td>Holds the share lead through the next accelerator generation</td><td class="num">on track</td></tr>
+          <tr><td class="lbl">HBM4E</td><td class="num">2027&ndash;2029</td><td>Volume production targeted for 2027, in direct competition with Micron on the same timetable</td><td>Determines share position into the back half of the decade</td><td class="num">emerging</td></tr>
+          <tr><td class="lbl">Enterprise SSD and advanced NAND nodes</td><td class="num">2026&ndash;2029</td><td>NAND share of revenue rising on enterprise demand; transition to advanced nodes accelerating around high-capacity products</td><td>Turns the weaker franchise into a second earnings engine</td><td class="num">on track</td></tr>
+          <tr><td class="lbl">Capacity expansion, M15X and beyond</td><td class="num">2027&ndash;2030</td><td>2026 capital expenditure guided to the high forty-trillion-won range with infrastructure investment brought forward</td><td>Volume growth once allocation constraints ease</td><td class="num">at risk</td></tr>
+          <tr><td class="lbl">High Bandwidth Flash</td><td class="num">2028&ndash;2030</td><td>First technical specification released jointly with Sandisk through the Open Compute Project</td><td>Extends the memory hierarchy franchise into flash for inference</td><td class="num">emerging</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="src">Source: SK hynix Q2 2026 and Q1 2026 results announcements, earnings calls and investor presentations; Sandisk and SK hynix Open Compute Project High Bandwidth Flash specification release (3 Aug 2026). Status field uses the PGS three-point scale defined in the report conventions.</div>
+
+    <p style="margin-top:16px">HBM4 has to ramp on the stated second-half schedule, and nothing else in the table has any value if it does not. The share position, the pricing umbrella over conventional DRAM, the negotiating power behind the long-term agreements and the case for the capital programme all rest on holding the lead in this product through the current accelerator generation. The anchor quarter established that the risk is execution rather than demand, the better of the two problems to have and the one the market has least patience for.</p>
+
+    <p>HBM4E follows immediately and is the single most contested item in the memory industry. Micron has publicly targeted calendar 2027 volume production on its own advanced node, and Samsung is working to the same window. A generation in which three suppliers arrive together is one in which pricing power moves to the buyer, and that is how the current earnings level most plausibly ends. The bull case reduces to a view on whether SK hynix arrives first and by how much.</p>
+
+    <p>The capacity programme is rated at risk on the same logic applied to Micron. Capital expenditure in the high forty-trillion-won range is being committed while the rest of the industry commits at a similar pace, and it lands in 2028 and 2029. If HBM4E is a three-supplier product by then, capacity will have been added into a market that no longer prices it as scarce. Enterprise NAND and High Bandwidth Flash are the hedges, and the second is too distant to weigh.</p>
+  </div>
+
+  <!-- BLOCK F -->
+  <div class="block animate">
+    <div class="block-label">Block F</div>
+    <h3>Risk register</h3>
+
+    <div class="risk high">
+      <div class="risk-head"><span class="rt">HBM share loss at the HBM4E transition</span><span class="badge badge-high">High</span></div>
+      <div class="risk-body">
+        <p>The company's entire premium rests on holding a majority of the high bandwidth memory market, and node transitions are where memory share changes hands. Micron has stated a calendar 2027 target for HBM4E volume production and Samsung is working the same window, so the next generation is likely to arrive with three qualified suppliers rather than a clear leader and a laggard. The mechanism of harm is that customers who have spent two years funding second sources will use a three-supplier generation to reset pricing, and high bandwidth memory pricing sets the umbrella under which conventional DRAM has repriced, so the damage compounds through the rest of the portfolio. Timeline is 2027 into 2028. The observable is qualification news rather than revenue: the first confirmation that a competitor has been qualified on a flagship accelerator platform at HBM4E would mark the point at which share becomes contestable, and it will precede any effect on reported results by several quarters.</p>
+      </div>
+    </div>
+
+    <div class="risk high">
+      <div class="risk-head"><span class="rt">Instrument basis risk on the US listing</span><span class="badge badge-high">High</span></div>
+      <div class="risk-body">
+        <p>This is a risk in the security rather than in the company, and it is specific to buying the NASDAQ line. The American depositary shares began trading only in July 2026, market capitalisation is reported against the Seoul-listed ordinary shares, and market commentary through July flagged the US line trading at a substantial premium to the underlying. A depositary receipt trading above its underlying can converge through the ADS falling rather than through the ordinary rising, and that convergence is independent of anything the company reports. The exposure is compounded by Korean market conditions, which have been unusually disorderly: forced selling drove a broad market decline earlier in the summer and the Seoul line experienced a thirty percent premarket dislocation on the day of writing before recovering most of the move. Timeline is immediate and continuous. The observable is the spread between the ADS price and the currency-adjusted Seoul price, which any holder of this instrument should track independently of the fundamentals.</p>
+      </div>
+    </div>
+
+    <div class="risk">
+      <div class="risk-head"><span class="rt">Industry-wide capacity commitment into 2028</span><span class="badge badge-med">Medium</span></div>
+      <div class="risk-body">
+        <p>SK hynix is guiding 2026 capital expenditure to the high forty-trillion-won range at the same time that Micron is guiding above the mid-forty-billion-dollar range and Chinese producers are reported to be planning additional DRAM plants. The mechanism is the oldest one in this industry: three producers each individually justify expansion by reference to a shortage that all three are simultaneously solving. SK hynix carries a very large net cash position and the lowest financial risk of the three, so the exposure is to returns rather than to solvency. Timeline is 2028 to 2029, when tools installed under the current programmes reach volume. The observable is the aggregate industry capital expenditure guide rather than any single company's, together with the DRAM bit supply growth forecasts published by IDC and TrendForce. Supply growth returning to the twenty to thirty percent range that prevailed before this cycle would signal that the allocation discipline holding prices up has broken.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK G -->
+  <div class="block animate">
+    <div class="block-label">Block G</div>
+    <h3>Scenarios</h3>
+    <div class="scenario-grid">
+      <div class="scen bull">
+        <div class="scen-head"><span>Bull</span><span class="delta">+65% to the PGS bull target</span></div>
+        <div class="scen-body">
+          <ul>
+            <li>HBM4 ramps on the second-half schedule and the share lead holds into HBM4E</li>
+            <li>Shareholder returns step up materially against the accumulated net cash position</li>
+            <li>The ADS premium to the Seoul line narrows through the ordinary shares rising</li>
+          </ul>
+          <p>The conditions are more about the instrument and the capital account than about the operating business, which is already performing at a level the bull case does not need to improve on. Investors are pressing publicly for a larger share of the cash pile, and a decisive capital return programme would give the equity a valuation floor that the forward multiple in the panel currently denies it. On that path the gap between this multiple and the two US-listed producers closes, and the closing of the gap supplies most of the return.</p>
+        </div>
+      </div>
+      <div class="scen bear">
+        <div class="scen-head"><span>Bear</span><span class="delta">-40% to the PGS bear case</span></div>
+        <div class="scen-body">
+          <ul>
+            <li>HBM4E arrives as a three-supplier product and pricing power transfers to the buyer</li>
+            <li>Korean market instability continues and the ADS premium unwinds downward</li>
+            <li>Industry capacity added in 2028 meets softer hyperscaler capital budgets</li>
+          </ul>
+          <p>The conditions require no operational failure. A competitor qualifying at HBM4E is a normal outcome of a node transition, and the ADS premium can compress through ordinary market mechanics while the company reports fine results. The distinctive feature of the bear case here is that two of the three conditions are external to the business. That is why the modelled downside is shallower than for the two NAND-exposed names, and why the risk in this instrument sits in the security at least as much as in the fundamentals.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK H -->
+  <div class="block animate">
+    <div class="block-label">Block H</div>
+    <h3>PGS verdict</h3>
+    <div class="verdict">
+      <div class="verdict-strip">
+        <div class="vs-item"><div class="k">Rating</div><div class="v"><span class="rating-pill">&#128994; BUY</span></div></div>
+        <div class="vs-item"><div class="k">Bull target, 18 to 24 months</div><div class="v">+65%</div></div>
+        <div class="vs-item"><div class="k">Bear downside</div><div class="v">-40%</div></div>
+        <div class="vs-item"><div class="k">Risk / reward</div><div class="v">Favourable</div></div>
+      </div>
+      <p><b>Price dislocation.</b> SK hynix trades on the lowest forward multiple of the three while holding the strongest position in the industry's highest-value product, and the discount widened after a quarter that set records on every line. Part of that is the missed estimate, part a young US listing without an established holder base, and part Korean market instability unrelated to the company. Only the first concerns the business.</p>
+      <p><b>Fundamental quality.</b> The highest of the three on the operating measures and the least transparent on the reporting ones. The company holds a majority of the high bandwidth memory market, an operating margin above three quarters of revenue, very large net cash and agreements across essentially the whole buyer set. Against that, it publishes no adjusted earnings, no quarterly per-share figures and no free cash flow measure, leaving a coarser panel than either US-listed peer offers.</p>
+      <p><b>Primary risk.</b> Two risks share the top of the register and differ in kind. The HBM4E transition is the business risk, real but distant. The instrument basis risk is immediate, sits in the security rather than the company, and means a discounted valuation on the Seoul line does not transfer cleanly to the American depositary shares. The spread to the underlying is a separate variable.</p>
+      <p><b>Near-term catalysts.</b> The third-quarter result is expected in late October and will show whether the HBM4 ramp recovered volume deferred out of the anchor quarter. Before that, an announcement on additional shareholder returns is plausible on management's own signalling. Six brokerages initiated coverage in early August, a structural change in the shareholder base, and the pace at which US institutional ownership builds is how the discount closes.</p>
+    </div>
+  </div>
+</section>
+
+<section id="disclaimer" class="disclaimer">
+  <h3>Disclaimer and attribution</h3>
+
+  <div class="disc-block">
+    <p>"This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice."</p>
+  </div>
+
+  <div class="disc-block">
+    <p>This report was produced with the assistance of artificial intelligence. Generative model: Anthropic &middot; Claude &middot; version Opus 5, accessed via claude.ai. All figures were sourced from live web search within the same session and cross-checked against the anchoring protocol in Step 1; the model's role was data synthesis, formatting and drafting, not the origination of financial estimates. Human review by the internal analyst precedes publication.</p>
+  </div>
+
+  <div class="disc-block disc-ref">
+    <p>Report Reference: PGS-MU-202608 &middot; Date: 6 August 2026 &middot; Internal Analyst: Polaris Global Strategies Ltd. &middot; Ticker: MU &middot; Exchange: NASDAQ &middot; AI Model: Anthropic Opus 5</p>
+    <p>Report Reference: PGS-SNDK-202608 &middot; Date: 6 August 2026 &middot; Internal Analyst: Polaris Global Strategies Ltd. &middot; Ticker: SNDK &middot; Exchange: NASDAQ &middot; AI Model: Anthropic Opus 5</p>
+    <p>Report Reference: PGS-SKHY-202608 &middot; Date: 6 August 2026 &middot; Internal Analyst: Polaris Global Strategies Ltd. &middot; Ticker: SKHY &middot; Exchange: NASDAQ &middot; AI Model: Anthropic Opus 5</p>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var targets = links.map(function(l){ return document.querySelector(l.getAttribute('href')); }).filter(Boolean);
+
+  function setActive(id){
+    links.forEach(function(l){
+      l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+    });
+  }
+
+  if ('IntersectionObserver' in window) {
+    var navObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { setActive(e.target.id); }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    targets.forEach(function(t){ navObserver.observe(t); });
+  }
+
+  var animateEls = Array.prototype.slice.call(document.querySelectorAll('.animate'));
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(e, i){
+        if (e.isIntersecting) {
+          e.target.style.transitionDelay = (i * 60) + 'ms';
+          e.target.style.animationDelay = (i * 60) + 'ms';
+          e.target.style.opacity = '';
+          e.target.style.animationPlayState = 'running';
+          animObserver.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
+
+    animateEls.forEach(function(el){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      animObserver.observe(el);
+    });
+  }
+
+  links.forEach(function(l){
+    l.addEventListener('click', function(){ setActive(l.getAttribute('href').slice(1)); });
+  });
+  if (links.length) { links[0].classList.add('active'); }
+})();
+</script>
+</body>
+</html>

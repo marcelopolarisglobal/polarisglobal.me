@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PGS-PSSA3-202608 · Porto Seguro S.A.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  --text:#111827;
+  --text-mute:#6B7280;
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#00529B;
+  --serif:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --sans:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--canvas);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.65;}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:700;letter-spacing:-0.01em;margin:0;}
+p{margin:0 0 1em 0;max-width:68ch;}
+
+.layout{display:grid;grid-template-columns:220px 1fr;align-items:start;}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:26px 0;}
+.sidebar .brand{font-family:var(--serif);font-size:15px;padding:0 18px 4px;color:var(--accent);}
+.sidebar .ref{font-family:var(--mono);font-size:10.5px;color:var(--text-mute);padding:0 18px 20px;letter-spacing:0.04em;}
+.nav-link{display:block;padding:8px 18px;font-size:12.5px;color:var(--text-mute);text-decoration:none;border-left:3px solid transparent;}
+.nav-link:hover{color:var(--text);background:var(--card);}
+.nav-link.active{color:var(--accent);border-left:3px solid var(--accent);background:var(--card);font-weight:500;}
+.nav-sec{font-family:var(--mono);font-size:9.5px;letter-spacing:0.12em;color:var(--text-mute);padding:16px 18px 6px;text-transform:uppercase;}
+
+/* CONTENT */
+.main-content{padding:0;min-width:0;}
+.block{padding:44px 52px;border-bottom:1px solid var(--border);}
+.kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:0.16em;color:var(--accent);text-transform:uppercase;margin-bottom:8px;}
+.block h2{font-size:28px;margin-bottom:6px;}
+.block h3{font-size:19px;margin:30px 0 10px;}
+.lede{color:var(--text-mute);font-size:14px;max-width:68ch;margin-bottom:24px;}
+
+/* COVER */
+.cover{min-height:96vh;background:var(--surface);background-image:radial-gradient(var(--border) 1.2px,transparent 1.2px);background-size:22px 22px;display:flex;flex-direction:column;justify-content:center;padding:60px 52px;border-bottom:1px solid var(--border);}
+.cover .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.22em;color:var(--text-mute);text-transform:uppercase;margin-bottom:22px;}
+.cover h1{font-size:58px;line-height:1.05;color:var(--accent);max-width:16ch;}
+.cover .tick{font-family:var(--mono);font-size:17px;margin-top:16px;color:var(--text);letter-spacing:0.06em;}
+.cover .rule{width:74px;height:3px;background:var(--accent);margin:30px 0;}
+.cover .meta{font-family:var(--mono);font-size:12px;color:var(--text-mute);line-height:2;}
+.cover .quick{margin-top:34px;display:flex;flex-wrap:wrap;gap:10px;}
+.qcard{display:block;text-decoration:none;background:var(--canvas);border:1px solid var(--border);border-top:3px solid var(--accent);padding:12px 18px;min-width:160px;}
+.qcard .qt{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:700;}
+.qcard .qs{font-size:11.5px;color:var(--text-mute);}
+
+/* PANEL */
+.panel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-top:3px solid var(--accent);}
+.pgroup{background:var(--card);padding:18px 16px;}
+.pgroup .glabel{font-family:var(--mono);font-size:9.5px;letter-spacing:0.14em;color:var(--text-mute);text-transform:uppercase;margin-bottom:12px;}
+.prow{display:flex;justify-content:space-between;gap:10px;padding:4px 0;font-size:12px;border-bottom:1px dotted var(--border);}
+.prow:last-child{border-bottom:none;}
+.prow .k{color:var(--text-mute);}
+.prow .v{font-family:var(--mono);font-weight:500;text-align:right;white-space:nowrap;}
+.v.pos{color:var(--pos);} .v.neg{color:var(--neg);}
+
+/* TABLES */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+thead th{background:var(--card);text-align:left;padding:10px 12px;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-mute);border-bottom:1px solid var(--border);white-space:nowrap;}
+tbody td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+tbody tr:nth-child(odd){background:var(--canvas);}
+tbody tr:nth-child(even){background:var(--surface);}
+tbody tr:hover{background:var(--card);transition:background .18s ease;}
+td.num,th.num{font-family:var(--mono);white-space:nowrap;}
+td.pos{color:var(--pos);font-family:var(--mono);}
+td.neg{color:var(--neg);font-family:var(--mono);}
+.pill{display:inline-block;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:9px;font-weight:700;letter-spacing:0.04em;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.pill.beat{background:var(--pill-pos-bg);color:var(--pill-pos-fg);}
+.pill.miss{background:var(--pill-neg-bg);color:var(--pill-neg-fg);}
+.pill.line{background:var(--card);color:var(--text-mute);}
+.src{font-family:var(--mono);font-size:10px;color:var(--text-mute);margin:7px 0 26px;letter-spacing:0.01em;}
+.stars{font-family:var(--mono);color:var(--accent);letter-spacing:1px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.sig{font-family:var(--mono);font-weight:700;}
+.sig.up{color:var(--pos);} .sig.flat{color:var(--text-mute);} .sig.down{color:var(--neg);}
+
+/* BLOCK C */
+.qtr{border-left:3px solid var(--accent);padding-left:20px;margin-bottom:28px;}
+.qtr .qlabel{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:var(--accent);text-transform:uppercase;margin-bottom:6px;}
+
+/* BLOCK D */
+.obs{margin-bottom:14px;padding-left:16px;border-left:1px solid var(--border);}
+.obs .claim{font-weight:500;}
+.obs .ev{color:var(--text-mute);font-size:14px;}
+.watch{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);align-items:baseline;}
+.watch:last-child{border-bottom:none;}
+.watch .wt{flex:1;}
+.watch .wt b{font-weight:500;}
+.watch .wd{color:var(--text-mute);font-size:13.5px;}
+
+/* RISKS */
+.risk{border:1px solid var(--border);margin-bottom:18px;}
+.risk.high{border-left:3px solid var(--neg);}
+.risk.med{border-left:3px solid var(--caution);}
+.risk .rh{padding:11px 16px;display:flex;justify-content:space-between;align-items:center;gap:14px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.risk.high .rh{background:var(--neg-tint);}
+.risk.med .rh{background:var(--caution-tint);}
+.risk .rh .rt{font-family:var(--serif);font-size:17px;font-weight:700;}
+.badge{font-family:var(--mono);font-size:10px;padding:3px 9px;border-radius:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;print-color-adjust:exact;-webkit-print-color-adjust:exact;white-space:nowrap;}
+.badge.high{background:var(--neg);color:#fff;}
+.badge.med{background:var(--caution);color:#fff;}
+.risk .rb{background:var(--canvas);padding:16px;}
+.risk .rb p{margin:0;}
+
+/* SCENARIOS */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.scn{border:1px solid var(--border);}
+.scn .sh{padding:12px 16px;font-family:var(--serif);font-size:18px;font-weight:700;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.scn.bull .sh{background:var(--pos-tint);border-top:3px solid var(--pos);color:var(--pos);}
+.scn.bear .sh{background:var(--neg-tint);border-top:3px solid var(--neg);color:var(--neg);}
+.scn .sb{background:var(--canvas);padding:16px;}
+.scn ul{margin:0 0 12px;padding-left:18px;font-size:14px;}
+.scn li{margin-bottom:5px;}
+.scn .tgt{font-family:var(--mono);font-size:13px;font-weight:700;padding-top:10px;border-top:1px solid var(--border);}
+.scn.bull .tgt{color:var(--pos);} .scn.bear .tgt{color:var(--neg);}
+
+/* VERDICT */
+.verdict{background:var(--surface);}
+.vstrip{display:flex;flex-wrap:wrap;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:26px;}
+.vcell{background:var(--card);padding:14px 18px;flex:1;min-width:150px;}
+.vcell .vk{font-family:var(--mono);font-size:9.5px;letter-spacing:0.13em;text-transform:uppercase;color:var(--text-mute);margin-bottom:5px;}
+.vcell .vv{font-family:var(--mono);font-size:15px;font-weight:700;}
+.rating{display:inline-block;background:var(--accent);color:#fff;font-family:var(--mono);font-size:13px;font-weight:700;padding:6px 16px;border-radius:20px;letter-spacing:0.08em;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+
+/* DISCLAIMER */
+.disc{padding:40px 52px;background:var(--canvas);}
+.disc p{font-size:11.5px;color:var(--text-mute);line-height:1.7;max-width:none;}
+.disc .ref-line{font-family:var(--mono);font-size:10.5px;color:var(--text-mute);border-top:1px solid var(--border);padding-top:14px;}
+
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+@media (max-width:900px){
+  .panel-grid{grid-template-columns:repeat(2,1fr);}
+  .scenario-grid{grid-template-columns:1fr;}
+}
+@media (max-width:768px){
+  .layout{display:block;}
+  .sidebar{position:sticky;top:0;height:auto;display:flex;gap:4px;overflow-x:auto;white-space:nowrap;border-right:none;border-bottom:1px solid var(--border);padding:10px;z-index:20;}
+  .sidebar .brand,.sidebar .ref,.nav-sec{display:none;}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:6px 12px;}
+  .nav-link.active{border-left:none;border-bottom:3px solid var(--accent);}
+  .block,.cover,.disc{padding:30px 20px;}
+  .cover h1{font-size:38px;}
+  .panel-grid{grid-template-columns:1fr;}
+}
+
+@media print{
+  @page{size:A4;margin:0;}
+  body{background:#FFFFFF;color:#111827;font-size:10.5pt;}
+  .layout{display:block !important;}
+  .sidebar,.nav-link,.nav-sec{display:none !important;}
+  .main-content{display:block !important;width:100% !important;}
+  .cover{min-height:auto !important;height:auto !important;display:block !important;background-color:#FFFFFF;color:#111827;padding:24pt 0 !important;background-image:none !important;}
+  .cover h1{font-size:34pt;}
+  .block{padding:16pt 0 !important;background-color:#FFFFFF;color:#111827;page-break-inside:auto;}
+  .company-section{page-break-before:always;}
+  .panel-grid{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important;}
+  .scenario-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:10pt !important;}
+  .table-wrap{overflow:visible !important;}
+  table{page-break-inside:auto;}
+  td,th{word-break:break-word;}
+  tr{page-break-inside:avoid;}
+  p{orphans:3;widows:3;}
+  .risk,.scn,.qtr{page-break-inside:avoid;}
+  .animate{opacity:1 !important;transform:none !important;animation:none !important;}
+  *{box-shadow:none !important;backdrop-filter:none !important;}
+  .pill,.badge,.rating,.stars,.risk .rh,.scn .sh{print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+}
+.pgs-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 24px; background: #07090F;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-family: system-ui, sans-serif; font-size: 12px;
+}
+.pgs-topbar a { color: #94A3B8; text-decoration: none; }
+.pgs-topbar a:hover { color: #F1F5F9; }
+.pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+.pgs-topbar .pgs-sep { color: #334155; }
+@media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-PSSA3-202608</span>
+</div>
+
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="brand">Polaris Global Strategies</div>
+  <div class="ref">PGS-PSSA3-202608</div>
+  <div class="nav-sec">Relatório</div>
+  <a class="nav-link" href="#capa">Capa</a>
+  <a class="nav-link" href="#bloco-a">A · Painel consolidado</a>
+  <a class="nav-link" href="#bloco-b">B · Trimestres</a>
+  <a class="nav-link" href="#bloco-c">C · Leitura dos trimestres</a>
+  <a class="nav-link" href="#bloco-d">D · Padrões e vigilância</a>
+  <a class="nav-link" href="#bloco-e">E · Arquitetura estratégica</a>
+  <a class="nav-link" href="#bloco-f">F · Riscos</a>
+  <a class="nav-link" href="#bloco-g">G · Cenários</a>
+  <a class="nav-link" href="#bloco-h">H · Veredicto PGS</a>
+  <a class="nav-link" href="#disclaimer">Disclaimer</a>
+</nav>
+
+<main class="main-content">
+
+<!-- ================= CAPA ================= -->
+<section class="cover company-section" id="capa">
+  <div class="eyebrow">Polaris Global Strategies Ltd. · Pesquisa Interna</div>
+  <h1>Porto Seguro S.A.</h1>
+  <div class="tick">PSSA3 · B3 S.A. Brasil, Bolsa, Balcão · Novo Mercado</div>
+  <div class="rule"></div>
+  <div class="meta">
+    Referência: PGS-PSSA3-202608<br>
+    Data de publicação: 07 de agosto de 2026
+  </div>
+  <div class="quick">
+    <a class="qcard" href="#bloco-a"><span class="qt">PSSA3</span><br><span class="qs">Painel e trimestres</span></a>
+    <a class="qcard" href="#bloco-e"><span class="qt">ESTRATÉGIA</span><br><span class="qs">Verticais, barreiras, vetores</span></a>
+    <a class="qcard" href="#bloco-h"><span class="qt">VEREDICTO</span><br><span class="qs">Rating e alvos</span></a>
+  </div>
+</section>
+
+<!-- ================= BLOCO A ================= -->
+<section class="block animate" id="bloco-a">
+  <div class="kicker">Bloco A</div>
+  <h2>Painel consolidado</h2>
+  <p class="lede">Todos os preços, múltiplos e números de consenso do relatório vivem neste painel. O texto que segue interpreta, sem repetir.</p>
+
+  <div class="panel-grid">
+    <div class="pgroup">
+      <div class="glabel">Mercado</div>
+      <div class="prow"><span class="k">Preço na análise</span><span class="v">R$ 50,45</span></div>
+      <div class="prow"><span class="k">Valor de mercado</span><span class="v">R$ 32,5 bi (est.)</span></div>
+      <div class="prow"><span class="k">vs. máxima 52s</span><span class="v neg">-11,8%</span></div>
+      <div class="prow"><span class="k">vs. mínima 52s</span><span class="v pos">+11,9%</span></div>
+    </div>
+    <div class="pgroup">
+      <div class="glabel">Fundamentos (UDM)</div>
+      <div class="prow"><span class="k">Receita total</span><span class="v">R$ 43,0 bi (est.)</span></div>
+      <div class="prow"><span class="k">LPA contábil</span><span class="v">R$ 5,72 (est.)</span></div>
+      <div class="prow"><span class="k">LPA recorrente</span><span class="v">R$ 5,46 (est.)</span></div>
+      <div class="prow"><span class="k">Margem líquida</span><span class="v">8,6% (est.)</span></div>
+      <div class="prow"><span class="k">Dividend yield</span><span class="v">5,9%</span></div>
+    </div>
+    <div class="pgroup">
+      <div class="glabel">Valuation</div>
+      <div class="prow"><span class="k">P/L UDM</span><span class="v">8,8x (est.)</span></div>
+      <div class="prow"><span class="k">P/L 2026e</span><span class="v">8,9x (est.)</span></div>
+      <div class="prow"><span class="k">P/Receita</span><span class="v">0,76x (est.)</span></div>
+      <div class="prow"><span class="k">P/VP</span><span class="v">2,03x (est.)</span></div>
+      <div class="prow"><span class="k">Faixa P/L 12m</span><span class="v">7,9x a 9,6x (est.)</span></div>
+    </div>
+    <div class="pgroup">
+      <div class="glabel">Consenso</div>
+      <div class="prow"><span class="k">Analistas</span><span class="v">4</span></div>
+      <div class="prow"><span class="k">Compra / neutro / venda</span><span class="v">4 / 0 / 0</span></div>
+      <div class="prow"><span class="k">Alvo médio 12m</span><span class="v">R$ 56,27</span></div>
+      <div class="prow"><span class="k">Alvo máximo</span><span class="v pos">R$ 63,00</span></div>
+      <div class="prow"><span class="k">Alvo mínimo</span><span class="v neg">R$ 46,00</span></div>
+      <div class="prow"><span class="k">Próximo resultado</span><span class="v">nov/2026 (est.)</span></div>
+    </div>
+  </div>
+  <div class="src">Fontes: Seu Dinheiro (preço intradiário 07/08/2026) · Investing.com (faixa de 52 semanas, cobertura e alvos) · StatusInvest (dividend yield) · TradingView (LPA e estimativas) · BTG Pactual (lucro consolidado indicado para 2026) · cálculos PGS. Adaptação de escopo: emissoras de seguros não reportam fluxo de caixa livre nem EV/Receita de forma comparável, portanto o painel usa dividend yield, margem líquida e P/Receita nas posições correspondentes.</div>
+
+  <p>O múltiplo negocia perto do piso da faixa observada nos últimos doze meses, e chegou lá pela combinação de queda de preço na sessão e base de lucro alargada pelo trimestre fiscalmente favorecido do início do ano. A cobertura formal segue construtiva e o alvo médio embute prêmio de dois dígitos, ainda que as revisões publicadas hoje por Santander e BTG mantenham recomendação neutra.</p>
+</section>
+
+<!-- ================= BLOCO B ================= -->
+<section class="block animate" id="bloco-b">
+  <div class="kicker">Bloco B</div>
+  <h2>Quatro trimestres</h2>
+  <p class="lede">Sequência contínua, trimestre âncora no topo. Verificação de ancoragem: âncora 2T26 confirmada (divulgação em 07/08/2026, antes da abertura); cobertura 2T26 → 1T26 → 4T25 → 3T25; nenhuma lacuna.</p>
+
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Trimestre</th>
+        <th class="num">Receita total</th>
+        <th class="num">Lucro contábil vs. consenso</th>
+        <th class="num">Lucro recorrente vs. consenso</th>
+        <th class="num">ROAE contábil / recorrente</th>
+        <th class="num">Resultado financeiro</th>
+        <th class="num">Reação da ação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>2T26</b><br><span style="color:var(--text-mute);font-size:11px">30/06/2026</span></td>
+        <td class="num">R$ 10.903,2 mi<br><span style="color:var(--text-mute)">+10,4% a/a</span></td>
+        <td class="num">R$ 879,4 mi<br><span class="pill line">EM LINHA</span></td>
+        <td class="num">R$ 888,6 mi<br><span class="pill beat">ACIMA +4,2%</span></td>
+        <td class="num">22,1% / 22,3%</td>
+        <td class="num">R$ 694,0 mi<br><span style="color:var(--text-mute)">-8,5% a/a</span></td>
+        <td class="neg">-4,2%<br><span style="color:var(--text-mute);font-size:11px">mesma sessão</span></td>
+      </tr>
+      <tr>
+        <td><b>1T26</b><br><span style="color:var(--text-mute);font-size:11px">31/03/2026</span></td>
+        <td class="num">R$ 10.583,0 mi<br><span style="color:var(--text-mute)">+8,8% a/a</span></td>
+        <td class="num">R$ 1.134,0 mi<br><span class="pill beat">ACIMA +31,4%</span></td>
+        <td class="num">R$ 958,0 mi<br><span class="pill beat">ACIMA +11,0%</span></td>
+        <td class="num">29,0% / 24,7%</td>
+        <td class="num">R$ 306,8 mi<br><span style="color:var(--text-mute)">-19,8% a/a</span></td>
+        <td class="num">(dado não encontrado)</td>
+      </tr>
+      <tr>
+        <td><b>4T25</b><br><span style="color:var(--text-mute);font-size:11px">31/12/2025</span></td>
+        <td class="num">R$ 11.000,0 mi<br><span style="color:var(--text-mute)">+11,0% a/a</span></td>
+        <td class="num">R$ 838,7 mi<br><span class="pill beat">ACIMA +7,0%</span></td>
+        <td class="num">n.d.</td>
+        <td class="num">22,5% / n.d.</td>
+        <td class="num">R$ 289,0 mi<br><span style="color:var(--text-mute)">+6,0% a/a</span></td>
+        <td class="num">(dado não encontrado)</td>
+      </tr>
+      <tr>
+        <td><b>3T25</b><br><span style="color:var(--text-mute);font-size:11px">30/09/2025</span></td>
+        <td class="num">R$ 10.500,0 mi<br><span style="color:var(--text-mute)">+11,0% a/a</span></td>
+        <td class="num">R$ 831,9 mi<br><span class="pill beat">ACIMA +0,6%</span></td>
+        <td class="num">n.d.</td>
+        <td class="num">23,0% / n.d.</td>
+        <td class="num">R$ 383,0 mi<br><span style="color:var(--text-mute)">+53,0% a/a</span></td>
+        <td class="neg">-5,8%<br><span style="color:var(--text-mute);font-size:11px">intradiário</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="src">Fontes: releases Porto Seguro RI via SEGS e Expernews · InfoMoney · Money Times · EuQueroInvestir · Visno Invest · Genial Investimentos · BTG Pactual · LSEG (consenso 3T25) · Bloomberg (consenso 1T26) · ADVFN (reação 3T25). Adaptação de escopo: a companhia divulga lucro consolidado e ROAE por vertical, sem margem operacional GAAP nem fluxo de caixa livre comparáveis; as colunas correspondentes trazem ROAE e resultado financeiro. A separação entre contábil e recorrente só é publicada pela companhia a partir do 1T26.</div>
+</section>
+
+<!-- ================= BLOCO C ================= -->
+<section class="block animate" id="bloco-c">
+  <div class="kicker">Bloco C</div>
+  <h2>Leitura dos trimestres</h2>
+
+  <div class="qtr">
+    <div class="qlabel">2T26 · trimestre âncora</div>
+    <p>A linha final entregou o que o mercado pedia e a ação caiu assim mesmo. O motivo está uma camada abaixo: o Porto Bank consumiu praticamente todo o avanço das demais verticais, com as provisões contra calotes subindo dois terços em doze meses e quase um quinto na comparação sequencial. A inadimplência acima de noventa dias na carteira de trezentos e sessenta dias saltou mais de um ponto percentual em um único trimestre, concentrada em cartões, e a administração descreveu dois grupos de clientes deteriorando: os que passaram a refinanciar saldo com frequência crescente e um núcleo historicamente resiliente que piorou acima do previsto. Junto ao balanço veio a revisão de projeções, que elevou a banda de perdas de crédito de 2026 em cerca de quatrocentos milhões de reais nas duas pontas. Seguros e Saúde foram na direção oposta, com sinistralidade caindo em ambas e o índice de eficiência do grupo melhorando. O Citi resumiu bem ao dizer que as provisões passaram a consumir quase todo o spread de crédito. O Santander foi mais direto sobre o efeito de segunda ordem: a piora da qualidade do lucro desafia o prêmio de múltiplo que PSSA3 carrega frente às seguradoras comparáveis.</p>
+  </div>
+
+  <div class="qtr">
+    <div class="qlabel">1T26</div>
+    <p>O trimestre mais forte da série, e também o mais difícil de ler. O lucro contábil superou o consenso em quase um terço, mas boa parte da surpresa veio da alíquota efetiva, deprimida pelo pagamento de juros sobre capital próprio e por um efeito ligado à incorporação da ISAR. A companhia isolou o item na linha de eventos extraordinários, e o lucro recorrente, mesmo depurado, ainda bateu o consenso com folga. A vertical de Seguros foi o motor: sinistralidade melhorando em todas as frentes, ganhos de eficiência administrativa e um ROAE de vertical acima de trinta por cento pelo quarto trimestre seguido. Auto cresceu pouco, dentro do esperado, e a expansão veio de Patrimonial e Vida. O resultado financeiro recuou por rolagem de títulos a taxas mais altas, decisão que troca resultado presente por carrego futuro. Já ali o Porto Bank mostrava o que se confirmaria depois: carteira crescendo, margem financeira líquida em alta e indicadores de atraso piorando. A inadimplência acima de noventa dias subiu quase um ponto no trimestre, com a companhia priorizando retorno ajustado ao risco na originação.</p>
+  </div>
+
+  <div class="qtr">
+    <div class="qlabel">4T25</div>
+    <p>Fechamento de ano em que o número consolidado veio acima do consenso e a rentabilidade anual subiu quase três pontos percentuais contra 2024. A composição importava mais do que o total: as verticais fora de Seguros passaram a representar praticamente metade do lucro do grupo, ganho de sete pontos percentuais em um ano, e cada uma delas entregou retorno acima de vinte e três por cento. O Porto Bank foi o de melhor desempenho relativo, com receita subindo quase um terço puxada por consórcio, cartão, financiamento e capitalização, e lucro avançando mais de um terço. Saúde manteve o padrão de adição de vidas com sinistralidade caindo. Em Seguros, Auto ficou estável em prêmios e a frota segurada cresceu, com o índice combinado ampliado melhorando um ponto. O resultado financeiro subiu pouco, sustentado por papéis indexados à inflação, e a companhia executou nova rolagem de carteira. O sexto ano consecutivo de melhora no índice de eficiência operacional foi o dado estrutural do release. A administração falava então em disciplina de risco e inadimplência abaixo da média de mercado.</p>
+  </div>
+
+  <div class="qtr">
+    <div class="qlabel">3T25</div>
+    <p>Lucro acima do consenso compilado pela LSEG, receita crescendo dois dígitos, ROAE no quinto trimestre seguido acima de vinte por cento, e a ação caiu perto de seis por cento na sessão. O padrão de hoje já estava desenhado dez meses atrás. O resultado financeiro deu o maior salto anual da série, ajudado por base fraca de comparação, e essa dependência incomodou parte do mercado. Saúde foi o ponto alto operacional, com lucro crescendo quase dois terços e adição forte de beneficiários em seguro saúde e odontológico. Serviços recuou. O Porto Bank sofreu um efeito contábil transitório ligado à Resolução 4.966, que desloca no tempo o reconhecimento de receitas e provisões, o que na época foi tratado como ruído técnico. A companhia revisou parte do guidance de 2025, cortando a projeção de despesas administrativas em Seguros e reduzindo a faixa de receita de Serviços. A leitura das casas foi de acomodação sequencial depois de um segundo trimestre forte, sem mudança de tese.</p>
+  </div>
+</section>
+
+<!-- ================= BLOCO D ================= -->
+<section class="block animate" id="bloco-d">
+  <div class="kicker">Bloco D</div>
+  <h2>Padrões estruturais e vigilância</h2>
+
+  <h3>Padrões nos quatro trimestres</h3>
+  <div class="obs"><div class="claim">A diversificação funcionou como projeto e passou a funcionar como fonte de volatilidade.</div><div class="ev">Evidência: as verticais fora de Seguros saíram de pouco mais de dois quintos para cerca de metade do lucro entre 2024 e 2025, e foi justamente a menor delas em lucro, o banco, que definiu a reação de preço no trimestre âncora.</div></div>
+  <div class="obs"><div class="claim">O ciclo de crédito piora de forma linear há pelo menos três trimestres, sem inflexão.</div><div class="ev">Evidência: a inadimplência acima de noventa dias subiu em cada um dos trimestres cobertos, e a companhia trocou o discurso de disciplina de risco pelo de aperto ativo de concessão e restrição gradual de limites.</div></div>
+  <div class="obs"><div class="claim">A vertical de Seguros melhora margem sem depender de crescimento de prêmio em Auto.</div><div class="ev">Evidência: a sinistralidade da vertical caiu na comparação anual em três dos quatro trimestres, com a expansão vindo de Patrimonial e Vida enquanto Auto oscilou perto da estabilidade.</div></div>
+  <div class="obs"><div class="claim">O lucro contábil e o lucro recorrente divergem o suficiente para exigir leitura separada.</div><div class="ev">Evidência: no trimestre de maior surpresa, o efeito tributário respondeu por cerca de um sexto do resultado reportado, e no trimestre âncora a relação se inverteu, com o recorrente acima do contábil.</div></div>
+
+  <h3>Lista de vigilância para o 3T26</h3>
+  <div class="watch"><span class="sig down">↓</span><div class="wt"><b>Formação de inadimplência no Porto Bank.</b> <span class="wd">Confirma a tese de estabilização se a formação recuar abaixo de três por cento; quebra o padrão se a inadimplência acima de noventa dias romper dois dígitos.</span></div></div>
+  <div class="watch"><span class="sig flat">→</span><div class="wt"><b>Provisões contra o novo teto de guidance.</b> <span class="wd">Confirma se o trimestre rodar próximo ao patamar implícito na banda revisada; quebra se exigir nova elevação da faixa antes do fechamento do ano.</span></div></div>
+  <div class="watch"><span class="sig up">↑</span><div class="wt"><b>Sinistralidade da vertical de Seguros.</b> <span class="wd">Confirma se permanecer no terço inferior da banda anual revisada; quebra se a aceleração de prêmios em Auto vier acompanhada de piora do índice combinado.</span></div></div>
+  <div class="watch"><span class="sig up">↑</span><div class="wt"><b>Contribuição de Saúde no lucro do grupo.</b> <span class="wd">Confirma se a adição de vidas seguir de mãos dadas com sinistralidade estável; quebra se a expansão de carteira passar a exigir preço abaixo do custo médico.</span></div></div>
+</section>
+
+<!-- ================= BLOCO E ================= -->
+<section class="block animate" id="bloco-e">
+  <div class="kicker">Bloco E</div>
+  <h2>Arquitetura estratégica</h2>
+
+  <h3>1. Modelo de negócio e arquitetura de receita</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Vertical</th><th class="num">Receita 2025</th><th class="num">% do total</th><th class="num">Var. a/a</th><th>Perfil de margem</th></tr></thead>
+    <tbody>
+      <tr><td>Porto Seguro (Auto, Patrimonial, Vida)</td><td class="num">R$ 22,4 bi (est.)</td><td class="num">54,6% (est.)</td><td class="num">+3% (est.)</td><td>Índice combinado ampliado de 85,3% no 4T25; ROAE de vertical acima de 30%</td></tr>
+      <tr><td>Porto Saúde (saúde e odonto)</td><td class="num">R$ 8,6 bi (est.)</td><td class="num">21,0% (est.)</td><td class="num">+23% (est.)</td><td>Índice combinado de 89% e sinistralidade de 74% no 4T25</td></tr>
+      <tr><td>Porto Bank (cartão, consórcio, crédito)</td><td class="num">R$ 7,1 bi (est.)</td><td class="num">17,3% (est.)</td><td class="num">+31% (est.)</td><td>NIM ajustado ao risco de 3,0% e eficiência de 32,2% no 4T25</td></tr>
+      <tr><td>Porto Serviço (assistências, digital)</td><td class="num">R$ 2,5 bi (est.)</td><td class="num">6,1% (est.)</td><td class="num">+3% (est.)</td><td>Produtos digitais crescendo 73% no ano, sobre base pequena</td></tr>
+      <tr><td><b>Consolidado</b></td><td class="num"><b>R$ 41,0 bi</b></td><td class="num"><b>100%</b></td><td class="num"><b>+12%</b></td><td><b>ROAE de 22,7% e lucro de R$ 3,4 bi em 2025</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="src">Fontes: release anual Porto Seguro RI via SEGS · Sonho Seguro · BPMoney · Investing.com Brasil · agregação trimestral PGS. Ressalva metodológica: a companhia divulga receita por vertical em base trimestral e apenas o consolidado em base anual, portanto as linhas anuais por vertical são somas trimestrais calculadas pela PGS e vêm marcadas como estimativa. A soma das verticais excede o consolidado antes das eliminações entre empresas do grupo.</div>
+
+  <p>A Porto vende quatro coisas para o mesmo cliente e financia cada uma com o caixa da anterior. Seguros gera prêmio antecipado e sinistro postergado, o que produz float, e esse float sustenta tanto a carteira de investimentos quanto a capacidade de absorver perdas nas verticais em construção. Saúde consome capital de giro e cresce por adição de vidas, um negócio de escala com margem apertada por definição. O banco converte relacionamento em receita de tarifa, consórcio e crédito, e é o único que assume risco de balanço puro.</p>
+  <p>A alavanca operacional nasce em três lugares distintos. Em Seguros, ela vem de precificação: cinco décadas de dados de sinistro em Auto permitem segmentar risco com granularidade que competidor novo não replica em ciclo curto, e o resultado aparece no índice combinado. Em Saúde, vem de verticalização virtual, com time médico próprio, parcerias direcionadas e combate a fraude comprimindo o custo assistencial sem construir hospital. No banco, deveria vir de custo de aquisição próximo de zero, já que o cliente chega pelo seguro. É exatamente aí que o modelo está sob teste. Custo de aquisição baixo não compensa perda de crédito alta, e o trimestre âncora mostrou provisões engolindo o spread.</p>
+  <p>A dependência de Auto caiu para cerca de trinta por cento do resultado, contra participação bem maior em anos anteriores. Isso reduz a exposição ao ciclo de preço de veículo usado e à guerra tarifária entre seguradoras, e em troca introduz exposição ao ciclo de crédito ao consumidor brasileiro. A companhia trocou um risco cíclico conhecido por outro menos familiar ao seu histórico de gestão. O primeiro semestre de 2026 é a primeira leitura séria dessa troca.</p>
+
+  <h3>2. Barreiras competitivas</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Pilar</th><th>Força</th><th>Risco de erosão</th><th class="num">Avaliação</th></tr></thead>
+    <tbody>
+      <tr><td>Base de dados de sinistro e precificação em Auto</td><td>Alta</td><td>Baixo</td><td class="stars">★★★★★</td></tr>
+      <tr><td>Rede de corretores independentes com quase 48 mil pontos</td><td>Alta</td><td>Baixo</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>Acordo de distribuição exclusiva em Auto e Residência com o Itaú</td><td>Alta</td><td>Médio</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>Marca e recall espontâneo em seguros</td><td>Média-alta</td><td>Baixo</td><td class="stars">★★★★☆</td></tr>
+      <tr><td>Venda cruzada de crédito sobre a base segurada</td><td>Média</td><td>Alto</td><td class="stars">★★★☆☆</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="src">Fontes: Nord Investimentos (estrutura de distribuição e acordo Itaú) · release anual Porto Seguro RI via SEGS (rede de corretores, marca, base de clientes) · avaliação qualitativa PGS.</div>
+
+  <p>A barreira que resiste é a de precificação. Quem subscreve automóvel no Brasil há oito décadas conhece a curva de perda por CEP, por perfil de condutor e por modelo com precisão que só se compra com tempo e volume de sinistro. Concorrente com capital abundante consegue comprar participação de mercado via preço, e vários tentaram, mas não consegue comprar a curva. É por isso que o índice combinado da vertical melhora mesmo quando o prêmio cresce pouco.</p>
+  <p>A rede de corretores tem natureza diferente. Ela é cara de montar e lenta de replicar, e cria custo de troca do lado do intermediário, que prefere trabalhar com quem paga comissão previsível e resolve sinistro sem atrito. O acordo com o Itaú em Auto e Residência agrega volume que o canal próprio não alcançaria, com a contrapartida de depender de contrato renovável e de uma contraparte com incentivo próprio.</p>
+  <p>A barreira mais frágil é a que mais aparece na narrativa da companhia: transformar cliente de seguro em cliente de crédito. Ela pressupõe que a relação de confiança em sinistro se traduz em melhor comportamento de pagamento. O trimestre âncora colocou essa premissa em dúvida, com deterioração aparecendo inclusive em um grupo de clientes historicamente mais resiliente. Se a base segurada não seleciona melhor risco de crédito do que a média de mercado, o banco vira um originador comum com custo de aquisição baixo, o que vale bem menos do que a tese sugeria. A avaliação de três estrelas nesse pilar reflete essa dúvida, e não a qualidade da execução operacional.</p>
+
+  <h3>3. Vetores de crescimento de longo prazo</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Vetor</th><th class="num">Horizonte</th><th>Estado atual</th><th>Potencial</th><th class="num">Status</th></tr></thead>
+    <tbody>
+      <tr><td>Adensamento de vidas em Saúde com verticalização virtual</td><td class="num">1 a 3 anos</td><td>904 mil vidas em seguro saúde e 1,3 milhão em odonto</td><td>Alto</td><td class="num">on track</td></tr>
+      <tr><td>Reprecificação e migração do crédito para produtos com garantia</td><td class="num">12 a 24 meses</td><td>Concessão em aperto ativo e limites em restrição</td><td>Médio</td><td class="num">at risk</td></tr>
+      <tr><td>Retomada de emissão em Auto sobre frota de 6,3 milhões de veículos</td><td class="num">1 a 2 anos</td><td>Prêmios voltando a acelerar</td><td>Médio</td><td class="num">on track</td></tr>
+      <tr><td>Expansão de Patrimonial e Vida</td><td class="num">2 a 4 anos</td><td>Crescimento de dois dígitos sustentado</td><td>Alto</td><td class="num">on track</td></tr>
+      <tr><td>Produtos digitais e serviços recorrentes</td><td class="num">3 a 5 anos</td><td>Base pequena, crescimento acelerado</td><td>Médio</td><td class="num">emerging</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="src">Fontes: release 2T26 Porto Seguro RI via Expernews (vidas, frota, emissão) · release anual via SEGS (produtos digitais) · Seu Dinheiro (política de crédito) · classificação PGS conforme vocabulário controlado.</div>
+
+  <p>A ordem importa. O vetor que precisa funcionar primeiro é a reprecificação do crédito, e ele é o único classificado como em risco. Enquanto as provisões consumirem o spread, o banco não gera capital para financiar o próprio crescimento, e o grupo passa a subsidiar com o float do seguro uma operação que deveria ser autossustentável. Isso trava o segundo vetor por consequência aritmética: sem retorno adequado no crédito, a venda cruzada sobre a base segurada perde a razão econômica que a justifica.</p>
+  <p>Saúde é o vetor de maior potencial e o menos dependente dos demais. Ele roda com dinâmica própria, adicionando vidas com sinistralidade sob controle, e já entrega retorno de vertical na casa de vinte e quatro por cento. Se o crédito estabilizar e Saúde mantiver o ritmo, o grupo consegue crescer lucro sem precisar de Auto acelerando.</p>
+  <p>Patrimonial e Vida são o motor silencioso. Crescem em dois dígitos há vários trimestres, consomem menos capital que Saúde e têm sinistralidade estruturalmente melhor que Auto. A companhia fala pouco deles porque não rendem manchete. Em três anos, eles decidem mais da margem consolidada do que qualquer iniciativa digital anunciada.</p>
+</section>
+
+<!-- ================= BLOCO F ================= -->
+<section class="block animate" id="bloco-f">
+  <div class="kicker">Bloco F</div>
+  <h2>Registro de riscos</h2>
+
+  <div class="risk high">
+    <div class="rh"><span class="rt">Ciclo de crédito ao consumidor no Porto Bank</span><span class="badge high">Alta</span></div>
+    <div class="rb"><p>Mecanismo: a carteira de cartões concentra a deterioração, com refinanciamento recorrente de saldo transformando cliente adimplente em cliente rolando dívida a custo alto. Quando a provisão cresce mais rápido que a margem financeira, o spread líquido tende a zero e a vertical deixa de remunerar o capital alocado. Prazo: o efeito já está no resultado e a companhia sinalizou pelo menos mais dois a três trimestres de aperto de concessão, o que reduz originação nova justamente quando a carteira madura ainda carrega a safra ruim. Observável: formação de inadimplência acima de três por cento por dois trimestres consecutivos, ou provisão trimestral rodando acima do teto implícito na banda revisada de guidance. Se qualquer um dos dois aparecer no próximo print, a discussão deixa de ser sobre ciclo e passa a ser sobre política de crédito.</p></div>
+  </div>
+
+  <div class="risk med">
+    <div class="rh"><span class="rt">Compressão do prêmio de múltiplo frente às seguradoras comparáveis</span><span class="badge med">Média</span></div>
+    <div class="rb"><p>Mecanismo: PSSA3 negocia com ágio sobre pares de seguro puro porque o mercado precificava diversificação como fonte de crescimento com retorno superior. Se o banco passar a ser lido como risco em vez de opcionalidade, o ágio some e o papel converge para o múltiplo de uma seguradora com braço financeiro problemático. O Santander colocou essa mecânica no relatório de hoje de forma explícita. Prazo: doze a dezoito meses, com reprecificação acontecendo em degraus a cada divulgação trimestral. Observável: revisões de recomendação com corte de preço-alvo mantendo estimativa de lucro inalterada, sinal de que a compressão vem do múltiplo e não do resultado. Uma segunda revisão de guidance de perdas no mesmo exercício aceleraria o processo.</p></div>
+  </div>
+
+  <div class="risk med">
+    <div class="rh"><span class="rt">Dependência do resultado financeiro em ciclo de juros em queda</span><span class="badge med">Média</span></div>
+    <div class="rb"><p>Mecanismo: parte relevante do lucro consolidado vem da carteira de aplicações que remunera o float das reservas técnicas. Com a taxa básica cedendo, o carrego cai, e a companhia já vem antecipando o problema com rolagens que sacrificam resultado corrente para alongar duration em papéis indexados à inflação. O rendimento da carteira tem rodado abaixo do CDI em vários trimestres. Prazo: dezoito a trinta e seis meses, seguindo o ciclo monetário. Observável: rendimento da carteira gerida pela tesouraria caindo abaixo de setenta por cento do CDI por dois trimestres seguidos, com resultado financeiro consolidado abaixo do piso da banda de guidance. Nesse cenário, a operação de seguros precisa carregar sozinha o ROAE do grupo, exigência que ela já cumpriu no passado mas com base de patrimônio menor.</p></div>
+  </div>
+</section>
+
+<!-- ================= BLOCO G ================= -->
+<section class="block animate" id="bloco-g">
+  <div class="kicker">Bloco G</div>
+  <h2>Cenários</h2>
+  <div class="scenario-grid">
+
+    <div class="scn bull">
+      <div class="sh">Cenário construtivo</div>
+      <div class="sb">
+        <ul>
+          <li>A inadimplência do Porto Bank atinge o pico no terceiro trimestre e recua a partir do quarto, com a safra nova originada sob critério apertado apresentando perda menor.</li>
+          <li>A sinistralidade da vertical de Seguros permanece no terço inferior da banda anual, com Patrimonial e Vida sustentando crescimento de dois dígitos.</li>
+          <li>Saúde mantém adição de vidas com custo assistencial estável e o retorno da vertical segue acima de vinte por cento.</li>
+        </ul>
+        <p style="font-size:13.5px;color:var(--text-mute);margin-bottom:10px">Condições: exige que o aperto de concessão feito neste semestre apareça no resultado antes de comprimir receita de forma relevante, e que o Banco Central não force novo choque no crédito rotativo.</p>
+        <div class="tgt">Alvo construtivo PGS: +26,9% sobre o preço na análise</div>
+      </div>
+    </div>
+
+    <div class="scn bear">
+      <div class="sh">Cenário adverso</div>
+      <div class="sb">
+        <ul>
+          <li>A deterioração do crédito se espalha do cartão para financiamento e empréstimo, exigindo nova elevação da banda de perdas antes do fechamento do exercício.</li>
+          <li>O aperto de concessão derruba receita do banco sem derrubar provisão na mesma velocidade, comprimindo o retorno da vertical por mais quatro trimestres.</li>
+          <li>O mercado retira o ágio de múltiplo e reprecifica PSSA3 como seguradora com braço financeiro deficitário.</li>
+        </ul>
+        <p style="font-size:13.5px;color:var(--text-mute);margin-bottom:10px">Condições: exige que a piora deixe de ser explicada por ciclo macro e passe a ser atribuída a política de originação, o que muda a natureza da discussão com o mercado.</p>
+        <div class="tgt">Alvo adverso PGS: -12,8% sobre o preço na análise</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= BLOCO H ================= -->
+<section class="block verdict animate" id="bloco-h">
+  <div class="kicker">Bloco H</div>
+  <h2>Veredicto PGS</h2>
+
+  <p style="margin-bottom:20px"><span class="rating">🟢 COMPRA</span></p>
+
+  <div class="vstrip">
+    <div class="vcell"><div class="vk">Alvo construtivo (18 a 24 meses)</div><div class="vv" style="color:var(--pos)">R$ 64,00</div></div>
+    <div class="vcell"><div class="vk">Alvo adverso</div><div class="vv" style="color:var(--neg)">R$ 44,00</div></div>
+    <div class="vcell"><div class="vk">Risco / retorno</div><div class="vv">Favorável</div></div>
+    <div class="vcell"><div class="vk">Horizonte</div><div class="vv">18 a 24 meses</div></div>
+  </div>
+
+  <p>A dislocação de preço é real e tem causa identificável. O mercado penalizou a ação no dia em que o lucro consolidado veio dentro do esperado, porque a composição piorou. Esse tipo de reação costuma exagerar quando a deterioração está concentrada na menor das quatro verticais em contribuição de lucro, e o próprio BTG registrou que a queda poderia criar oportunidade. O múltiplo voltou para perto do piso da faixa de doze meses.</p>
+
+  <p>O núcleo operacional do negócio não mudou no trimestre. A vertical de Seguros entregou sinistralidade melhor com prêmio acelerando, Saúde cresceu lucro em mais de um terço com custo assistencial sob controle, e o índice de eficiência do grupo melhorou pelo sétimo período de comparação favorável. A rentabilidade consolidada permanece acima de vinte por cento pelo nono trimestre seguido. O que mudou foi a distribuição de risco dentro do grupo.</p>
+
+  <p>O risco primário é o registrado como de severidade alta no Bloco F. Ele não é um evento pontual, é um ciclo, e ciclos de crédito ao consumidor no Brasil raramente terminam no trimestre seguinte ao pico de provisão. A tese construtiva depende de o aperto de originação feito neste semestre virar redução de perda até o primeiro trimestre de 2027. Se não virar, o Bloco F descreve o caminho pelo qual a compressão de múltiplo se instala.</p>
+
+  <p>Os catalisadores próximos são poucos e datados. A divulgação do terceiro trimestre traz o primeiro teste da banda revisada de perdas e a primeira leitura sobre o efeito do aperto de concessão. Antes disso, dados mensais de crédito do sistema funcionam como termômetro antecipado. No sentido oposto, a manutenção do guidance de sinistralidade e a distribuição de proventos trimestrais sustentam o piso de valuation enquanto o crédito não estabiliza.</p>
+</section>
+
+<!-- ================= DISCLAIMER ================= -->
+<section class="disc" id="disclaimer">
+  <p>"This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice."</p>
+
+  <p>This report was produced with the assistance of artificial intelligence. Generative model: Anthropic · Claude Opus · version Opus 5, accessed via the Claude web application (claude.ai). All figures were sourced from live web search within the same session and cross-checked against the anchoring protocol in Step 1; the model's role was data synthesis, formatting and drafting, not the origination of financial estimates. Human review by the internal analyst precedes publication.</p>
+
+  <p class="ref-line">Report Reference: PGS-PSSA3-202608 · Date: 07 August 2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: PSSA3 · Exchange: B3 S.A. Brasil, Bolsa, Balcão · AI Model: Anthropic Opus 5</p>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          e.target.style.opacity = '';
+          e.target.style.animationPlayState = 'running';
+          animObserver.unobserve(e.target);
+        }
+      });
+    }, {threshold: 0.06, rootMargin: '0px 0px -40px 0px'});
+    animateEls.forEach(function(el){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      animObserver.observe(el);
+    });
+  }
+
+  var links = document.querySelectorAll('.nav-link');
+  var sections = [];
+  links.forEach(function(l){
+    var id = l.getAttribute('href').slice(1);
+    var s = document.getElementById(id);
+    if (s) sections.push({link: l, sec: s});
+  });
+  function setActive(){
+    var pos = window.scrollY + window.innerHeight * 0.3;
+    var current = sections[0];
+    sections.forEach(function(o){
+      if (o.sec.offsetTop <= pos) current = o;
+    });
+    links.forEach(function(l){ l.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', setActive, {passive:true});
+  setActive();
+})();
+</script>
+</body>
+</html>

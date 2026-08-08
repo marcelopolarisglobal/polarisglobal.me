@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PGS Equity Research — DIS · NFLX — August 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  --text:#111827;
+  --text-mute:#6B7280;
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#0B3D91;
+  --display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --data:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+#dis{--accent:#0B3D91;}
+#nflx{--accent:#B81D24;}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--canvas);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+
+.layout{display:grid;grid-template-columns:220px 1fr;gap:0;align-items:start;}
+
+/* ---------- sidebar ---------- */
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:28px 0 40px;}
+.sidebar .brand{font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:-.01em;padding:0 18px 4px;}
+.sidebar .brand span{display:block;font-family:var(--body);font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);margin-top:6px;}
+.nav-group{margin-top:26px;}
+.nav-group h4{font-family:var(--body);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);margin:0 0 8px;padding:0 18px;font-weight:700;}
+.nav-link{display:block;padding:6px 18px;font-size:13px;color:var(--text-mute);text-decoration:none;border-left:3px solid transparent;transition:background .15s ease,color .15s ease;}
+.nav-link:hover{color:var(--text);background:var(--card);}
+.nav-link.active{color:var(--text);font-weight:700;border-left:3px solid var(--accent);background:var(--card);}
+#nav-dis .nav-link.active{border-left-color:#0B3D91;}
+#nav-nflx .nav-link.active{border-left-color:#B81D24;}
+
+.main-content{min-width:0;padding:0 0 80px;}
+.wrap{max-width:940px;margin:0 auto;padding:0 32px;}
+
+/* ---------- cover ---------- */
+.cover{min-height:96vh;background:var(--surface);border-bottom:1px solid var(--border);display:flex;flex-direction:column;justify-content:center;
+  background-image:radial-gradient(var(--border) 1px, transparent 1px);background-size:22px 22px;}
+.cover .wrap{width:100%;}
+.cover .eyebrow{font-family:var(--data);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-mute);}
+.cover h1{font-family:var(--display);font-weight:900;font-size:clamp(38px,6vw,68px);line-height:1.02;margin:18px 0 10px;letter-spacing:-.02em;}
+.cover .sub{font-family:var(--display);font-size:clamp(20px,3vw,30px);font-style:italic;color:var(--text-mute);margin:0 0 34px;}
+.cover .meta{font-family:var(--data);font-size:12px;color:var(--text-mute);line-height:2;border-top:1px solid var(--border);padding-top:18px;}
+.ticker-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:34px 0 30px;}
+.ticker-card{background:var(--canvas);border:1px solid var(--border);border-top:3px solid var(--accent);padding:18px 20px;text-decoration:none;color:inherit;display:block;transition:transform .15s ease;}
+.ticker-card:hover{transform:translateY(-2px);}
+.ticker-card.dis{border-top-color:#0B3D91;}
+.ticker-card.nflx{border-top-color:#B81D24;}
+.ticker-card .tk{font-family:var(--data);font-size:22px;font-weight:700;}
+.ticker-card .nm{font-family:var(--display);font-size:17px;margin-top:2px;}
+.ticker-card .rf{font-family:var(--data);font-size:10.5px;color:var(--text-mute);margin-top:10px;letter-spacing:.04em;}
+
+/* ---------- company section ---------- */
+.company{border-top:1px solid var(--border);padding-top:0;}
+.company-head{background:var(--surface);border-bottom:3px solid var(--accent);padding:52px 0 40px;margin-bottom:44px;}
+.company-head .eyebrow{font-family:var(--data);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;}
+.company-head h2{font-family:var(--display);font-weight:900;font-size:clamp(32px,5vw,52px);margin:12px 0 6px;letter-spacing:-.02em;}
+.company-head .exch{font-family:var(--data);font-size:13px;color:var(--text-mute);}
+
+h3.block{font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text-mute);margin:56px 0 6px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+h4.blockname{font-family:var(--display);font-size:27px;font-weight:700;margin:0 0 20px;letter-spacing:-.01em;}
+h5.sub{font-family:var(--body);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:38px 0 12px;}
+
+p{max-width:68ch;}
+.lead{font-size:17px;}
+
+/* ---------- tables ---------- */
+.table-wrap{overflow-x:auto;margin:0 0 6px;}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+th{font-family:var(--body);font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--text-mute);text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
+td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+tbody tr:nth-child(odd){background:var(--canvas);}
+tbody tr:nth-child(even){background:var(--surface);}
+tbody tr:hover{background:var(--card);transition:background .18s ease;}
+td.num,th.num{font-family:var(--data);font-size:12.5px;white-space:nowrap;}
+td.pos{color:var(--pos);font-weight:700;}
+td.neg{color:var(--neg);font-weight:700;}
+caption,.src{caption-side:bottom;text-align:left;font-family:var(--data);font-size:10.5px;color:var(--text-mute);padding-top:9px;line-height:1.55;display:block;margin-bottom:26px;}
+
+.pill{display:inline-block;font-family:var(--data);font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:2px;letter-spacing:.03em;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.pill.beat{background:var(--pill-pos-bg);color:var(--pill-pos-fg);}
+.pill.miss{background:var(--pill-neg-bg);color:var(--pill-neg-fg);}
+.pill.line{background:var(--card);color:var(--text-mute);}
+.stars{font-family:var(--data);letter-spacing:.06em;color:var(--accent);print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+
+/* ---------- block A panel ---------- */
+.panel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-top:3px solid var(--accent);margin-bottom:6px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.panel-col{background:var(--card);padding:18px 16px;}
+.panel-col h6{font-family:var(--body);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);margin:0 0 14px;}
+.panel-row{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dotted var(--border);}
+.panel-row:last-child{border-bottom:none;}
+.panel-row .k{font-size:11.5px;color:var(--text-mute);line-height:1.4;}
+.panel-row .v{font-family:var(--data);font-size:12.5px;font-weight:500;text-align:right;white-space:nowrap;}
+.v.up{color:var(--pos);}
+.v.down{color:var(--neg);}
+
+/* ---------- block C ---------- */
+.quarters{border-left:3px solid var(--accent);padding-left:22px;margin-top:8px;}
+.qtr{margin-bottom:30px;}
+.qtr .kicker{font-family:var(--data);font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:6px;}
+.qtr p{margin:0;}
+
+/* ---------- block D ---------- */
+.obs{margin:0;padding:0;list-style:none;}
+.obs li{padding:12px 0;border-bottom:1px solid var(--border);max-width:74ch;}
+.obs li strong{display:block;font-size:15px;margin-bottom:3px;}
+.obs li span{font-size:14px;color:var(--text-mute);}
+.sig{font-family:var(--data);font-size:12px;font-weight:700;margin-right:8px;}
+.sig.up{color:var(--pos);}
+.sig.flat{color:var(--text-mute);}
+.sig.down{color:var(--neg);}
+
+/* ---------- block F risks ---------- */
+.risk{border:1px solid var(--border);margin-bottom:18px;page-break-inside:avoid;}
+.risk.high{border-left:3px solid var(--neg);}
+.risk.med{border-left:3px solid var(--caution);}
+.risk-head{padding:12px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.risk.high .risk-head{background:var(--neg-tint);}
+.risk.med .risk-head{background:var(--caution-tint);}
+.risk-head h6{font-family:var(--display);font-size:19px;margin:0;font-weight:700;}
+.badge{font-family:var(--data);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;color:#fff;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.badge.high{background:var(--neg);}
+.badge.med{background:var(--caution);}
+.risk-body{background:var(--canvas);padding:16px 18px;}
+.risk-body p{margin:0;font-size:14.5px;}
+
+/* ---------- block G scenarios ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.scen{border:1px solid var(--border);page-break-inside:avoid;}
+.scen.bull{border-top:3px solid var(--pos);}
+.scen.bear{border-top:3px solid var(--neg);}
+.scen-head{padding:12px 18px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.scen.bull .scen-head{background:var(--pos-tint);}
+.scen.bear .scen-head{background:var(--neg-tint);}
+.scen-head h6{font-family:var(--display);font-size:20px;margin:0;font-weight:700;}
+.scen-head .delta{font-family:var(--data);font-size:14px;font-weight:700;}
+.scen.bull .delta{color:var(--pos);}
+.scen.bear .delta{color:var(--neg);}
+.scen-body{background:var(--canvas);padding:16px 18px;}
+.scen-body ul{margin:0 0 12px;padding-left:18px;font-size:14px;}
+.scen-body li{margin-bottom:5px;}
+.scen-body p{margin:0;font-size:14.5px;}
+
+/* ---------- block H verdict ---------- */
+.verdict{background:var(--surface);border:1px solid var(--border);padding:26px 26px 8px;margin-top:8px;}
+.verdict-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:24px;}
+.vs-cell{background:var(--card);padding:14px 16px;}
+.vs-cell .k{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mute);font-weight:700;}
+.vs-cell .v{font-family:var(--data);font-size:17px;font-weight:700;margin-top:4px;}
+.rating-pill{display:inline-block;background:var(--accent);color:#fff;font-family:var(--data);font-size:14px;font-weight:700;letter-spacing:.08em;padding:7px 16px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+
+/* ---------- disclaimer ---------- */
+.disclaimer{border-top:1px solid var(--border);margin-top:70px;padding-top:28px;}
+.disclaimer p{font-size:12px;color:var(--text-mute);max-width:none;line-height:1.7;}
+.disclaimer .legal{border-left:3px solid var(--border);padding-left:16px;}
+.disclaimer .ref{font-family:var(--data);font-size:10.5px;}
+
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@media (prefers-reduced-motion:reduce){.animate{animation:none !important;opacity:1 !important;transform:none !important;}html{scroll-behavior:auto;}}
+
+@media (max-width:767px){
+  .layout{display:block;}
+  .sidebar{position:sticky;top:0;height:auto;z-index:20;display:flex;gap:2px;overflow-x:auto;white-space:nowrap;padding:10px 0;border-right:none;border-bottom:1px solid var(--border);}
+  .sidebar .brand,.nav-group h4{display:none;}
+  .nav-group{display:flex;margin-top:0;}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:6px 12px;}
+  .nav-link.active{border-left:none;border-bottom:3px solid var(--accent);}
+  .panel-grid{grid-template-columns:1fr;}
+  .scenario-grid{grid-template-columns:1fr;}
+  .wrap{padding:0 18px;}
+}
+
+@media print{
+  @page{size:A4;margin:15mm 12mm;}
+  body{background:#FFFFFF;color:#111827;font-size:10.5pt;}
+  .layout{display:block !important;}
+  .sidebar,.nav-link,.scroll-indicator{display:none !important;}
+  .main-content{display:block !important;width:100% !important;padding:0 !important;}
+  .wrap{max-width:none;padding:0 !important;}
+  .company{page-break-before:always;}
+  .cover{min-height:auto !important;height:auto !important;display:block !important;background-image:none;background-color:#FFFFFF;padding:0 0 20pt;}
+  .company-head{background-color:#FFFFFF;padding:0 0 14pt;margin-bottom:20pt;}
+  .verdict,.risk-body,.scen-body,.panel-col,.vs-cell{background-color:#FFFFFF;color:#111827;}
+  .panel-grid{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important;}
+  .scenario-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:10pt !important;}
+  p,li{orphans:3;widows:3;}
+  .risk,.scen,.qtr,table{page-break-inside:avoid;}
+  h3.block,h4.blockname,h5.sub{page-break-after:avoid;}
+  .animate{opacity:1 !important;transform:none !important;animation:none !important;}
+  *{box-shadow:none !important;backdrop-filter:none !important;}
+  .table-wrap{overflow:visible !important;}
+  td,th{word-break:break-word;}
+  .ticker-card{border:1px solid #E5E7EB;}
+}
+.pgs-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 24px; background: #07090F;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-family: system-ui, sans-serif; font-size: 12px;
+}
+.pgs-topbar a { color: #94A3B8; text-decoration: none; }
+.pgs-topbar a:hover { color: #F1F5F9; }
+.pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+.pgs-topbar .pgs-sep { color: #334155; }
+@media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-DIS-NFLX-202608</span>
+</div>
+
+<div class="layout">
+
+<nav class="sidebar" aria-label="Report navigation">
+  <div class="brand">Polaris Global Strategies<span>Internal Research</span></div>
+  <div class="nav-group" id="nav-cover">
+    <a class="nav-link" href="#cover">Cover</a>
+  </div>
+  <div class="nav-group" id="nav-dis">
+    <h4>DIS · Disney</h4>
+    <a class="nav-link" href="#dis-a">A · Panel</a>
+    <a class="nav-link" href="#dis-b">B · Quarters</a>
+    <a class="nav-link" href="#dis-c">C · Reading</a>
+    <a class="nav-link" href="#dis-d">D · Patterns</a>
+    <a class="nav-link" href="#dis-e">E · Architecture</a>
+    <a class="nav-link" href="#dis-f">F · Risks</a>
+    <a class="nav-link" href="#dis-g">G · Scenarios</a>
+    <a class="nav-link" href="#dis-h">H · Verdict</a>
+  </div>
+  <div class="nav-group" id="nav-nflx">
+    <h4>NFLX · Netflix</h4>
+    <a class="nav-link" href="#nflx-a">A · Panel</a>
+    <a class="nav-link" href="#nflx-b">B · Quarters</a>
+    <a class="nav-link" href="#nflx-c">C · Reading</a>
+    <a class="nav-link" href="#nflx-d">D · Patterns</a>
+    <a class="nav-link" href="#nflx-e">E · Architecture</a>
+    <a class="nav-link" href="#nflx-f">F · Risks</a>
+    <a class="nav-link" href="#nflx-g">G · Scenarios</a>
+    <a class="nav-link" href="#nflx-h">H · Verdict</a>
+  </div>
+  <div class="nav-group" id="nav-end">
+    <a class="nav-link" href="#disclaimer">Disclaimer</a>
+  </div>
+</nav>
+
+<main class="main-content">
+
+<!-- ============ COVER ============ -->
+<section class="cover" id="cover">
+  <div class="wrap animate">
+    <div class="eyebrow">Polaris Global Strategies Ltd. · BVI · Internal Research</div>
+    <h1>Two Ways to Own<br>a Story</h1>
+    <p class="sub">Disney and Netflix, priced apart</p>
+    <div class="ticker-cards">
+      <a class="ticker-card dis" href="#dis">
+        <div class="tk">DIS</div>
+        <div class="nm">The Walt Disney Company</div>
+        <div class="rf">NYSE · PGS-DIS-202608</div>
+      </a>
+      <a class="ticker-card nflx" href="#nflx">
+        <div class="tk">NFLX</div>
+        <div class="nm">Netflix, Inc.</div>
+        <div class="rf">NASDAQ · PGS-NFLX-202608</div>
+      </a>
+    </div>
+    <div class="meta">
+      Publication date: 5 August 2026<br>
+      References: PGS-DIS-202608 · PGS-NFLX-202608<br>
+      Internal analyst: Polaris Global Strategies Ltd.
+    </div>
+  </div>
+</section>
+
+<!-- ============ DISNEY ============ -->
+<section class="company" id="dis">
+  <div class="company-head">
+    <div class="wrap animate">
+      <div class="eyebrow">PGS-DIS-202608 · 5 August 2026</div>
+      <h2>The Walt Disney Company</h2>
+      <div class="exch">DIS · NYSE · Anchor quarter: Q3 fiscal 2026, ended 27 June 2026, published 5 August 2026</div>
+    </div>
+  </div>
+  <div class="wrap">
+
+  <!-- BLOCK A -->
+  <h3 class="block" id="dis-a">Block A</h3>
+  <h4 class="blockname">Consolidated panel</h4>
+  <div class="panel-grid animate">
+    <div class="panel-col">
+      <h6>Market</h6>
+      <div class="panel-row"><span class="k">Price at analysis</span><span class="v">$101.76</span></div>
+      <div class="panel-row"><span class="k">Market cap</span><span class="v">$176,710M</span></div>
+      <div class="panel-row"><span class="k">vs. 52-week high</span><span class="v down">-15.0%</span></div>
+      <div class="panel-row"><span class="k">vs. 52-week low</span><span class="v up">+10.4%</span></div>
+    </div>
+    <div class="panel-col">
+      <h6>Fundamentals</h6>
+      <div class="panel-row"><span class="k">Revenue TTM</span><span class="v">$98,860M</span></div>
+      <div class="panel-row"><span class="k">EPS TTM, GAAP</span><span class="v">$4.84</span></div>
+      <div class="panel-row"><span class="k">EPS TTM, adjusted</span><span class="v">$6.37</span></div>
+      <div class="panel-row"><span class="k">Operating margin TTM</span><span class="v">15.5%</span></div>
+      <div class="panel-row"><span class="k">FCF yield</span><span class="v">4.7%</span></div>
+    </div>
+    <div class="panel-col">
+      <h6>Valuation</h6>
+      <div class="panel-row"><span class="k">P/E TTM</span><span class="v">20.3x</span></div>
+      <div class="panel-row"><span class="k">Forward P/E</span><span class="v">13.0x</span></div>
+      <div class="panel-row"><span class="k">EV / Revenue</span><span class="v">2.20x</span></div>
+      <div class="panel-row"><span class="k">PEG</span><span class="v">3.27</span></div>
+      <div class="panel-row"><span class="k">P/E, 12-month avg.</span><span class="v">16.3x</span></div>
+      <div class="panel-row"><span class="k">P/E, 3-year avg.</span><span class="v">33.6x</span></div>
+    </div>
+    <div class="panel-col">
+      <h6>Consensus</h6>
+      <div class="panel-row"><span class="k">Analysts covering</span><span class="v">31</span></div>
+      <div class="panel-row"><span class="k">Strong buy / buy</span><span class="v">1 / 17</span></div>
+      <div class="panel-row"><span class="k">Hold / sell</span><span class="v">5 / 1</span></div>
+      <div class="panel-row"><span class="k">Average target</span><span class="v">$126.51</span></div>
+      <div class="panel-row"><span class="k">High target</span><span class="v">$163.00</span></div>
+      <div class="panel-row"><span class="k">Low target</span><span class="v">$77.00</span></div>
+      <div class="panel-row"><span class="k">Next earnings</span><span class="v">12 Nov 2026</span></div>
+    </div>
+  </div>
+  <span class="src">Source: StockAnalysis / S&amp;P Global Market Intelligence, close of 5 August 2026 (price, market cap, 52-week range, TTM fundamentals, multiples, FCF yield, analyst count and targets). Adjusted EPS TTM is the sum of the four company-reported adjusted quarterly figures in Block B. Historical P/E averages: FinanceCharts. Rating distribution: MarketBeat, 24 firms rated within twelve months. Next earnings date: TipRanks (confirmed).</span>
+
+  <p class="lead">The trailing multiple sits at roughly six tenths of its own three-year average and well under a third of the ten-year level, a period in which streaming losses were suppressing the earnings denominator rather than the price. The gap between the trailing and forward figures is the widest of any large-cap media name we track, and it says the market accepts management's adjusted earnings ramp arithmetically while declining to pay a quality premium for it.</p>
+
+  <!-- BLOCK B -->
+  <h3 class="block" id="dis-b">Block B</h3>
+  <h4 class="blockname">Four quarters</h4>
+  <div class="table-wrap animate">
+  <table>
+    <thead>
+      <tr>
+        <th>Quarter</th>
+        <th class="num">Revenue vs. consensus</th>
+        <th class="num">GAAP EPS</th>
+        <th class="num">Adj. EPS vs. consensus</th>
+        <th class="num">Margin: pretax / segment</th>
+        <th class="num">Free cash flow</th>
+        <th class="num">Reaction</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Q3 FY26</strong><br><span style="color:var(--text-mute);font-size:12px">ended 27 Jun 2026</span></td>
+        <td class="num">$25,250M vs $25,390M <span class="pill miss">MISS</span></td>
+        <td class="num">$1.51</td>
+        <td class="num">$2.06 vs $1.88 <span class="pill beat">BEAT</span></td>
+        <td class="num">14.5% / 22.0%</td>
+        <td class="num">$3,100M</td>
+        <td class="num pos">+3.7%</td>
+      </tr>
+      <tr>
+        <td><strong>Q2 FY26</strong><br><span style="color:var(--text-mute);font-size:12px">ended 28 Mar 2026</span></td>
+        <td class="num">$25,170M vs $25,030M <span class="pill beat">BEAT</span></td>
+        <td class="num">$1.27</td>
+        <td class="num">$1.57 vs $1.49 <span class="pill beat">BEAT</span></td>
+        <td class="num">13.5% / 18.3%</td>
+        <td class="num">$4,940M (est.)</td>
+        <td class="num pos">+5.5% (est.)</td>
+      </tr>
+      <tr>
+        <td><strong>Q1 FY26</strong><br><span style="color:var(--text-mute);font-size:12px">ended 27 Dec 2025</span></td>
+        <td class="num">$25,980M vs $25,740M <span class="pill beat">BEAT</span></td>
+        <td class="num">$1.34</td>
+        <td class="num">$1.63 vs $1.57 <span class="pill beat">BEAT</span></td>
+        <td class="num">14.2% / 17.7%</td>
+        <td class="num">-$2,280M</td>
+        <td class="num neg">-7.4%</td>
+      </tr>
+      <tr>
+        <td><strong>Q4 FY25</strong><br><span style="color:var(--text-mute);font-size:12px">ended 27 Sep 2025</span></td>
+        <td class="num">$22,460M vs $22,750M <span class="pill miss">MISS</span></td>
+        <td class="num">$0.73</td>
+        <td class="num">$1.11 vs $1.05 <span class="pill beat">BEAT</span></td>
+        <td class="num">8.9% / 15.6%</td>
+        <td class="num">$2,600M (est.)</td>
+        <td class="num neg">-7.1% (est.)</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <span class="src">Source: Disney 8-K Exhibit 99.1 earnings releases for Q4 FY25, Q1 FY26, Q2 FY26 and Q3 FY26; consensus from CNBC, LSEG, Zacks and Bloomberg as reported at each print. Sell-side consensus for DIS is published on an adjusted basis only, so GAAP EPS carries no comparable estimate and none has been constructed. "Pretax" margin is income before income taxes divided by revenue, the GAAP-anchored figure Disney discloses each quarter; "segment" margin is total segment operating income, a non-GAAP measure, divided by revenue. Q2 FY26 free cash flow derived from disclosed six-month and Q1 figures; Q4 FY25 free cash flow derived from disclosed full-year and nine-month figures. Reaction is the change on the first full session after publication; the Q2 FY26 and Q4 FY25 figures are drawn from pre-market and same-session press reports and are tagged accordingly.</span>
+
+  <!-- BLOCK C -->
+  <h3 class="block" id="dis-c">Block C</h3>
+  <h4 class="blockname">Reading the quarters</h4>
+  <div class="quarters animate">
+
+    <div class="qtr">
+      <span class="kicker">Q3 FY26 · anchor</span>
+      <p>The revenue shortfall was cosmetic and the profit beat was not. Experiences carried the quarter on attendance and per-guest spend at the domestic parks, with cruise capacity adding passenger days rather than pricing. Entertainment operating income rose by roughly two thirds on the strength of a single animated title that crossed a billion dollars worldwide, which flatters the comparison and will reverse next year. The streaming operating margin reached double digits for a second consecutive quarter, and management framed that as a run rate rather than a peak. GAAP earnings fell hard against the prior-year quarter for a reason that has nothing to do with operations: last year contained a large non-cash tax benefit tied to the Hulu purchase. The tariff refund was netted against earlier payments and had no full-year effect, a point the CFO made unprompted. The repurchase target moved up, funded partly by the A+E disposal. Management also announced that most of consumer products moves out of Experiences and into Entertainment from fiscal 2027, which will make segment comparisons awkward for a year.</p>
+    </div>
+
+    <div class="qtr">
+      <span class="kicker">Q3 FY26 minus one · Q2 FY26</span>
+      <p>This was the print where streaming stopped being a promise. Entertainment subscription video operating income nearly doubled and the segment margin crossed ten percent for the first time, which is the threshold management had committed to for the full year. Revenue came in modestly ahead on stronger-than-planned subscription and affiliate fees, and the consolidated beat was driven by revenue rather than cost cuts. Sports was the soft spot: revenue barely moved and higher rights expense sat on operating income, with the newly closed NFL Network transaction adding a few cents of dilution for the year. Reported earnings fell sharply against the prior year on a tax comparison, the same distortion that recurs across this sequence. Management raised the full-year adjusted earnings growth target and the buyback, and it was the first quarter under a new chief executive, which the market read as continuity rather than change. Free cash flow snapped back violently from the prior quarter as the deferred tax payments cleared.</p>
+    </div>
+
+    <div class="qtr">
+      <span class="kicker">Q3 FY26 minus two · Q1 FY26</span>
+      <p>A revenue and earnings beat that the market treated as a miss. Total segment operating income declined by high single digits because Entertainment operating income fell by roughly a third, weighed down by programming, production, marketing and technology costs that landed ahead of the revenue they were meant to generate. Sports absorbed a nine-figure hit from the temporary suspension of carriage on a major virtual distributor, an entirely avoidable and entirely repeatable class of problem. Experiences crossed ten billion dollars of quarterly revenue for the first time, with domestic and international both up mid single digits. Free cash flow went deeply negative, driven by the settlement of federal and California tax liabilities that had been deferred under wildfire relief, plus a step-up in cruise and attraction capital expenditure. The selloff was about the guide and the succession, not the quarter: management flagged a stall in second-quarter growth on the call, and the outgoing chief executive confirmed his departure timeline.</p>
+    </div>
+
+    <div class="qtr">
+      <span class="kicker">Q3 FY26 minus three · Q4 FY25</span>
+      <p>The weakest quarter in the sequence and the only one where the operating story matched the market's reaction. Revenue was flat and short of estimates, with Entertainment operating income down by more than a third against a prior-year quarter that had contained two of the highest-grossing releases in the company's history. Adjusted earnings beat a lowered bar and still fell year over year. Experiences delivered record fourth-quarter operating income, with international parks growing faster than domestic off a smaller base and cruise expansion costs partly offsetting the gain. Linear networks continued to shrink, and the company had by this point stopped disclosing the line item separately, which removed the ability to size the decay directly. Management reiterated double-digit adjusted earnings growth for the two years ahead. The shares fell more than seven percent, which on a quarter this soft was a proportionate response rather than an overreaction.</p>
+    </div>
+
+  </div>
+
+  <!-- BLOCK D -->
+  <h3 class="block" id="dis-d">Block D</h3>
+  <h4 class="blockname">Patterns and watch list</h4>
+
+  <h5 class="sub">Structural patterns</h5>
+  <ul class="obs animate">
+    <li><strong>Adjusted earnings beat in all four quarters; revenue missed in the two quarters with the hardest theatrical comparisons.</strong><span>Beats came from cost control and streaming margin; misses came from slate timing. The top line is the volatile variable here.</span></li>
+    <li><strong>The gap between reported and adjusted earnings is tax-driven rather than operational.</strong><span>Three quarters carry a year-over-year GAAP decline the release attributes to prior-period tax benefits, while segment operating income rose.</span></li>
+    <li><strong>Experiences absorbed every shock the other two segments produced.</strong><span>It set a revenue or operating income record in three of the four quarters, including the quarter in which Entertainment operating income fell by a third.</span></li>
+    <li><strong>The market punished guidance twice and forgave a revenue miss once.</strong><span>Both selloffs in the sequence followed prints that beat on earnings, and the single largest rally followed the only quarter that missed on revenue.</span></li>
+  </ul>
+  <span class="src">Source: PGS analysis of the four earnings releases and same-session price data referenced in Block B.</span>
+
+  <h5 class="sub">Watch list for the next print</h5>
+  <ul class="obs animate">
+    <li><span class="sig up">↑</span><strong>Streaming operating margin.</strong><span>Confirms if the margin holds above the double-digit threshold without a corresponding step down in content spend; breaks if margin expansion is funded by amortisation timing rather than revenue.</span></li>
+    <li><span class="sig flat">→</span><strong>Domestic park attendance and per-guest spend.</strong><span>Confirms if both grow while a peer reports attendance declines; breaks if forward bookings soften and discounting appears in the resort mix.</span></li>
+    <li><span class="sig down">↓</span><strong>Sports segment operating income after NFL Network integration.</strong><span>Confirms if rights cost growth stays inside mid-single-digit segment income growth; breaks if a second carriage dispute or a rights renewal resets the cost base.</span></li>
+    <li><span class="sig flat">→</span><strong>Free cash flow normalisation.</strong><span>Confirms if the fourth quarter clears the full-year target without the tax-timing swing; breaks if capital expenditure runs above plan.</span></li>
+  </ul>
+  <span class="src">Source: PGS analysis; direction signals per the report's controlled vocabulary.</span>
+
+  <!-- BLOCK E -->
+  <h3 class="block" id="dis-e">Block E</h3>
+  <h4 class="blockname">Strategic architecture</h4>
+
+  <h5 class="sub">E.1 · Business model and revenue architecture</h5>
+  <div class="table-wrap animate">
+  <table>
+    <thead><tr><th>Segment</th><th class="num">FY2025 revenue</th><th class="num">% of total</th><th class="num">YoY</th><th class="num">Operating margin</th></tr></thead>
+    <tbody>
+      <tr><td>Entertainment</td><td class="num">$42,466M</td><td class="num">45.0%</td><td class="num pos">+3.1%</td><td class="num">11.1%</td></tr>
+      <tr><td>Experiences</td><td class="num">$36,156M</td><td class="num">38.3%</td><td class="num pos">+5.9%</td><td class="num">27.7%</td></tr>
+      <tr><td>Sports</td><td class="num">$17,672M</td><td class="num">18.7%</td><td class="num pos">+0.3%</td><td class="num">16.4% (est.)</td></tr>
+      <tr><td>Eliminations</td><td class="num">-$1,869M</td><td class="num">-2.0%</td><td class="num neg">-17.2%</td><td class="num">n/a</td></tr>
+      <tr><td><strong>Total</strong></td><td class="num"><strong>$94,425M</strong></td><td class="num"><strong>100.0%</strong></td><td class="num pos"><strong>+3.4%</strong></td><td class="num"><strong>18.6%</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <span class="src">Source: Disney fiscal 2025 annual report, business segment results table, and the Q4 FY25 8-K Exhibit 99.1 for segment operating income. Entertainment and Experiences operating margins computed from disclosed full-year segment operating income of $4.7bn and $10.0bn respectively. Sports operating margin is derived as the residual of disclosed total segment operating income and is tagged (est.); the residual reconciles to the sum of the four disclosed quarterly Sports figures. Total operating margin is total segment operating income, a non-GAAP measure, divided by consolidated revenue.</span>
+
+  <p>The three segments are not three businesses. They are one intellectual property engine with three monetisation surfaces, and the direction of subsidy runs one way. Experiences generates well over half of total segment operating income on well under half of revenue, and that cash pays for the content slate that Entertainment produces and the rights that Sports rents. The reverse dependency is real but slower: parks demand is a function of characters that films and streaming keep alive, so a weak slate shows up in attendance three to five years later rather than next quarter.</p>
+  <p>Within Entertainment the internal composition matters more than the segment total. Subscription video is now the growth and margin story, linear networks are a declining annuity the company has stopped disclosing separately, and the studio is a volatile swing factor that determines whether the segment grows or shrinks in any given year. That volatility is why Entertainment operating income fell by a third in one quarter of this sequence and rose by two thirds in another, on revenue that barely moved between them. The company is managing this by shifting most of consumer products into Entertainment from fiscal 2027, which places the merchandising margin next to the studios that create the characters. It also raises the reported margin of the weakest segment and lowers the reported margin of the strongest one, so the operating leverage story becomes harder to read from the outside just as it becomes easier to manage from the inside.</p>
+  <p>Sports sits apart. It is a rights-cost business where the input price is set by auction and the output price is set by a distribution base that shrinks every year. Operating leverage there is negative by construction unless the direct-to-consumer product grows faster than the linear base declines. Where genuine leverage originates is Experiences, where the marginal guest at an existing park carries almost no incremental cost, and in streaming, where each incremental subscriber on a fixed content base drops most of the subscription fee to operating income. Those two engines are what the guided earnings growth rests on.</p>
+
+  <h5 class="sub">E.2 · Competitive moat</h5>
+  <div class="table-wrap animate">
+  <table>
+    <thead><tr><th>Pillar</th><th>Mechanism</th><th>Erosion risk</th><th class="num">Rating</th></tr></thead>
+    <tbody>
+      <tr><td>Franchise IP library</td><td>Multi-decade character equity monetised across film, streaming, parks and merchandise simultaneously</td><td>Slate quality is the only input; two weak years compound</td><td class="num"><span class="stars">★★★★★</span></td></tr>
+      <tr><td>Physical park and cruise capacity</td><td>Irreplaceable land positions, permitting and multi-year build cycles create a hard supply ceiling for rivals</td><td>Consumer cyclicality and fuel-linked travel cost, not competition</td><td class="num"><span class="stars">★★★★★</span></td></tr>
+      <tr><td>Bundling and distribution scale</td><td>Cross-service bundles reduce churn below what any single service could achieve alone</td><td>Aggregators and retail media are re-intermediating the subscriber relationship</td><td class="num"><span class="stars">★★★☆☆</span></td></tr>
+      <tr><td>Sports rights position</td><td>Long-dated exclusive contracts plus a household-name brand in a scarce live category</td><td>Auction dynamics transfer economics to leagues at each renewal</td><td class="num"><span class="stars">★★☆☆☆</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <span class="src">Source: PGS assessment. Star ratings per the report's controlled vocabulary, where five denotes a durable, near-unassailable advantage. Mechanisms and erosion risks drawn from the fiscal 2025 annual report and the four earnings releases in Block B.</span>
+
+  <p>The library and the parks are the same asset observed at two frequencies. A character created once is amortised across a theatrical window, a streaming tail, a merchandise line and a physical land in a park, and each surface raises the value of the others. That structure is close to unreplicable at scale, because the binding constraint is not capital but time: a competitor with unlimited money cannot manufacture forty years of childhood association, and cannot obtain the land, the permits and the construction lead time that a new resort requires. The evidence in this sequence is that a single animated sequel lifted a segment's operating income by two thirds and simultaneously produced record merchandise sales and billions of streaming hours, all from one production budget.</p>
+  <p>The rating on those two pillars is high because the erosion mechanism is internal rather than external. Nobody takes the library away; the company degrades it by releasing weak titles, and it recovers by releasing strong ones. The parks pillar is exposed to the consumer rather than to a rival, and this sequence showed the segment growing attendance while a direct competitor reported declines in the same market during the same period, which is the cleanest available evidence of pricing and demand durability.</p>
+  <p>Bundling earns a middle rating because the mechanism works but the ownership of the customer relationship is drifting. Every partnership that places the service inside someone else's storefront reduces churn and also reduces the company's direct hold on the subscriber. The proposed free ad-supported product would extend reach at the cost of blurring the paid proposition. Sports earns the lowest rating for a structural reason: the moat there belongs to the leagues. Each renewal cycle transfers a larger share of the economics to the rights holder, and the distributor's only defence is a subscriber base large enough to make the next bid affordable. That is a treadmill rather than a moat, and it is why we rate the mechanism, not the brand.</p>
+
+  <h5 class="sub">E.3 · Long-term growth architecture</h5>
+  <div class="table-wrap animate">
+  <table>
+    <thead><tr><th>Driver</th><th>Timeline</th><th>Current state</th><th>Potential</th><th class="num">Status</th></tr></thead>
+    <tbody>
+      <tr><td>Streaming margin expansion</td><td>Now to 2028</td><td>Double-digit segment margin reached and reiterated for the full year</td><td>Structural convergence toward peer-level streaming margins</td><td class="num">on track</td></tr>
+      <tr><td>Experiences capacity build</td><td>2026 to 2031</td><td>Cruise fleet expansion under way; major park lands announced in Orlando, Anaheim and Abu Dhabi</td><td>Management guides to double-digit lifetime returns on the current pipeline</td><td class="num">on track</td></tr>
+      <tr><td>Advertising and free tier</td><td>2027 to 2029</td><td>Ad-supported inventory sold out for the coming championship broadcast; a free product under evaluation</td><td>A second revenue stream on the existing content base</td><td class="num">emerging</td></tr>
+      <tr><td>Sports direct-to-consumer</td><td>2026 to 2029</td><td>Standalone app launched; NFL assets acquired and integrating</td><td>Replacement of linear affiliate economics at a lower gross margin</td><td class="num">at risk</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <span class="src">Source: Disney Q3 FY26 earnings release, shareholder letter and management call commentary; Q2 FY26 and Q4 FY25 guidance disclosures. Status values per the report's controlled vocabulary.</span>
+
+  <p>The sequencing is strict and it is not the order in which these drivers are usually discussed. Streaming margin has to come first, because it is the only driver that converts an existing subscriber base into operating income without new capital, and because every other initiative is priced by the market against the credibility that streaming profitability establishes. That gate is now open: the margin threshold was hit and then held, and the guidance was reiterated rather than trimmed.</p>
+  <p>Experiences capacity is second, and it is a capital allocation question rather than an execution question. The builds are announced, the ships are ordered and the returns are guided; what remains uncertain is whether the demand that supports current per-guest economics persists through the delivery window. That is the driver most exposed to macro conditions and the one where a mistake is least reversible, since a ship ordered in 2026 arrives regardless of what the consumer looks like in 2029.</p>
+  <p>Advertising and the free tier are third because they depend on the first two. A free product only makes sense when the paid funnel is profitable enough to absorb cannibalisation, and inventory only commands premium pricing when engagement is already high. Sports direct-to-consumer is rated at risk for a reason worth stating plainly: it must replace a high-margin affiliate fee with a lower-margin subscription while the rights bill grows, and no distributor has yet shown that this arithmetic closes.</p>
+
+  <!-- BLOCK F -->
+  <h3 class="block" id="dis-f">Block F</h3>
+  <h4 class="blockname">Risk register</h4>
+
+  <div class="risk high animate">
+    <div class="risk-head"><span class="badge high">High</span><h6>Sports rights inflation against a shrinking distribution base</h6></div>
+    <div class="risk-body"><p>The mechanism is an auction on the cost side and an erosion on the revenue side, operating at different speeds. Rights renewals reset the cost base upward in discrete steps every few years, while affiliate revenue declines continuously as households leave traditional distribution. The segment already showed the pattern in this sequence: revenue barely grew while higher programming and rights expense sat on operating income, and a single carriage suspension removed a nine-figure amount in one quarter. The timeline is immediate and continuous, with step changes at each renewal window through the end of the decade. The observable that would signal materialisation is Sports segment operating income falling year over year in a quarter with no carriage dispute and no unusual rights timing, because that would mean the direct-to-consumer product is not replacing the affiliate economics fast enough to hold the line.</p></div>
+  </div>
+
+  <div class="risk med animate">
+    <div class="risk-head"><span class="badge med">Medium</span><h6>Capital intensity of Experiences meeting a cyclical consumer</h6></div>
+    <div class="risk-body"><p>The company is spending at a materially higher rate on cruise ships and park attractions than it did two years ago, and those commitments are effectively irreversible once steel is cut. The mechanism is a timing mismatch: capital is committed against demand observed today and delivered against demand that exists three to five years from now. Free cash flow in this sequence already went negative in one quarter on a combination of tax timing and stepped-up capital expenditure, which shows how little cushion exists when both move together. The timeline runs from 2027, as the current build pipeline lands, through 2031. The observable is forward booking commentary turning from healthy to mixed while per-guest spending growth decelerates, particularly if discounting appears in resort room rates rather than in admissions.</p></div>
+  </div>
+
+  <div class="risk med animate">
+    <div class="risk-head"><span class="badge med">Medium</span><h6>Streaming margin gains funded by content restraint</h6></div>
+    <div class="risk-body"><p>Margin expansion that comes from pricing and scale is durable. Margin expansion that comes from spending less on content is a loan against future engagement, repaid with churn. The mechanism is slow and hard to detect from outside, because content amortisation schedules smooth the reported expense over years while the creative decision that caused it happened months ago. Management has said it plans to grow content spending over time, which is the correct posture, and the risk is that a soft quarter elsewhere makes deferral tempting. The timeline is two to four years, since library depth masks a shortfall for roughly that long. The observable is streaming margin rising in a quarter where subscription revenue growth decelerates, which would mean the improvement came from the cost line rather than from the customer.</p></div>
+  </div>
+
+  <!-- BLOCK G -->
+  <h3 class="block" id="dis-g">Block G</h3>
+  <h4 class="blockname">Scenarios</h4>
+  <div class="scenario-grid animate">
+    <div class="scen bull">
+      <div class="scen-head"><h6>Bull</h6><span class="delta">+35.6% to target</span></div>
+      <div class="scen-body">
+        <ul>
+          <li>Streaming margin holds and expands without content deferral</li>
+          <li>Experiences delivers the guided returns on the current build pipeline</li>
+          <li>Advertising and a free tier add a second stream on existing content</li>
+        </ul>
+        <p>These hold together only if the consumer stays intact through the capital delivery window and the studio slate avoids the two consecutive weak years that would compound through the parks. The case does not require a re-rating toward the historical multiple; it requires the forward multiple in the panel to converge toward the trailing one as adjusted earnings deliver the guided growth for two consecutive years. Sports needs to stop losing ground rather than start winning. On that arithmetic alone the shares clear the average sell-side target without heroic assumptions about advertising.</p>
+      </div>
+    </div>
+    <div class="scen bear">
+      <div class="scen-head"><h6>Bear</h6><span class="delta">-19.4% to downside</span></div>
+      <div class="scen-body">
+        <ul>
+          <li>Sports rights inflation outruns direct-to-consumer replacement</li>
+          <li>Travel demand softens while the capital commitments remain fixed</li>
+          <li>Streaming margin proves to have been a content-spend artefact</li>
+        </ul>
+        <p>These conditions require no external shock, only the continuation of trends already visible in the risk register. The bear case is not a collapse; it is the market concluding that the guided earnings growth arrives one year late and one segment short, and repricing the forward multiple accordingly. The capital intensity is what makes it uncomfortable, since the spending continues on schedule whether or not the demand does. A quarter in which Experiences misses and Sports declines simultaneously would be the trigger, and the low sell-side target sits close to where that outcome prices.</p>
+      </div>
+    </div>
+  </div>
+  <span class="src">Source: PGS scenario construction. Deltas are measured against the price at analysis in Block A. Absolute targets appear in Block H.</span>
+
+  <!-- BLOCK H -->
+  <h3 class="block" id="dis-h">Block H</h3>
+  <h4 class="blockname">PGS verdict</h4>
+  <div class="verdict animate">
+    <p><span class="rating-pill">🟢 BUY</span></p>
+    <div class="verdict-strip">
+      <div class="vs-cell"><div class="k">Bull target, 18 to 24 months</div><div class="v">$138</div></div>
+      <div class="vs-cell"><div class="k">Bear downside</div><div class="v">$82</div></div>
+      <div class="vs-cell"><div class="k">Risk / reward</div><div class="v">Favourable</div></div>
+    </div>
+    <p><strong>Price dislocation.</strong> The shares carry a forward multiple appropriate to a business in structural decline, attached to a company that just reported record revenue in its largest profit pool and double-digit streaming margins for a second consecutive quarter. The dislocation dates to fiscal 2023 and 2024, when streaming losses and linear decay ran together, and the market has not re-underwritten the name since the first of those problems started being solved.</p>
+    <p><strong>Fundamental quality.</strong> Four consecutive adjusted earnings beats, a segment that set records in three of four quarters, and a moat whose strongest pillars are protected by time rather than by capital. The quality is real and it is uneven: two pillars rate at the top of our scale and one rates near the bottom, and the weak one sits in the segment with the least favourable cost structure.</p>
+    <p><strong>Primary risk.</strong> Sports rights inflation against a shrinking distribution base is the risk we would underwrite against first, because it is the only one in the register with no internal remedy. The company can improve its slate, moderate its capital spending and hold its content budget. It cannot set the price of the next rights auction.</p>
+    <p><strong>Near-term catalysts.</strong> The November print, carrying the extra week and the full-year cash flow reconciliation; the segment realignment moving consumer products into Entertainment from fiscal 2027; the free ad-supported product moving from evaluation into launch or abandonment; and the pace of repurchase against the raised target.</p>
+  </div>
+
+  </div>
+</section>
+<!-- ============ NETFLIX ============ -->
+<section class="company" id="nflx">
+  <div class="company-head">
+    <div class="wrap animate">
+      <div class="eyebrow">PGS-NFLX-202608 · 5 August 2026</div>
+      <h2>Netflix, Inc.</h2>
+      <div class="exch">NFLX · NASDAQ · Anchor quarter: Q2 2026, ended 30 June 2026, published 16 July 2026</div>
+    </div>
+  </div>
+  <div class="wrap">
+
+  <!-- BLOCK A -->
+  <h3 class="block" id="nflx-a">Block A</h3>
+  <h4 class="blockname">Consolidated panel</h4>
+  <div class="panel-grid animate">
+    <div class="panel-col">
+      <h6>Market</h6>
+      <div class="panel-row"><span class="k">Price at analysis</span><span class="v">$74.20</span></div>
+      <div class="panel-row"><span class="k">Market cap</span><span class="v">$308,960M</span></div>
+      <div class="panel-row"><span class="k">vs. 52-week high</span><span class="v down">-41.4%</span></div>
+      <div class="panel-row"><span class="k">vs. 52-week low</span><span class="v up">+14.0%</span></div>
+    </div>
+    <div class="panel-col">
+      <h6>Fundamentals</h6>
+      <div class="panel-row"><span class="k">Revenue TTM</span><span class="v">$48,370M</span></div>
+      <div class="panel-row"><span class="k">EPS TTM, GAAP</span><span class="v">$3.17</span></div>
+      <div class="panel-row"><span class="k">EPS TTM, adjusted</span><span class="v">not reported</span></div>
+      <div class="panel-row"><span class="k">Operating margin TTM</span><span class="v">29.7%</span></div>
+      <div class="panel-row"><span class="k">FCF yield</span><span class="v">3.6%</span></div>
+    </div>
+    <div class="panel-col">
+      <h6>Valuation</h6>
+      <div class="panel-row"><span class="k">P/E TTM</span><span class="v">23.2x</span></div>
+      <div class="panel-row"><span class="k">Forward P/E</span><span class="v">21.2x</span></div>
+      <div class="panel-row"><span class="k">EV / Revenue</span><span class="v">6.48x</span></div>
+      <div class="panel-row"><span class="k">PEG</span><span class="v">1.06</span></div>
+      <div class="panel-row"><span class="k">Prior 3-year P/E band</span><span class="v">above 30x (est.)</span></div>
+    </div>
+    <div class="panel-col">
+      <h6>Consensus</h6>
+      <div class="panel-row"><span class="k">Analysts covering</span><span class="v">51</span></div>
+      <div class="panel-row"><span class="k">Buy</span><span class="v">26</span></div>
+      <div class="panel-row"><span class="k">Hold / sell</span><span class="v">7 / 1</span></div>
+      <div class="panel-row"><span class="k">Average target</span><span class="v">$94.33</span></div>
+      <div class="panel-row"><span class="k">High target</span><span class="v">$135.00</span></div>
+      <div class="panel-row"><span class="k">Low target</span><span class="v">$70.00</span></div>
+      <div class="panel-row"><span class="k">Next earnings</span><span class="v">20 Oct 2026</span></div>
+    </div>
+  </div>
+  <span class="src">Source: StockAnalysis / S&amp;P Global Market Intelligence, close of 5 August 2026 (price, market cap, 52-week range, TTM fundamentals, multiples, FCF yield, analyst count and targets). Netflix publishes GAAP results only and does not report an adjusted earnings measure, so no adjusted TTM figure is available and none has been constructed. The prior three-year trailing multiple band is tagged (est.) because no single primary source covering the full period was located; it is drawn from contemporaneous press characterisation. Rating distribution: TipRanks, 34 firms rated within three months. Next earnings date: TipRanks (confirmed).</span>
+
+  <p class="lead">The trailing multiple has compressed to roughly two thirds of the band this business commanded through the prior three years, and the growth-adjusted figure in the panel has fallen to approximately one, a level it has not held at any point since the advertising tier launched. The narrow gap between the trailing and forward multiples is the honest signal here: the market is not disputing next year's earnings, it is refusing to extrapolate beyond them.</p>
+
+  <!-- BLOCK B -->
+  <h3 class="block" id="nflx-b">Block B</h3>
+  <h4 class="blockname">Four quarters</h4>
+  <div class="table-wrap animate">
+  <table>
+    <thead>
+      <tr>
+        <th>Quarter</th>
+        <th class="num">Revenue vs. consensus</th>
+        <th class="num">GAAP EPS vs. consensus</th>
+        <th class="num">Adj. EPS</th>
+        <th class="num">Operating margin</th>
+        <th class="num">Free cash flow</th>
+        <th class="num">Reaction</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Q2 2026</strong><br><span style="color:var(--text-mute);font-size:12px">ended 30 Jun 2026</span></td>
+        <td class="num">$12,560M vs $12,590M <span class="pill miss">MISS</span></td>
+        <td class="num">$0.80 vs $0.79 <span class="pill beat">BEAT</span></td>
+        <td class="num">not reported</td>
+        <td class="num">33.4%</td>
+        <td class="num">$1,525M</td>
+        <td class="num neg">-8.6%</td>
+      </tr>
+      <tr>
+        <td><strong>Q1 2026</strong><br><span style="color:var(--text-mute);font-size:12px">ended 31 Mar 2026</span></td>
+        <td class="num">$12,250M vs $12,180M <span class="pill beat">BEAT</span></td>
+        <td class="num">$1.23 vs $1.25 <span class="pill miss">MISS</span></td>
+        <td class="num">not reported</td>
+        <td class="num">32.2% (est.)</td>
+        <td class="num">$5,094M</td>
+        <td class="num neg">-8.0% (est.)</td>
+      </tr>
+      <tr>
+        <td><strong>Q4 2025</strong><br><span style="color:var(--text-mute);font-size:12px">ended 31 Dec 2025</span></td>
+        <td class="num">$12,051M vs $11,970M <span class="pill beat">BEAT</span></td>
+        <td class="num">$0.56 vs $0.55 <span class="pill beat">BEAT</span></td>
+        <td class="num">not reported</td>
+        <td class="num">24.5%</td>
+        <td class="num">$1,872M</td>
+        <td class="num neg">-5.2% (est.)</td>
+      </tr>
+      <tr>
+        <td><strong>Q3 2025</strong><br><span style="color:var(--text-mute);font-size:12px">ended 30 Sep 2025</span></td>
+        <td class="num">$11,510M vs $11,510M <span class="pill line">IN LINE</span></td>
+        <td class="num">$0.587 vs $0.697 <span class="pill miss">MISS</span></td>
+        <td class="num">not reported</td>
+        <td class="num">28.2%</td>
+        <td class="num">$2,660M</td>
+        <td class="num neg">-5.5% (est.)</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <span class="src">Source: Netflix 8-K Exhibit 99.1 shareholder letters and quarterly financial statements for Q3 2025, Q4 2025, Q1 2026 and Q2 2026; consensus from LSEG as reported at each print. Per-share figures for Q3 2025 are restated for the ten-for-one forward split effected 17 November 2025 so that the sequence is comparable. Netflix reports no adjusted earnings measure. Q1 2026 operating margin is tagged (est.) and derived from the disclosed 16% revenue growth and 18% operating income growth against the prior-year quarter. Reaction is the first post-publication move; Netflix reports after the close, so the Q1 2026, Q4 2025 and Q3 2025 figures are drawn from after-hours and next-session press reports and are tagged accordingly.</span>
+
+  <!-- BLOCK C -->
+  <h3 class="block" id="nflx-c">Block C</h3>
+  <h4 class="blockname">Reading the quarters</h4>
+  <div class="quarters animate">
+
+    <div class="qtr">
+      <span class="kicker">Q2 2026 · anchor</span>
+      <p>A quarter that did nothing wrong and was punished for what it said about the next one. Revenue landed a shade under consensus and earnings a cent above, and the operating margin came in ahead of the company's own guidance despite falling year over year, because content amortisation growth peaked in this quarter exactly as management had said it would. Every region grew double digits in reported terms, with Latin America fastest and the home market slowest, and the home market figure captured only part of the recent price increase. The company executed the largest buyback in its history and left more authorisation outstanding than it spent in the whole of the prior year. Free cash flow fell year over year on cash taxes tied to the termination fee received in the previous quarter. The damage came from two things landing together: a third-quarter revenue guide roughly a hundred million dollars below the Street, and a decision to publish engagement data annually rather than twice a year. Guiding low and disclosing less in the same release is a combination the market rarely reads charitably.</p>
+    </div>
+
+    <div class="qtr">
+      <span class="kicker">Q2 2026 minus one · Q1 2026</span>
+      <p>The cleanest operating quarter of the four and the hardest to read. Revenue grew sixteen percent and beat, operating income grew faster than revenue, and both were ahead of guidance on stronger-than-planned subscription revenue. Reported earnings still registered as a narrow miss because the consensus had been rebuilt around the termination fee received when the Warner transaction collapsed, and that fee flowed through non-operating income rather than through the business. Free cash flow was inflated by the same item, and the full-year cash flow guide was raised almost entirely because of it. Advertiser count grew strongly and the three-billion-dollar advertising target was reaffirmed rather than raised. What sank the shares was the forward guide, which set second-quarter revenue and earnings below where the Street sat, combined with the disclosure that the co-founder would leave the board in June. Investors were being asked to separate a good operating quarter from a windfall and a departure, and they declined.</p>
+    </div>
+
+    <div class="qtr">
+      <span class="kicker">Q2 2026 minus two · Q4 2025</span>
+      <p>The highest revenue growth rate in the sequence and the lowest margin, which is seasonal rather than structural: the fourth quarter carries the heaviest content and marketing load every year. Revenue beat, earnings beat by a hair, and operating income grew by roughly a third on a margin two points wider than the prior-year quarter. The full year closed with revenue up mid teens, operating margin near thirty percent and net income above eleven billion dollars, meeting every objective management had set twelve months earlier. Guidance for the following year set revenue near fifty-one billion and a margin target two points higher, including a half-point drag from expected transaction costs. The overhang was the pending Warner acquisition, agreed in December at a large cash price, which introduced integration risk and financing cost into a story that had been about organic operating leverage. The shares fell despite the beat, which was the first instance of the pattern that would define the next three prints.</p>
+    </div>
+
+    <div class="qtr">
+      <span class="kicker">Q2 2026 minus three · Q3 2025</span>
+      <p>The only genuinely bad number in the sequence, and it was not an operating number. A non-income tax dispute in Brazil produced a charge covering periods back to 2022, booked in cost of revenue, which took more than five percentage points off the operating margin and pushed the reported figure well below the level management had guided. Roughly a fifth of the charge related to the current year and the rest to prior periods, so the comparison it damaged was largely historical. Revenue landed exactly on guidance and consensus, growing seventeen percent. Absent the charge the company said it would have exceeded its own margin forecast, and the finance chief characterised the item as non-recurring. Advertising had its best quarter to date and upfront commitments doubled. The shares fell anyway, because a one-time charge that appears in the cost line rather than below it looks like an operating miss on every screen an investor reads before they reach the footnote.</p>
+    </div>
+
+  </div>
+
+  <!-- BLOCK D -->
+  <h3 class="block" id="nflx-d">Block D</h3>
+  <h4 class="blockname">Patterns and watch list</h4>
+
+  <h5 class="sub">Structural patterns</h5>
+  <ul class="obs animate">
+    <li><strong>Revenue growth decelerated in every quarter of the sequence and the guide extends the pattern.</strong><span>The four prints step down from high teens to low teens, and the next quarter is guided lower again. No other trend runs uninterrupted.</span></li>
+    <li><strong>Two of the four quarters were dominated by non-operating items pointing in opposite directions.</strong><span>A tax charge in one and a termination fee in another moved reported earnings more than operations did, and both were read as operating signals.</span></li>
+    <li><strong>Margin is expanding while growth slows, which is the profile of a maturing platform.</strong><span>The anchor quarter's margin exceeded guidance and the next is guided higher still, even as revenue growth falls.</span></li>
+    <li><strong>Every print in the sequence produced a negative reaction, including the three that beat.</strong><span>Four consecutive selloffs across a mix of beats and misses means the market is trading the guide, not the quarter.</span></li>
+  </ul>
+  <span class="src">Source: PGS analysis of the four shareholder letters and post-publication price data referenced in Block B.</span>
+
+  <h5 class="sub">Watch list for the next print</h5>
+  <ul class="obs animate">
+    <li><span class="sig down">↓</span><strong>Revenue against the third-quarter guide.</strong><span>Confirms if the print clears guidance and the next guide stops decelerating; breaks if the full-year range is cut again.</span></li>
+    <li><span class="sig up">↑</span><strong>Advertising revenue against the annual target.</strong><span>Confirms if management raises rather than reaffirms the target; breaks if it is met only through upfront timing.</span></li>
+    <li><span class="sig flat">→</span><strong>Operating margin against the full-year target.</strong><span>Confirms if the margin beats guidance again while content spend still grows; breaks if the beat coincides with a spend cut.</span></li>
+    <li><span class="sig up">↑</span><strong>Repurchase pace against the remaining authorisation.</strong><span>Confirms if the record pace holds at current prices; breaks if buying slows while the shares sit near the low end of the range.</span></li>
+  </ul>
+  <span class="src">Source: PGS analysis; direction signals per the report's controlled vocabulary.</span>
+
+  <!-- BLOCK E -->
+  <h3 class="block" id="nflx-e">Block E</h3>
+  <h4 class="blockname">Strategic architecture</h4>
+
+  <h5 class="sub">E.1 · Business model and revenue architecture</h5>
+  <div class="table-wrap animate">
+  <table>
+    <thead><tr><th>Region</th><th class="num">FY2025 revenue</th><th class="num">% of total</th><th class="num">YoY</th><th>Monetisation profile</th></tr></thead>
+    <tbody>
+      <tr><td>United States and Canada</td><td class="num">$19,960M</td><td class="num">44.2%</td><td class="num pos">+15%</td><td>Highest revenue per membership; nearest to household saturation</td></tr>
+      <tr><td>Europe, Middle East and Africa</td><td class="num">$14,510M</td><td class="num">32.1%</td><td class="num pos">+17%</td><td>Largest membership base; mid-tier revenue per membership</td></tr>
+      <tr><td>Latin America</td><td class="num">$5,360M</td><td class="num">11.9%</td><td class="num pos">+11%</td><td>Price-sensitive; currency-exposed; low revenue per membership</td></tr>
+      <tr><td>Asia-Pacific</td><td class="num">$5,350M</td><td class="num">11.8%</td><td class="num pos">+21%</td><td>Fastest growth; lowest revenue per membership; mobile-weighted</td></tr>
+      <tr><td><strong>Total</strong></td><td class="num"><strong>$45,180M</strong></td><td class="num"><strong>100.0%</strong></td><td class="num pos"><strong>+15.8%</strong></td><td><strong>Consolidated operating margin 29.5%</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <span class="src">Source: Netflix Q4 2025 8-K Exhibit 99.1 and shareholder letter for full-year 2025 regional revenue and consolidated operating margin; regional annual totals compiled from the four 2025 quarterly filings. Netflix does not disclose regional operating income or contribution margin, so the monetisation profile column is qualitative. Regional revenue per membership was last disclosed on a regional basis through the fourth quarter of 2024 and is characterised rather than quantified here.</span>
+
+  <p>Netflix has one product and four price ladders. The regions are not segments in any operating sense, because content is produced globally and consumed across borders, and the company reports no regional cost base at all. What the geography actually reveals is a monetisation gradient: the home market supplies close to half of revenue from a little over a quarter of members, and the fastest-growing region supplies the smallest revenue contribution from a large and growing membership base. That gradient is the central economic fact about this business.</p>
+  <p>Growth and monetisation therefore pull in opposite directions. Member additions come disproportionately from regions where each member is worth less than half of a home-market member, so subscriber growth converts into revenue growth at a discount that widens as the mix shifts. This is why the company stopped reporting membership numbers: the metric had stopped describing the economics. The offset is that a member in Jakarta and a member in Ohio watch a substantially overlapping content library, so the incremental cost of the additional member is close to zero, and every dollar of that discounted revenue arrives at a very high contribution margin.</p>
+  <p>Operating leverage originates in exactly one place: the fixed content base. Content is capitalised and amortised on a schedule that is largely independent of how many people watch it, so margin expands whenever revenue grows faster than the amortisation charge. That is precisely what the anchor quarter demonstrated in reverse, when amortisation growth peaked and the margin fell year over year while remaining above guidance. Advertising layers a second revenue stream onto the same fixed base and is therefore structurally margin-accretive, which is why it matters more than its current dollar contribution suggests. The regional table shows where the members are; the amortisation schedule determines what they are worth.</p>
+
+  <h5 class="sub">E.2 · Competitive moat</h5>
+  <div class="table-wrap animate">
+  <table>
+    <thead><tr><th>Pillar</th><th>Mechanism</th><th>Erosion risk</th><th class="num">Rating</th></tr></thead>
+    <tbody>
+      <tr><td>Content spend scale</td><td>The largest amortisation base in streaming, spread across the largest paying membership, lowers cost per view hour below any rival</td><td>Rivals with adjacent profit pools can subsidise content indefinitely</td><td class="num"><span class="stars">★★★★☆</span></td></tr>
+      <tr><td>Recommendation and data flywheel</td><td>Viewing data informs commissioning and placement, raising hit rate and lowering acquisition cost per view hour</td><td>Improves retention at the margin; does not manufacture cultural hits</td><td class="num"><span class="stars">★★★☆☆</span></td></tr>
+      <tr><td>Global production infrastructure</td><td>Local-language production capacity in dozens of markets that travels across borders at zero incremental distribution cost</td><td>Replicable with capital and roughly five years of build time</td><td class="num"><span class="stars">★★★★☆</span></td></tr>
+      <tr><td>Habitual default position</td><td>First application opened on the television for a large share of households, which converts to low churn independent of any single title</td><td>Short-form video is taking share of attention rather than of subscription</td><td class="num"><span class="stars">★★★☆☆</span></td></tr>
+      <tr><td>Two-sided advertising monetisation</td><td>An ad tier that monetises the same content twice and now accounts for the majority of new sign-ups</td><td>Advertising pricing is set by a market the company does not control</td><td class="num"><span class="stars">★★★☆☆</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <span class="src">Source: PGS assessment. Star ratings per the report's controlled vocabulary, where five denotes a durable, near-unassailable advantage. Mechanisms and erosion risks drawn from the four shareholder letters in Block B and the company's 2025 annual disclosures.</span>
+
+  <p>The strongest pillar is arithmetic rather than creative. Spending more on content than anyone else is not a moat; spreading that spend across more paying members than anyone else is, because it produces the lowest cost per view hour in the category and that gap compounds. The evidence sits in the margin trajectory across this sequence, where a company growing revenue in the low to mid teens carried an operating margin above thirty percent in three of four quarters, a level no pure-play streaming competitor approaches. The reason it stops short of the top rating is that the largest rivals sit inside businesses where streaming is a customer-retention expense rather than a profit centre, and a competitor who does not need to earn a return can hold the price down for as long as it chooses.</p>
+  <p>Production infrastructure earns the same rating for a different reason. The ability to commission in Seoul, Madrid, Mumbai and Lagos and distribute the result everywhere at no incremental cost is a genuine structural asset, and the anchor quarter's disclosure that non-English content accounted for more than a third of all viewing confirms it is working. It falls short of unassailable because the constraint is time and capital rather than any protected right, and a well-funded entrant can build the same capability inside a five-year window.</p>
+  <p>The three middle-rated pillars share a common weakness worth naming precisely: each improves retention without creating scarcity. The recommendation system makes the catalogue feel deeper than it is, the default position on the television survives any individual disappointing title, and the advertising tier extracts a second payment from content already produced. None of them prevents a household from also subscribing elsewhere, and none of them stops attention migrating to formats the company does not serve. That is the honest read on why engagement growth has been flat in the low single digits for two consecutive halves while revenue grew in the mid teens: the pricing power is real and the attention share is not expanding.</p>
+
+  <h5 class="sub">E.3 · Long-term growth architecture</h5>
+  <div class="table-wrap animate">
+  <table>
+    <thead><tr><th>Driver</th><th>Timeline</th><th>Current state</th><th>Potential</th><th class="num">Status</th></tr></thead>
+    <tbody>
+      <tr><td>Advertising</td><td>Now to 2029</td><td>On track to roughly double this year off a small base; advertiser count up sharply</td><td>A margin-accretive second stream on the existing content base</td><td class="num">on track</td></tr>
+      <tr><td>Price laddering and ad-tier mix</td><td>Now to 2028</td><td>Second increase in the home market inside eighteen months, performing in line with prior changes</td><td>Revenue growth without member growth in saturated markets</td><td class="num">on track</td></tr>
+      <tr><td>Asia-Pacific penetration</td><td>2026 to 2031</td><td>Fastest-growing region; mobile-weighted and lowest revenue per member</td><td>Volume growth that only converts if revenue per member rises</td><td class="num">emerging</td></tr>
+      <tr><td>Live events and sports</td><td>2026 to 2030</td><td>Just over five percent of content spend and about one percent of view hours; six of the top ten sign-up days in five years</td><td>Acquisition and churn tool rather than a viewing category</td><td class="num">emerging</td></tr>
+      <tr><td>Games</td><td>2027 to 2031</td><td>Repositioned around a smaller set of titles tied to owned franchises</td><td>Engagement extension with no demonstrated revenue model</td><td class="num">at risk</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <span class="src">Source: Netflix Q1 2026 and Q2 2026 shareholder letters and management call commentary; Q4 2025 guidance disclosures. Status values per the report's controlled vocabulary.</span>
+
+  <p>Advertising has to work first, and everything else is contingent on it. It is the only driver that raises revenue per member without raising the price the member pays, which makes it the only one that can offset the mix shift toward lower-revenue regions. It is also the only driver whose progress is currently measurable against a published target. If advertising reaches its stated scale and keeps compounding, the growth rate stabilises somewhere in the low teens and the margin path holds; if it stalls, the company is left raising prices in saturated markets to fund content for members in markets that pay less.</p>
+  <p>Price laddering is second and already carries more of the load than the market credits. Two increases in the home market inside eighteen months, both reported as performing in line with prior changes, demonstrate pricing power more convincingly than anything in the engagement data. Each increase consumes headroom for the next.</p>
+  <p>Live events and games are instruments rather than businesses. Live is a sign-up and churn tool the company itself sizes at around one percent of view hours, and games have been narrowed to owned franchises with no revenue model attached. Asia-Pacific is the largest volume opportunity and the slowest to convert, because the region delivers members faster than it delivers revenue per member, and closing that gap requires the advertising and pricing machinery to work in markets where it is least proven.</p>
+
+  <!-- BLOCK F -->
+  <h3 class="block" id="nflx-f">Block F</h3>
+  <h4 class="blockname">Risk register</h4>
+
+  <div class="risk high animate">
+    <div class="risk-head"><span class="badge high">High</span><h6>Engagement growth flat while content spend rises</h6></div>
+    <div class="risk-body"><p>View hours have grown in the low single digits across two consecutive half-year periods while content cash spend grows at roughly ten percent a year. The mechanism is a widening gap between what the company pays for attention and how much attention it receives, and it operates slowly because a deep library masks a weak recent slate for years. The consequence is not an immediate revenue decline; it is a gradual loss of pricing headroom, because each price increase becomes harder to justify when the incremental content is not producing incremental viewing. The timeline is two to four years. The observable that would signal materialisation is a price increase that produces measurably higher churn than prior increases, or a half-year period in which view hours decline outright. The company's decision to publish engagement data annually rather than semi-annually makes this risk harder to monitor at exactly the moment it matters most.</p></div>
+  </div>
+
+  <div class="risk high animate">
+    <div class="risk-head"><span class="badge high">High</span><h6>Deceleration meeting a growth multiple</h6></div>
+    <div class="risk-body"><p>The revenue growth rate stepped down in every quarter of the sequence and is guided lower again. The mechanism is mathematical rather than competitive: a business adding roughly six billion dollars of revenue on a base approaching fifty billion grows more slowly each year even if it adds the same absolute amount. The market has already repriced part of this, which is why the multiple in the panel sits well below the band this company held through the prior three years. The risk is that the repricing is incomplete, because the growth-adjusted multiple only looks reasonable if the forecast growth rate holds. The timeline is immediate and continuous through 2027. The observable is a full-year revenue range narrowed downward for a second time, or a fourth-quarter guide that decelerates further rather than stabilising, either of which would invalidate the growth assumption the current multiple depends on.</p></div>
+  </div>
+
+  <div class="risk med animate">
+    <div class="risk-head"><span class="badge med">Medium</span><h6>Content amortisation and live rights compressing the margin path</h6></div>
+    <div class="risk-body"><p>The margin target for the year assumes amortisation growth decelerates in the second half after peaking in the anchor quarter. That assumption depends on title launch timing, which is a scheduling variable rather than a controllable one. Live rights add a second pressure: the category consumes a disproportionate share of content spend relative to its share of view hours, and rights prices are set at auction by counterparties with alternatives. The mechanism is a cost base growing on a schedule fixed years earlier meeting revenue growth that is decelerating now. The timeline is 2027 to 2029, as current rights commitments mature and renewals are negotiated. The observable is a quarter in which the operating margin misses guidance without a one-time item to explain it, which would indicate the amortisation deceleration did not arrive on schedule.</p></div>
+  </div>
+
+  <!-- BLOCK G -->
+  <h3 class="block" id="nflx-g">Block G</h3>
+  <h4 class="blockname">Scenarios</h4>
+  <div class="scenario-grid animate">
+    <div class="scen bull">
+      <div class="scen-head"><h6>Bull</h6><span class="delta">+32.1% to target</span></div>
+      <div class="scen-body">
+        <ul>
+          <li>Advertising scales past its target and is raised rather than reaffirmed</li>
+          <li>Revenue growth stabilises in the low teens instead of continuing to step down</li>
+          <li>Margin expansion continues while content cash spend still grows</li>
+        </ul>
+        <p>These require the deceleration to be a base effect rather than a demand signal, which the pricing evidence supports and the engagement evidence does not. The case does not need a return to the prior multiple band; it needs the growth-adjusted figure in the panel to be revealed as too cheap for a business compounding earnings faster than revenue. The record repurchase pace is the mechanism that converts a stable growth rate into per-share growth, and management has authorisation to continue at that pace for more than a year. On those terms the shares reach the vicinity of the average sell-side target.</p>
+      </div>
+    </div>
+    <div class="scen bear">
+      <div class="scen-head"><h6>Bear</h6><span class="delta">-23.2% to downside</span></div>
+      <div class="scen-body">
+        <ul>
+          <li>Growth decelerates below the guided range and the full-year band is cut</li>
+          <li>Advertising meets its target and then plateaus rather than compounding</li>
+          <li>Attention share continues shifting to formats the company does not serve</li>
+        </ul>
+        <p>The bear case does not require a subscriber decline or a margin collapse. It requires only that growth settle in the high single digits while the market continues to demand a growth multiple, at which point the rerating happens through the multiple rather than through the earnings. Reduced engagement disclosure removes the metric that would have arbitrated this debate, which raises the risk premium on its own. The low sell-side target sits just below the current price, which indicates at least one covering analyst has already underwritten this outcome.</p>
+      </div>
+    </div>
+  </div>
+  <span class="src">Source: PGS scenario construction. Deltas are measured against the price at analysis in Block A. Absolute targets appear in Block H.</span>
+
+  <!-- BLOCK H -->
+  <h3 class="block" id="nflx-h">Block H</h3>
+  <h4 class="blockname">PGS verdict</h4>
+  <div class="verdict animate">
+    <p><span class="rating-pill">🟡 NEUTRAL</span></p>
+    <div class="verdict-strip">
+      <div class="vs-cell"><div class="k">Bull target, 18 to 24 months</div><div class="v">$98</div></div>
+      <div class="vs-cell"><div class="k">Bear downside</div><div class="v">$57</div></div>
+      <div class="vs-cell"><div class="k">Risk / reward</div><div class="v">Balanced</div></div>
+    </div>
+    <p><strong>Price dislocation.</strong> The shares have lost more than a third of their value in twelve months against a business that grew revenue at a mid-teens rate, expanded its operating margin and executed the largest buyback in its history. That is a dislocation on any static reading and a smaller one on a dynamic reading, because the market prices the growth rate that is falling rather than the one already delivered. The multiple compression in the panel looks proportionate to the deceleration in Block D.</p>
+    <p><strong>Fundamental quality.</strong> The operating quality is not in question. Margin above thirty percent, cash generation guided to grow by more than thirty percent this year, and a repurchase authorisation larger than a full year of prior buying. The reservation sits in the moat assessment, where three of five pillars improve retention without creating scarcity.</p>
+    <p><strong>Primary risk.</strong> Flat engagement against rising content spend is the risk we would underwrite against first, because it is upstream of everything else. Pricing power, advertising yield and churn all depend on attention growing at roughly a fifth of the rate spending is. Reduced disclosure makes the problem harder to detect early.</p>
+    <p><strong>Near-term catalysts.</strong> The October print, showing whether the guided deceleration was conservative or accurate; the advertising figure against the annual target; the fourth-quarter guide, the first chance for the growth rate to stop stepping down; and the repurchase pace at these levels.</p>
+  </div>
+
+  </div>
+</section>
+
+<!-- ============ DISCLAIMER ============ -->
+<section id="disclaimer">
+  <div class="wrap">
+    <div class="disclaimer animate">
+      <p class="legal">"This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice."</p>
+      <p>This report was produced with the assistance of artificial intelligence. Generative model: Anthropic · Claude Opus · version Opus 5, accessed via the Claude web and mobile application. All figures were sourced from live web search within the same session and cross-checked against the anchoring protocol in Step 1; the model's role was data synthesis, formatting and drafting, not the origination of financial estimates. Human review by the internal analyst precedes publication.</p>
+      <p class="ref">Report Reference: PGS-DIS-202608 · Date: 5 August 2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: DIS · Exchange: NYSE · AI Model: Anthropic Opus 5</p>
+      <p class="ref">Report Reference: PGS-NFLX-202608 · Date: 5 August 2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: NFLX · Exchange: NASDAQ · AI Model: Anthropic Opus 5</p>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry, i){
+        if (entry.isIntersecting) {
+          entry.target.style.transitionDelay = (i * 60) + 'ms';
+          entry.target.style.animationDelay = (i * 60) + 'ms';
+          entry.target.style.opacity = '';
+          entry.target.style.animationPlayState = 'running';
+          animObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    animateEls.forEach(function(el){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      animObserver.observe(el);
+    });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var targets = links.map(function(l){ return document.querySelector(l.getAttribute('href')); }).filter(Boolean);
+  function setActive(){
+    var pos = window.scrollY + (window.innerHeight * 0.28);
+    var current = null;
+    targets.forEach(function(t){
+      if (t.getBoundingClientRect().top + window.scrollY <= pos) { current = t; }
+    });
+    links.forEach(function(l){
+      var on = current && l.getAttribute('href') === '#' + current.id;
+      l.classList.toggle('active', !!on);
+    });
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking) { window.requestAnimationFrame(function(){ setActive(); ticking = false; }); ticking = true; }
+  }, { passive: true });
+  setActive();
+})();
+</script>
+</body>
+</html>

@@ -161,18 +161,20 @@ polarisglobal.me/
 │   └── PGS-LETTER-202606.html
 └── reports/               ← relatórios HTML individuais
     ├── not-invested/      ← avaliados e não investidos (com card em research.html)
+    │   ├── PGS-DIS-NFLX-202608.html
     │   ├── PGS-LVBI11-202607.html
     │   ├── PGS-MGM-202606.html
+    │   ├── PGS-MU-SNDK-SKHY-202608.html
     │   └── PGS-SMFT3-202607.html
     ├── PGS-AMZN-202607.html
     ├── PGS-BRKB-202606.html
     ├── PGS-BTLG11-202607.html
     ├── PGS-GOOGL-202607.html
     ├── PGS-ITSA4-202606.html
-    ├── PGS-KLBN11-202606.html
-    ├── PGS-PSSA3-202606.html
+    ├── PGS-KLBN11-202608.html
+    ├── PGS-PSSA3-202608.html
     ├── PGS-TSLA-202607.html
-    ├── PGS-VULC3-202606.html
+    ├── PGS-VULC3-202608.html
     ├── PGS-WAGN-202606.html
     ├── PGS-WAGN-202606-Carteira.html
     └── PGS-XPLG11-202607.html
