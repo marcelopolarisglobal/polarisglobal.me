@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PGS-NU-202609 · Nu Holdings Ltd. · Investment Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  --text:#111827;
+  --text-mute:#6B7280;
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#820AD1;
+  --display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--canvas);color:var(--text);
+  font-family:var(--body);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:grid;grid-template-columns:220px 1fr;align-items:start;}
+
+/* ---------- sidebar ---------- */
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--surface);border-right:1px solid var(--border);
+  padding:28px 0;
+}
+.sidebar .mark{
+  font-family:var(--display);font-size:21px;font-weight:700;
+  color:var(--accent);padding:0 20px 2px;letter-spacing:.01em;
+}
+.sidebar .sub{
+  font-family:var(--mono);font-size:10.5px;color:var(--text-mute);
+  padding:0 20px 22px;
+}
+.nav-link{
+  display:block;padding:7px 20px;border-left:3px solid transparent;
+  color:var(--text-mute);text-decoration:none;font-size:13.5px;line-height:1.4;
+}
+.nav-link:hover{color:var(--text);}
+.nav-link.active{
+  border-left-color:var(--accent);color:var(--accent);
+  background:#FAF5FF;font-weight:500;
+}
+.nav-link .kicker{font-family:var(--mono);font-size:10.5px;margin-right:7px;}
+
+/* ---------- main ---------- */
+.main-content{padding:0 0 80px;min-width:0;}
+section{padding:0 44px;scroll-margin-top:16px;}
+.prose{max-width:68ch;}
+.prose p{margin:0 0 15px;}
+
+/* ---------- cover ---------- */
+.cover{
+  min-height:96vh;display:flex;flex-direction:column;justify-content:center;
+  background:var(--surface);
+  background-image:radial-gradient(var(--border) 1.1px, transparent 1.1px);
+  background-size:17px 17px;
+  border-bottom:1px solid var(--border);padding:60px 44px;
+}
+.cover .eyebrow{font-family:var(--mono);font-size:11.5px;color:var(--accent);margin-bottom:22px;}
+.cover h1{
+  font-family:var(--display);font-weight:700;font-size:clamp(44px,7.2vw,82px);
+  line-height:1.02;margin:0 0 6px;color:var(--text);letter-spacing:-.015em;
+}
+.cover .ticker{
+  font-family:var(--mono);font-size:15px;color:var(--accent);
+  border-top:3px solid var(--accent);display:inline-block;padding-top:11px;margin-top:14px;
+}
+.cover .meta{font-family:var(--mono);font-size:12.5px;color:var(--text-mute);margin-top:34px;line-height:2;}
+
+/* ---------- headings ---------- */
+.block-head{margin:66px 0 20px;}
+.block-head .tag{font-family:var(--mono);font-size:11.5px;color:var(--accent);display:block;margin-bottom:5px;}
+.block-head h2{
+  font-family:var(--display);font-weight:600;font-size:31px;line-height:1.18;
+  margin:0;letter-spacing:-.01em;
+}
+h3.sub-head{
+  font-family:var(--body);font-weight:700;font-size:16.5px;margin:34px 0 12px;
+  padding-left:11px;border-left:3px solid var(--accent);
+}
+
+/* ---------- instrument panel ---------- */
+.panel{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--accent);}
+.panel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+.panel-col{padding:20px 20px 22px;border-right:1px solid var(--border);}
+.panel-col:last-child{border-right:none;}
+.panel-col > .label{
+  font-family:var(--body);font-size:10.5px;letter-spacing:.1em;
+  color:var(--text-mute);text-transform:uppercase;margin-bottom:14px;
+}
+.row{display:flex;justify-content:space-between;gap:10px;padding:4px 0;font-size:12.5px;}
+.row .k{color:var(--text-mute);}
+.row .v{font-family:var(--mono);font-weight:500;text-align:right;white-space:nowrap;}
+.v.up{color:var(--pos);} .v.down{color:var(--neg);}
+
+/* ---------- tables ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);}
+table{border-collapse:collapse;width:100%;font-size:12.5px;}
+th{
+  background:var(--card);text-align:left;font-weight:700;font-size:10.5px;
+  letter-spacing:.05em;color:var(--text-mute);padding:10px 11px;
+  border-bottom:1px solid var(--border);white-space:nowrap;
+}
+td{padding:11px;border-bottom:1px solid var(--border);vertical-align:top;}
+tbody tr:nth-child(odd){background:var(--canvas);}
+tbody tr:nth-child(even){background:var(--surface);}
+tbody tr:hover{background:#FAF5FF;}
+td.num{font-family:var(--mono);white-space:nowrap;}
+td.qtr{font-family:var(--mono);font-weight:700;color:var(--accent);white-space:nowrap;}
+tr.total td{font-weight:700;border-top:2px solid var(--border);}
+.pos{color:var(--pos);} .neg{color:var(--neg);}
+.pill{
+  display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:3px;margin-left:6px;
+}
+.pill-beat{background:var(--pill-pos-bg);color:var(--pill-pos-fg);}
+.pill-miss{background:var(--pill-neg-bg);color:var(--pill-neg-fg);}
+.pill-nd{background:var(--card);color:var(--text-mute);}
+.stars{font-family:var(--mono);letter-spacing:1px;color:var(--accent);white-space:nowrap;}
+.cap{
+  font-family:var(--mono);font-size:10.5px;color:var(--text-mute);
+  margin:8px 0 0;line-height:1.55;
+}
+
+/* ---------- block C ---------- */
+.qtr-read{border-left:3px solid var(--accent);padding-left:18px;margin:26px 0;max-width:68ch;}
+.qtr-read .kick{font-family:var(--mono);font-size:11.5px;color:var(--accent);margin-bottom:5px;}
+.qtr-read p{margin:0;}
+
+/* ---------- block D ---------- */
+.obs{max-width:68ch;margin:0;padding:0;list-style:none;}
+.obs li{padding:12px 0;border-bottom:1px solid var(--border);font-size:14.5px;}
+.obs li b{font-weight:700;}
+.sig{font-family:var(--mono);font-size:11px;color:var(--accent);margin-right:8px;}
+
+/* ---------- block F ---------- */
+.risk{border:1px solid var(--border);margin:18px 0;page-break-inside:avoid;}
+.risk.high{border-left:3px solid var(--neg);}
+.risk.med{border-left:3px solid var(--caution);}
+.risk .rh{padding:11px 18px;display:flex;justify-content:space-between;align-items:center;gap:14px;}
+.risk.high .rh{background:var(--neg-tint);}
+.risk.med .rh{background:var(--caution-tint);}
+.risk .rh h4{margin:0;font-size:15px;font-weight:700;}
+.badge{
+  font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 9px;
+  border-radius:3px;color:#fff;white-space:nowrap;
+}
+.badge.high{background:var(--neg);} .badge.med{background:var(--caution);}
+.risk .rb{background:var(--canvas);padding:15px 18px;font-size:14.5px;}
+.risk .rb p{margin:0;max-width:68ch;}
+
+/* ---------- block G ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.scen{border:1px solid var(--border);page-break-inside:avoid;}
+.scen.bull{border-top:3px solid var(--pos);}
+.scen.bear{border-top:3px solid var(--neg);}
+.scen .sh{padding:12px 18px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;}
+.scen.bull .sh{background:var(--pos-tint);}
+.scen.bear .sh{background:var(--neg-tint);}
+.scen .sh h4{margin:0;font-size:15.5px;font-weight:700;}
+.scen .delta{font-family:var(--mono);font-size:14px;font-weight:700;}
+.scen.bull .delta{color:var(--pos);} .scen.bear .delta{color:var(--neg);}
+.scen .sb{background:var(--canvas);padding:15px 18px;font-size:14px;}
+.scen .sb ul{margin:0 0 12px;padding-left:17px;}
+.scen .sb li{margin-bottom:5px;}
+.scen .sb p{margin:0;}
+
+/* ---------- block H ---------- */
+.verdict{background:var(--surface);border:1px solid var(--border);padding:26px 28px;margin-top:20px;}
+.verdict-strip{
+  background:var(--card);display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0;margin-bottom:24px;border:1px solid var(--border);
+}
+.verdict-strip div{padding:14px 16px;border-right:1px solid var(--border);}
+.verdict-strip div:last-child{border-right:none;}
+.verdict-strip .k{font-size:10.5px;letter-spacing:.1em;color:var(--text-mute);text-transform:uppercase;}
+.verdict-strip .v{font-family:var(--mono);font-size:14.5px;font-weight:700;margin-top:4px;}
+.rating-pill{
+  display:inline-block;background:var(--accent);color:#fff;font-family:var(--mono);
+  font-size:13px;font-weight:700;padding:7px 16px;border-radius:4px;margin-bottom:18px;
+}
+
+/* ---------- disclaimer ---------- */
+.disclaimer{margin-top:60px;border-top:1px solid var(--border);padding-top:24px;}
+.disclaimer p{font-size:11.5px;color:var(--text-mute);line-height:1.7;max-width:78ch;margin:0 0 14px;}
+.disclaimer p.ref{font-family:var(--mono);font-size:10.5px;}
+
+/* ---------- motion ---------- */
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@media (prefers-reduced-motion:reduce){
+  .animate{animation:none!important;opacity:1!important;transform:none!important;}
+  html{scroll-behavior:auto;}
+}
+a:focus-visible,.nav-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+/* ---------- responsive ---------- */
+@media (max-width:768px){
+  .layout{display:block;}
+  .sidebar{
+    position:sticky;top:0;height:auto;z-index:20;display:flex;overflow-x:auto;
+    white-space:nowrap;border-right:none;border-bottom:1px solid var(--border);padding:0;
+  }
+  .sidebar .mark,.sidebar .sub{display:none;}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:12px 14px;}
+  .nav-link.active{border-left:none;border-bottom-color:var(--accent);}
+  section{padding:0 20px;}
+  .cover{padding:52px 20px;}
+  .panel-grid{grid-template-columns:1fr;}
+  .panel-col{border-right:none;border-bottom:1px solid var(--border);}
+  .scenario-grid{grid-template-columns:1fr;}
+  .verdict-strip{grid-template-columns:1fr;}
+  .verdict-strip div{border-right:none;border-bottom:1px solid var(--border);}
+}
+
+/* ---------- print ---------- */
+@media print{
+  @page{size:A4;margin:15mm 12mm;}
+  html,body{background-color:#FFFFFF!important;color:#111827!important;font-size:9.5pt;}
+  .layout{display:block!important;}
+  .sidebar,.nav-link{display:none!important;}
+  .main-content{display:block!important;width:100%!important;padding:0!important;}
+  section{padding:0!important;}
+  .cover{
+    min-height:auto!important;height:auto!important;display:block!important;
+    background-image:none!important;background-color:#FFFFFF!important;
+    padding:0 0 18pt!important;page-break-after:always;
+  }
+  .cover h1{font-size:40pt;}
+  .block-head{margin:22pt 0 10pt;page-break-after:avoid;}
+  .block-head h2{font-size:17pt;}
+  h3.sub-head{page-break-after:avoid;}
+  .panel,.panel-col,.risk .rb,.scen .sb,.verdict,.verdict-strip div,table,td,th{
+    background-color:#FFFFFF!important;color:#111827!important;
+  }
+  .panel-grid{display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:0!important;}
+  .scenario-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10pt!important;}
+  .verdict,.verdict-strip div{background-color:#FFFFFF!important;}
+  .verdict-strip{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:0!important;}
+  .panel-col{border-bottom:1px solid var(--border);}
+  .table-wrap{overflow:visible!important;}
+  table{font-size:8pt;}
+  td,th{word-break:break-word;padding:5pt 6pt;}
+  tbody tr:hover{background:inherit!important;}
+  .prose,.qtr-read,.obs li,.risk .rb p,.scen .sb{orphans:3;widows:3;}
+  .risk,.scen,.qtr-read{page-break-inside:avoid;}
+  .animate{opacity:1!important;transform:none!important;animation:none!important;}
+  *{box-shadow:none!important;backdrop-filter:none!important;}
+  .pill,.badge,.rating-pill,.stars,.risk.high .rh,.risk.med .rh,
+  .scen.bull .sh,.scen.bear .sh,.cover .ticker,.panel{
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+  .disclaimer{page-break-inside:avoid;}
+}
+.pgs-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 24px; background: #07090F;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-family: system-ui, sans-serif; font-size: 12px;
+}
+.pgs-topbar a { color: #94A3B8; text-decoration: none; }
+.pgs-topbar a:hover { color: #F1F5F9; }
+.pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+.pgs-topbar .pgs-sep { color: #334155; }
+@media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-NU-202609</span>
+</div>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Report sections">
+    <div class="mark">Polaris</div>
+    <div class="sub">PGS-NU-202609</div>
+    <a class="nav-link" href="#cover"><span class="kicker">00</span>Cover</a>
+    <a class="nav-link" href="#block-a"><span class="kicker">A</span>Consolidated panel</a>
+    <a class="nav-link" href="#block-b"><span class="kicker">B</span>Quarterly record</a>
+    <a class="nav-link" href="#block-c"><span class="kicker">C</span>Reading the quarters</a>
+    <a class="nav-link" href="#block-d"><span class="kicker">D</span>Patterns and watch list</a>
+    <a class="nav-link" href="#block-e"><span class="kicker">E</span>Strategic architecture</a>
+    <a class="nav-link" href="#block-f"><span class="kicker">F</span>Risks</a>
+    <a class="nav-link" href="#block-g"><span class="kicker">G</span>Scenarios</a>
+    <a class="nav-link" href="#block-h"><span class="kicker">H</span>PGS verdict</a>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- ============ COVER ============ -->
+    <section class="cover" id="cover">
+      <div class="eyebrow">Polaris Global Strategies Ltd. · Internal Equity Research</div>
+      <h1>Nu Holdings Ltd.</h1>
+      <div class="ticker">NU · NYSE</div>
+      <div class="meta">
+        Reference PGS-NU-202609<br>
+        Publication date: 10 September 2026
+      </div>
+    </section>
+
+    <!-- ============ BLOCK A ============ -->
+    <section id="block-a">
+      <div class="block-head animate">
+        <span class="tag">Block A</span>
+        <h2>Consolidated panel</h2>
+      </div>
+
+      <div class="panel animate">
+        <div class="panel-grid">
+
+          <div class="panel-col">
+            <div class="label">Market</div>
+            <div class="row"><span class="k">Price at analysis</span><span class="v">$15.02</span></div>
+            <div class="row"><span class="k">Market cap</span><span class="v">$72.56bn</span></div>
+            <div class="row"><span class="k">Enterprise value</span><span class="v">$63.28bn</span></div>
+            <div class="row"><span class="k">vs 52-week high $18.98</span><span class="v down">-20.9%</span></div>
+            <div class="row"><span class="k">vs 52-week low $11.20</span><span class="v up">+34.1%</span></div>
+            <div class="row"><span class="k">Beta (5Y)</span><span class="v">0.94</span></div>
+          </div>
+
+          <div class="panel-col">
+            <div class="label">Fundamentals</div>
+            <div class="row"><span class="k">Revenue TTM (IFRS)</span><span class="v">$8,442m</span></div>
+            <div class="row"><span class="k">EPS TTM, IFRS</span><span class="v">$0.73</span></div>
+            <div class="row"><span class="k">EPS TTM, adjusted</span><span class="v">(data not found)</span></div>
+            <div class="row"><span class="k">Operating margin TTM</span><span class="v">52.0%</span></div>
+            <div class="row"><span class="k">Return on equity</span><span class="v">31.6%</span></div>
+            <div class="row"><span class="k">FCF yield (not meaningful)</span><span class="v down">-14.2%</span></div>
+          </div>
+
+          <div class="panel-col">
+            <div class="label">Valuation</div>
+            <div class="row"><span class="k">P/E TTM</span><span class="v">20.4</span></div>
+            <div class="row"><span class="k">Forward P/E</span><span class="v">15.4</span></div>
+            <div class="row"><span class="k">EV / Revenue</span><span class="v">7.5</span></div>
+            <div class="row"><span class="k">PEG</span><span class="v">0.46</span></div>
+            <div class="row"><span class="k">Price / book</span><span class="v">5.5</span></div>
+            <div class="row"><span class="k">P/E range FY23-FY25</span><span class="v">38.4 / 25.3 / 28.3</span></div>
+          </div>
+
+          <div class="panel-col">
+            <div class="label">Consensus</div>
+            <div class="row"><span class="k">Analysts covering</span><span class="v">22</span></div>
+            <div class="row"><span class="k">Strong buy / buy</span><span class="v">13 / 5</span></div>
+            <div class="row"><span class="k">Hold / sell</span><span class="v">3 / 1</span></div>
+            <div class="row"><span class="k">Average target</span><span class="v">$18.78</span></div>
+            <div class="row"><span class="k">High / low target</span><span class="v">$23.00 / $10.00</span></div>
+            <div class="row"><span class="k">Next earnings</span><span class="v">12 Nov 2026</span></div>
+          </div>
+
+        </div>
+      </div>
+      <p class="cap">Source: StockAnalysis.com and S&amp;P Global Market Intelligence, prices and ratios as of 10 September 2026; rating distribution as of August 2026; targets from S&amp;P Global poll of 22 analysts. Free cash flow yield is reported for completeness and carries no analytical weight for a deposit-funded lender, whose operating cash flow tracks loan book growth and says nothing about earnings quality.</p>
+
+      <div class="prose animate" style="margin-top:18px">
+        <p>The trailing multiple sits below where the shares finished each of the last three fiscal years, and the forward multiple sits lower still, while reported earnings growth has accelerated. That gap between a compressing multiple and an expanding earnings base is what produces the sub-one PEG figure in the panel, and it is the central fact of the current setup.</p>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK B ============ -->
+    <section id="block-b">
+      <div class="block-head animate">
+        <span class="tag">Block B</span>
+        <h2>Quarterly record</h2>
+      </div>
+
+      <div class="table-wrap animate">
+        <table>
+          <thead>
+            <tr>
+              <th>Quarter</th>
+              <th>Total revenue</th>
+              <th>Street est.</th>
+              <th>EPS, IFRS</th>
+              <th>EPS, adj. vs est.</th>
+              <th>Efficiency ratio</th>
+              <th>Risk-adj. NIM</th>
+              <th>Gross profit</th>
+              <th>Next session</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="qtr">Q2 2026<br><span style="font-weight:400;color:var(--text-mute)">30 Jun 26</span></td>
+              <td class="num">$5,880m<span class="pill pill-beat">BEAT</span></td>
+              <td class="num">$5,390m</td>
+              <td class="num">$0.22</td>
+              <td class="num">$0.22 / $0.20<span class="pill pill-beat">BEAT</span></td>
+              <td class="num">19.5%</td>
+              <td class="num pos">12.4%</td>
+              <td class="num">$2,440m</td>
+              <td class="num pos">+14.4%</td>
+            </tr>
+            <tr>
+              <td class="qtr">Q1 2026<br><span style="font-weight:400;color:var(--text-mute)">31 Mar 26</span></td>
+              <td class="num">$5,320m<span class="pill pill-miss">MISS</span></td>
+              <td class="num">$4,970m</td>
+              <td class="num">$0.18</td>
+              <td class="num">$0.19 / $0.20<span class="pill pill-miss">MISS</span></td>
+              <td class="num">17.6%</td>
+              <td class="num neg">9.5%</td>
+              <td class="num">$1,880m</td>
+              <td class="num neg">-5.7%</td>
+            </tr>
+            <tr>
+              <td class="qtr">Q4 2025<br><span style="font-weight:400;color:var(--text-mute)">31 Dec 25</span></td>
+              <td class="num">$4,900m<span class="pill pill-beat">BEAT</span></td>
+              <td class="num">(data not found)</td>
+              <td class="num">$0.18 (est.)</td>
+              <td class="num">$0.19 / $0.18<span class="pill pill-beat">BEAT</span></td>
+              <td class="num">19.9%</td>
+              <td class="num">10.5%</td>
+              <td class="num">$1,960m</td>
+              <td class="num neg">-9.6%</td>
+            </tr>
+            <tr>
+              <td class="qtr">Q3 2025<br><span style="font-weight:400;color:var(--text-mute)">30 Sep 25</span></td>
+              <td class="num">$4,170m<span class="pill pill-beat">BEAT</span></td>
+              <td class="num">$4,040m</td>
+              <td class="num">$0.16</td>
+              <td class="num">$0.17 / $0.15<span class="pill pill-beat">BEAT</span></td>
+              <td class="num">27.7%</td>
+              <td class="num">9.9%</td>
+              <td class="num">$1,800m</td>
+              <td class="num">(data not found)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cap">Sources: Nu Holdings quarterly releases via Business Wire (13 Aug 2026, 14 May 2026, 25 Feb 2026, 13 Nov 2025); consensus from Zacks and TipRanks; next-session price moves from TipRanks. Notes: operating margin and free cash flow are replaced by efficiency ratio, risk-adjusted net interest margin and gross profit, the metrics this company and its analysts actually use. Total revenue is the company's headline figure; from Q4 2025 that is the managerial presentation. The Q1 2026 miss pill reflects how the Street scored the print, against the IFRS revenue line; the managerial total shown here sits above it. The Q3 2025 efficiency ratio predates the managerial presentation and is not comparable with the three quarters above it.</p>
+    </section>
+
+    <!-- ============ BLOCK C ============ -->
+    <section id="block-c">
+      <div class="block-head animate">
+        <span class="tag">Block C</span>
+        <h2>Reading the quarters</h2>
+      </div>
+
+      <div class="qtr-read animate">
+        <div class="kick">Q2 2026 · anchor · reported 13 August 2026</div>
+        <p>This was the print that broke the pattern. Cost of credit fell sequentially while the loan book kept compounding, so the risk-adjusted margin expanded by the widest step in the series. That single line moved the stock, not the revenue beat. Gross profit grew faster than revenue because provisioning eased, and credit's contribution to gross profit recovered to roughly two-fifths of the total after two quarters in which allowances had suppressed it. The efficiency ratio deteriorated sequentially, which management framed as timing: property and marketing spend absent from the first quarter landed in the second. Late-stage delinquency rose, attributed to seasonal migration of first-quarter early arrears, while the leading indicator improved. Incoming CFO Rob Livingston told analysts the current risk-adjusted margin looks sustainable, then explicitly declined to call it a floor. Susquehanna observed that even bullish investors had underwritten a materially lower level going in, which explains why the reaction was violent, well beyond what a routine beat produces. Mexico's full banking licence arrived in the same window.</p>
+      </div>
+
+      <div class="qtr-read animate">
+        <div class="kick">Q1 2026 · reported 14 May 2026</div>
+        <p>Accounting and expectations came apart here. Revenue crossed a threshold the company had never reached, net income set a record, and the Street still scored the quarter as a miss, because consensus was calibrated to the IFRS revenue line, while the company headlines a higher managerial total. Credit loss allowances jumped sharply. Management gave three reasons: first-quarter seasonality, portfolio growth, and a mix tilting toward unsecured lending. Risk-adjusted margin gave back a full point as a result, the only sequential contraction in the series. The efficiency ratio printed at a record low, but CFO Lago conceded that most of that outperformance came from spend phased into later quarters, which removed the good news before anyone could bank it. Bank of America called it a second consecutive disappointing quarter and cut its Brazilian real profit estimates for 2026 and 2027. UBS trimmed its target while keeping a buy. The market's working hypothesis, unresolved at the time, was that the provision build signalled a credit cycle, and that seasonality was the wrong explanation. Mexico reached break-even.</p>
+      </div>
+
+      <div class="qtr-read animate">
+        <div class="kick">Q4 2025 · reported 25 February 2026</div>
+        <p>The quarter that changed the measuring stick. Nu introduced its Managerial P&amp;L, a reorganisation of IFRS line items built to explain value creation across a multi-product, multi-country platform, fully reconciled to IFRS and designed for external assurance. Net income and return on equity both set records. The shares fell close to a tenth the following session on volume more than triple the three-month average. Two things drove that. Management framed 2026 as a transition year and said plainly that AI infrastructure, return-to-office property costs and groundwork for a United States entry would push the efficiency ratio up. And the margin contained items that will not repeat: tax-related adjustments, plus a one-off levy to Prosofipo, the Mexican deposit protection fund that every Sofipo must fund. Absent that levy, management said risk-adjusted margin would have been broadly flat sequentially. Investors who had watched the stock multiply since 2022 were told to expect a spending year, and they sold the guidance rather than the quarter.</p>
+      </div>
+
+      <div class="qtr-read animate">
+        <div class="kick">Q3 2025 · reported 13 November 2025</div>
+        <p>The last quarter under the old presentation, and the cleanest one to read. Revenue and net income both set records, return on equity reached the low thirties, and adjusted net income exceeded the IFRS figure by the usual share-based compensation gap. The adjusted result beat consensus by a double-digit margin, and revenue beat as well. The market response was muted anyway. Attention settled on the efficiency ratio, which on the basis then in use sat uncomfortably against a thesis built on structural cost advantage. Headline net interest margin compressed sequentially as the asset mix moved toward lower-yield secured lending and Brazilian funding costs rose, though risk-adjusted margin still expanded because cost of risk fell further than asset yield did. Lago walked analysts through the yield and funding mechanics at length under direct questioning from Morgan Stanley, which is usually a sign the disclosure was not carrying the argument on its own. That disclosure problem is what the managerial presentation was designed to fix.</p>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK D ============ -->
+    <section id="block-d">
+      <div class="block-head animate">
+        <span class="tag">Block D</span>
+        <h2>Patterns and watch list</h2>
+      </div>
+
+      <h3 class="sub-head">Structural patterns across the four quarters</h3>
+      <ul class="obs animate">
+        <li><b>Provisioning, not revenue, decides the quarter.</b> Revenue rose in every period without exception, while gross profit, risk-adjusted margin and the post-print share reaction all tracked the direction of credit cost.</li>
+        <li><b>The reporting change severed consensus comparability.</b> Two of the four prints were scored against a revenue definition different from the one the company leads with, and the resulting beat-or-miss labels stopped describing operating performance.</li>
+        <li><b>Efficiency gains are structural but the quarterly path is noisy.</b> Marketing and property spend moved between the first and second quarters of 2026 in both directions, and management flagged the phasing both times, so the low print never stood on its own.</li>
+        <li><b>The market trades the guidance, not the result.</b> Three of four quarters beat on adjusted earnings, yet two fell sharply because management used the call to describe a spending year.</li>
+      </ul>
+
+      <h3 class="sub-head">Watch list for the November print</h3>
+      <ul class="obs animate">
+        <li><span class="sig">→ stable</span><b>Late-stage delinquency.</b> Confirms the seasonal reading if it flattens or eases from the second-quarter level; breaks if it climbs while the leading early-arrears indicator also turns up.</li>
+        <li><span class="sig">↑ improving</span><b>Risk-adjusted net interest margin.</b> Confirms if it holds near the second-quarter level management called sustainable; breaks if cost of credit re-accelerates and pulls it back toward the first-quarter trough.</li>
+        <li><span class="sig">→ stable</span><b>Efficiency ratio against full-year guidance.</b> Confirms if the year-to-date average tracks the level management guided to; breaks if United States and AI spending pushes it beyond the stated envelope.</li>
+        <li><span class="sig">↓ deteriorating</span><b>United States funding economics.</b> A deliberate drag. Confirms if deposit gathering stays inside the guided cost band; breaks if the partner-bank revenue share runs wider than assumed.</li>
+      </ul>
+    </section>
+
+    <!-- ============ BLOCK E ============ -->
+    <section id="block-e">
+      <div class="block-head animate">
+        <span class="tag">Block E</span>
+        <h2>Strategic architecture</h2>
+      </div>
+
+      <h3 class="sub-head">1. Business model and revenue architecture</h3>
+      <div class="table-wrap animate">
+        <table>
+          <thead>
+            <tr><th>Revenue line</th><th>FY2025</th><th>% of total</th><th>YoY</th><th>Margin profile</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Interest income, lending</td><td class="num">$4,784.0m</td><td class="num">30.3%</td><td class="num pos">+57.4%</td><td>Highest yield, highest cost of risk</td></tr>
+            <tr><td>Interest income, credit card</td><td class="num">$4,598.0m</td><td class="num">29.1%</td><td class="num pos">+20.9%</td><td>Core engine, revolving mix drives yield</td></tr>
+            <tr><td>Fee and commission income</td><td class="num">$2,340.0m</td><td class="num">14.8%</td><td class="num pos">+24.1%</td><td>Capital-light, no credit cost</td></tr>
+            <tr><td>Interest, other assets at amortised cost</td><td class="num">$2,285.0m</td><td class="num">14.5%</td><td class="num pos">+78.7%</td><td>Float, low risk, rate-linked</td></tr>
+            <tr><td>Interest and gains on fair-value instruments</td><td class="num">$1,406.0m</td><td class="num">8.9%</td><td class="num pos">+18.4%</td><td>Treasury, rate-sensitive</td></tr>
+            <tr><td>Interest income, other receivables</td><td class="num">$361.7m</td><td class="num">2.3%</td><td class="num pos">+11.6%</td><td>Residual</td></tr>
+            <tr class="total"><td>Total gross revenue</td><td class="num">$15,774.7m</td><td class="num">100%</td><td class="num pos">+37.0%</td><td>Blended</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cap">Source: StockAnalysis.com revenue-by-segment data (Fiscal.ai), FY2025 against FY2024, gross revenue-line basis. Percentages may not sum exactly because of rounding. This gross basis sits above the IFRS net revenue line reported in the panel above.</p>
+
+      <div class="prose animate" style="margin-top:16px">
+        <p>Three engines run in parallel, and they do not depend on each other in the way a conventional bank's segments do. Credit cards supply the entry product and the behavioural data. Unsecured and secured lending supply yield. Fees and float supply earnings that carry no credit cost at all. What makes the structure work is the order in which a customer passes through them. Nu acquires almost entirely through referral and brand at a cost per customer that traditional banks cannot approach, monetises first through the card, then through deposits it holds cheaply, then through lending priced off data the first two products generated. Each stage funds the next without external capital.</p>
+        <p>The fastest-growing line last year was float income on assets held at amortised cost, which is the deposit franchise doing its work. Deposits are gathered at a fraction of the interbank rate, and the gap between that funding cost and the yield on the credit book is where the economics live. Unsecured lending grew fastest among the credit lines, which is also where the risk sits, and the second-quarter margin expansion shows management pushing that mix on purpose.</p>
+        <p>Operating leverage originates in the cost line, not the revenue line. Monthly cost to serve an active customer sits below a dollar, and it has stayed there while revenue per active customer has roughly doubled over three years. That single ratio explains the efficiency ratio and the return on equity together. The risk is that the leverage is now partly spent: management has committed the incremental margin to AI infrastructure, Mexican banking operations and a United States build, so the ratio improves more slowly from here even as the underlying cost advantage holds.</p>
+      </div>
+
+      <h3 class="sub-head">2. Competitive moat</h3>
+      <div class="table-wrap animate">
+        <table>
+          <thead>
+            <tr><th>Pillar</th><th>Strength</th><th>Erosion risk</th><th>Rating</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Branchless cost to serve</td><td>Structural and measured</td><td>Low</td><td class="stars">★★★★★</td></tr>
+            <tr><td>Deposit franchise and primary banking relationship</td><td>Strong in Brazil, building in Mexico</td><td>Medium</td><td class="stars">★★★★☆</td></tr>
+            <tr><td>Behavioural data and NuFormer underwriting</td><td>Strong, hard to replicate at scale</td><td>Medium</td><td class="stars">★★★★☆</td></tr>
+            <tr><td>Brand and referral-led acquisition</td><td>Strong in Brazil, unproven abroad</td><td>Medium</td><td class="stars">★★★☆☆</td></tr>
+            <tr><td>Regulatory licences across four markets</td><td>Moderate, replicable by capital</td><td>Medium</td><td class="stars">★★★☆☆</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cap">Source: PGS assessment, built on the Q2 2026 earnings release and management call commentary of 13 August 2026. Ratings run ★1 to ★5, where ★5 denotes a durable, near-unassailable advantage.</p>
+
+      <div class="prose animate" style="margin-top:16px">
+        <p>Rate the mechanism, not the brand. The cost advantage earns the top mark because it is arithmetic rather than reputation: no branch network, no legacy core system, and a support function where AI agents now handle the majority of Brazilian conversations at or above human quality. An incumbent cannot match that without dismantling assets it already owns, and a new entrant cannot match the scale over which the cost is spread. That is the pillar most likely to survive a downturn intact.</p>
+        <p>The data pillar is stronger than it looks from outside and weaker than the company's framing implies. A decade of transaction history across more than a hundred million customers is a genuine input advantage, and NuFormer is now in production across three portfolios with two more in testing. The evidence management offers is that delinquency among customers who bank primarily with Nu runs at roughly half the portfolio average. That is a real finding, though it also describes selection: primary-relationship customers would be better credits at any lender. The underwriting edge is demonstrated in Brazil across income bands; it is asserted, not yet demonstrated, in Mexico and Colombia, and management told analysts it expects to need between one and three years of local data before it trusts United States models.</p>
+        <p>The deposit franchise is the pillar under most pressure, because it is the one competitors attack directly. Consolidated cost of deposits has improved against interbank rates, which shows the franchise holding. Brand and referral acquisition carry the lowest rating among the strong pillars for a simple reason: the mechanism has never been tested outside Latin America, and the United States launch prices against incumbents with distribution Nu does not have.</p>
+      </div>
+
+      <h3 class="sub-head">3. Long-term growth architecture</h3>
+      <div class="table-wrap animate">
+        <table>
+          <thead>
+            <tr><th>Driver</th><th>Timeline</th><th>Current state</th><th>Potential</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Brazil monetisation upmarket (Ultravioleta, Croma)</td><td>1 to 3 years</td><td>Croma launched July 2026</td><td>High</td><td>emerging</td></tr>
+            <tr><td>Mexico under full banking licence</td><td>1 to 3 years</td><td>Licensed August 2026, at break-even</td><td>High</td><td>on track</td></tr>
+            <tr><td>Payroll and secured lending in Brazil</td><td>2 to 3 years</td><td>Systems and collateral processes maturing</td><td>Medium</td><td>emerging</td></tr>
+            <tr><td>AI cost curve and underwriting</td><td>1 to 3 years</td><td>In production across three portfolios</td><td>Medium</td><td>on track</td></tr>
+            <tr><td>United States entry and own charter</td><td>3 to 5 years</td><td>Launched 10 September 2026 via partner bank</td><td>High</td><td>emerging</td></tr>
+            <tr><td>Colombia scale-up</td><td>3 to 5 years</td><td>Past five million customers</td><td>Medium</td><td>emerging</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cap">Source: PGS assessment from company disclosures through 10 September 2026, including the Q2 2026 release, the Mexican and Brazilian licence announcements, and the United States launch announcement of 10 September 2026.</p>
+
+      <div class="prose animate" style="margin-top:16px">
+        <p>Sequencing matters more than the list. Brazilian monetisation has to work first, because it funds everything else from internal cash, with no call on capital markets. Nu already serves most of the Brazilian mass market and holds a small single-digit share of a domestic profit pool worth more than a hundred billion dollars a year, so the growth is no longer about adding customers. It is about revenue per customer, which is why Croma and Ultravioleta matter: they move the company into the segments where incumbent banks still earn most of their profit.</p>
+        <p>Mexico is second in sequence and first in evidence. The licence converts a credit-first fintech into a full institution able to gather payroll deposits, and the cohort data management presented shows Mexican customers monetising earlier than Brazilian customers did at comparable penetration. If Mexico compounds the way Brazil did, it removes the single-country concentration that the current multiple partly reflects.</p>
+        <p>The United States sits last and should be read that way. Management said profitability there will take a number of years, against eight in Brazil, and capped the investment inside the guided efficiency envelope. The launch runs through a partner bank while the charter clears the Federal Reserve and the FDIC, which means shared compliance and shared revenue in the interim. Nothing in the next two years depends on it working. Everything in the next decade might.</p>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK F ============ -->
+    <section id="block-f">
+      <div class="block-head animate">
+        <span class="tag">Block F</span>
+        <h2>Risks</h2>
+      </div>
+
+      <div class="risk high animate">
+        <div class="rh"><h4>Brazilian unsecured credit cycle</h4><span class="badge high">High</span></div>
+        <div class="rb"><p>The mechanism is straightforward. Nu has deliberately expanded into higher-risk, higher-return segments, and unsecured lending is the fastest-growing line in the book. That mix raises yield immediately and raises losses with a lag of two to four quarters. The first quarter of 2026 showed what the lag looks like when it arrives: allowances built sharply, risk-adjusted margin contracted, and the market treated a record revenue quarter as a disappointment. Timeline is continuous, with no single trigger date and the next reading in November. The observable that would signal it materialising is late-stage delinquency rising at the same time as the leading early-arrears indicator, in a quarter where seasonality argues for the opposite. Management has said the current risk-adjusted margin should not be treated as a floor, which is the clearest statement available that it does not consider the cycle settled. Brazilian household leverage and the Selic path sit underneath all of it.</p></div>
+      </div>
+
+      <div class="risk med animate">
+        <div class="rh"><h4>Rate path and currency translation</h4><span class="badge med">Medium</span></div>
+        <div class="rb"><p>Nu reports in dollars, earns in reais, pesos and Colombian pesos, and is listed in New York. Two separate effects follow. Falling Brazilian policy rates compress asset yields on the credit book faster than they compress deposit costs, because deposits are already priced at a discount to interbank rates and have less room to fall. Selic cuts through 2026 have already begun that squeeze. Separately, dollar translation moves reported revenue and earnings independently of operating performance, which is why the company presents growth on an FX-neutral basis and why headline and constant-currency growth rates have diverged by more than ten points in recent quarters. The timeline runs with the Brazilian easing cycle. The observable is net interest margin compressing while risk-adjusted margin holds, which would isolate the rate effect from the credit effect described above.</p></div>
+      </div>
+
+      <div class="risk med animate">
+        <div class="rh"><h4>Four-jurisdiction expansion and capital allocation</h4><span class="badge med">Medium</span></div>
+        <div class="rb"><p>Nu is simultaneously integrating a Brazilian banking licence through an acquisition, operating a newly licensed Mexican bank, scaling Colombia, and launching in the United States through a partner-bank arrangement while its own charter clears two federal regulators. Each carries capital, compliance and management-attention cost, and the efficiency ratio absorbs all of them at once. The commitment is to keep United States investment inside a defined band of the consolidated ratio, which is a constraint management set for itself, with no external enforcement behind it. Timeline runs through 2027, when the charter is expected to convert. The observable is the efficiency ratio breaching full-year guidance without a corresponding revenue explanation, or a shift in language at the December investor day from disciplined containment toward accelerated spending. Acquisition is explicitly on the table for United States growth, which would change the capital picture materially.</p></div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK G ============ -->
+    <section id="block-g">
+      <div class="block-head animate">
+        <span class="tag">Block G</span>
+        <h2>Scenarios</h2>
+      </div>
+
+      <div class="scenario-grid animate">
+        <div class="scen bull">
+          <div class="sh"><h4>Bull case</h4><span class="delta">+53.1% to the high target</span></div>
+          <div class="sb">
+            <ul>
+              <li>Second-quarter risk-adjusted margin proves a plateau rather than a peak.</li>
+              <li>Mexico monetises on the Brazilian curve under its new licence.</li>
+              <li>Efficiency lands inside guidance despite United States spending.</li>
+            </ul>
+            <p>Holding requires cost of credit to stay near the level reached in the second quarter through at least two more prints, which in turn requires the unsecured mix shift to be a deliberate pricing decision, with risk appetite held where management says it sits. Mexican cohorts must keep monetising earlier than Brazilian cohorts did at equivalent penetration, and the payroll products the licence permits must gather deposits at Brazilian-style funding costs. On those conditions the multiple re-rates toward its own recent history, with no expansion beyond it, and the earnings base does the rest of the work.</p>
+          </div>
+        </div>
+
+        <div class="scen bear">
+          <div class="sh"><h4>Bear case</h4><span class="delta">-33.4% to the low target</span></div>
+          <div class="sb">
+            <ul>
+              <li>The first-quarter provision build was a cycle signal, not seasonality.</li>
+              <li>Brazilian rate cuts compress yields faster than funding costs fall.</li>
+              <li>Expansion spending breaks the efficiency guidance.</li>
+            </ul>
+            <p>Holding requires late-stage delinquency to keep climbing into a seasonally favourable quarter, which would confirm that the higher-risk expansion was priced too thin. Add a faster Selic easing path and the spread narrows from both ends at once. The third condition is the one management controls least: four simultaneous jurisdictional builds, an acquisition in Brazil, a possible acquisition in the United States, and a charter conversion, all landing while the credit line deteriorates. Bank of America has held a sell rating through the recent sequence, and the low target reflects that combination, with no single element of it sufficient alone.</p>
+          </div>
+        </div>
+      </div>
+      <p class="cap">Source: PGS scenario framing against the analyst target range shown in the consolidated panel. Deltas are measured from the price at analysis.</p>
+    </section>
+
+    <!-- ============ BLOCK H ============ -->
+    <section id="block-h">
+      <div class="block-head animate">
+        <span class="tag">Block H</span>
+        <h2>PGS verdict</h2>
+      </div>
+
+      <div class="verdict animate">
+        <div class="rating-pill">🟢 BUY</div>
+        <div class="verdict-strip">
+          <div><div class="k">Horizon</div><div class="v">18 to 24 months</div></div>
+          <div><div class="k">Risk / reward</div><div class="v">Favourable</div></div>
+          <div><div class="k">Targets</div><div class="v">See scenario deltas</div></div>
+        </div>
+
+        <div class="prose">
+          <p><b>Price dislocation.</b> The shares have fallen over the past year while earnings have grown at the fastest rate in the company's public history, and the trailing multiple has compressed below every fiscal year-end level since 2023. The dislocation is explainable rather than mysterious. Two consecutive quarters were read as credit deterioration, the reporting change severed the consensus comparison, and management used both calls to describe a spending year. The second quarter began to resolve the first of those three, and the market moved sharply on it. The other two remain open.</p>
+          <p><b>Fundamental quality.</b> Return on equity in the low thirties, a cost to serve that no incumbent can match, a deposit franchise funded well below interbank rates, and a customer base that keeps monetising better each quarter. The cost advantage described in the moat table is arithmetic, which is why it carries the top rating. The quality question is not whether the model works. It is whether the company can run four jurisdictional builds at once without spending the operating leverage that makes the model work.</p>
+          <p><b>Primary risk.</b> The Brazilian unsecured credit cycle, rated High in the risk register, dominates everything else. Every other variable in this report is second-order against it. If late-stage delinquency keeps rising into a seasonally favourable quarter, the second-quarter margin expansion reads as a seasonal artefact and the turn never happened, and the bear conditions begin to assemble. Management's refusal to describe the current level as a floor is the honest framing and should be taken at face value.</p>
+          <p><b>Near-term catalysts.</b> Third-quarter results on 12 November 2026 are the first clean test of whether credit cost has genuinely turned. The first investor day, on 8 December 2026 in New York, is where long-term targets get set and where the spending language will either tighten or loosen. Underneath both sits the United States launch of 10 September 2026, which contributes nothing to earnings for years but reframes what the business is: a partner-bank structure with a Mastercard credit product, fee-free remittance corridors into Brazil, Mexico and Colombia, and a multi-currency account spanning more than thirty-five countries, pending a charter conversion expected next year.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DISCLAIMER ============ -->
+    <section>
+      <div class="disclaimer">
+        <p>"This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice."</p>
+        <p>This report was produced with the assistance of artificial intelligence. Generative model: Anthropic · Claude Opus · version 5, accessed via claude.ai. All figures were sourced from live web search within the same session and cross-checked against the anchoring protocol in Step 1; the model's role was data synthesis, formatting and drafting, not the origination of financial estimates. Human review by the internal analyst precedes publication.</p>
+        <p class="ref">Report Reference: PGS-NU-202609 · Date: 10 September 2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: NU · Exchange: NYSE · AI Model: Anthropic Claude Opus 5</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          e.target.style.opacity = '';
+          e.target.style.animationPlayState = 'running';
+          animObserver.unobserve(e.target);
+        }
+      });
+    }, {threshold: 0.08, rootMargin: '0px 0px -40px 0px'});
+
+    animateEls.forEach(function(el, i){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      el.style.animationDelay = (Math.min(i, 4) * 0.05) + 's';
+      animObserver.observe(el);
+    });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var sections = links.map(function(l){ return document.querySelector(l.getAttribute('href')); });
+
+  function setActive(){
+    var pos = window.scrollY + window.innerHeight * 0.28;
+    var idx = 0;
+    sections.forEach(function(s, i){ if (s && s.offsetTop <= pos) idx = i; });
+    links.forEach(function(l, i){ l.classList.toggle('active', i === idx); });
+  }
+  setActive();
+  window.addEventListener('scroll', setActive, {passive:true});
+  window.addEventListener('resize', setActive);
+})();
+</script>
+</body>
+</html>

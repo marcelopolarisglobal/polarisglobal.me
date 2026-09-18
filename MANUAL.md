@@ -86,7 +86,7 @@ A página `research.html` lista os relatórios disponíveis em cards com:
 
 Os relatórios são exibidos em duas seções sequenciais, cada uma com um cabeçalho de grupo (`.report-group-head`) acima da grade: "Invested Companies" / "Empresas Investidas" e "Evaluated · Not Invested" / "Avaliadas · Não Investidas". Os cards são visualmente idênticos entre as duas seções — a distinção é apenas o cabeçalho.
 
-A ordem dos cards dentro de "Invested Companies" é curada manualmente (não estritamente cronológica) — reflete a relevância/peso da posição na carteira, definida caso a caso ao adicionar um novo relatório. A seção "Evaluated · Not Invested" segue ordem de inclusão.
+A ordem dos cards dentro de "Invested Companies" é curada manualmente (não estritamente cronológica) — reflete a relevância/peso atual da posição na carteira, do maior para o menor peso, definida caso a caso ao adicionar um novo relatório ou reavaliar a alocação. A seção "Evaluated · Not Invested" segue ordem cronológica decrescente pela data de produção do relatório (indicada no rodapé de cada documento, campo "Date"), do mais recente para o mais antigo — não pela data de inclusão no site.
 
 A pasta `reports/not-invested/` guarda os relatórios de empresas avaliadas e não investidas. Eles permanecem versionados, acessíveis por URL direta, e **recebem card** em `research.html`, exibidos na segunda seção da página.
 
@@ -161,20 +161,26 @@ polarisglobal.me/
 │   └── PGS-LETTER-202606.html
 └── reports/               ← relatórios HTML individuais
     ├── not-invested/      ← avaliados e não investidos (com card em research.html)
+    │   ├── PGS-BE-202608.html
+    │   ├── PGS-COPP-202608.html
     │   ├── PGS-DIS-NFLX-202608.html
     │   ├── PGS-LVBI11-202607.html
     │   ├── PGS-MGM-202606.html
     │   ├── PGS-MU-SNDK-SKHY-202608.html
-    │   └── PGS-SMFT3-202607.html
+    │   ├── PGS-NU-202609.html
+    │   ├── PGS-NVDA-202608.html
+    │   ├── PGS-ORCL-202608.html
+    │   ├── PGS-SMFT3-202607.html
+    │   └── PGS-UBER-202608.html
     ├── PGS-AMZN-202607.html
     ├── PGS-BRKB-202606.html
+    ├── PGS-BTER11-202609.html
     ├── PGS-BTLG11-202607.html
     ├── PGS-GOOGL-202607.html
     ├── PGS-ITSA4-202606.html
     ├── PGS-KLBN11-202608.html
     ├── PGS-PSSA3-202608.html
     ├── PGS-TSLA-202607.html
-    ├── PGS-VULC3-202608.html
     ├── PGS-WAGN-202606.html
     ├── PGS-WAGN-202606-Carteira.html
     └── PGS-XPLG11-202607.html

@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGS-COPP-202608 | Sprott Copper Miners ETF</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  --text:#111827;
+  --text-mute:#6B7280;
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#B87333;
+  --font-display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --font-body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --font-data:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--canvas);color:var(--text);
+  font-family:var(--font-body);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:grid;grid-template-columns:220px 1fr;}
+
+/* ---------- sidebar ---------- */
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--surface);border-right:1px solid var(--border);
+  padding:28px 0;
+}
+.sidebar .brand{
+  font-family:var(--font-display);font-size:19px;font-weight:700;
+  color:var(--accent);padding:0 20px 4px 20px;letter-spacing:.01em;
+}
+.sidebar .brand-sub{
+  font-family:var(--font-data);font-size:10px;color:var(--text-mute);
+  padding:0 20px 22px 20px;text-transform:uppercase;letter-spacing:.09em;
+}
+.nav-link{
+  display:block;padding:8px 20px;color:var(--text-mute);
+  text-decoration:none;font-size:13.5px;border-left:3px solid transparent;
+  transition:background .18s ease,color .18s ease;
+}
+.nav-link:hover{color:var(--text);background:var(--card);}
+.nav-link.active{
+  color:var(--text);font-weight:500;
+  border-left:3px solid var(--accent);background:var(--card);
+}
+.nav-group{
+  font-family:var(--font-data);font-size:10px;color:var(--text-mute);
+  text-transform:uppercase;letter-spacing:.1em;padding:18px 20px 6px 20px;
+}
+
+/* ---------- content ---------- */
+.main-content{padding:0;min-width:0;}
+section{padding:52px 46px;border-bottom:1px solid var(--border);}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:700;line-height:1.2;margin:0;}
+.block-kicker{
+  font-family:var(--font-data);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+h2.block-title{font-size:27px;margin-bottom:6px;}
+.block-lede{color:var(--text-mute);font-size:14px;margin:0 0 26px 0;max-width:68ch;}
+p{max-width:68ch;margin:0 0 16px 0;}
+.prose p{max-width:68ch;}
+
+/* ---------- cover ---------- */
+.cover{
+  min-height:96vh;background:var(--surface);
+  background-image:radial-gradient(var(--border) 1px,transparent 1px);
+  background-size:22px 22px;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:60px 46px;border-bottom:3px solid var(--accent);
+}
+.cover .eyebrow{
+  font-family:var(--font-data);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--text-mute);margin-bottom:26px;
+}
+.cover h1{
+  font-family:var(--font-display);font-size:58px;color:var(--accent);
+  margin-bottom:6px;line-height:1.05;
+}
+.cover .subtitle{
+  font-family:var(--font-display);font-size:23px;font-style:italic;
+  color:var(--text);margin-bottom:34px;
+}
+.cover-meta{
+  display:flex;flex-wrap:wrap;gap:34px;border-top:3px solid var(--accent);
+  padding-top:22px;max-width:760px;
+}
+.cover-meta div{min-width:110px;}
+.cover-meta .lab{
+  font-family:var(--font-data);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--text-mute);margin-bottom:5px;
+}
+.cover-meta .val{font-family:var(--font-data);font-size:14px;font-weight:500;}
+.instrument-note{
+  margin-top:38px;max-width:68ch;background:var(--caution-tint);
+  border-left:3px solid var(--caution);padding:16px 20px;
+}
+.instrument-note .lab{
+  font-family:var(--font-data);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--caution);margin-bottom:7px;
+}
+.instrument-note p{font-size:14px;margin:0;}
+
+/* ---------- panel ---------- */
+.panel-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--border);border-top:3px solid var(--accent);
+  border-left:1px solid var(--border);border-right:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.panel-col{background:var(--card);padding:20px 18px;}
+.panel-col h4{
+  font-family:var(--font-data);font-size:10px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--text-mute);font-weight:500;
+  margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);
+}
+.metric{margin-bottom:11px;}
+.metric .m-lab{font-size:11.5px;color:var(--text-mute);line-height:1.35;}
+.metric .m-val{
+  font-family:var(--font-data);font-size:14.5px;font-weight:500;
+  color:var(--text);letter-spacing:-.01em;
+}
+.m-val.pos{color:var(--pos);}
+.m-val.neg{color:var(--neg);}
+.m-val.mute{color:var(--text-mute);font-size:12.5px;}
+
+/* ---------- tables ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+thead th{
+  background:var(--card);text-align:left;padding:11px 13px;
+  font-family:var(--font-data);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-mute);font-weight:500;
+  border-bottom:1px solid var(--border);white-space:nowrap;
+}
+tbody td{padding:11px 13px;border-bottom:1px solid var(--border);vertical-align:top;}
+tbody tr:nth-child(odd){background:var(--canvas);}
+tbody tr:nth-child(even){background:var(--surface);}
+tbody tr:hover{background:var(--card);transition:background .18s ease;}
+td.num,th.num{font-family:var(--font-data);text-align:right;white-space:nowrap;}
+td.pos{color:var(--pos);}
+td.neg{color:var(--neg);}
+.src{
+  font-family:var(--font-data);font-size:10.5px;color:var(--text-mute);
+  margin-top:9px;margin-bottom:30px;line-height:1.5;
+}
+.pill{
+  display:inline-block;font-family:var(--font-data);font-size:10px;
+  font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:2px;
+  text-transform:uppercase;
+}
+.pill-pos{background:var(--pill-pos-bg);color:var(--pill-pos-fg);}
+.pill-neg{background:var(--pill-neg-bg);color:var(--pill-neg-fg);}
+.pill-mute{background:var(--card);color:var(--text-mute);}
+.stars{font-family:var(--font-data);color:var(--accent);letter-spacing:.08em;white-space:nowrap;}
+.status{
+  font-family:var(--font-data);font-size:10.5px;letter-spacing:.05em;
+  text-transform:uppercase;font-weight:500;
+}
+.status.ontrack{color:var(--pos);}
+.status.emerging{color:var(--caution);}
+.status.atrisk{color:var(--neg);}
+.sig{font-family:var(--font-data);font-weight:700;}
+.sig.up{color:var(--pos);}
+.sig.flat{color:var(--text-mute);}
+.sig.down{color:var(--neg);}
+
+/* ---------- block C ---------- */
+.quarter-group{border-left:3px solid var(--accent);padding-left:22px;margin-bottom:30px;}
+.q-kicker{
+  font-family:var(--font-data);font-size:11px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:7px;
+}
+.q-kicker span{color:var(--text-mute);letter-spacing:.06em;}
+
+/* ---------- block D ---------- */
+.obs{border-top:1px solid var(--border);padding:14px 0;max-width:68ch;}
+.obs .claim{font-weight:500;margin-bottom:3px;}
+.obs .evid{color:var(--text-mute);font-size:14px;}
+.sub-h{
+  font-family:var(--font-data);font-size:10.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--text-mute);margin:32px 0 4px 0;
+}
+h3.sec-h{font-size:20px;margin:38px 0 10px 0;}
+h3.sec-h:first-of-type{margin-top:0;}
+
+/* ---------- block F ---------- */
+.risk{border-left:3px solid var(--neg);margin-bottom:22px;}
+.risk.medium{border-left-color:var(--caution);}
+.risk .r-head{
+  background:var(--neg-tint);padding:12px 18px;
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+}
+.risk.medium .r-head{background:var(--caution-tint);}
+.risk .r-head h4{font-size:16.5px;font-family:var(--font-body);font-weight:700;}
+.badge{
+  font-family:var(--font-data);font-size:10px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;
+  background:var(--neg);color:#FFFFFF;border-radius:2px;white-space:nowrap;
+}
+.risk.medium .badge{background:var(--caution);}
+.risk .r-body{background:var(--canvas);padding:16px 18px;border:1px solid var(--border);border-left:none;}
+.risk .r-body p{margin:0;font-size:14.5px;}
+
+/* ---------- block G ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.scen{border:1px solid var(--border);}
+.scen .s-head{padding:13px 18px;border-top:3px solid var(--pos);background:var(--pos-tint);}
+.scen.bear .s-head{border-top-color:var(--neg);background:var(--neg-tint);}
+.scen .s-head h4{font-size:17px;font-family:var(--font-body);font-weight:700;}
+.scen .s-head .delta{font-family:var(--font-data);font-size:13px;font-weight:700;color:var(--pos);}
+.scen.bear .s-head .delta{color:var(--neg);}
+.scen .s-body{background:var(--canvas);padding:16px 18px;}
+.scen .s-body ul{margin:0 0 14px 0;padding-left:18px;font-size:14px;}
+.scen .s-body li{margin-bottom:6px;}
+.scen .s-body p{font-size:14.5px;margin:0;}
+
+/* ---------- block H ---------- */
+.verdict{background:var(--surface);}
+.rating-strip{
+  display:flex;flex-wrap:wrap;gap:1px;background:var(--border);
+  border:1px solid var(--border);margin-bottom:28px;
+}
+.rating-strip > div{background:var(--card);padding:16px 20px;flex:1 1 150px;}
+.rating-strip .lab{
+  font-family:var(--font-data);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--text-mute);margin-bottom:6px;
+}
+.rating-strip .val{font-family:var(--font-data);font-size:17px;font-weight:700;}
+.rating-pill{
+  display:inline-block;background:var(--accent);color:#FFFFFF;
+  font-family:var(--font-data);font-size:14px;font-weight:700;
+  letter-spacing:.08em;padding:7px 14px;border-radius:2px;
+}
+
+/* ---------- disclaimer ---------- */
+.disclaimer{background:var(--surface);font-size:12.5px;color:var(--text-mute);}
+.disclaimer p{max-width:none;line-height:1.6;}
+.disclaimer .ref{font-family:var(--font-data);font-size:11px;border-top:1px solid var(--border);padding-top:14px;}
+
+/* ---------- animation ---------- */
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+/* ---------- responsive ---------- */
+@media (max-width:768px){
+  .layout{display:block;}
+  .sidebar{
+    position:sticky;top:0;height:auto;z-index:20;
+    display:flex;overflow-x:auto;white-space:nowrap;padding:0;
+    border-right:none;border-bottom:1px solid var(--border);
+  }
+  .sidebar .brand,.sidebar .brand-sub,.nav-group{display:none;}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:12px 14px;}
+  .nav-link.active{border-left:none;border-bottom:3px solid var(--accent);}
+  section{padding:34px 20px;}
+  .cover{padding:44px 20px;}
+  .cover h1{font-size:38px;}
+  .panel-grid{grid-template-columns:1fr;}
+  .scenario-grid{grid-template-columns:1fr;}
+}
+
+/* ---------- print ---------- */
+@media print{
+  @page{size:A4;}
+  body{background:#FFFFFF;color:#111827;font-size:10.5pt;}
+  .layout{display:block !important;}
+  .sidebar,.nav-link,.nav-group{display:none !important;}
+  .main-content{display:block !important;width:100% !important;padding:0 !important;}
+  section{padding:16pt 0 !important;background-color:#FFFFFF !important;color:#111827 !important;}
+  .cover{
+    min-height:auto !important;height:auto !important;display:block !important;
+    background-image:none !important;background-color:#FFFFFF !important;
+    padding:0 0 16pt 0 !important;
+  }
+  .cover h1{font-size:34pt;}
+  .panel-grid{display:grid !important;grid-template-columns:repeat(2,1fr) !important;gap:1px !important;}
+  .scenario-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:12pt !important;}
+  .panel-col,.rating-strip > div,.risk .r-body,.scen .s-body{background-color:#FFFFFF !important;}
+  thead th{background-color:#F3F4F6 !important;}
+  .table-wrap{overflow:visible !important;border:1px solid #E5E7EB;}
+  table,td,th{word-break:break-word;}
+  p,.obs{orphans:3;widows:3;}
+  .risk,.scen,.quarter-group,.obs,.table-wrap{page-break-inside:avoid;}
+  .animate{opacity:1 !important;transform:none !important;animation:none !important;}
+  *{box-shadow:none !important;backdrop-filter:none !important;}
+  .pill,.badge,.rating-pill,.stars,.risk .r-head,.scen .s-head,.cover,.panel-grid{
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+}
+.pgs-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 24px; background: #07090F;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-family: system-ui, sans-serif; font-size: 12px;
+}
+.pgs-topbar a { color: #94A3B8; text-decoration: none; }
+.pgs-topbar a:hover { color: #F1F5F9; }
+.pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+.pgs-topbar .pgs-sep { color: #334155; }
+@media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-COPP-202608</span>
+</div>
+<div class="layout">
+
+  <nav class="sidebar">
+    <div class="brand">Polaris</div>
+    <div class="brand-sub">PGS-COPP-202608</div>
+    <div class="nav-group">Report</div>
+    <a class="nav-link" href="#cover">Cover</a>
+    <a class="nav-link" href="#block-a">A. Consolidated panel</a>
+    <a class="nav-link" href="#block-b">B. Quarterly record</a>
+    <a class="nav-link" href="#block-c">C. Reading the quarters</a>
+    <a class="nav-link" href="#block-d">D. Patterns and watch list</a>
+    <a class="nav-link" href="#block-e">E. Strategic architecture</a>
+    <a class="nav-link" href="#block-f">F. Risks</a>
+    <a class="nav-link" href="#block-g">G. Scenarios</a>
+    <a class="nav-link" href="#block-h">H. PGS verdict</a>
+    <a class="nav-link" href="#disclaimer">Disclaimer</a>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- ============ COVER ============ -->
+    <section class="cover" id="cover">
+      <div class="eyebrow">Polaris Global Strategies Ltd. &middot; Internal Research</div>
+      <h1>Sprott Copper Miners ETF</h1>
+      <div class="subtitle">COPP &middot; Nasdaq</div>
+      <div class="cover-meta">
+        <div><div class="lab">Reference</div><div class="val">PGS-COPP-202608</div></div>
+        <div><div class="lab">Publication date</div><div class="val">19 August 2026</div></div>
+        <div><div class="lab">Exchange</div><div class="val">Nasdaq</div></div>
+        <div><div class="lab">Instrument</div><div class="val">Exchange traded fund</div></div>
+      </div>
+      <div class="instrument-note">
+        <div class="lab">Instrument mismatch, flagged</div>
+        <p>COPP is a fund, not an operating company: quarterly earnings, segment revenue and sell-side consensus do not exist for a passive vehicle. Substitutions used throughout: fund and benchmark total returns replace earnings; portfolio allocation replaces segment revenue; index construction and the physical sleeve replace the corporate moat; the copper price and the underlying miners' economics replace company fundamentals.</p>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK A ============ -->
+    <section id="block-a" class="animate">
+      <div class="block-kicker">Block A</div>
+      <h2 class="block-title">Consolidated panel</h2>
+      <p class="block-lede">Every price, ratio and performance figure in this report lives in this panel or in the tables that follow. The prose interprets them and does not repeat them.</p>
+
+      <div class="panel-grid">
+        <div class="panel-col">
+          <h4>Market</h4>
+          <div class="metric"><div class="m-lab">Market price</div><div class="m-val">$41.17</div></div>
+          <div class="metric"><div class="m-lab">Net asset value per share</div><div class="m-val">$41.35</div></div>
+          <div class="metric"><div class="m-lab">Premium / discount</div><div class="m-val neg">-0.44%</div></div>
+          <div class="metric"><div class="m-lab">Total net assets</div><div class="m-val">$282.4M</div></div>
+          <div class="metric"><div class="m-lab">Shares outstanding</div><div class="m-val">6,830,000</div></div>
+          <div class="metric"><div class="m-lab">Versus 52-week high ($47.46)</div><div class="m-val neg">-13.3% (est.)</div></div>
+          <div class="metric"><div class="m-lab">Versus 52-week low ($22.67)</div><div class="m-val pos">+81.6% (est.)</div></div>
+        </div>
+
+        <div class="panel-col">
+          <h4>Fund mechanics</h4>
+          <div class="metric"><div class="m-lab">Total annual operating expenses</div><div class="m-val">0.66%</div></div>
+          <div class="metric"><div class="m-lab">Management fee</div><div class="m-val">0.65%</div></div>
+          <div class="metric"><div class="m-lab">Number of issuers</div><div class="m-val">79</div></div>
+          <div class="metric"><div class="m-lab">Top ten concentration</div><div class="m-val">74.86% (est.)</div></div>
+          <div class="metric"><div class="m-lab">Weighted average holding market cap</div><div class="m-val">$42,725.7M</div></div>
+          <div class="metric"><div class="m-lab">Median 30-day bid-ask spread</div><div class="m-val">0.44%</div></div>
+          <div class="metric"><div class="m-lab">Inception</div><div class="m-val">5 March 2024</div></div>
+        </div>
+
+        <div class="panel-col">
+          <h4>Portfolio valuation</h4>
+          <div class="metric"><div class="m-lab">Portfolio price to earnings</div><div class="m-val">28.24</div></div>
+          <div class="metric"><div class="m-lab">Historical range of that ratio</div><div class="m-val mute">(data not found)</div></div>
+          <div class="metric"><div class="m-lab">Distribution, trailing twelve months</div><div class="m-val">$0.82</div></div>
+          <div class="metric"><div class="m-lab">Distribution yield</div><div class="m-val">1.99%</div></div>
+          <div class="metric"><div class="m-lab">Physical copper weight</div><div class="m-val">5.11%</div></div>
+          <div class="metric"><div class="m-lab">Large / medium / small cap split</div><div class="m-val">75.1 / 12.1 / 8.0%</div></div>
+          <div class="metric"><div class="m-lab">Reference LME copper, 6 August</div><div class="m-val">$14,455 / tonne</div></div>
+        </div>
+
+        <div class="panel-col">
+          <h4>Performance and flows</h4>
+          <div class="metric"><div class="m-lab">One year, net asset value</div><div class="m-val pos">+82.09%</div></div>
+          <div class="metric"><div class="m-lab">One year, benchmark index</div><div class="m-val pos">+83.94%</div></div>
+          <div class="metric"><div class="m-lab">Year to date, net asset value</div><div class="m-val pos">+10.92%</div></div>
+          <div class="metric"><div class="m-lab">Since inception, annualised</div><div class="m-val pos">+34.91%</div></div>
+          <div class="metric"><div class="m-lab">Net flows, one year</div><div class="m-val pos">+$207.3M</div></div>
+          <div class="metric"><div class="m-lab">Net flows, three months</div><div class="m-val neg">-$21.6M</div></div>
+          <div class="metric"><div class="m-lab">Next index rebalance</div><div class="m-val">September 2026</div></div>
+        </div>
+      </div>
+      <div class="src">Sources: Sprott ETFs fund page and fact sheet (net asset value, market price, premium, net assets, shares, fees, issuers, spread, characteristics), 18 August 2026 and 30 June to 31 July 2026 as dated. StockAnalysis.com (52-week range, portfolio price to earnings, distribution and yield), 14 to 15 August 2026. ETFdb (net flows). IndexBox reporting of London Metal Exchange cash settlement, 6 August 2026. Top ten concentration and distance from 52-week extremes calculated by PGS from the sourced inputs.</div>
+
+      <p>The portfolio price to earnings figure carries almost no valuation information. Mining multiples compress into cyclical peaks and expand at troughs, so a rising earnings base against a flat share price pulls the ratio down exactly when cycle risk is highest. No published history for this ratio on this fund could be located, which after two and a half years of operating life is the honest answer.</p>
+    </section>
+
+    <!-- ============ BLOCK B ============ -->
+    <section id="block-b" class="animate">
+      <div class="block-kicker">Block B</div>
+      <h2 class="block-title">Quarterly record</h2>
+      <p class="block-lede">Anchor quarter first. For a passive fund the quarterly total return against its own benchmark is the operating result; the tracking gap is the equivalent of the beat or miss.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Quarter</th>
+              <th class="num">Quarter-end close</th>
+              <th class="num">Fund total return (NAV)</th>
+              <th class="num">Benchmark index</th>
+              <th>Tracking gap</th>
+              <th>Copper market driver</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Q2 2026</strong><br><span style="color:var(--text-mute);font-size:12px;">ended 30 Jun 2026</span></td>
+              <td class="num">$38.30</td>
+              <td class="num pos">+8.69%</td>
+              <td class="num pos">+9.34%</td>
+              <td><span class="pill pill-neg">Behind 65 bp</span></td>
+              <td>Metal cleared fourteen thousand dollars a tonne in May, then corrected sharply through June</td>
+            </tr>
+            <tr>
+              <td><strong>Q1 2026</strong><br><span style="color:var(--text-mute);font-size:12px;">ended 31 Mar 2026</span></td>
+              <td class="num">$35.33 (est.)</td>
+              <td class="num pos">+1.76% (est.)</td>
+              <td class="num pos">+1.71% (est.)</td>
+              <td><span class="pill pill-pos">Ahead 5 bp</span></td>
+              <td>All-time London high of $14,527.50 a tonne on 29 January, largely unmatched by the equities</td>
+            </tr>
+            <tr>
+              <td><strong>Q4 2025</strong><br><span style="color:var(--text-mute);font-size:12px;">ended 31 Dec 2025</span></td>
+              <td class="num">$34.72 (est.)</td>
+              <td class="num pos">+25.7% (est.)</td>
+              <td class="num">(data not found)</td>
+              <td><span class="pill pill-mute">Not calculable</span></td>
+              <td>Three-month London forwards set a record near $11,200 in October on the Grasberg outage</td>
+            </tr>
+            <tr>
+              <td><strong>Q3 2025</strong><br><span style="color:var(--text-mute);font-size:12px;">ended 30 Sep 2025</span></td>
+              <td class="num">$28.29</td>
+              <td class="num pos">+23.0% (est.)</td>
+              <td class="num">(data not found)</td>
+              <td><span class="pill pill-mute">Not calculable</span></td>
+              <td>El Teniente seismic shutdown, then the 8 September mud rush at Grasberg</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Sources: Sprott ETFs quarter-end standardised returns as of 30 June 2026 (Q2 2026 fund and benchmark; trailing year and year to date used for derivation). MarketBeat historical price file (30 September 2025 close). StockAnalysis.com historical price file (30 June 2026 close). Figures tagged (est.) are derived by PGS from published trailing returns: the March 2026 and December 2025 closes and the three earlier quarterly returns are backed out of the published one-year, year-to-date and three-month series and are not independently published at quarterly granularity. Benchmark returns for the 2025 quarters could not be reconstructed without a further published anchor and are marked accordingly.</div>
+    </section>
+
+    <!-- ============ BLOCK C ============ -->
+    <section id="block-c" class="animate">
+      <div class="block-kicker">Block C</div>
+      <h2 class="block-title">Reading the quarters</h2>
+      <p class="block-lede">What produced each number, and whether the market read the print correctly.</p>
+
+      <div class="prose">
+        <div class="quarter-group">
+          <div class="q-kicker">Q2 2026 <span>&middot; anchor quarter</span></div>
+          <p>The quarter was won in April and May and handed back in June. Copper cleared fourteen thousand dollars a tonne on the London exchange for the first time during May and the producer complex re-rated with it. What broke the run was company-specific. Freeport's first-quarter release on 23 April cut the expected second-half operating rate at Grasberg from roughly eighty-five per cent of capacity to about sixty-five, and the shares fell more than thirteen per cent in a single session. Because Freeport is a quarter of this fund, that print set the tone. June then produced two sessions worse than six per cent as the metal corrected. The gap to the benchmark was the widest of the four quarters shown, consistent with fee drag plus the friction of holding Australian, Indonesian and Peruvian lines whose closes do not align with the index calculation window. The market read the revision correctly: deferred volume is still volume, but the discount rate on a 2027 recovery is not the one applied to 2026.</p>
+        </div>
+
+        <div class="quarter-group">
+          <div class="q-kicker">Q1 2026</div>
+          <p>The most instructive quarter of the four. Copper set its all-time London high in late January, jumping around eleven per cent intraday before closing up roughly four, and the fund finished the quarter almost exactly where it started. Three things explain the disconnect. The equities had already discounted a supply shock through the second half of 2025, so the metal was catching up to the miners rather than leading them. Freeport carried a live execution overhang that no copper price could offset. And gold, which supplies a meaningful by-product credit to the largest holding, pulled back hard over the same window. Sell-side positioning turned defensive: Goldman Sachs put fair value near eleven and a half thousand dollars a tonne against a much higher spot price and framed a definitive tariff ruling as the correction catalyst. The equity market did not believe the spot print was durable, and on the evidence of the following quarter it was right to hesitate.</p>
+        </div>
+
+        <div class="quarter-group">
+          <div class="q-kicker">Q4 2025</div>
+          <p>The strongest quarter in the sequence, and the one that built most of the trailing one-year figure in the panel. The September mud rush at Grasberg stopped being an accident report and became a supply model revision. Goldman Sachs cut its global mine supply forecast and estimated roughly half a million tonnes of lost output across two years from that single asset; Benchmark Mineral Intelligence raised its 2026 deficit estimate more than fivefold. Three-month London forwards set an all-time high in October, the first time the forward curve had confirmed what the American futures contract had been signalling since mid-year. The miners re-rated on the arithmetic rather than on sentiment: at a fixed cash cost, every dollar of price increase falls to gross profit. The fund paid its annual distribution in December, which is why the quarter's total return runs ahead of the price move. The reaction was proportionate to the news, which is rare enough in this sector to note.</p>
+        </div>
+
+        <div class="quarter-group">
+          <div class="q-kicker">Q3 2025</div>
+          <p>Two supply events inside eight weeks. The seismic collapse at El Teniente removed a large Chilean operation from the market and sent the metal up around twelve per cent to just above nine thousand seven hundred dollars a tonne. Then on 8 September the Grasberg block cave flooded, and futures ran to roughly ten and a half thousand dollars, a fifteen-month high. Between the two, the American Section 232 action of mid-2025 landed and left refined metal outside the tariff perimeter, which collapsed the American futures premium and pushed the pricing signal back onto London. For a fund whose largest holding operates the mine that flooded, the quarter should have been ugly. It was not, because the supply loss lifted the price received by every other producer in the portfolio by more than it cost the one that suffered the loss. That asymmetry is the single most useful thing to understand about this vehicle.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK D ============ -->
+    <section id="block-d" class="animate">
+      <div class="block-kicker">Block D</div>
+      <h2 class="block-title">Patterns and watch list</h2>
+
+      <div class="sub-h">Structural patterns across the four quarters</div>
+      <div class="obs">
+        <div class="claim">This is a geared expression of the copper price rather than a diversified equity holding.</div>
+        <div class="evid">The trailing one-year return in the panel is several multiples of the metal's own move over the same window.</div>
+      </div>
+      <div class="obs">
+        <div class="claim">Tracking difference is small and almost entirely one-directional.</div>
+        <div class="evid">In the two quarters with published benchmark data the fund sat within a few dozen basis points of the index, on the losing side in the larger.</div>
+      </div>
+      <div class="obs">
+        <div class="claim">Concentration drifts upward between rebalances without any buying decision.</div>
+        <div class="evid">Freeport's weight rose across the June, July and August holdings files on relative price alone, share count unchanged.</div>
+      </div>
+      <div class="obs">
+        <div class="claim">Asset growth has been price-driven, not flow-driven, since the spring.</div>
+        <div class="evid">Net flows in the panel turned negative while total net assets held broadly flat.</div>
+      </div>
+
+      <div class="sub-h">Watch list for the next quarter</div>
+      <div class="obs">
+        <div class="claim"><span class="sig up">&uarr;</span> Grasberg third-quarter exit rate.</div>
+        <div class="evid">Confirms if daily tonnage holds above the June level through planned maintenance; breaks if the second-half average slips below guidance.</div>
+      </div>
+      <div class="obs">
+        <div class="claim"><span class="sig flat">&rarr;</span> Section 232 refined copper ruling.</div>
+        <div class="evid">Confirms if the exemption persists; breaks on a headline tariff that closes the arbitrage and releases inventory back to London.</div>
+      </div>
+      <div class="obs">
+        <div class="claim"><span class="sig flat">&rarr;</span> September index rebalance under the new quarterly schedule.</div>
+        <div class="evid">Confirms if the largest weight is trimmed toward its December level; breaks if single-name drift continues unchecked.</div>
+      </div>
+      <div class="obs">
+        <div class="claim"><span class="sig down">&darr;</span> London backwardation and warehouse stocks.</div>
+        <div class="evid">Confirms tightness if the cash to three-month spread stays wide; breaks on sustained inflows of the size delivered in mid-August.</div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK E ============ -->
+    <section id="block-e" class="animate">
+      <div class="block-kicker">Block E</div>
+      <h2 class="block-title">Strategic architecture</h2>
+
+      <h3 class="sec-h">E.1 &middot; Allocation and revenue architecture</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Position</th>
+              <th>Listing</th>
+              <th class="num">Weight</th>
+              <th>Category</th>
+              <th>Role in the portfolio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Freeport-McMoRan</td><td>FCX</td><td class="num">24.82%</td><td>Large-cap producer</td><td>The fund's dominant risk factor and its main source of execution risk</td></tr>
+            <tr><td>Teck Resources</td><td>TECK</td><td class="num">9.90%</td><td>Large-cap producer</td><td>Merger arbitrage overlay ahead of the Anglo Teck combination</td></tr>
+            <tr><td>Antofagasta</td><td>ANTO LN</td><td class="num">8.14%</td><td>Large-cap producer</td><td>Highest-margin pure-play exposure, single-country Chile</td></tr>
+            <tr><td>Sprott Physical Copper Trust</td><td>COP/U</td><td class="num">5.11%</td><td>Physical metal</td><td>Direct metal sleeve with no operating or grade risk</td></tr>
+            <tr><td>KGHM Polska Miedz</td><td>KGH PW</td><td class="num">5.00%</td><td>Large-cap producer</td><td>State-influenced European producer, low correlation to Americas policy</td></tr>
+            <tr><td>First Quantum Minerals</td><td>FM CN</td><td class="num">4.94%</td><td>Large-cap producer</td><td>Optionality on any Cobre Panama resolution</td></tr>
+            <tr><td>Southern Copper</td><td>SCCO</td><td class="num">4.83%</td><td>Large-cap producer</td><td>Lowest-cost tonnes in the portfolio, Peru and Mexico</td></tr>
+            <tr><td>Hudbay Minerals</td><td>HBM</td><td class="num">4.41%</td><td>Mid-cap producer</td><td>Growth pipeline weighted to Arizona permitting</td></tr>
+            <tr><td>Lundin Mining</td><td>LUN CN</td><td class="num">4.16%</td><td>Mid-cap producer</td><td>Vicuna district ownership shared with a developer also held here</td></tr>
+            <tr><td>Capstone Copper</td><td>CS CN</td><td class="num">3.55%</td><td>Mid-cap producer</td><td>Ramp-up torque at Mantoverde</td></tr>
+            <tr><td>Positions eleven to fourteen</td><td>SFR, IVN, 1208, AMMN</td><td class="num">9.74%</td><td>Mid-cap producer</td><td>Australian, Congolese and Indonesian tonnes outside American policy reach</td></tr>
+            <tr><td>Remaining sixty-five positions and cash</td><td>various</td><td class="num">15.40% (est.)</td><td>Developers and explorers</td><td>The discovery and takeout tail; individually immaterial, collectively the differentiator</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Source: Sprott ETFs complete holdings file, 18 August 2026. Aggregated rows calculated by PGS from that file; the residual row is a balancing figure and includes cash equivalents.</div>
+
+      <div class="prose">
+        <p>The allocation is a barbell that pretends to be a market-cap index. At one end sit ten producers that together carry roughly three quarters of the money, and inside that group a single American name carries a quarter on its own. At the other end sit sixty-five positions, most of them under half a per cent, that own drill results rather than mines. Between the two sits a physical metal sleeve, added to the fund in June 2025, which is the only line in the portfolio that cannot miss a production guide.</p>
+        <p>The economics of the producer end are simple and violent. Antofagasta's first half showed the shape: revenue up around eighteen per cent to four and a half billion dollars, earnings before interest, tax, depreciation and amortisation up twenty-seven per cent to two and eight, and a margin above sixty-three per cent, all delivered while copper output fell nine and a half per cent year on year. Volume did not drive that result. Realised price did, at six dollars nineteen a pound against a net cash cost of one twenty-two. Teck said the same from a different asset base: copper segment gross profit before depreciation more than doubled on record quarterly sales at Quebrada Blanca.</p>
+        <p>Operating leverage originates entirely in the spread between realised price and unit cash cost, which is why the return distribution is skewed rather than symmetric. Freeport quantified it on its own call: ten cents a pound of copper is worth roughly four hundred million dollars of annual earnings before interest, tax, depreciation and amortisation at 2027 and 2028 volumes. No holding funds another, because there are no internal capital transfers. The structure pools price exposure while diversifying operational failure risk. Geographically the money sits mainly in Canadian and American listings, with Chile, Australia and Poland behind, so the fund is long Andean geology through North American paper.</p>
+      </div>
+
+      <h3 class="sec-h">E.2 &middot; Competitive moat</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Pillar</th><th>Strength</th><th>Erosion risk</th><th class="num">Rating</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Physical copper sleeve inside a fund wrapper</td><td>High</td><td>Low. Structurally difficult to replicate under American fund rules without an affiliated trust</td><td class="num"><span class="stars">&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+            <tr><td>Access to non-American listed developers and explorers</td><td>High</td><td>Low. Requires custody and settlement across seven exchanges plus Peru and the Philippines</td><td class="num"><span class="stars">&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+            <tr><td>Index co-developed with Nasdaq and owned jointly</td><td>Moderate</td><td>Medium. Any issuer can license a competing copper index at similar cost</td><td class="num"><span class="stars">&#9733;&#9733;&#9733;</span></td></tr>
+            <tr><td>Purity screen on copper revenue or assets</td><td>Moderate</td><td>Medium. Mechanical, and reclassification of diversified miners can be gamed</td><td class="num"><span class="stars">&#9733;&#9733;&#9733;</span></td></tr>
+            <tr><td>Sprott brand and adviser distribution in critical materials</td><td>Moderate</td><td>Medium. Fee compression from broad-line issuers is already visible</td><td class="num"><span class="stars">&#9733;&#9733;&#9733;</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Source: PGS assessment based on Sprott ETFs prospectus materials, index methodology description and holdings file, August 2026. Ratings are a PGS scale, one to five, five being a durable and near-unassailable advantage.</div>
+
+      <div class="prose">
+        <p>Rate the mechanism, not the brand. Two pillars are genuinely hard to copy. The physical sleeve works because Sprott already operates a closed-end trust holding warehouse copper, and a rival issuer would need to build that vehicle first and then satisfy its regulator about owning it inside a fund. The second is duller and more valuable: the plumbing to hold seventy-nine lines across Toronto, London, Sydney, Warsaw, Hong Kong, Jakarta, Lima, Manila and Stockholm, settle them, and price them into a daily net asset value. A competitor can copy the idea in an afternoon and the infrastructure in about eighteen months.</p>
+        <p>The other three are ordinary. Index co-development sounds proprietary and is mostly a licensing arrangement; Nasdaq will sell a copper index to anyone. The purity screen is a threshold test on revenue or assets, so it admits and expels constituents on accounting definitions rather than economic reality, and the Anglo Teck combination will test exactly that. Distribution is the weakest of the five, because the fee sits above the passive average and the case for paying it rests on the exposure being unavailable elsewhere.</p>
+        <p>Durability therefore depends on whether pure-play copper stays a distinct category or gets absorbed into broader critical-materials products. On current evidence the category is holding. The honest read is a moat that protects the shape of the exposure rather than the level of the fee.</p>
+      </div>
+
+      <h3 class="sec-h">E.3 &middot; Long-term growth architecture</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Driver</th><th>Timeline</th><th>Current state</th><th>Potential</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Structural mine supply deficit</td><td>2026 to 2028</td><td>Two tier-one assets impaired, Congolese concentrate export ban, Chilean output guided lower</td><td>Sustained pricing above the incentive cost of new supply</td><td><span class="status ontrack">on track</span></td></tr>
+            <tr><td>Data centre and grid copper demand</td><td>2026 to 2030</td><td>Cited by every major producer, not yet isolated cleanly in trade data</td><td>The largest single demand delta in the bull case</td><td><span class="status emerging">emerging</span></td></tr>
+            <tr><td>Section 232 resolution and inventory normalisation</td><td>Next twelve months</td><td>Decision deadline missed, arbitrage still open, American warehouses full</td><td>Removes the largest policy overhang on the price</td><td><span class="status atrisk">at risk</span></td></tr>
+            <tr><td>Anglo Teck completion and index reconstitution</td><td>Sep 2026 to Mar 2027</td><td>Shareholder and Canadian approvals secured, China and South Korea outstanding</td><td>Rewrites the second-largest holding and its index eligibility</td><td><span class="status ontrack">on track</span></td></tr>
+            <tr><td>Developer re-rating through takeover activity</td><td>2027 to 2030</td><td>Small weights, high beta, thin liquidity</td><td>Where this fund can separate from a large-cap copper basket</td><td><span class="status emerging">emerging</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Sources: International Copper Study Group production data reported August 2026; Goldman Sachs and Citi copper notes reported June 2026; Anglo American and Teck merger announcements, 30 July 2026; Sprott ETFs index rebalance notice, 8 July 2026. Status values are a PGS controlled vocabulary.</div>
+
+      <div class="prose">
+        <p>Sequencing matters more than the list. The supply deficit has to hold first, because everything else is a modifier on it. Global mine production fell in the opening five months of 2026 and refined output growth was forecast at well under one per cent for the year, which is the condition that lets the second driver matter at all. If mine supply recovers faster than expected, data centre demand becomes an interesting statistic rather than a price driver.</p>
+        <p>The tariff ruling sits second and is the only genuinely binary item. A decision either way ends the American stockpiling trade that has kept London inventories thin, and its direction determines whether the inventory release is orderly or violent. Until it lands, the London price contains a policy premium of unknown size, and so does every producer equity here.</p>
+        <p>The Anglo Teck combination is third and is specific to this fund rather than to copper. It resolves inside the tariff window and forces the index to judge whether the successor still clears the purity screen. Management describes the combined group as offering more than seventy per cent copper exposure, which suggests it does, at a weight and a listing that will differ from what the fund holds today. The developer tail is last and is the only driver that can still work if the first three disappoint, because takeover premiums in a scarce-asset market price off replacement cost rather than spot.</p>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK F ============ -->
+    <section id="block-f" class="animate">
+      <div class="block-kicker">Block F</div>
+      <h2 class="block-title">Risk register</h2>
+
+      <div class="risk">
+        <div class="r-head">
+          <h4>Single-name concentration in Freeport-McMoRan</h4>
+          <span class="badge">High</span>
+        </div>
+        <div class="r-body">
+          <p>The mechanism is arithmetic. With a quarter of the money in one name, a fifteen per cent single-day move in Freeport moves the fund by close to four per cent before anything else happens, and the April 2026 session proved the transmission works exactly that way. The weight is not the result of a decision: it drifts upward between rebalances whenever Freeport outperforms, and the semi-annual schedule has meant six-month gaps during which nothing corrects it. Timeline is continuous, with the acute window running through the second half of 2026 while the block cave ramps toward the guided share of capacity. The observable is the holdings file: if Freeport's weight is still climbing after the September rebalance, the methodology permits concentration rather than controlling it. A second observable is Indonesian, since the Grasberg operating rights extension remains conditional and the disclosed post-2042 ownership step-down puts the largest holding's best asset inside a negotiated arrangement.</p>
+        </div>
+      </div>
+
+      <div class="risk">
+        <div class="r-head">
+          <h4>Policy reflexivity in the copper price</h4>
+          <span class="badge">High</span>
+        </div>
+        <div class="r-body">
+          <p>A material part of the current price is a tariff expectation rather than a physical shortage. American importers have been pulling metal across the Atlantic ahead of a Section 232 ruling that missed its June 2026 deadline, which drained London warehouses, widened the cash to three-month spread to levels last seen in the 2021 squeeze, and pushed the metal to record highs. That is a positioning trade wearing the costume of a supply deficit. Goldman Sachs has put fundamental fair value materially below spot and named the tariff decision as the correction catalyst. Timeline is the next two to four quarters. The observable is the spread and the warehouse balance together: a rebuild in London stocks alongside a collapsing backwardation would signal the arbitrage unwinding, and the mid-August session in which one trading house delivered twenty thousand tonnes showed how quickly that starts.</p>
+        </div>
+      </div>
+
+      <div class="risk medium">
+        <div class="r-head">
+          <h4>Jurisdictional and index-mechanics risk</h4>
+          <span class="badge">Medium</span>
+        </div>
+        <div class="r-body">
+          <p>The portfolio's tonnes sit in Indonesia, Chile, Peru, Congo, Zambia, Panama and Poland, and its listings sit somewhere else again. Each has an independent mechanism for interrupting production or cash flow: permitting, royalty change, export ban, seismic event, state ownership. The Congolese export ban is currently doing more to tighten the market than any producer decision. The index adds a second layer, since a purity screen decides which of those exposures the fund actually owns, and the Anglo Teck completion forces a decision on roughly a tenth of the portfolio. Timeline runs from September 2026 to March 2027. The observable is the rebalance file itself: a reconstitution that removes or materially reduces the successor entity would change the fund's risk profile without any market event occurring.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK G ============ -->
+    <section id="block-g" class="animate">
+      <div class="block-kicker">Block G</div>
+      <h2 class="block-title">Scenarios</h2>
+
+      <div class="scenario-grid">
+        <div class="scen">
+          <div class="s-head">
+            <h4>Constructive</h4>
+            <div class="delta">+45.7% to the bull target of $60.00</div>
+          </div>
+          <div class="s-body">
+            <ul>
+              <li>The deficit is physical rather than positional, and survives the tariff ruling intact</li>
+              <li>Grasberg holds its ramp schedule and Freeport's execution discount closes</li>
+              <li>Data centre and grid demand shows up in refined consumption data rather than in producer commentary</li>
+            </ul>
+            <p>This requires the metal to hold current levels through a policy resolution, which is the specific thing it has not yet been tested against. The supporting evidence is real: mine output fell in the opening months of the year, two tier-one assets stay impaired into 2028, and the Congolese export ban is starving Chinese smelters of feed. If those hold, producer margins of the kind Antofagasta reported in the first half become the sector norm rather than a peak, and the developer tail re-rates on takeover logic. The path runs through the September rebalance without a concentration accident and through the Anglo Teck completion without an index expulsion.</p>
+          </div>
+        </div>
+
+        <div class="scen bear">
+          <div class="s-head">
+            <h4>Adverse</h4>
+            <div class="delta">-35.6% to the bear case of $26.50</div>
+          </div>
+          <div class="s-body">
+            <ul>
+              <li>The tariff decision releases American inventory and the London squeeze unwinds</li>
+              <li>Grasberg and Kamoa recover faster than the 2028 assumption embedded in supply models</li>
+              <li>Chinese buying stalls above current price levels, as it did in 2024</li>
+            </ul>
+            <p>The bear case does not need a recession. It needs the price to revert toward the fundamental level Goldman Sachs has identified, roughly a fifth below spot, at which point the geared relationship described in Block D works in reverse and takes the fund down by considerably more than the metal. The developer tail is the accelerant here: those positions have no cash flow, thin liquidity and financing needs, and they de-rate first. The observable trigger is a warehouse rebuild in London, which began in mid-August and would need to persist for several weeks to confirm.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK H ============ -->
+    <section id="block-h" class="verdict animate">
+      <div class="block-kicker">Block H</div>
+      <h2 class="block-title">PGS verdict</h2>
+
+      <div class="rating-strip">
+        <div><div class="lab">Rating</div><div class="val"><span class="rating-pill">&#128993; NEUTRAL</span></div></div>
+        <div><div class="lab">Bull target, 18 to 24 months</div><div class="val" style="color:var(--pos);">$60.00</div></div>
+        <div><div class="lab">Bear downside</div><div class="val" style="color:var(--neg);">$26.50</div></div>
+        <div><div class="lab">Risk and reward</div><div class="val">Balanced</div></div>
+      </div>
+
+      <div class="prose">
+        <p><strong>Price dislocation.</strong> There is none to exploit. The fund sits modestly below its record after a trailing year that roughly doubled it, and the discount to net asset value is inside the bid-ask spread. The live question is whether the holdings are mispriced against a copper price carrying an unquantified policy premium. Nobody can size that premium until the Section 232 ruling lands, so taking a view on the fund today means taking a view on that ruling, intended or not.</p>
+        <p><strong>Fundamental quality.</strong> The underlying businesses are in the best shape of the cycle. Antofagasta produced a first-half margin at the top of the pure-play group while losing volume, the clearest demonstration that price is doing the work. Teck's Chilean asset delivered record sales into a record price. Freeport is the exception and also the largest weight, running an impaired flagship while its American operations perform. The deficit case rests on evidence rather than projection: production fell, two tier-one mines stay impaired into 2028, and a producing nation has banned concentrate exports.</p>
+        <p><strong>Primary risk.</strong> Concentration and policy reflexivity compound rather than offset. If the tariff arbitrage unwinds while Freeport's ramp slips, the fund takes both hits in the same quarter and the developer tail amplifies the second. The design assumes operational failure at one holding is offset by higher prices for the rest, which worked beautifully in the third quarter of 2025. It works while physical scarcity sets the price. It fails when a customs decision does.</p>
+        <p><strong>Near-term catalysts.</strong> Four, all inside two quarters: the Section 232 ruling; Freeport's third-quarter Grasberg tonnage, which validates or breaks the guided second-half rate; the September rebalance, the first test of concentration control; and the Chinese and South Korean clearances for Anglo Teck. A holder with a multi-year horizon and tolerance for a forty per cent drawdown has a defensible entry. Anyone looking for the copper trade at an attractive price has arrived about a year late.</p>
+      </div>
+    </section>
+
+    <!-- ============ DISCLAIMER ============ -->
+    <section id="disclaimer" class="disclaimer">
+      <p>"This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice."</p>
+      <p>This report was produced with the assistance of artificial intelligence. Generative model: Anthropic &middot; Claude Opus &middot; version Opus 5, accessed via the Claude application (claude.ai). All figures were sourced from live web search within the same session and cross-checked against the anchoring protocol in Step 1; the model's role was data synthesis, formatting and drafting, not the origination of financial estimates. Human review by the internal analyst precedes publication.</p>
+      <p class="ref">Report Reference: PGS-COPP-202608 &middot; Date: 19 August 2026 &middot; Internal Analyst: Polaris Global Strategies Ltd. &middot; Ticker: COPP &middot; Exchange: Nasdaq &middot; AI Model: Anthropic Opus 5</p>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '';
+          entry.target.style.animationPlayState = 'running';
+          animObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.06 });
+    animateEls.forEach(function(el){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      animObserver.observe(el);
+    });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var sections = links.map(function(l){ return document.querySelector(l.getAttribute('href')); });
+  function setActive(){
+    var pos = window.scrollY + (window.innerHeight * 0.3);
+    var current = 0;
+    sections.forEach(function(s, i){
+      if (s && s.offsetTop <= pos) current = i;
+    });
+    links.forEach(function(l, i){ l.classList.toggle('active', i === current); });
+  }
+  window.addEventListener('scroll', setActive, { passive: true });
+  setActive();
+})();
+</script>
+</body>
+</html>

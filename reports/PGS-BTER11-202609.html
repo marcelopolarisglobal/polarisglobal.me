@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGS · BTER11 · Investo Brazil BESST Quality Acumulação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  --text:#111827;
+  --text-mute:#6B7280;
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#0F766E;
+  --font-display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --font-body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --font-data:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--canvas);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:grid;grid-template-columns:220px 1fr;align-items:start}
+
+/* ---------- sidebar ---------- */
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  padding:28px 0;
+}
+.sidebar .brand{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.sidebar .brand-name{font-family:var(--font-display);font-size:19px;font-weight:700;color:var(--accent);line-height:1.2}
+.sidebar .brand-sub{font-family:var(--font-data);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-mute);margin-top:6px}
+.nav-link{
+  display:block;padding:9px 20px;font-size:13.5px;color:var(--text-mute);
+  text-decoration:none;border-left:3px solid transparent;transition:background .18s,color .18s;
+}
+.nav-link:hover{color:var(--text);background:var(--card)}
+.nav-link.active{color:var(--accent);border-left-color:var(--accent);background:var(--card);font-weight:500}
+.nav-group{font-family:var(--font-data);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-mute);padding:16px 20px 6px}
+
+/* ---------- content ---------- */
+.main-content{max-width:980px;padding:0 48px 96px}
+section{padding-top:56px}
+.prose{max-width:68ch}
+.prose p{margin-bottom:16px}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;line-height:1.25}
+h2{font-size:30px;margin-bottom:6px;letter-spacing:-.01em}
+h3{font-size:21px;margin:30px 0 10px}
+h4{font-size:17px;margin:0 0 6px}
+.kicker{font-family:var(--font-data);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;font-weight:500}
+.section-rule{height:3px;width:64px;background:var(--accent);margin:12px 0 26px}
+.lede{color:var(--text-mute);font-size:15px;max-width:68ch;margin-bottom:8px}
+
+/* ---------- cover ---------- */
+.cover{
+  min-height:96vh;display:flex;flex-direction:column;justify-content:center;
+  background:var(--surface);
+  background-image:radial-gradient(var(--border) 1.1px,transparent 1.1px);
+  background-size:22px 22px;
+  padding:64px 48px;border-bottom:1px solid var(--border);
+}
+.cover-inner{max-width:760px}
+.cover .eyebrow{font-family:var(--font-data);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.cover h1{font-family:var(--font-display);font-size:58px;font-weight:700;line-height:1.05;margin:20px 0 4px;color:var(--accent)}
+.cover .company{font-family:var(--font-display);font-size:25px;font-weight:400;color:var(--text);margin-bottom:26px}
+.cover .meta{display:flex;flex-wrap:wrap;gap:34px;border-top:3px solid var(--accent);padding-top:20px;margin-top:14px}
+.cover .meta div span{display:block;font-family:var(--font-data);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-mute)}
+.cover .meta div strong{font-family:var(--font-data);font-size:15px;font-weight:500;color:var(--text)}
+.cover-links{margin-top:34px;display:flex;flex-wrap:wrap;gap:12px}
+.cover-links a{
+  font-family:var(--font-data);font-size:11.5px;text-decoration:none;color:var(--text);
+  border:1px solid var(--border);background:var(--canvas);padding:9px 14px;
+}
+.cover-links a:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ---------- notice ---------- */
+.notice{
+  border:1px solid var(--border);border-left:3px solid var(--caution);
+  background:var(--caution-tint);padding:18px 22px;margin-top:34px;max-width:68ch;
+}
+.notice h4{font-family:var(--font-body);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--caution);margin-bottom:8px}
+.notice p{font-size:14px;margin-bottom:10px}
+.notice p:last-child{margin-bottom:0}
+
+/* ---------- panel (Block A) ---------- */
+.panel{border:1px solid var(--border);border-top:3px solid var(--accent);background:var(--card)}
+.panel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.panel-col{padding:20px 22px;border-right:1px solid var(--border)}
+.panel-col:last-child{border-right:none}
+.panel-col .group-label{font-family:var(--font-data);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-mute);font-weight:700;margin-bottom:14px}
+.metric{margin-bottom:12px}
+.metric .k{display:block;font-size:11.5px;color:var(--text-mute);line-height:1.35}
+.metric .v{display:block;font-family:var(--font-data);font-size:15px;font-weight:500;color:var(--text);line-height:1.4}
+.v.pos{color:var(--pos)} .v.neg{color:var(--neg)}
+
+/* ---------- tables ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{
+  background:var(--card);text-align:left;padding:11px 14px;
+  font-family:var(--font-data);font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--text-mute);font-weight:700;border-bottom:1px solid var(--border);white-space:nowrap;
+}
+tbody td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top;word-break:break-word}
+tbody tr:nth-child(odd){background:var(--canvas)}
+tbody tr:nth-child(even){background:var(--surface)}
+tbody tr:hover{background:var(--card);transition:background .18s}
+tbody tr.total-row{background:var(--card);font-weight:700}
+td.num,th.num{font-family:var(--font-data);white-space:nowrap}
+td.pos{color:var(--pos)} td.neg{color:var(--neg)} td.mute{color:var(--text-mute)}
+.pill{display:inline-block;font-family:var(--font-data);font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:2px;letter-spacing:.03em;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.pill-pos{background:var(--pill-pos-bg);color:var(--pill-pos-fg)}
+.pill-neg{background:var(--pill-neg-bg);color:var(--pill-neg-fg)}
+.pill-mute{background:var(--card);color:var(--text-mute)}
+.src{font-family:var(--font-data);font-size:10.5px;color:var(--text-mute);margin-top:7px;line-height:1.5}
+.stars{font-family:var(--font-data);color:var(--accent);letter-spacing:.06em;white-space:nowrap}
+.sig{font-family:var(--font-data);font-weight:700}
+.sig-up{color:var(--pos)} .sig-flat{color:var(--text-mute)} .sig-down{color:var(--neg)}
+
+/* ---------- Block C ---------- */
+.quarter{border-left:3px solid var(--accent);padding-left:20px;margin-bottom:30px;max-width:68ch}
+.quarter .q-label{font-family:var(--font-data);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:7px}
+
+/* ---------- Block D ---------- */
+.obs{max-width:68ch;margin-bottom:14px;padding-left:16px;border-left:1px solid var(--border)}
+.obs strong{display:block;font-size:15px;margin-bottom:2px}
+.obs span{font-size:14.5px;color:var(--text-mute)}
+.watch{display:flex;gap:12px;align-items:flex-start;max-width:68ch;margin-bottom:12px;padding-left:16px;border-left:1px solid var(--border)}
+
+/* ---------- Block F ---------- */
+.risk{border:1px solid var(--border);margin-bottom:20px;page-break-inside:avoid}
+.risk-high{border-left:3px solid var(--neg)}
+.risk-med{border-left:3px solid var(--caution)}
+.risk-head{padding:13px 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.risk-high .risk-head{background:var(--neg-tint);print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.risk-med .risk-head{background:var(--caution-tint);print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.risk-body{background:var(--canvas);padding:16px 20px;font-size:14.5px}
+.badge{font-family:var(--font-data);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:2px;white-space:nowrap;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.badge-high{background:var(--neg);color:#fff}
+.badge-med{background:var(--caution);color:#fff}
+
+/* ---------- Block G ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.scenario{border:1px solid var(--border);page-break-inside:avoid}
+.scenario .sc-head{padding:14px 20px}
+.bull .sc-head{background:var(--pos-tint);border-top:3px solid var(--pos);print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.bear .sc-head{background:var(--neg-tint);border-top:3px solid var(--neg);print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.scenario .sc-head h4{font-family:var(--font-body);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.bull .sc-head h4{color:var(--pos)} .bear .sc-head h4{color:var(--neg)}
+.scenario .sc-target{font-family:var(--font-data);font-size:21px;font-weight:700;margin-top:4px}
+.bull .sc-target{color:var(--pos)} .bear .sc-target{color:var(--neg)}
+.sc-body{background:var(--canvas);padding:16px 20px;font-size:14.5px}
+.sc-body ul{list-style:none;margin-bottom:12px}
+.sc-body li{padding-left:16px;position:relative;margin-bottom:7px}
+.sc-body li::before{content:"·";position:absolute;left:3px;color:var(--accent);font-weight:700}
+
+/* ---------- Block H ---------- */
+.verdict{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--accent);padding:28px 30px}
+.verdict-strip{display:flex;flex-wrap:wrap;gap:0;background:var(--card);border:1px solid var(--border);margin-bottom:24px}
+.vs-item{flex:1 1 150px;padding:15px 20px;border-right:1px solid var(--border)}
+.vs-item:last-child{border-right:none}
+.vs-item span{display:block;font-family:var(--font-data);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--text-mute);margin-bottom:5px}
+.vs-item strong{font-family:var(--font-data);font-size:17px;font-weight:700}
+.rating-pill{display:inline-block;background:var(--accent);color:#fff;font-family:var(--font-data);font-size:13px;font-weight:700;letter-spacing:.09em;padding:7px 16px;border-radius:2px;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+
+/* ---------- disclaimer ---------- */
+.disclaimer{margin-top:60px;border-top:1px solid var(--border);padding-top:26px}
+.disclaimer p{font-size:12px;color:var(--text-mute);max-width:80ch;margin-bottom:16px;line-height:1.6}
+.disclaimer .ref{font-family:var(--font-data);font-size:11px}
+
+/* ---------- animation (PDF rule 3) ---------- */
+.animate{opacity:1;animation:fadeUp .6s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ---------- responsive ---------- */
+@media (max-width:768px){
+  .layout{display:block}
+  .sidebar{position:sticky;top:0;height:auto;display:flex;overflow-x:auto;white-space:nowrap;padding:0;border-right:none;border-bottom:1px solid var(--border);z-index:20}
+  .sidebar .brand,.nav-group{display:none}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:12px 14px}
+  .nav-link.active{border-left:none;border-bottom-color:var(--accent)}
+  .main-content{padding:0 20px 64px;max-width:100%}
+  .panel-grid{grid-template-columns:1fr}
+  .panel-col{border-right:none;border-bottom:1px solid var(--border)}
+  .scenario-grid{grid-template-columns:1fr}
+  .cover{padding:52px 20px}
+  .cover h1{font-size:40px}
+}
+
+/* ---------- print ---------- */
+@media print{
+  @page{size:A4;margin:15mm 12mm}
+  html,body{background-color:#FFFFFF;color:#111827}
+  .layout{display:block !important}
+  .sidebar,.nav-link,.nav-group,.cover-links{display:none !important}
+  .main-content{display:block !important;width:100% !important;max-width:100% !important;padding:0 !important}
+  .cover{min-height:auto !important;height:auto !important;display:block !important;background-color:#FFFFFF;background-image:none !important;padding:0 0 24px !important;border-bottom:1px solid #E5E7EB}
+  .cover h1{font-size:44px}
+  section{padding-top:22px}
+  .panel,.verdict,.risk-body,.sc-body,.table-wrap{background-color:#FFFFFF}
+  .panel-grid{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:0 !important}
+  .scenario-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:14px !important}
+  .prose,.quarter,.obs,.watch{orphans:3;widows:3}
+  .risk,.scenario,.verdict,.table-wrap{page-break-inside:avoid}
+  h2,h3{page-break-after:avoid}
+  .animate{opacity:1 !important;transform:none !important;animation:none !important}
+  *{box-shadow:none !important;backdrop-filter:none !important}
+  .table-wrap{overflow:visible !important}
+  td,th{word-break:break-word}
+  .pill,.badge,.rating-pill,.risk-head,.sc-head{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}
+.pgs-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 24px; background: #07090F;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-family: system-ui, sans-serif; font-size: 12px;
+}
+.pgs-topbar a { color: #94A3B8; text-decoration: none; }
+.pgs-topbar a:hover { color: #F1F5F9; }
+.pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+.pgs-topbar .pgs-sep { color: #334155; }
+@media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-BTER11-202609</span>
+</div>
+
+<div class="layout">
+
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-name">Polaris Global<br>Strategies</div>
+      <div class="brand-sub">Research · BVI</div>
+    </div>
+    <div class="nav-group">Relatório</div>
+    <a class="nav-link" href="#capa">Capa</a>
+    <a class="nav-link" href="#painel">A · Painel consolidado</a>
+    <a class="nav-link" href="#serie">B · Série mensal</a>
+    <a class="nav-link" href="#leitura">C · Leitura dos meses</a>
+    <a class="nav-link" href="#padroes">D · Padrões e vigilância</a>
+    <a class="nav-link" href="#arquitetura">E · Arquitetura</a>
+    <a class="nav-link" href="#riscos">F · Riscos</a>
+    <a class="nav-link" href="#cenarios">G · Cenários</a>
+    <a class="nav-link" href="#veredito">H · Veredito PGS</a>
+    <a class="nav-link" href="#disclaimer">Aviso legal</a>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- ============ COVER ============ -->
+    <section class="cover" id="capa" style="padding-top:64px">
+      <div class="cover-inner">
+        <div class="eyebrow">Polaris Global Strategies Ltd.</div>
+        <h1>BTER11</h1>
+        <div class="company">Investo Brazil BESST Quality Acumulação Fundo de Índice</div>
+        <div class="meta">
+          <div><span>Bolsa</span><strong>B3</strong></div>
+          <div><span>Referência</span><strong>PGS-BTER11-202609</strong></div>
+          <div><span>Publicação</span><strong>18/09/2026</strong></div>
+        </div>
+        <div class="cover-links">
+          <a href="#painel">Painel consolidado</a>
+          <a href="#arquitetura">Arquitetura</a>
+          <a href="#riscos">Riscos</a>
+          <a href="#veredito">Veredito</a>
+        </div>
+
+        <div class="notice">
+          <h4>Nota de adequação do instrumento</h4>
+          <p>BTER11 é um fundo de índice, não uma companhia operacional. O formato padrão da PGS pressupõe divulgação trimestral de resultados, lucro por ação e consenso de analistas, itens que não existem para este veículo. As substituições aplicadas de forma consistente ao longo do documento são: série mensal de retorno da cota no lugar da sequência trimestral; fundamentos agregados do índice de referência no lugar de lucro por ação e consenso; composição setorial no lugar de segmentos de receita; arquitetura do veículo e da regra do índice no lugar de vantagem competitiva corporativa.</p>
+          <p>Segunda observação, igualmente relevante: o fundo estreou na B3 em 10 de junho de 2026. A série de preço tem pouco mais de três meses. Qualquer número anterior a essa data pertence ao índice de referência e está identificado como tal. O mês de maio de 2026 aparece na tabela do Bloco B como período anterior à listagem.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK A ============ -->
+    <section id="painel" class="animate">
+      <div class="kicker">Bloco A</div>
+      <h2>Painel consolidado</h2>
+      <div class="section-rule"></div>
+
+      <div class="panel">
+        <div class="panel-grid">
+
+          <div class="panel-col">
+            <div class="group-label">Mercado</div>
+            <div class="metric"><span class="k">Cota na análise</span><span class="v">R$ 21,44</span></div>
+            <div class="metric"><span class="k">Patrimônio líquido</span><span class="v">R$ 41,8 mi</span></div>
+            <div class="metric"><span class="k">Ante máxima desde a estreia</span><span class="v neg">-6,8%</span></div>
+            <div class="metric"><span class="k">Ante mínima desde a estreia</span><span class="v pos">+8,1%</span></div>
+            <div class="metric"><span class="k">Mês corrente até 17/09</span><span class="v pos">+6,1%</span></div>
+            <div class="metric"><span class="k">Maior recuo da série</span><span class="v neg">-13,6% (20/08/2026)</span></div>
+          </div>
+
+          <div class="panel-col">
+            <div class="group-label">Carteira</div>
+            <div class="metric"><span class="k">P/L do índice (12 meses)</span><span class="v">11,54x</span></div>
+            <div class="metric"><span class="k">P/VP do índice</span><span class="v">1,63x</span></div>
+            <div class="metric"><span class="k">Rendimento de dividendos</span><span class="v">5,20%</span></div>
+            <div class="metric"><span class="k">Dívida líquida / patrimônio</span><span class="v">0,03x</span></div>
+            <div class="metric"><span class="k">Número de componentes</span><span class="v">22</span></div>
+            <div class="metric"><span class="k">Concentração das dez maiores</span><span class="v">72,8% (est.)</span></div>
+          </div>
+
+          <div class="panel-col">
+            <div class="group-label">Custo e liquidez</div>
+            <div class="metric"><span class="k">Taxa de administração</span><span class="v">0,50% a.a.</span></div>
+            <div class="metric"><span class="k">Volume médio diário</span><span class="v">R$ 0,96 mi</span></div>
+            <div class="metric"><span class="k">Número de cotistas</span><span class="v">5.172</span></div>
+            <div class="metric"><span class="k">Captação líquida em 30 dias</span><span class="v pos">R$ 8,9 mi</span></div>
+            <div class="metric"><span class="k">Rebalanceamento</span><span class="v">Trimestral</span></div>
+            <div class="metric"><span class="k">Administrador</span><span class="v">BTG Pactual DTVM</span></div>
+          </div>
+
+          <div class="panel-col">
+            <div class="group-label">Índice de referência</div>
+            <div class="metric"><span class="k">Retorno de preço, 12 meses</span><span class="v pos">+13,30%</span></div>
+            <div class="metric"><span class="k">Retorno total bruto, 12 meses</span><span class="v pos">+19,86%</span></div>
+            <div class="metric"><span class="k">Total bruto desde 31/12/2020</span><span class="v pos">+113,95%</span></div>
+            <div class="metric"><span class="k">Volatilidade de 12 meses</span><span class="v">20,23</span></div>
+            <div class="metric"><span class="k">Valor de mercado agregado</span><span class="v">R$ 1,618 tri</span></div>
+            <div class="metric"><span class="k">Próxima implementação</span><span class="v">18/09/2026</span></div>
+          </div>
+
+        </div>
+      </div>
+      <div class="src">Fontes: ETFs Brasil (cota, patrimônio, volume, cotistas, captação, 17/09/2026) · MarketVector, MVBEST (fundamentos, retornos, volatilidade, componentes, calendário de revisão) · Investo (taxa, administrador). Concentração das dez maiores calculada pela PGS sobre as posições divulgadas em 01/09/2026.</div>
+
+      <div class="prose" style="margin-top:22px">
+        <p>O múltiplo de lucro da carteira de referência, no painel, é o de uma bolsa que ainda precifica juro real alto por período prolongado, aplicado a companhias cujo resultado depende de tarifa e de margem financeira. O desconto convive com alavancagem agregada praticamente nula e com um rendimento de dividendos que cobre parcela relevante do carrego, combinação incomum em índices setoriais brasileiros.</p>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK B ============ -->
+    <section id="serie" class="animate">
+      <div class="kicker">Bloco B</div>
+      <h2>Série mensal</h2>
+      <div class="section-rule"></div>
+      <p class="lede" style="margin-bottom:18px">Âncora em agosto de 2026, último mês calendário fechado. Sequência contínua até a listagem.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Período</th>
+              <th class="num">Cota BTER11</th>
+              <th class="num">Ibovespa</th>
+              <th>Diferença</th>
+              <th>Marco do período</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="num">Ago/2026 <span class="pill pill-mute">âncora</span></td>
+              <td class="num neg">-3,7%</td>
+              <td class="num neg">-0,3%</td>
+              <td class="num"><span class="pill pill-neg">-3,4 pp</span></td>
+              <td>Mínima da série em 20/08</td>
+            </tr>
+            <tr>
+              <td class="num">Jul/2026</td>
+              <td class="num pos">+0,4%</td>
+              <td class="num pos">+3,5%</td>
+              <td class="num"><span class="pill pill-neg">-3,0 pp</span></td>
+              <td>Rotação da bolsa para fora do filtro setorial</td>
+            </tr>
+            <tr>
+              <td class="num">Jun/2026</td>
+              <td class="num pos">+5,0%</td>
+              <td class="num pos">+2,0%</td>
+              <td class="num"><span class="pill pill-pos">+3,0 pp</span></td>
+              <td>Estreia em 10/06, janela parcial</td>
+            </tr>
+            <tr>
+              <td class="num mute">Mai/2026</td>
+              <td class="num mute">n.a.</td>
+              <td class="num mute">n.a.</td>
+              <td class="num mute">n.a.</td>
+              <td class="mute">Anterior à listagem do fundo</td>
+            </tr>
+            <tr class="total-row">
+              <td class="num">Desde a estreia (10/06 a 17/09)</td>
+              <td class="num pos">+7,8%</td>
+              <td class="num pos">+10,3%</td>
+              <td class="num"><span class="pill pill-neg">-2,5 pp</span></td>
+              <td>Inclui o mês corrente em curso</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: ETFs Brasil, série de retornos mensais BTER11 contra Ibovespa, atualizada em 17/09/2026. Retorno do benchmark ajustado ao período efetivo de negociação do ativo. Diferença em pontos percentuais calculada pela PGS.</div>
+    </section>
+
+    <!-- ============ BLOCK C ============ -->
+    <section id="leitura" class="animate">
+      <div class="kicker">Bloco C</div>
+      <h2>Leitura dos meses</h2>
+      <div class="section-rule"></div>
+
+      <div class="quarter">
+        <div class="q-label">Agosto de 2026 · âncora</div>
+        <p>Agosto foi o primeiro teste de estresse do fundo. O índice amplo ficou praticamente parado e a cota caiu, abrindo a diferença negativa mais larga da curta série. O recuo máximo registrado no painel foi datado nesse mês. Três forças se somaram. A curva de juros longa abriu com o mercado incorporando risco fiscal pré-eleitoral, o que castiga concessões de energia e saneamento pelo canal da taxa de desconto. Papéis de telecomunicações e de saneamento, que respondem por parcela relevante da carteira, tiveram sessões de queda acentuada. E a regra de teto por emissor deixa o fundo concentrado em setores regulados, sem qualquer amortecedor de commodities. Vale um ponto de método sobre a leitura do mês: em produto recém-listado, o preço de tela pode descolar do valor patrimonial da cota enquanto o formador de mercado calibra tamanho de lote. Quem acompanhou apenas o fechamento em tela leu uma perda possivelmente maior do que a carteira efetivamente entregou.</p>
+      </div>
+
+      <div class="quarter">
+        <div class="q-label">Julho de 2026</div>
+        <p>Julho produziu a pior leitura relativa do período. O fundo entregou retorno positivo apenas simbólico enquanto a bolsa avançou com folga. A explicação está na composição. O Ibovespa carrega mineração e petróleo em peso elevado, e o filtro BESST exclui os dois por construção, junto com varejo, tecnologia, papel e proteína animal. Qualquer mês em que o retorno do mercado brasileiro venha desses blocos produz exatamente o resultado observado, sem qualquer falha de execução do gestor. Não há, nos documentos públicos do fundo, atribuição de desempenho por posição individual, de modo que a leitura fica no nível setorial e assim deve permanecer. O mês serve de aviso permanente sobre o produto. Quem compra essa cota compra um recorte setorial fechado, e a diferença contra o índice amplo vai aparecer nas duas direções ao longo do tempo. Julho mostrou a direção desconfortável dessa conta, três semanas antes de agosto mostrar a segunda.</p>
+      </div>
+
+      <div class="quarter">
+        <div class="q-label">Junho de 2026 · janela parcial desde 10/06</div>
+        <p>Junho conta pouco e conta alguma coisa. O fundo negociou por pouco mais de três semanas e superou o índice amplo por margem confortável, o melhor resultado relativo da série. Duas ressalvas pesam sobre essa leitura. A janela é parcial e uma carteira nova é montada ao longo de vários pregões, o que significa que o retorno do período mistura o desempenho dos ativos com o custo de implantação das posições. Além disso, produto recém-listado costuma negociar com prêmio sobre o valor patrimonial nas primeiras semanas, quando a demanda de varejo chega antes do ritmo normal de criação de cotas. O que a estreia mostrou de útil foi a velocidade de formação da base de cotistas, visível no painel, que se constituiu bem antes de o patrimônio atingir escala institucional. O produto encontrou público antes de encontrar tamanho, e essa é a ordem preferível das duas.</p>
+      </div>
+
+      <div class="quarter">
+        <div class="q-label">Maio de 2026 · anterior à listagem</div>
+        <p>Maio não existe como mês de fundo. O BTER11 só passou a ser negociado em junho, e qualquer número anterior pertence ao índice de referência. A distinção importa porque o material de divulgação do produto apresenta séries longas de desempenho construídas sobre o índice com desconto da taxa de administração, e não sobre histórico auditado de um veículo em operação. O período anterior à estreia trouxe, ainda assim, uma mudança de regra relevante: desde o fim de 2025 o índice deixou de aceitar holdings na composição, privilegiando as operadoras. Isso retirou da carteira veículos de participação que diluíam a exposição direta ao caixa das empresas reguladas. A segunda decisão estrutural foi lançar um gêmeo acumulador do BEST11, que distribui proventos mensalmente. A mesma carteira, dois tratamentos de provento, dois públicos. Para quem dispensa a renda corrente, o diferimento do imposto até a venda da cota é a diferença que justifica a existência do produto.</p>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK D ============ -->
+    <section id="padroes" class="animate">
+      <div class="kicker">Bloco D</div>
+      <h2>Padrões e vigilância</h2>
+      <div class="section-rule"></div>
+
+      <h3>Padrões estruturais</h3>
+      <div class="obs"><strong>O fundo acompanha a bolsa nos meses calmos e fica atrás nas rotações.</strong><span>As duas maiores diferenças negativas da série apareceram em meses de alta do índice amplo puxada por setores que a regra exclui.</span></div>
+      <div class="obs"><strong>A concentração setorial é desenho, não acidente.</strong><span>O teto por emissor limita nomes individuais e deixa o setor livre, resultado visível na tabela de composição.</span></div>
+      <div class="obs"><strong>A captação não seguiu o desempenho relativo.</strong><span>O patrimônio cresceu nos meses em que a cota ficou atrás do Ibovespa, o que aponta demanda ancorada em tese de prazo longo.</span></div>
+      <div class="obs"><strong>O prêmio da acumulação já aparece nas séries do índice.</strong><span>A distância entre retorno de preço e retorno total no painel corresponde ao provento reinvestido em doze meses.</span></div>
+
+      <h3>Lista de vigilância para o próximo fechamento</h3>
+      <div class="watch"><span class="sig sig-up">↑</span><div><strong>Patrimônio líquido.</strong> <span style="color:var(--text-mute)">Confirma se a captação líquida mensal seguir positiva depois da eleição. Quebra com resgate líquido em dois meses seguidos.</span></div></div>
+      <div class="watch"><span class="sig sig-flat">→</span><div><strong>Diferença mensal contra o Ibovespa.</strong> <span style="color:var(--text-mute)">Confirma estabilização se a diferença ficar contida em qualquer direção. Quebra se voltar a se alargar contra o fundo.</span></div></div>
+      <div class="watch"><span class="sig sig-up">↑</span><div><strong>Distância entre preço de tela e valor patrimonial.</strong> <span style="color:var(--text-mute)">Confirma normalização se o descolamento médio cair com a consolidação do formador de mercado. Quebra se persistir em volume alto.</span></div></div>
+      <div class="watch"><span class="sig sig-down">↓</span><div><strong>Composição após a revisão trimestral.</strong> <span style="color:var(--text-mute)">Confirma continuidade se a implementação de setembro preservar o desenho setorial. Quebra se novos nomes reduzirem o bloco bancário.</span></div></div>
+    </section>
+
+    <!-- ============ BLOCK E ============ -->
+    <section id="arquitetura" class="animate">
+      <div class="kicker">Bloco E</div>
+      <h2>Arquitetura estratégica</h2>
+      <div class="section-rule"></div>
+
+      <h3>E.1 · Modelo e arquitetura de exposição</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Setor</th><th class="num">Peso</th><th>Principais posições</th><th>Perfil de retorno</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Elétricas</td><td class="num">37,17%</td><td>Axia Energia, Equatorial, Copel</td><td>Receita contratada e indexada, sensibilidade alta à taxa de desconto</td></tr>
+            <tr><td>Bancos</td><td class="num">36,14%</td><td>BTG Pactual, Banco do Brasil, Bradesco, Itaú Unibanco</td><td>Margem financeira e inadimplência ditam o lucro</td></tr>
+            <tr><td>Seguradoras</td><td class="num">10,09%</td><td>BB Seguridade</td><td>Resultado financeiro cresce com juro alto</td></tr>
+            <tr><td>Saneamento</td><td class="num">8,49%</td><td>Sabesp</td><td>Ciclo de investimento pesado, receita regulada</td></tr>
+            <tr><td>Telecomunicações</td><td class="num">8,11%</td><td>Telefônica Brasil</td><td>Caixa previsível, crescimento baixo</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: Investo e MarketVector, composição setorial do MarketVector™ Brazil BESST Quality (BRL) Index, data-base 01/09/2026. Classificação setorial conforme critério BESST da gestora.</div>
+
+      <div class="prose" style="margin-top:22px">
+        <p>A carteira tem dois motores e três amortecedores. Bancos e elétricas juntos formam o grosso do peso e explicam quase toda a variância mensal da cota. Eles reagem a estímulos opostos. Banco brasileiro ganha na tesouraria e no spread com juro alto e perde com inadimplência quando o juro permanece alto por tempo demais. Concessão de energia percorre o caminho inverso: sofre na marcação enquanto a curva sobe e reprecifica com força quando o ciclo de corte começa. Essa oposição parcial explica a volatilidade menor do que a soma das partes sugeriria, e explica também por que o fundo raramente lidera rankings mensais.</p>
+        <p>Seguradoras e saneamento cumprem papéis distintos. BB Seguridade entrega resultado financeiro que cresce com o juro e resultado operacional ligado ao crédito rural e ao seguro prestamista, combinação que amortece o ciclo bancário sem replicá-lo. Sabesp está no meio de um programa de investimento pesado depois da privatização, o que comprime fluxo de caixa livre agora em troca de base de ativos maior adiante. Telecomunicações é o componente mais previsível dos cinco e o menos sensível à curva de juros.</p>
+        <p>A alavancagem operacional do produto vem da estrutura do veículo. O reinvestimento automático de dividendos e de juros sobre capital próprio converte rendimento de caixa em base de cálculo maior no exercício seguinte, sem passagem pela tributação na pessoa física. Aplicado a uma carteira cujo rendimento de dividendos é alto em termos absolutos, esse mecanismo responde por parcela expressiva do retorno composto de prazo longo. É nesse ponto que o produto se separa do gêmeo distribuidor e de qualquer carteira montada à mão com os mesmos papéis. A diferença aparece pequena em um ano e grande em dez.</p>
+      </div>
+
+      <h3>E.2 · Vantagem estrutural</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Pilar</th><th>Força</th><th>Risco de erosão</th><th class="num">Avaliação</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Regra de qualidade e dividendo do índice</td><td>Alta</td><td>Baixo</td><td class="num stars">★★★★</td></tr>
+            <tr><td>Acumulação automática e diferimento tributário</td><td>Alta</td><td>Médio</td><td class="num stars">★★★★</td></tr>
+            <tr><td>Teto de 8% por emissor com revisão trimestral</td><td>Média</td><td>Baixo</td><td class="num stars">★★★</td></tr>
+            <tr><td>Formador de mercado e respaldo do Grupo VanEck</td><td>Média</td><td>Médio</td><td class="num stars">★★★</td></tr>
+            <tr><td>Nível da taxa de administração</td><td>Baixa</td><td>Alto</td><td class="num stars">★★</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: Index Guide MarketVector™ Brazil BESST Quality (BRL) Index, versão 1.03, fevereiro de 2026 · regulamento e materiais do fundo, Investo. Avaliação em estrelas atribuída pela PGS na escala de 1 a 5.</div>
+
+      <div class="prose" style="margin-top:22px">
+        <p>Vale separar o que é vantagem estrutural do que é apenas embalagem. A regra do índice é a parte mais sólida do conjunto. Exigir lucro líquido e pagamento recorrente de dividendos em janela de três anos, dentro de um universo setorial fechado, elimina por construção as duas armadilhas mais comuns das carteiras de dividendo brasileiras: a empresa que paga provento extraordinário uma única vez e some da lista no ano seguinte, e a companhia cíclica que aparece com rendimento alto exatamente no topo do ciclo. O filtro é conservador, verificável e independe de julgamento discricionário do gestor.</p>
+        <p>O teto por emissor tem efeito real, ainda que limitado. Ele impede que os dois maiores bancos do país dominem a carteira, resultado inevitável em qualquer ponderação pura por valor de mercado nesse universo. O que ele deixa de fazer é limitar setor, e essa omissão é a fragilidade central do desenho, tratada adiante no registro de riscos.</p>
+        <p>O tratamento de proventos é a vantagem mais durável. Enquanto a regra tributária brasileira mantiver o ganho de capital em ETF de renda variável tributado apenas na venda da cota, sem incidência sobre o reinvestimento interno, o veículo acumulador carrega vantagem matemática sobre a mesma carteira replicada individualmente. Essa vantagem depende de legislação, e legislação muda, o que justifica a avaliação de erosão média.</p>
+        <p>A taxa é o pilar mais frágil. O nível cobrado, visível no painel, era competitivo quando o produto foi desenhado e hoje supera o que as grandes gestoras cobram em ETFs de índice amplo no Brasil. A pressão vem de fora do tema e o produto tem pouco espaço para responder. O respaldo do Grupo VanEck oferece conforto operacional e capacidade de sustentar formador de mercado em produto pequeno, o que é valioso sem constituir barreira de entrada para concorrente algum.</p>
+      </div>
+
+      <h3>E.3 · Vetores de longo prazo</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Vetor</th><th>Horizonte</th><th>Situação atual</th><th>Potencial</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Ciclo de corte da Selic</td><td>6 a 18 meses</td><td>Quinto corte consecutivo entregue em setembro</td><td>Reprecificação de elétricas e saneamento</td><td>em curso</td></tr>
+            <tr><td>Ganho de escala do patrimônio</td><td>12 a 24 meses</td><td>Captação positiva, base de cotistas ainda pequena</td><td>Descolamento menor e entrada de alocadores</td><td>emergente</td></tr>
+            <tr><td>Migração para veículos de acumulação</td><td>24 a 36 meses</td><td>Produto recém-listado, gêmeo distribuidor consolidado</td><td>Vantagem tributária composta</td><td>emergente</td></tr>
+            <tr><td>Disciplina trimestral do índice sem holdings</td><td>Contínuo</td><td>Regra em vigor desde o fim de 2025</td><td>Carteira mais operacional e verificável</td><td>em curso</td></tr>
+            <tr><td>Concorrência entre ETFs de dividendo</td><td>12 a 36 meses</td><td>Vários produtos disputando o mesmo público</td><td>Pressão sobre a taxa cobrada</td><td>em risco</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="src">Fonte: síntese PGS sobre Copom, decisão de 16/09/2026 · calendário de revisão MarketVector · materiais de lançamento Investo, junho de 2026 · Suno Notícias e Funds Society Brasil.</div>
+
+      <div class="prose" style="margin-top:22px">
+        <p>A ordem importa mais do que a lista. O corte de juros é o vetor que precisa funcionar primeiro, porque os demais dependem dele. Elétricas e saneamento são ativos de duração longa disfarçados de ação, e reprecificam com a queda da taxa de desconto antes de qualquer melhora operacional aparecer no resultado. O quinto corte consecutivo já entregue coloca o ciclo em andamento, e a reunião do Copom de setembro foi a última antes da eleição presidencial de outubro, o que concentra a próxima leitura relevante em novembro.</p>
+        <p>Com a cota subindo, o segundo vetor se resolve sozinho. Patrimônio pequeno é o obstáculo prático do produto: alocador institucional trabalha com limite interno de participação em fundo e a maior parte deles não entra abaixo de um patamar mínimo de tamanho. Desempenho atrai captação, captação reduz o custo de negociação, custo menor atrai mais captação. O ciclo se fecha sozinho depois que começa e depende de um primeiro empurrão que ainda não veio.</p>
+        <p>O terceiro vetor, a migração de investidores para veículos de acumulação, é o mais lento e o mais confiável. Ele avança com a compreensão tributária do varejo brasileiro, que melhora devagar. O quarto vetor, a disciplina trimestral do índice, funciona como manutenção: mantém a carteira dentro da regra e evita degradação silenciosa da tese ao longo de vários anos.</p>
+        <p>A concorrência é o único vetor que corre em sentido contrário. Ela chega pelo preço e o produto tem margem estreita para responder sem comprometer a estrutura que sustenta o formador de mercado.</p>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK F ============ -->
+    <section id="riscos" class="animate">
+      <div class="kicker">Bloco F</div>
+      <h2>Registro de riscos</h2>
+      <div class="section-rule"></div>
+
+      <div class="risk risk-high">
+        <div class="risk-head"><h4>Concentração setorial e exposição regulatória</h4><span class="badge badge-high">Alta</span></div>
+        <div class="risk-body">
+          <p><strong>Mecanismo.</strong> O índice limita peso por emissor e deixa o setor livre, o que produz uma carteira em que energia, bancos e saneamento respondem por quase todo o patrimônio. Os três operam sob tarifa, regra prudencial ou contrato de concessão definidos pelo poder público. Uma revisão tarifária desfavorável, uma mudança na regra de capital bancário ou uma alteração no marco do saneamento atinge simultaneamente blocos que o investidor costuma imaginar descorrelacionados. O ano eleitoral amplia o problema, já que preço de energia e spread bancário entram em toda campanha presidencial brasileira.</p>
+          <p><strong>Horizonte.</strong> Imediato até o primeiro trimestre de 2027, com pico entre o segundo turno e a definição da equipe econômica.</p>
+          <p><strong>Observável.</strong> Propostas de governo que tratem de revisão do marco do saneamento ou de teto para tarifa de distribuição, e reação da curva de juros real de dez anos a declarações de campanha. A materialização aparece na ampliação simultânea do prêmio de risco nos três blocos, antes de aparecer na cota.</p>
+        </div>
+      </div>
+
+      <div class="risk risk-med">
+        <div class="risk-head"><h4>Desempenho relativo do fator qualidade e dividendo</h4><span class="badge badge-med">Média</span></div>
+        <div class="risk-body">
+          <p><strong>Mecanismo.</strong> A seleção por qualidade e dividendo exclui, por construção, mineração, petróleo, varejo, tecnologia e small caps. Em qualquer ciclo em que o retorno da bolsa brasileira venha de commodities ou de reabertura de crédito para consumo, o fundo fica atrás do índice amplo sem que exista erro de execução. Isso já ocorreu duas vezes na curta série do produto. O risco relevante aqui é a frustração relativa sustentada, que costuma produzir resgate no varejo pouco antes de o ciclo virar a favor da carteira.</p>
+          <p><strong>Horizonte.</strong> Contínuo, com probabilidade maior em janelas de alta do minério e do petróleo.</p>
+          <p><strong>Observável.</strong> Diferença mensal negativa contra o Ibovespa por três meses consecutivos combinada com captação líquida negativa no mesmo período. A ocorrência conjunta dos dois sinais separa ruído de perda de convicção da base de cotistas.</p>
+        </div>
+      </div>
+
+      <div class="risk risk-med">
+        <div class="risk-head"><h4>Escala reduzida e liquidez do veículo</h4><span class="badge badge-med">Média</span></div>
+        <div class="risk-body">
+          <p><strong>Mecanismo.</strong> O patrimônio do fundo é pequeno para padrão institucional e o volume médio diário é modesto, com três consequências práticas. O descolamento entre compra e venda tende a se alargar em pregões de estresse, quando o formador de mercado reduz tamanho de lote. Ordens grandes de varejo empurram o preço de tela acima ou abaixo do valor patrimonial da cota. E fundos com patrimônio persistentemente baixo enfrentam decisão de continuidade pela gestora, ainda que a Investo tenha estrutura e linha de produtos suficientes para sustentar veículo pequeno por vários anos.</p>
+          <p><strong>Horizonte.</strong> Doze a vinte e quatro meses.</p>
+          <p><strong>Observável.</strong> Série pública de descolamento entre preço de fechamento e valor patrimonial da cota, e captação líquida mensal. Dois trimestres seguidos de resgate líquido com patrimônio abaixo do nível atual seria o sinal a monitorar.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK G ============ -->
+    <section id="cenarios" class="animate">
+      <div class="kicker">Bloco G</div>
+      <h2>Cenários</h2>
+      <div class="section-rule"></div>
+
+      <div class="scenario-grid">
+        <div class="scenario bull">
+          <div class="sc-head">
+            <h4>Otimista</h4>
+            <div class="sc-target">+21% ao alvo otimista</div>
+          </div>
+          <div class="sc-body">
+            <ul>
+              <li>O ciclo de corte prossegue e a taxa básica entra em um dígito alto ao longo de 2027.</li>
+              <li>A eleição se resolve sem ruptura fiscal e o prêmio de risco país comprime.</li>
+              <li>Revisões tarifárias e reajustes contratuais preservam o retorno real das concessões.</li>
+            </ul>
+            <p>Para que essas premissas se sustentem, a inflação precisa permanecer ancorada, o primeiro orçamento do novo governo precisa evitar expansão relevante e o minério e o petróleo precisam ficar estáveis, o que reduz a atração da rotação para cíclicos. Nesse arranjo, o bloco de energia e saneamento carrega o retorno pela queda da taxa de desconto, e o bloco bancário entrega crescimento de carteira com inadimplência em queda. A entrada de alocadores institucionais viria como consequência, não como causa.</p>
+          </div>
+        </div>
+
+        <div class="scenario bear">
+          <div class="sc-head">
+            <h4>Pessimista</h4>
+            <div class="sc-target">-20% ao piso pessimista</div>
+          </div>
+          <div class="sc-body">
+            <ul>
+              <li>O ciclo de corte é interrompido por deterioração fiscal após a eleição.</li>
+              <li>Intervenção tarifária ou tributária atinge energia e bancos de forma simultânea.</li>
+              <li>A bolsa entra em rotação prolongada para commodities e exportadoras.</li>
+            </ul>
+            <p>As condições para esse desfecho são reconhecíveis com antecedência: curva de juros real voltando a abrir, câmbio acima do nível atual de forma persistente e campanha com propostas explícitas de controle de preço em energia ou de tributação adicional sobre lucro bancário. A combinação castiga duas vezes, pela taxa de desconto e pelo lucro esperado. O patrimônio pequeno do fundo agravaria o movimento pelo lado da liquidez, com descolamento maior entre preço de tela e valor patrimonial nos piores pregões.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BLOCK H ============ -->
+    <section id="veredito" class="animate">
+      <div class="kicker">Bloco H</div>
+      <h2>Veredito PGS</h2>
+      <div class="section-rule"></div>
+
+      <div class="verdict">
+        <div style="margin-bottom:22px"><span class="rating-pill">🟡 NEUTRO</span></div>
+
+        <div class="verdict-strip">
+          <div class="vs-item"><span>Alvo otimista · 18 a 24 meses</span><strong style="color:var(--pos)">R$ 26,00 (est.)</strong></div>
+          <div class="vs-item"><span>Piso pessimista</span><strong style="color:var(--neg)">R$ 17,20 (est.)</strong></div>
+          <div class="vs-item"><span>Risco e retorno</span><strong>Equilibrado</strong></div>
+          <div class="vs-item"><span>Horizonte de reavaliação</span><strong>Dez/2026</strong></div>
+        </div>
+
+        <div class="prose">
+          <p><strong>Deslocamento de preço.</strong> A carteira de referência negocia a um múltiplo de lucro baixo em termos absolutos, com alavancagem agregada praticamente nula e rendimento de dividendos alto, no exato momento em que a taxa básica entra no quinto corte consecutivo. A cota, por sua vez, está abaixo da máxima registrada desde a estreia, depois do recuo de agosto. O desconto existe e tem causa identificável: incerteza eleitoral aplicada a setores regulados. Essa é uma fonte de desconto que costuma se dissipar por evento, com data marcada, e não por melhora gradual de resultado.</p>
+          <p><strong>Qualidade dos fundamentos.</strong> A regra do índice é a parte mais bem construída do produto. Exigência de lucro e de dividendo recorrente em janela de três anos, universo setorial fechado, teto por emissor e revisão trimestral formam um conjunto verificável e resistente a julgamento discricionário. O invólucro de acumulação acrescenta uma vantagem tributária que compõe silenciosamente ao longo de prazos longos. O ponto fraco está no veículo: pouco mais de três meses de vida, patrimônio pequeno e volume diário modesto. A tese é mais madura do que o instrumento que a carrega.</p>
+          <p><strong>Risco principal.</strong> Concentração setorial e exposição regulatória, classificada como alta no registro de riscos. Ela explica o desconto atual e a fragilidade do caso otimista. Quem compra essa cota assume de uma só vez decisão tarifária, regra prudencial bancária e marco do saneamento, em um país que revisa os três com frequência. O teto por emissor não protege contra nenhum desses eventos.</p>
+          <p><strong>Catalisadores de curto prazo.</strong> A implementação da revisão trimestral do índice, prevista no painel para 18 de setembro. A eleição presidencial de outubro e a composição da equipe econômica do governo eleito. Os resultados do terceiro trimestre de bancos e elétricas em novembro. A reunião do Copom de dezembro, primeira do novo arranjo político. E a revisão de dezembro do índice, que dirá se a regra sem holdings alterou o desenho setorial de forma material. A classificação neutra reflete a assimetria equilibrada entre os dois cenários somada ao desconto de maturidade que um veículo de três meses merece. A mesma exposição existe em produto irmão com histórico mais longo e escala maior.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DISCLAIMER ============ -->
+    <section id="disclaimer" class="disclaimer animate">
+      <p>"Este relatório foi produzido exclusivamente para uso interno da Polaris Global Strategies Ltd. (PGS), sociedade constituída nas Ilhas Virgens Britânicas (BVI), que opera como veículo privado de pesquisa e análise de investimentos em nome de seus sócios. Este documento não constitui recomendação de investimento para qualquer terceiro, seja pessoa física ou jurídica, e não deve ser interpretado como tal. A PGS não presta serviços de gestão de recursos, assessoria ou consultoria de investimentos a qualquer cliente externo, não possui base de clientes e não oferece produtos ou serviços a terceiros. Eventual acesso a este documento por partes não autorizadas não lhe confere validade como aconselhamento ou recomendação de investimento. As informações e análises aqui contidas baseiam-se em fontes públicas consideradas confiáveis, mas a PGS não oferece garantia quanto à sua integralidade ou exatidão. Investimentos em instrumentos de renda variável envolvem riscos, incluindo a possibilidade de perda total do capital investido. As opiniões expressas refletem julgamento analítico interno na data de publicação e estão sujeitas a alteração sem aviso prévio."</p>
+
+      <p>Este relatório foi produzido com o auxílio de inteligência artificial. Modelo generativo: Anthropic · Claude Opus · versão 5, acessado via claude.ai. Todos os números foram obtidos por busca web ao vivo na mesma sessão e verificados contra o protocolo de ancoragem do Passo 1; o papel do modelo foi síntese de dados, formatação e redação, e não a originação de estimativas financeiras. A revisão humana pelo analista interno precede a publicação.</p>
+
+      <p class="ref">Referência do relatório: PGS-BTER11-202609 · Data: 18 de setembro de 2026 · Analista interno: Polaris Global Strategies Ltd. · Ticker: BTER11 · Bolsa: B3 · Modelo de IA: Anthropic 5</p>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry, i){
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '';
+          entry.target.style.animationPlayState = 'running';
+          animObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    animateEls.forEach(function(el){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      animObserver.observe(el);
+    });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var sections = links.map(function(l){ return document.querySelector(l.getAttribute('href')); }).filter(Boolean);
+
+  function setActive(){
+    var pos = window.scrollY + (window.innerHeight * 0.28);
+    var current = sections[0];
+    sections.forEach(function(s){ if (s.offsetTop <= pos) current = s; });
+    links.forEach(function(l){
+      l.classList.toggle('active', current && l.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', setActive, { passive: true });
+  window.addEventListener('resize', setActive);
+  setActive();
+})();
+</script>
+</body>
+</html>

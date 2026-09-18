@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PGS-UBER-202608 · Uber Technologies, Inc.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  --text:#111827;
+  --text-mute:#6B7280;
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#0B0B0B;
+  --display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --data:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--canvas);color:var(--text);
+  font-family:var(--body);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:grid;grid-template-columns:220px 1fr;align-items:start;}
+
+/* ---------- sidebar ---------- */
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--surface);border-right:1px solid var(--border);
+  padding:28px 0 40px 0;
+}
+.side-brand{padding:0 20px 18px 20px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+.side-brand .mark{font-family:var(--display);font-weight:900;font-size:20px;letter-spacing:-0.01em;}
+.side-brand .sub{font-family:var(--data);font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:.12em;margin-top:4px;}
+.nav-link{
+  display:block;padding:8px 20px;border-left:3px solid transparent;
+  color:var(--text-mute);text-decoration:none;font-size:13px;line-height:1.35;
+}
+.nav-link .idx{font-family:var(--data);font-size:10px;margin-right:8px;color:var(--text-mute);}
+.nav-link:hover{color:var(--text);background:var(--card);}
+.nav-link.active{color:var(--text);border-left-color:var(--accent);background:var(--card);font-weight:500;}
+
+/* ---------- content shell ---------- */
+.main-content{min-width:0;padding:0 0 80px 0;}
+.wrap{max-width:900px;padding:0 40px;margin:0 auto;}
+.prose{max-width:68ch;}
+.prose p{margin:0 0 16px 0;}
+
+/* ---------- cover ---------- */
+.cover{
+  min-height:96vh;display:flex;flex-direction:column;justify-content:center;
+  background:var(--surface);
+  background-image:radial-gradient(var(--border) 1px, transparent 1px);
+  background-size:22px 22px;
+  border-bottom:1px solid var(--border);
+  padding:80px 40px;
+}
+.cover-inner{max-width:900px;margin:0 auto;width:100%;}
+.cover .eyebrow{font-family:var(--data);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-mute);}
+.cover h1{
+  font-family:var(--display);font-weight:900;font-size:clamp(44px,7vw,86px);
+  line-height:0.98;letter-spacing:-0.02em;margin:18px 0 0 0;color:var(--accent);
+}
+.cover .tickerline{
+  display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;
+}
+.ticker-card{
+  border:1px solid var(--border);background:var(--canvas);
+  padding:10px 16px;text-decoration:none;color:var(--text);
+  border-top:3px solid var(--accent);
+}
+.ticker-card .t{font-family:var(--data);font-weight:700;font-size:15px;}
+.ticker-card .l{font-size:11px;color:var(--text-mute);}
+.cover-meta{
+  margin-top:40px;padding-top:20px;border-top:1px solid var(--border);
+  font-family:var(--data);font-size:12px;color:var(--text-mute);
+  display:flex;flex-wrap:wrap;gap:26px;
+}
+.cover-meta b{color:var(--text);font-weight:500;}
+
+/* ---------- section furniture ---------- */
+.block{padding:56px 0 8px 0;}
+.block-head{border-top:3px solid var(--accent);padding-top:14px;margin-bottom:8px;}
+.block-kicker{font-family:var(--data);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-mute);}
+.block-head h2{font-family:var(--display);font-weight:700;font-size:30px;line-height:1.15;margin:6px 0 0 0;letter-spacing:-0.01em;}
+h3.sub{font-family:var(--body);font-weight:700;font-size:16px;margin:34px 0 10px 0;letter-spacing:.01em;}
+
+/* ---------- tables ---------- */
+.table-wrap{overflow-x:auto;margin-top:16px;}
+table{border-collapse:collapse;width:100%;font-size:13px;}
+th{
+  text-align:left;font-family:var(--data);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-mute);font-weight:500;
+  border-bottom:1px solid var(--border);padding:9px 10px;vertical-align:bottom;
+}
+td{border-bottom:1px solid var(--border);padding:10px;vertical-align:top;word-break:break-word;}
+tbody tr:nth-child(odd){background:var(--canvas);}
+tbody tr:nth-child(even){background:var(--surface);}
+tbody tr:hover{background:var(--card);transition:background .18s ease;}
+td.num,th.num{font-family:var(--data);white-space:nowrap;}
+td.seg{font-weight:500;}
+.src{font-family:var(--data);font-size:10.5px;color:var(--text-mute);margin-top:8px;line-height:1.5;}
+
+.pill{
+  display:inline-block;font-family:var(--data);font-size:10px;font-weight:700;
+  padding:2px 7px;letter-spacing:.06em;text-transform:uppercase;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.pill-beat{background:var(--pill-pos-bg);color:var(--pill-pos-fg);}
+.pill-miss{background:var(--pill-neg-bg);color:var(--pill-neg-fg);}
+.pill-line{background:var(--card);color:var(--text-mute);}
+.up{color:var(--pos);font-weight:500;}
+.down{color:var(--neg);font-weight:500;}
+.stars{font-family:var(--data);letter-spacing:.06em;white-space:nowrap;}
+
+/* ---------- block A panel ---------- */
+.panel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:18px;border-top:3px solid var(--accent);}
+.panel-col{background:var(--card);padding:16px 14px;}
+.panel-col h4{
+  font-family:var(--data);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-mute);font-weight:500;margin:0 0 12px 0;
+}
+.pl{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dotted var(--border);align-items:baseline;}
+.pl:last-child{border-bottom:none;}
+.pl .k{font-size:11.5px;color:var(--text-mute);line-height:1.3;}
+.pl .v{font-family:var(--data);font-size:12.5px;font-weight:500;text-align:right;white-space:nowrap;}
+
+/* ---------- block C ---------- */
+.quarter{border-left:3px solid var(--accent);padding-left:18px;margin-top:26px;}
+.q-kicker{font-family:var(--data);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-mute);margin-bottom:6px;}
+
+/* ---------- block D ---------- */
+.obs{border-top:1px solid var(--border);padding:12px 0;}
+.obs .claim{font-weight:500;}
+.obs .ev{color:var(--text-mute);font-size:14px;}
+.dirsig{font-family:var(--data);font-size:11px;padding:1px 6px;background:var(--card);margin-right:8px;white-space:nowrap;}
+
+/* ---------- block F ---------- */
+.risk{margin-top:20px;border:1px solid var(--border);page-break-inside:avoid;}
+.risk-head{
+  padding:11px 16px;display:flex;justify-content:space-between;align-items:center;gap:14px;
+  font-weight:700;font-size:15px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.risk-high{border-left:3px solid var(--neg);}
+.risk-high .risk-head{background:var(--neg-tint);}
+.risk-med{border-left:3px solid var(--caution);}
+.risk-med .risk-head{background:var(--caution-tint);}
+.sev{
+  font-family:var(--data);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 8px;color:#fff;white-space:nowrap;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.sev-high{background:var(--neg);}
+.sev-med{background:var(--caution);}
+.risk-body{background:var(--canvas);padding:14px 16px;font-size:14.5px;}
+.risk-body p{margin:0;}
+
+/* ---------- block G ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;}
+.scen{border:1px solid var(--border);page-break-inside:avoid;}
+.scen-head{
+  padding:11px 16px;font-weight:700;font-size:15px;
+  display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.scen-bull{border-top:3px solid var(--pos);}
+.scen-bull .scen-head{background:var(--pos-tint);}
+.scen-bear{border-top:3px solid var(--neg);}
+.scen-bear .scen-head{background:var(--neg-tint);}
+.scen-head .delta{font-family:var(--data);font-size:13px;}
+.scen-body{background:var(--canvas);padding:14px 16px;font-size:14.5px;}
+.scen-body ul{margin:0 0 12px 0;padding-left:18px;}
+.scen-body li{margin-bottom:5px;}
+.scen-body p{margin:0;}
+
+/* ---------- block H ---------- */
+.verdict{background:var(--surface);border:1px solid var(--border);padding:24px;margin-top:18px;}
+.rating-pill{
+  display:inline-block;background:var(--accent);color:#fff;
+  font-family:var(--data);font-size:13px;font-weight:700;letter-spacing:.08em;
+  padding:7px 16px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.metrics{display:flex;flex-wrap:wrap;gap:1px;background:var(--border);margin:18px 0 22px 0;}
+.metric{background:var(--card);padding:12px 16px;flex:1 1 150px;}
+.metric .mk{font-family:var(--data);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mute);}
+.metric .mv{font-family:var(--data);font-size:19px;font-weight:700;margin-top:3px;}
+
+/* ---------- disclaimer ---------- */
+.disc{margin-top:56px;border-top:3px solid var(--accent);padding-top:18px;}
+.disc p{font-size:12.5px;color:var(--text-mute);line-height:1.6;margin:0 0 14px 0;}
+.disc .ref{font-family:var(--data);font-size:11px;color:var(--text-mute);border-top:1px solid var(--border);padding-top:12px;}
+
+/* ---------- motion ---------- */
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@media (prefers-reduced-motion:reduce){
+  .animate{animation:none !important;opacity:1 !important;transform:none !important;}
+  html{scroll-behavior:auto;}
+}
+a:focus-visible,.nav-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .panel-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:768px){
+  .layout{display:block;}
+  .sidebar{position:sticky;top:0;height:auto;z-index:20;border-right:none;border-bottom:1px solid var(--border);padding:10px 0;display:flex;gap:0;overflow-x:auto;white-space:nowrap;}
+  .side-brand{display:none;}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:6px 14px;}
+  .nav-link.active{border-left:none;border-bottom-color:var(--accent);}
+  .wrap{padding:0 20px;}
+  .cover{padding:56px 20px;}
+  .panel-grid{grid-template-columns:1fr;}
+  .scenario-grid{grid-template-columns:1fr;}
+}
+
+/* ---------- print ---------- */
+@media print{
+  @page{size:A4;margin:15mm 12mm;}
+  body{background-color:#FFFFFF;color:#111827;font-size:10.5pt;}
+  .layout{display:block !important;}
+  .sidebar,.nav-link,.side-brand{display:none !important;}
+  .main-content{display:block !important;width:100% !important;padding:0 !important;}
+  .wrap{max-width:100% !important;padding:0 !important;}
+  .cover{min-height:auto !important;height:auto !important;display:block !important;background-color:#FFFFFF !important;background-image:none !important;padding:0 0 18pt 0 !important;}
+  .block{page-break-before:auto;padding-top:22pt;}
+  .verdict,.risk,.scen,.panel-col,.risk-body,.scen-body{background-color:#FFFFFF;color:#111827;}
+  .panel-grid{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:1px !important;}
+  .scenario-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:12pt !important;}
+  .prose{max-width:100%;orphans:3;widows:3;}
+  .prose p{orphans:3;widows:3;}
+  .risk,.scen,.metrics,.block-head{page-break-inside:avoid;}
+  .table-wrap{overflow:visible !important;}
+  table{font-size:8.5pt;}
+  td,th{word-break:break-word;}
+  .animate{opacity:1 !important;transform:none !important;animation:none !important;}
+  *{box-shadow:none !important;backdrop-filter:none !important;}
+  .pill,.sev,.rating-pill,.risk-head,.scen-head,.block-head,.disc,.cover h1{print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+}
+.pgs-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 24px; background: #07090F;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-family: system-ui, sans-serif; font-size: 12px;
+}
+.pgs-topbar a { color: #94A3B8; text-decoration: none; }
+.pgs-topbar a:hover { color: #F1F5F9; }
+.pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+.pgs-topbar .pgs-sep { color: #334155; }
+@media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-UBER-202608</span>
+</div>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Report sections">
+    <div class="side-brand">
+      <div class="mark">Polaris</div>
+      <div class="sub">Global Strategies</div>
+    </div>
+    <a class="nav-link" href="#cover"><span class="idx">00</span>Cover</a>
+    <a class="nav-link" href="#block-a"><span class="idx">A</span>Consolidated panel</a>
+    <a class="nav-link" href="#block-b"><span class="idx">B</span>Quarterly table</a>
+    <a class="nav-link" href="#block-c"><span class="idx">C</span>Reading the quarters</a>
+    <a class="nav-link" href="#block-d"><span class="idx">D</span>Patterns and watch list</a>
+    <a class="nav-link" href="#block-e"><span class="idx">E</span>Strategic architecture</a>
+    <a class="nav-link" href="#block-f"><span class="idx">F</span>Risks</a>
+    <a class="nav-link" href="#block-g"><span class="idx">G</span>Scenarios</a>
+    <a class="nav-link" href="#block-h"><span class="idx">H</span>PGS verdict</a>
+    <a class="nav-link" href="#disclaimer"><span class="idx">--</span>Disclaimer</a>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- ================= COVER ================= -->
+    <header class="cover" id="cover">
+      <div class="cover-inner animate">
+        <div class="eyebrow">Polaris Global Strategies Ltd. · Internal research</div>
+        <h1>Uber Technologies,<br>Inc.</h1>
+        <div class="tickerline">
+          <a class="ticker-card" href="#block-a">
+            <div class="t">UBER</div>
+            <div class="l">New York Stock Exchange</div>
+          </a>
+        </div>
+        <div class="cover-meta">
+          <span>Reference <b>PGS-UBER-202608</b></span>
+          <span>Published <b>29 August 2026</b></span>
+          <span>Exchange <b>NYSE</b></span>
+        </div>
+      </div>
+    </header>
+
+    <div class="wrap">
+
+      <!-- ================= BLOCK A ================= -->
+      <section class="block animate" id="block-a">
+        <div class="block-head">
+          <div class="block-kicker">Block A</div>
+          <h2>Consolidated instrument panel</h2>
+        </div>
+
+        <div class="panel-grid">
+          <div class="panel-col">
+            <h4>Market</h4>
+            <div class="pl"><span class="k">Price at analysis</span><span class="v">$78.82</span></div>
+            <div class="pl"><span class="k">Market capitalisation</span><span class="v">$160.99B</span></div>
+            <div class="pl"><span class="k">52-week range</span><span class="v">$65.41 / $101.99</span></div>
+            <div class="pl"><span class="k">Versus 52-week high</span><span class="v down">-22.7% (est.)</span></div>
+            <div class="pl"><span class="k">Versus 52-week low</span><span class="v up">+20.5% (est.)</span></div>
+          </div>
+          <div class="panel-col">
+            <h4>Fundamentals (TTM)</h4>
+            <div class="pl"><span class="k">Revenue</span><span class="v">$55.23B</span></div>
+            <div class="pl"><span class="k">GAAP diluted EPS</span><span class="v">$4.58</span></div>
+            <div class="pl"><span class="k">Adjusted (non-GAAP) EPS</span><span class="v">$2.88 (est.)</span></div>
+            <div class="pl"><span class="k">Operating margin</span><span class="v">12.1%</span></div>
+            <div class="pl"><span class="k">Free cash flow yield</span><span class="v">6.3%</span></div>
+          </div>
+          <div class="panel-col">
+            <h4>Valuation</h4>
+            <div class="pl"><span class="k">P/E TTM (GAAP)</span><span class="v">17.2x</span></div>
+            <div class="pl"><span class="k">Forward P/E (FY26 adj.)</span><span class="v">23.4x</span></div>
+            <div class="pl"><span class="k">EV / Revenue</span><span class="v">3.0x</span></div>
+            <div class="pl"><span class="k">PEG</span><span class="v">0.70x</span></div>
+            <div class="pl"><span class="k">Forward P/E range FY2023-25</span><span class="v">62.4x to 24.2x</span></div>
+          </div>
+          <div class="panel-col">
+            <h4>Consensus</h4>
+            <div class="pl"><span class="k">Analysts covering</span><span class="v">50</span></div>
+            <div class="pl"><span class="k">Ratings (SB/B/H/S/SS)</span><span class="v">34 / 8 / 7 / 0 / 1</span></div>
+            <div class="pl"><span class="k">Average target</span><span class="v">$101.78</span></div>
+            <div class="pl"><span class="k">High / low target</span><span class="v">$150 / $70</span></div>
+            <div class="pl"><span class="k">Next earnings</span><span class="v">29 Oct 2026</span></div>
+          </div>
+        </div>
+        <div class="src">Sources: StockAnalysis.com (S&amp;P Global Market Intelligence), price and statistics as of 28 Aug 2026 close, forecast page checked 25 Aug 2026, including the historical forward multiple series · Investing.com, 52-week range as of 5 Aug 2026 · TipRanks, confirmed next reporting date. Adjusted EPS TTM derived by summing reported non-GAAP EPS for Q4 2025 to Q2 2026 plus the Q3 2025 figure implied by the FY2025 non-GAAP EPS reconciliation. Distances from the 52-week extremes derived from the panel price.</div>
+
+        <div class="prose" style="margin-top:18px;">
+          <p>The trailing multiple in the panel sits at the low end of anything Uber has carried since it began reporting consistent operating profit, and the gap between it and the forward figure is an artefact of accounting: trailing GAAP earnings still contain a tax valuation release and equity revaluation swings in both directions that the forward number strips out. The consensus column is the more informative line, with a high target more than double the low one, which describes a market arguing about autonomy while the current earnings base sits largely undisputed.</p>
+        </div>
+      </section>
+
+      <!-- ================= BLOCK B ================= -->
+      <section class="block animate" id="block-b">
+        <div class="block-head">
+          <div class="block-kicker">Block B</div>
+          <h2>Four quarters, anchor first</h2>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Quarter</th>
+                <th class="num">Revenue vs consensus</th>
+                <th class="num">GAAP EPS vs cons.</th>
+                <th class="num">Adj. EPS vs cons.</th>
+                <th class="num">Op. margin rep. / adj.</th>
+                <th class="num">Free cash flow</th>
+                <th class="num">Next session</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="seg">Q2 2026<br><span style="color:var(--text-mute);font-size:11px;">ended 30 Jun 2026</span></td>
+                <td class="num">$14,191M vs $14,240M<br><span class="pill pill-miss">miss</span></td>
+                <td class="num">$1.17 vs n.d.</td>
+                <td class="num">$0.81 vs $0.81<br><span class="pill pill-line">in line</span></td>
+                <td class="num">13.3% / 15.1%</td>
+                <td class="num">$2,792M</td>
+                <td class="num down">-5.3%</td>
+              </tr>
+              <tr>
+                <td class="seg">Q1 2026<br><span style="color:var(--text-mute);font-size:11px;">ended 31 Mar 2026</span></td>
+                <td class="num">$13,203M vs $13,280M<br><span class="pill pill-miss">miss</span></td>
+                <td class="num">$0.13 vs n.d.</td>
+                <td class="num">$0.72 vs $0.71<br><span class="pill pill-beat">beat</span></td>
+                <td class="num">14.6% / 14.3%</td>
+                <td class="num">$2,286M</td>
+                <td class="num down">-3.1%</td>
+              </tr>
+              <tr>
+                <td class="seg">Q4 2025<br><span style="color:var(--text-mute);font-size:11px;">ended 31 Dec 2025</span></td>
+                <td class="num">$14,366M vs $14,323M<br><span class="pill pill-beat">beat</span></td>
+                <td class="num">$0.14 vs n.d.</td>
+                <td class="num">$0.71 vs $0.79<br><span class="pill pill-miss">miss</span></td>
+                <td class="num">12.3% / 13.4%</td>
+                <td class="num">$2,808M</td>
+                <td class="num down">-4.0% (est.)</td>
+              </tr>
+              <tr>
+                <td class="seg">Q3 2025<br><span style="color:var(--text-mute);font-size:11px;">ended 30 Sep 2025</span></td>
+                <td class="num">$13,467M vs $13,260M<br><span class="pill pill-beat">beat</span></td>
+                <td class="num">$3.11 vs n.d.</td>
+                <td class="num">$0.64 (est.) vs n.d.<br><span class="pill pill-line">not reported</span></td>
+                <td class="num">8.3% / (data not found)</td>
+                <td class="num">$2,230M</td>
+                <td class="num down">-5.0%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="src">Sources: Uber Technologies 8-K earnings releases (investor.uber.com and SEC EDGAR EX-99.1) for revenue, EPS, income from operations and free cash flow · revenue consensus from LSEG via CNBC (Q2 2026, Q1 2026) and Bloomberg via Investing.com (Q3 2025); Q4 2025 consensus from TIKR · adjusted EPS consensus from LSEG (Q2 2026), TipRanks (Q1 2026) and Zacks (Q4 2025) · next-session reaction from CNBC (Q2 2026, Q4 2025, Q3 2025) and TIKR (Q1 2026). Uber published no comparable non-GAAP EPS for Q3 2025 while transitioning its non-GAAP framework; the figure shown is implied from the FY2025 reconciliation and no consensus existed on that basis. Operating margins derived from reported revenue, GAAP income from operations and non-GAAP operating income. The Q4 2025 next-session move is tagged as an estimate because published accounts of the day range from a modest gain to a decline of more than seven percent; the CNBC reading is used.</div>
+      </section>
+
+      <!-- ================= BLOCK C ================= -->
+      <section class="block animate" id="block-c">
+        <div class="block-head">
+          <div class="block-kicker">Block C</div>
+          <h2>Reading the quarters</h2>
+        </div>
+
+        <div class="prose">
+          <div class="quarter">
+            <div class="q-kicker">Q2 2026 · anchor · reported 5 August 2026</div>
+            <p>The print was a study in how far volume and revenue have separated. Gross bookings reached $58.0 billion, above the top end of the company's own guidance, with trips up 18 percent and monthly active consumers at 208 million, helped by several million World Cup tourist rides across host cities. Reported revenue came in fractionally light because business model changes in certain markets cut eight percentage points off the growth rate, an accounting reclassification rather than lost demand. That wedge is most visible in Mobility, where revenue was flat while the bookings underneath it grew at a low-twenties rate. GAAP earnings were flattered by a $1.6 billion pre-tax gain on the equity portfolio, so the adjusted line is the honest one, and it landed exactly on the number. What sank the shares was the forward view: third-quarter bookings guidance sat marginally below the FactSet average, the profit guide was similarly soft, and management paired that with a commitment of more than $10 billion to autonomous vehicles. The Waymo exclusivity in Atlanta and Austin was also confirmed to end by early 2028.</p>
+          </div>
+
+          <div class="quarter">
+            <div class="q-kicker">Q1 2026 · reported 6 May 2026</div>
+            <p>The revenue shortfall was concentrated entirely in the hardware of the business rather than its appetite. Mobility revenue rose only five percent to $6.8 billion against a StreetAccount expectation of $7.11 billion, while Delivery revenue of $5.07 billion beat its own estimate comfortably on strength in Australia, Japan and the United Kingdom. Bookings grew a quarter year on year and beat, so the miss was a take rate and reclassification story. GAAP earnings collapsed to a token figure under a $1.5 billion pre-tax mark-to-market loss on the Didi and Grab stakes, which is why the adjusted number, a slight beat, carried the operating signal. Khosrowshahi framed the quarter against weather disruption, geopolitical friction and pump price volatility, then pushed attention forward: Uber One crossed fifty million members and members now account for roughly half of platform bookings. Second-quarter bookings guidance came in above consensus. The market still sold it, taking the shares down on estimate compression rather than on the quarter itself.</p>
+          </div>
+
+          <div class="quarter">
+            <div class="q-kicker">Q4 2025 · reported 4 February 2026</div>
+            <p>This is the quarter that broke the pattern. Revenue beat, bookings beat, and GAAP income from operations more than doubled to a record, yet adjusted earnings missed by a wide margin and ended a long run of consecutive beats. The cause was mix and cost rather than demand: an intentional push into cheaper formats, including the Moto two-wheeler product, diluted the average, and insurance costs ran higher. GAAP earnings were again buried, this time by a pre-tax revaluation headwind of similar scale in the opposite direction. Management then guided first-quarter adjusted earnings below the street, which mattered far more than the miss itself. In the weeks that followed, sell-side 2026 adjusted earnings expectations were cut from roughly $4.15 toward $3.30, and that reset explains most of the share price damage of the first half of the year. The quarter also carried a leadership change, with Prashanth Mahendra-Rajah handing the finance function to Balaji Krishnamurthy in the middle of February.</p>
+          </div>
+
+          <div class="quarter">
+            <div class="q-kicker">Q3 2025 · reported 4 November 2025</div>
+            <p>On the surface this was the strongest quarter of the sequence and the market still marked it down. Revenue and bookings both beat, trips grew at the fastest rate since 2023 outside the pandemic rebound, and monthly consumers reached 189 million. The headline GAAP earnings figure was close to meaningless: it absorbed a $4.9 billion Netherlands tax valuation release and a concurrent equity revaluation benefit. Operating income barely moved because $479 million of legal and regulatory reserve charges landed in the period, which is the number that actually describes the quarter's underlying cost pressure. Adjusted EBITDA came in a shade under the consensus figure. Complicating comparison further, Uber was mid-transition from adjusted EBITDA to an operating income framework and published no comparable adjusted earnings per share. Management laid out six strategic priorities and guided fourth-quarter profit around the street. Shares fell anyway, in what now reads as the first clear sign that the autonomy debate had begun to dominate the print.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= BLOCK D ================= -->
+      <section class="block animate" id="block-d">
+        <div class="block-head">
+          <div class="block-kicker">Block D</div>
+          <h2>Patterns and watch list</h2>
+        </div>
+
+        <h3 class="sub">Structural patterns across the four quarters</h3>
+        <div class="prose">
+          <div class="obs"><div class="claim">Bookings growth has run persistently ahead of reported revenue growth, and the gap is widening.</div><div class="ev">Model changes cut several percentage points off reported revenue growth in both 2026 quarters while bookings compounded above twenty percent in all four.</div></div>
+          <div class="obs"><div class="claim">GAAP earnings have been governed by items below the operating line in every single quarter.</div><div class="ev">A tax valuation release, then two revaluation headwinds, then a revaluation benefit, each able to swing the headline by multiples of the operating result.</div></div>
+          <div class="obs"><div class="claim">Delivery, not Mobility, has been the incremental profit engine.</div><div class="ev">Delivery segment profit outgrew Mobility segment profit in each of the three most recent prints, from a smaller base.</div></div>
+          <div class="obs"><div class="claim">Central costs are compounding faster than the segments they support.</div><div class="ev">Corporate administrative expense combined with platform research and development rose at a high-teens rate in both 2026 quarters.</div></div>
+        </div>
+
+        <h3 class="sub">Watch list for the next print</h3>
+        <div class="prose">
+          <div class="obs"><div class="claim"><span class="dirsig">&rarr; stable</span>Mobility revenue growth excluding model changes.</div><div class="ev">Confirmed if constant currency Mobility revenue reaccelerates toward its bookings growth. Broken if the wedge widens again.</div></div>
+          <div class="obs"><div class="claim"><span class="dirsig">&darr; deteriorating</span>Revenue as a share of gross bookings.</div><div class="ev">Confirmed if the ratio keeps falling, establishing the compression as structural. Broken if it stabilises.</div></div>
+          <div class="obs"><div class="claim"><span class="dirsig">&uarr; improving</span>Autonomous trip mix on the platform.</div><div class="ev">Confirmed if management quantifies a share above the current sub-one-percent level. Broken if disclosure stays qualitative.</div></div>
+          <div class="obs"><div class="claim"><span class="dirsig">&rarr; stable</span>Regulatory path for the Delivery Hero offer.</div><div class="ev">Confirmed if clearances progress on the stated timetable. Broken by an in-depth European review or a wider divestiture demand.</div></div>
+        </div>
+      </section>
+
+      <!-- ================= BLOCK E ================= -->
+      <section class="block animate" id="block-e">
+        <div class="block-head">
+          <div class="block-kicker">Block E</div>
+          <h2>Strategic architecture</h2>
+        </div>
+
+        <h3 class="sub">E.1 · Business model and revenue architecture</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Segment</th><th class="num">FY2025 revenue</th><th class="num">Share of total</th><th class="num">YoY</th><th>Margin profile</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="seg">Mobility</td><td class="num">$29,670M</td><td class="num">57.0%</td><td class="num up">+18.3% (est.)</td><td>Highest absolute segment profit; profit margin measured against bookings sits in the mid to high single digits and is expanding slowly</td></tr>
+              <tr><td class="seg">Delivery</td><td class="num">$17,248M</td><td class="num">33.2%</td><td class="num up">+25.4% (est.)</td><td>Fastest profit growth of the three; margin still below Mobility but closing each quarter</td></tr>
+              <tr><td class="seg">Freight</td><td class="num">$5,099M</td><td class="num">9.8%</td><td class="num down">-0.8% (est.)</td><td>Loss-making at the segment line, though the loss is narrowing and bookings turned to growth in 2026</td></tr>
+              <tr><td class="seg"><b>Total</b></td><td class="num"><b>$52,017M</b></td><td class="num"><b>100.0%</b></td><td class="num"><b>+18.3%</b></td><td>Company non-GAAP operating income is struck after unallocated corporate and platform costs</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="src">Sources: Uber Technologies quarterly 8-K earnings releases for Q1 to Q4 2025; segment revenue for the year summed from the four published quarters and reconciled to the FY2025 total in the Q4 2025 release. Segment growth rates are tagged as estimates because the prior-year segment split is reconstructed from the FY2024 total rather than taken from a single published table.</div>
+
+        <div class="prose">
+          <p>Uber is two large marketplaces sharing one demand funnel and one unallocated cost base, with a third business attached that has never justified itself. Mobility supplies the profit that pays for everything else. Delivery supplies the frequency that keeps the consumer relationship alive between rides, and it is the reason the average user touches the app several times a week rather than several times a month. Uber One is the mechanism by which the two marketplaces subsidise one another: members book across both offerings, churn less, and supply about half of platform volume.</p>
+          <p>Operating leverage in this model originates in three places, none of them gross margin. The first is insurance, where cumulative actuarial savings have run ahead of internal targets and where each basis point compounds against a very large claims base. The second is advertising, which is sold against demand the platform already owns and therefore drops through at close to full margin. The third is the courier and driver incentive line, which shrinks as network density improves in any given city.</p>
+          <p>Against that, the unallocated block is the problem. Corporate general and administrative expense and platform research and development are growing faster than either marketplace, and in the most recent quarter that block absorbed $1,103 million, more than the entire profit contribution of Delivery. Freight, meanwhile, produced a $24 million segment operating loss in the same period on accelerating bookings, which is progress of a kind but still a use of capital with no visible path to a return that would justify it against a buyback.</p>
+        </div>
+
+        <h3 class="sub">E.2 · Competitive moat</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Pillar</th><th>Mechanism</th><th>Erosion risk</th><th class="num">Rating</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="seg">Liquidity density</td><td>Two-sided network effect where wait times fall as supply thickens, and low wait times are the single strongest driver of repeat use</td><td>Medium</td><td class="num stars">&#9733;&#9733;&#9733;&#9733;&#9734;</td></tr>
+              <tr><td class="seg">Cross-platform bundling</td><td>Membership economics that make a rider a diner and a diner a rider, raising switching cost without raising price</td><td>Low</td><td class="num stars">&#9733;&#9733;&#9733;&#9733;&#9734;</td></tr>
+              <tr><td class="seg">Demand aggregation for autonomy</td><td>Being the largest source of paid trip demand that an autonomous fleet owner can plug into rather than build</td><td>High</td><td class="num stars">&#9733;&#9733;&#9733;&#9734;&#9734;</td></tr>
+              <tr><td class="seg">Operating infrastructure</td><td>Matching, routing, pricing, payments, insurance underwriting and fleet operations sold as a service to partners</td><td>Medium</td><td class="num stars">&#9733;&#9733;&#9733;&#9734;&#9734;</td></tr>
+              <tr><td class="seg">Regulatory scale</td><td>Compliance and licensing capacity across dozens of jurisdictions that raises the fixed cost of any credible challenger</td><td>Medium</td><td class="num stars">&#9733;&#9733;&#9733;&#9734;&#9734;</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="src">Source: PGS internal assessment, constructed from Uber 8-K earnings releases and prepared remarks (Q3 2025 to Q2 2026), the July 2026 Delivery Hero transaction materials filed on Form 8-K, and the FY2026 proxy statement disclosure on autonomous partnerships and insurance savings. Star ratings represent PGS analytical judgement.</div>
+
+        <div class="prose">
+          <p>The honest way to rate this moat is to rate the mechanism rather than the brand, and the mechanism is liquidity. In any given city, the marginal rider chooses the app that gets a car there fastest, and the marginal driver chooses the app with the shortest gap between fares. That loop is genuinely self-reinforcing and it is why a well-funded challenger has failed to take durable share in Uber's core markets for a decade. It is also local. Liquidity in Sao Paulo does nothing for liquidity in Lisbon, which is why the moat is better described as several hundred city-level moats of varying depth than as one global fortress.</p>
+          <p>Bundling is the pillar that has strengthened most and carries the least erosion risk, because it is the only one Uber controls unilaterally. A membership that makes two separate marketplaces feel like one product converts a transactional relationship into a habitual one, and habit is the cheapest customer acquisition there is. The Delivery Hero offer extends the same logic geographically rather than functionally, adding markets where Uber currently has demand on one side of the platform only.</p>
+          <p>The autonomy pillar is where the rating has to be honest about fragility. Uber's argument is that a fleet owner facing high capital cost per vehicle needs utilisation above all else, and that the cheapest utilisation available is Uber's existing demand. That argument holds while fleets are small and capital is expensive. It weakens as fleet owners scale, build their own consumer apps, and discover that in a dense city the demand side is reproducible. The end of exclusivity in two launch markets is the first concrete evidence of that weakening, and it arrived from Uber's most important partner. Rating this pillar above three stars would require pricing power that has not yet been demonstrated.</p>
+        </div>
+
+        <h3 class="sub">E.3 · Long-term growth architecture</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Driver</th><th>Timeline</th><th>Current state</th><th>Potential</th><th class="num">Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="seg">Autonomous aggregation</td><td>2026 to 2030</td><td>Targeting live service in 15 cities by year end and 28 by 2028; autonomous trips are under 0.5% of roughly 300 million weekly trips</td><td>Very large, unpriced</td><td class="num">emerging</td></tr>
+              <tr><td class="seg">Delivery Hero combination</td><td>2027 to 2030</td><td>Voluntary takeover offer at 41.50 euros per share, close expected in the second half of 2027, more than $1.2 billion of run-rate synergies identified</td><td>Large</td><td class="num">emerging</td></tr>
+              <tr><td class="seg">Membership and cross-platform</td><td>Now to 2028</td><td>Cross-platform usage rising, with members now supplying the largest share of platform volume</td><td>Medium to large</td><td class="num">on track</td></tr>
+              <tr><td class="seg">Advertising and local commerce</td><td>Now to 2028</td><td>Scaling against existing demand; grocery and retail verticals expanding</td><td>Medium</td><td class="num">on track</td></tr>
+              <tr><td class="seg">Freight</td><td>Ongoing</td><td>Bookings growth returned in 2026 but the segment remains loss-making</td><td>Low</td><td class="num">at risk</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="src">Sources: Uber Q2 2026 and Q1 2026 8-K earnings releases and prepared remarks · Uber Q4 2025 earnings call commentary on autonomous city targets · Uber Form 8-K exhibit 99.2 dated 16 July 2026 and Delivery Hero press release of the same date for offer terms and synergy figures · CNBC coverage of the Q2 2026 call for the autonomous trip share. Status values follow the PGS controlled vocabulary.</div>
+
+        <div class="prose">
+          <p>The sequencing matters more than the list. Membership has to keep working first, because it is the only driver that is already funded, already measurable, and already converting into the frequency that every other driver assumes. If members stop growing or stop concentrating volume, the case for paying a large sum to add markets in a second delivery platform weakens immediately, and so does the argument that Uber owns demand an autonomous fleet cannot replicate.</p>
+          <p>Delivery Hero comes second, and it is the driver with the tightest deadline. The offer is funded with a bridge facility and new term debt against a company that has run with modest leverage, and the synergy case rests on integration work that management has scheduled well after close. Between now and the second half of 2027 the deal is pure balance sheet cost with no earnings contribution, which is precisely the window in which the market is most likely to be impatient.</p>
+          <p>Autonomy comes last in sequence and first in narrative, which is the source of most of the mispricing in this name. Nothing in the current numbers depends on it. The autonomy commitment is real spending against a share of trips still measured in fractions of a percent, and management has been consistent that the technology stays a small part of the category for years. The driver that must work first is therefore the one nobody is arguing about.</p>
+        </div>
+      </section>
+
+      <!-- ================= BLOCK F ================= -->
+      <section class="block animate" id="block-f">
+        <div class="block-head">
+          <div class="block-kicker">Block F</div>
+          <h2>Risk register</h2>
+        </div>
+
+        <div class="risk risk-high">
+          <div class="risk-head"><span>Autonomous disintermediation</span><span class="sev sev-high">High</span></div>
+          <div class="risk-body"><p>The mechanism is straightforward: a fleet owner that reaches sufficient vehicle density in a city no longer needs a demand aggregator and can capture the full fare rather than share it. Uber's counter-argument depends on fleet owners valuing utilisation over margin, which is a phase rather than a permanent condition. The timeline is long while the repricing is immediate, because equity markets discount terminal structure well before it arrives, which is exactly what happened to this share price through the first half of 2026. The observable that would signal the risk materialising is commercial rather than technological: a major partner launching its own consumer app in a market where it currently routes through Uber, further exclusivity arrangements lapsing, or Uber's take rate on autonomous trips being disclosed at a level materially below its human-driver economics. The Atlanta and Austin arrangement ending is the first data point on that line.</p></div>
+        </div>
+
+        <div class="risk risk-med">
+          <div class="risk-head"><span>Delivery Hero integration and funding</span><span class="sev sev-med">Medium</span></div>
+          <div class="risk-body"><p>Uber is adding a large, debt-funded acquisition to a balance sheet that has been deliberately conservative, at a moment when its own reported revenue growth is being compressed by model changes. The mechanism of harm is twofold. Regulators in Europe may demand remedies beyond the fourteen markets already agreed for onward sale, which would erode the synergy case; and integration of a business of this size, on a timetable that pushes the main migrations several years out, gives ample room for the cost of the deal to arrive before its benefit. The timeline runs from now to the second half of 2027 for closing and well beyond for integration. The observable is a lengthening of the regulatory calendar, a widening of the required divestiture package, or gross leverage rising above the level management has guided to.</p></div>
+        </div>
+
+        <div class="risk risk-med">
+          <div class="risk-head"><span>Regulatory, insurance and litigation cost</span><span class="sev sev-med">Medium</span></div>
+          <div class="risk-body"><p>This is the most persistent and least discussed of the three. Uber carries a running legal and regulatory reserve that has periodically taken large bites out of reported operating income, a Dutch data protection penalty reported in August 2026 at $966 million, and a multidistrict driver assault litigation whose first bellwether verdict landed against the company in February 2026. Insurance is the same risk in a different form: it is the single largest variable cost in Mobility and it moves with claims severity, not with volume. The mechanism is that any of these can convert an operating beat into a reported miss without warning. The timeline is continuous. The observable is the size of the legal and regulatory reserve line in each quarterly reconciliation and any change in the pace of insurance savings management has been reporting.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= BLOCK G ================= -->
+      <section class="block animate" id="block-g">
+        <div class="block-head">
+          <div class="block-kicker">Block G</div>
+          <h2>Scenarios</h2>
+        </div>
+
+        <div class="scenario-grid">
+          <div class="scen scen-bull">
+            <div class="scen-head"><span>Bull</span><span class="delta up">+45.9% to the bull target</span></div>
+            <div class="scen-body">
+              <ul>
+                <li>The revenue-to-bookings wedge stops widening as model changes annualise.</li>
+                <li>Autonomy proves additive to trip volume rather than substitutive, as management has claimed for the markets where robotaxis already operate outside the platform.</li>
+                <li>The Delivery Hero combination closes on schedule with the agreed remedy package intact.</li>
+              </ul>
+              <p>These require three separate things to hold. The wedge closing is largely mechanical and needs only time. Autonomy staying additive requires fleet owners to keep prioritising utilisation, which holds while vehicle capital cost stays high. The deal closing intact requires European regulators to accept a remedy already negotiated. In that world the market stops discounting a terminal structure that has not arrived, and re-rates a business compounding free cash flow at scale toward the multiple its growth rate would otherwise command.</p>
+            </div>
+          </div>
+
+          <div class="scen scen-bear">
+            <div class="scen-head"><span>Bear</span><span class="delta down">-21.3% to the bear target</span></div>
+            <div class="scen-body">
+              <ul>
+                <li>A second and third autonomous partner follow Waymo out of exclusivity and route demand through their own apps.</li>
+                <li>Central costs keep compounding faster than segment profit, capping the operating leverage story.</li>
+                <li>The acquisition consumes balance sheet capacity and management attention through a period of decelerating reported revenue.</li>
+              </ul>
+              <p>The conditions here are less demanding than the bull case, which is the uncomfortable part of it. Partner defection needs only fleet economics to improve, and improving fleet economics is the entire premise of the sector. Cost compounding is already visible in the disclosed unallocated block. The deal risk is a matter of sequencing rather than judgement. In that world the buyback slows to service leverage, adjusted earnings growth converges toward revenue growth, and the shares hold a mid-teens multiple on a lower earnings base.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= BLOCK H ================= -->
+      <section class="block animate" id="block-h">
+        <div class="block-head">
+          <div class="block-kicker">Block H</div>
+          <h2>PGS verdict</h2>
+        </div>
+
+        <div class="verdict">
+          <span class="rating-pill">&#128994; BUY</span>
+          <div class="metrics">
+            <div class="metric"><div class="mk">Bull target</div><div class="mv">$115</div></div>
+            <div class="metric"><div class="mk">Bear downside</div><div class="mv">$62</div></div>
+            <div class="metric"><div class="mk">Horizon</div><div class="mv">18-24 mo</div></div>
+            <div class="metric"><div class="mk">Risk / reward</div><div class="mv">Favourable</div></div>
+          </div>
+
+          <div class="prose">
+            <p>The dislocation is specific and it is datable. Between the February print and late March the shares lost roughly thirty percent from their high, and the proximate cause was the guide rather than the quarter, and it triggered a sharp downward reset in 2026 adjusted earnings expectations. Layered on top was the autonomy debate, which asks the market to price a terminal structure a decade out ahead of an earnings base available now. The result is a company converting bookings into cash at scale while trading at a trailing multiple below the market. That is a pricing of narrative risk, and narrative risk is what creates entry points.</p>
+            <p>The fundamental quality is better than the reported line suggests. Bookings have grown at better than a fifth in every quarter of the coverage sequence, trailing free cash flow reached a record on a twelve-month basis, the share count is falling, and the reported revenue compression is a reclassification that will annualise. Both marketplaces are profitable at the segment line and the smaller one is improving faster. The weak point is the unallocated cost block described in the strategic architecture, which management has yet to fix.</p>
+            <p>The primary risk is autonomous disintermediation, and this report does not dismiss it. The demand aggregation pillar carries the lowest rating of the five for that reason. The Delivery Hero funding risk is real and second-order; the regulatory and insurance cost line is chronic rather than acute. None of the three appears mispriced in the optimistic direction, which is unusual.</p>
+            <p>Near-term catalysts cluster around the October print, where the constant currency Mobility line and the revenue-to-bookings ratio will show whether the compression has passed. Beyond that: merger clearances for the takeover offer, any quantification of autonomous trip share, and the pace of repurchase now that a bridge facility sits alongside the authorisation. The rating reflects a favourable asymmetry between an underpriced earnings base and a fully priced structural risk.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= DISCLAIMER ================= -->
+      <section class="disc animate" id="disclaimer">
+        <p>"This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice."</p>
+
+        <p>This report was produced with the assistance of artificial intelligence. Generative model: Anthropic · Claude Opus · version Claude Opus 5, accessed via the Claude application by Anthropic. All figures were sourced from live web search within the same session and cross-checked against the anchoring protocol in Step 1; the model's role was data synthesis, formatting and drafting, not the origination of financial estimates. Human review by the internal analyst precedes publication.</p>
+
+        <div class="ref">Report Reference: PGS-UBER-202608 · Date: 29 August 2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: UBER · Exchange: NYSE · AI Model: Anthropic Claude Opus 5</div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '';
+          entry.target.style.animationPlayState = 'running';
+          animObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+    animateEls.forEach(function(el, i){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      el.style.animationDelay = (Math.min(i, 4) * 0.06) + 's';
+      animObserver.observe(el);
+    });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var sections = links.map(function(l){ return document.querySelector(l.getAttribute('href')); });
+
+  function setActive(){
+    var pos = window.scrollY + (window.innerHeight * 0.3);
+    var current = 0;
+    sections.forEach(function(sec, i){
+      if (sec && sec.offsetTop <= pos) current = i;
+    });
+    links.forEach(function(l, i){ l.classList.toggle('active', i === current); });
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking) {
+      window.requestAnimationFrame(function(){ setActive(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+  setActive();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PGS-NVDA-202608 · NVIDIA Corporation · Polaris Global Strategies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  --text:#111827;
+  --text-mute:#6B7280;
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#76B900;
+  --display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --data:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--canvas);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+
+.layout{display:grid;grid-template-columns:220px 1fr;align-items:start;}
+
+/* ---------- sidebar ---------- */
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:28px 0;}
+.sidebar .brand{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+.sidebar .brand .mark{font-family:var(--display);font-weight:900;font-size:1.15rem;letter-spacing:-0.01em;}
+.sidebar .brand .sub{font-family:var(--data);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-mute);margin-top:6px;}
+.nav-link{display:block;padding:9px 20px;border-left:3px solid transparent;color:var(--text-mute);text-decoration:none;font-size:0.83rem;font-weight:500;transition:background .18s ease,color .18s ease;}
+.nav-link .k{font-family:var(--data);font-size:0.68rem;color:var(--accent);margin-right:8px;font-weight:700;}
+.nav-link:hover{color:var(--text);background:var(--card);}
+.nav-link.active{color:var(--text);background:var(--card);border-left-color:var(--accent);}
+
+/* ---------- content ---------- */
+.main-content{min-width:0;}
+.page{max-width:980px;margin:0 auto;padding:56px 40px 40px;}
+.prose{max-width:68ch;}
+.prose p{margin:0 0 1.05em;}
+
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;letter-spacing:-0.015em;margin:0;}
+.block-head{margin:0 0 6px;padding-top:8px;}
+.eyebrow{font-family:var(--data);font-size:0.66rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-mute);display:block;margin-bottom:8px;}
+.eyebrow .lt{color:var(--accent);font-weight:700;}
+h2.block-title{font-size:1.85rem;line-height:1.2;margin-bottom:22px;}
+h3.sub-title{font-size:1.2rem;margin:34px 0 12px;}
+section{padding:22px 0 44px;border-top:1px solid var(--border);}
+section:first-of-type{border-top:none;}
+
+/* ---------- cover ---------- */
+.cover{min-height:96vh;background:var(--surface);background-image:radial-gradient(var(--border) 1.1px,transparent 1.1px);background-size:22px 22px;display:flex;flex-direction:column;justify-content:center;padding:64px 40px;border-bottom:3px solid var(--accent);}
+.cover-inner{max-width:900px;margin:0 auto;width:100%;}
+.cover .house{font-family:var(--data);font-size:0.7rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--text-mute);}
+.cover h1{font-size:clamp(2.9rem,7vw,5rem);line-height:1.02;margin:26px 0 4px;color:var(--accent);font-weight:900;}
+.cover .legal{font-family:var(--display);font-size:clamp(1.1rem,2.4vw,1.5rem);color:var(--text);font-weight:500;margin-bottom:34px;}
+.ticker-cards{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 36px;}
+.ticker-card{display:block;text-decoration:none;background:var(--canvas);border:1px solid var(--border);border-top:3px solid var(--accent);padding:16px 22px;min-width:190px;}
+.ticker-card .t{font-family:var(--data);font-weight:700;font-size:1.4rem;color:var(--text);letter-spacing:0.02em;}
+.ticker-card .x{font-family:var(--data);font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-mute);margin-top:4px;}
+.cover-meta{display:flex;flex-wrap:wrap;gap:34px;border-top:1px solid var(--border);padding-top:22px;}
+.cover-meta div span{display:block;font-family:var(--data);font-size:0.64rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-mute);margin-bottom:5px;}
+.cover-meta div b{font-family:var(--data);font-size:0.95rem;font-weight:500;}
+
+/* ---------- panel (block A) ---------- */
+.panel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-top:3px solid var(--accent);}
+.panel-col{background:var(--card);padding:20px 18px;}
+.panel-col h4{font-family:var(--body);font-size:0.66rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-mute);font-weight:700;margin-bottom:14px;}
+.panel-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:5px 0;border-bottom:1px dotted var(--border);}
+.panel-row:last-child{border-bottom:none;}
+.panel-row .lab{font-size:0.76rem;color:var(--text-mute);}
+.panel-row .val{font-family:var(--data);font-size:0.83rem;font-weight:500;text-align:right;white-space:nowrap;}
+.val.up{color:var(--pos);} .val.down{color:var(--neg);}
+
+/* ---------- tables ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:0.83rem;}
+thead th{background:var(--card);text-align:left;padding:11px 12px;font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-mute);font-weight:700;border-bottom:1px solid var(--border);white-space:nowrap;}
+tbody td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+tbody tr:nth-child(odd){background:var(--canvas);}
+tbody tr:nth-child(even){background:var(--surface);}
+tbody tr:hover{background:var(--card);transition:background .18s ease;}
+tbody tr:last-child td{border-bottom:none;}
+td.num,th.num{font-family:var(--data);white-space:nowrap;}
+td.qtr{font-family:var(--data);font-weight:700;white-space:nowrap;}
+.src{font-family:var(--data);font-size:0.65rem;color:var(--text-mute);margin:8px 0 0;line-height:1.5;}
+.pill{display:inline-block;font-family:var(--data);font-size:0.62rem;font-weight:700;letter-spacing:0.06em;padding:2px 7px;border-radius:2px;margin-left:6px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.pill.beat{background:var(--pill-pos-bg);color:var(--pill-pos-fg);}
+.pill.miss{background:var(--pill-neg-bg);color:var(--pill-neg-fg);}
+.rx-pos{color:var(--pos);font-weight:700;} .rx-neg{color:var(--neg);font-weight:700;}
+.stars{color:var(--accent);letter-spacing:0.09em;font-size:0.95rem;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.stars .off{color:var(--border);}
+.sig{font-family:var(--data);font-weight:700;}
+.sig.up{color:var(--pos);} .sig.flat{color:var(--text-mute);} .sig.dn{color:var(--neg);}
+.status{font-family:var(--data);font-size:0.68rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;}
+.status.ok{color:var(--pos);} .status.em{color:var(--caution);} .status.rk{color:var(--neg);}
+
+/* ---------- block C ---------- */
+.quarters{border-left:3px solid var(--accent);padding-left:22px;max-width:68ch;}
+.qtr-kicker{font-family:var(--data);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-mute);margin:26px 0 6px;font-weight:700;}
+.quarters > .qtr-kicker:first-child{margin-top:0;}
+.quarters p{margin:0 0 4px;}
+
+/* ---------- block D ---------- */
+.obs{max-width:68ch;margin:0;padding:0;list-style:none;counter-reset:obs;}
+.obs li{padding:12px 0 12px 0;border-bottom:1px solid var(--border);}
+.obs li:last-child{border-bottom:none;}
+.obs .claim{font-weight:700;}
+.obs .ev{color:var(--text-mute);font-size:0.93rem;display:block;margin-top:3px;}
+
+/* ---------- block F ---------- */
+.risk{border:1px solid var(--border);border-left:3px solid var(--neg);margin-bottom:20px;page-break-inside:avoid;max-width:74ch;}
+.risk.med{border-left-color:var(--caution);}
+.risk-head{background:var(--neg-tint);padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:14px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.risk.med .risk-head{background:var(--caution-tint);}
+.risk-head h4{font-family:var(--body);font-size:0.95rem;font-weight:700;}
+.badge{font-family:var(--data);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;padding:3px 9px;border:1px solid var(--neg);color:var(--neg);white-space:nowrap;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.risk.med .badge{border-color:var(--caution);color:var(--caution);}
+.risk-body{background:var(--canvas);padding:16px 18px;}
+.risk-body p{margin:0;font-size:0.95rem;}
+
+/* ---------- block G ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.scn{border:1px solid var(--border);page-break-inside:avoid;}
+.scn-head{padding:12px 18px;font-family:var(--data);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.scn.bull .scn-head{background:var(--pos-tint);border-top:3px solid var(--pos);color:var(--pos);}
+.scn.bear .scn-head{background:var(--neg-tint);border-top:3px solid var(--neg);color:var(--neg);}
+.scn-body{background:var(--canvas);padding:16px 18px;}
+.scn-body ul{margin:0 0 12px;padding-left:18px;}
+.scn-body li{margin-bottom:6px;font-size:0.93rem;}
+.scn-body p{margin:0;font-size:0.93rem;}
+.delta{display:block;margin-top:14px;font-family:var(--data);font-weight:700;font-size:1.05rem;}
+.scn.bull .delta{color:var(--pos);} .scn.bear .delta{color:var(--neg);}
+
+/* ---------- block H ---------- */
+.verdict{background:var(--surface);border:1px solid var(--border);padding:26px;}
+.rating-pill{display:inline-block;background:var(--accent);color:#fff;font-family:var(--data);font-weight:700;font-size:0.86rem;letter-spacing:0.1em;padding:8px 18px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.metrics-strip{display:flex;flex-wrap:wrap;gap:1px;background:var(--border);border:1px solid var(--border);margin:20px 0 24px;}
+.metrics-strip div{flex:1 1 150px;background:var(--card);padding:14px 16px;}
+.metrics-strip span{display:block;font-family:var(--data);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-mute);margin-bottom:6px;}
+.metrics-strip b{font-family:var(--data);font-size:1.15rem;font-weight:700;}
+
+/* ---------- disclaimer ---------- */
+.disclaimer{border-top:3px solid var(--accent);padding-top:26px;}
+.disclaimer p{font-size:0.78rem;color:var(--text-mute);line-height:1.6;max-width:80ch;}
+.disclaimer .ref{font-family:var(--data);font-size:0.7rem;}
+
+/* ---------- motion ---------- */
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@media (prefers-reduced-motion:reduce){.animate{animation:none!important;opacity:1!important;transform:none!important;}html{scroll-behavior:auto;}}
+a:focus-visible,.nav-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .panel-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:768px){
+  .layout{display:block;}
+  .sidebar{position:sticky;top:0;height:auto;z-index:20;border-right:none;border-bottom:1px solid var(--border);padding:10px 0;display:flex;align-items:center;gap:6px;overflow-x:auto;white-space:nowrap;}
+  .sidebar .brand{display:none;}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:7px 12px;}
+  .nav-link.active{border-left:none;border-bottom-color:var(--accent);}
+  .page{padding:34px 20px;}
+  .cover{padding:48px 20px;min-height:auto;}
+  .panel-grid{grid-template-columns:1fr;}
+  .scenario-grid{grid-template-columns:1fr;}
+  h2.block-title{font-size:1.5rem;}
+}
+
+/* ---------- print ---------- */
+@media print{
+  @page{size:A4;margin:15mm 12mm;}
+  html,body{background-color:#FFFFFF;color:#111827;font-size:10pt;}
+  .layout{display:block!important;}
+  .sidebar,.nav-link{display:none!important;}
+  .main-content{display:block!important;width:100%!important;}
+  .page{max-width:100%!important;padding:0!important;margin:0!important;}
+  .cover{min-height:auto!important;height:auto!important;display:block!important;background-color:#FFFFFF;color:#111827;background-image:none!important;padding:0 0 18pt!important;}
+  section{page-break-before:always;border-top:none;padding-top:0;}
+  section#a-panel{page-break-before:avoid;}
+  .panel-grid{display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:1px!important;}
+  .scenario-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12pt!important;}
+  .panel-col,.risk-body,.scn-body,.verdict,.table-wrap{background-color:#FFFFFF;color:#111827;}
+  .prose,.quarters,.obs{orphans:3;widows:3;}
+  .risk,.scn,.metrics-strip,tr{page-break-inside:avoid;}
+  .table-wrap{overflow:visible!important;}
+  td,th{word-break:break-word;}
+  .animate{opacity:1!important;transform:none!important;animation:none!important;}
+  *{box-shadow:none!important;backdrop-filter:none!important;}
+}
+.pgs-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 24px; background: #07090F;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-family: system-ui, sans-serif; font-size: 12px;
+}
+.pgs-topbar a { color: #94A3B8; text-decoration: none; }
+.pgs-topbar a:hover { color: #F1F5F9; }
+.pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+.pgs-topbar .pgs-sep { color: #334155; }
+@media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-NVDA-202608</span>
+</div>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Report sections">
+    <div class="brand">
+      <div class="mark">Polaris Global Strategies</div>
+      <div class="sub">PGS-NVDA-202608</div>
+    </div>
+    <a class="nav-link" href="#cover"><span class="k">00</span>Cover</a>
+    <a class="nav-link" href="#a-panel"><span class="k">A</span>Panel</a>
+    <a class="nav-link" href="#b-quarters"><span class="k">B</span>Quarters</a>
+    <a class="nav-link" href="#c-reading"><span class="k">C</span>Reading</a>
+    <a class="nav-link" href="#d-patterns"><span class="k">D</span>Patterns</a>
+    <a class="nav-link" href="#e-architecture"><span class="k">E</span>Architecture</a>
+    <a class="nav-link" href="#f-risks"><span class="k">F</span>Risks</a>
+    <a class="nav-link" href="#g-scenarios"><span class="k">G</span>Scenarios</a>
+    <a class="nav-link" href="#h-verdict"><span class="k">H</span>Verdict</a>
+    <a class="nav-link" href="#disclaimer"><span class="k">99</span>Disclaimer</a>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- ============ COVER ============ -->
+    <header class="cover animate" id="cover">
+      <div class="cover-inner">
+        <div class="house">Polaris Global Strategies Ltd. · Internal Research</div>
+        <h1>NVIDIA</h1>
+        <div class="legal">NVIDIA Corporation</div>
+        <div class="ticker-cards">
+          <a class="ticker-card" href="#a-panel">
+            <div class="t">NVDA</div>
+            <div class="x">NASDAQ</div>
+          </a>
+        </div>
+        <div class="cover-meta">
+          <div><span>Reference</span><b>PGS-NVDA-202608</b></div>
+          <div><span>Publication date</span><b>29 August 2026</b></div>
+          <div><span>Exchange</span><b>NASDAQ</b></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="page">
+
+      <!-- ============ BLOCK A ============ -->
+      <section id="a-panel" class="animate">
+        <div class="block-head">
+          <span class="eyebrow"><span class="lt">A</span> · Consolidated panel</span>
+          <h2 class="block-title">The instrument panel</h2>
+        </div>
+
+        <div class="panel-grid">
+          <div class="panel-col">
+            <h4>Market</h4>
+            <div class="panel-row"><span class="lab">Price at analysis</span><span class="val">$217.55</span></div>
+            <div class="panel-row"><span class="lab">Market capitalisation</span><span class="val">$5.25T</span></div>
+            <div class="panel-row"><span class="lab">Versus 52-week high</span><span class="val down">-8.0%</span></div>
+            <div class="panel-row"><span class="lab">Versus 52-week low</span><span class="val up">+32.6%</span></div>
+          </div>
+          <div class="panel-col">
+            <h4>Fundamentals</h4>
+            <div class="panel-row"><span class="lab">Revenue TTM</span><span class="val">$302.97B</span></div>
+            <div class="panel-row"><span class="lab">EPS TTM, GAAP</span><span class="val">$7.91</span></div>
+            <div class="panel-row"><span class="lab">EPS TTM, adjusted</span><span class="val">$7.01<br><span style="font-size:.62rem;color:var(--text-mute)">mixed basis</span></span></div>
+            <div class="panel-row"><span class="lab">Operating margin TTM</span><span class="val">65.2%</span></div>
+            <div class="panel-row"><span class="lab">Free cash flow yield</span><span class="val">2.42%</span></div>
+          </div>
+          <div class="panel-col">
+            <h4>Valuation</h4>
+            <div class="panel-row"><span class="lab">P/E TTM</span><span class="val">27.5x</span></div>
+            <div class="panel-row"><span class="lab">Forward P/E</span><span class="val">18.0x</span></div>
+            <div class="panel-row"><span class="lab">EV / Revenue</span><span class="val">17.3x</span></div>
+            <div class="panel-row"><span class="lab">PEG</span><span class="val">0.37</span></div>
+            <div class="panel-row"><span class="lab">Forward P/E range, FY22 to FY27</span><span class="val">23.5x to 52.6x</span></div>
+          </div>
+          <div class="panel-col">
+            <h4>Consensus</h4>
+            <div class="panel-row"><span class="lab">Analysts covering</span><span class="val">61</span></div>
+            <div class="panel-row"><span class="lab">Strong buy / buy</span><span class="val">49 / 9</span></div>
+            <div class="panel-row"><span class="lab">Hold / sell / strong sell</span><span class="val">2 / 0 / 1</span></div>
+            <div class="panel-row"><span class="lab">Average target</span><span class="val">$323.42</span></div>
+            <div class="panel-row"><span class="lab">High target</span><span class="val">$515.00</span></div>
+            <div class="panel-row"><span class="lab">Low target</span><span class="val">$180.00</span></div>
+            <div class="panel-row"><span class="lab">Next earnings</span><span class="val">25 Nov 2026</span></div>
+          </div>
+        </div>
+        <p class="src">Source: StockAnalysis.com / S&amp;P Global Market Intelligence, close of 28 August 2026, retrieved 29 August 2026. Analyst tallies from S&amp;P Global via StockAnalysis.com, last updated 27 August 2026. Next earnings date confirmed by TipRanks. Adjusted EPS TTM is the sum of four reported quarters spanning a definitional change in NVIDIA's non-GAAP basis and is therefore a mixed-basis figure.</p>
+
+        <div class="prose" style="margin-top:22px">
+          <p>The forward multiple in the panel sits well below the trailing one, which is what happens when guided growth runs far ahead of the last twelve months of reported earnings. Measured against the historical band in the same panel, the shares have not carried a lower forward multiple at any point in the six fiscal years shown.</p>
+        </div>
+      </section>
+
+      <!-- ============ BLOCK B ============ -->
+      <section id="b-quarters" class="animate">
+        <div class="block-head">
+          <span class="eyebrow"><span class="lt">B</span> · Four quarters</span>
+          <h2 class="block-title">What the prints said</h2>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Quarter</th>
+                <th class="num">Revenue vs consensus</th>
+                <th class="num">GAAP EPS vs consensus</th>
+                <th class="num">Adjusted EPS vs consensus</th>
+                <th class="num">Operating margin, GAAP / adj.</th>
+                <th class="num">Free cash flow</th>
+                <th class="num">Next session</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="qtr">Q2 FY2027<br><span style="font-weight:400;font-size:.7rem;color:var(--text-mute)">ended 26 Jul 2026</span></td>
+                <td class="num">$96,221M vs $92,170M<span class="pill beat">Beat</span></td>
+                <td class="num">$2.46 vs not reported</td>
+                <td class="num">$2.22 vs $2.10<span class="pill beat">Beat</span></td>
+                <td class="num">66.2% / 66.5%</td>
+                <td class="num">$21,341M</td>
+                <td class="num rx-pos">+8.7%</td>
+              </tr>
+              <tr>
+                <td class="qtr">Q1 FY2027<br><span style="font-weight:400;font-size:.7rem;color:var(--text-mute)">ended 26 Apr 2026</span></td>
+                <td class="num">$81,615M vs $78,800M<span class="pill beat">Beat</span></td>
+                <td class="num">$2.39 vs not reported</td>
+                <td class="num">$1.87 vs $1.77<span class="pill beat">Beat</span></td>
+                <td class="num">65.6% / 65.9%</td>
+                <td class="num">$48,554M</td>
+                <td class="num rx-neg">-2.0% (est.)</td>
+              </tr>
+              <tr>
+                <td class="qtr">Q4 FY2026<br><span style="font-weight:400;font-size:.7rem;color:var(--text-mute)">ended 25 Jan 2026</span></td>
+                <td class="num">$68,127M vs $66,210M<span class="pill beat">Beat</span></td>
+                <td class="num">$1.76 vs not reported</td>
+                <td class="num">$1.62 vs $1.53<span class="pill beat">Beat</span></td>
+                <td class="num">65.0% / 67.7%</td>
+                <td class="num">$34,902M</td>
+                <td class="num rx-neg">-5.0%</td>
+              </tr>
+              <tr>
+                <td class="qtr">Q3 FY2026<br><span style="font-weight:400;font-size:.7rem;color:var(--text-mute)">ended 26 Oct 2025</span></td>
+                <td class="num">$57,006M vs $54,920M<span class="pill beat">Beat</span></td>
+                <td class="num">$1.30 vs not reported</td>
+                <td class="num">$1.30 vs $1.25<span class="pill beat">Beat</span></td>
+                <td class="num">63.2% / 66.2%</td>
+                <td class="num">$22,089M</td>
+                <td class="num rx-neg">-3.1%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Source: NVIDIA CFO Commentary, Q2 FY2027 (26 Aug 2026) and Q4 FY2026 8-K Ex-99.2 filed with the SEC (25 Feb 2026); operating margins derived from reported operating income over reported revenue. Consensus: LSEG via CNBC for Q3 FY2026, Q4 FY2026 and Q2 FY2027; Street consensus via CNBC and Kiplinger for Q1 FY2027. GAAP EPS consensus is not published by the polled services. Next-session reaction: CNBC (20 Nov 2025), CNBC (26 Feb 2026), The Motley Fool (22 May 2026, "almost 2%", tagged est.), and StockAnalysis.com close-to-close for 27 Aug 2026. Adjusted figures for Q3 and Q4 FY2026 exclude stock-based compensation; Q1 and Q2 FY2027 include it.</p>
+      </section>
+
+      <!-- ============ BLOCK C ============ -->
+      <section id="c-reading" class="animate">
+        <div class="block-head">
+          <span class="eyebrow"><span class="lt">C</span> · Reading the quarters</span>
+          <h2 class="block-title">What produced the numbers</h2>
+        </div>
+
+        <div class="quarters">
+          <div class="qtr-kicker">Q2 FY2027 · anchor quarter · reported 26 August 2026</div>
+          <p>The beat came from hyperscale, which is not the customer group management has spent two quarters promoting. The AI clouds, industrial and enterprise line grew almost twice as fast sequentially on Blackwell Ultra and still landed short of what the sell side had modelled, so the Data Center beat was carried by the older, more concentrated half of the book. Gross margin held at the top of its recent range on Ultra mix. Reported earnings should be discounted: a large mark on the equity portfolio ran through other income, which is why the GAAP figure in the table sits so far above the adjusted one. Cash was the real event. Receivables stretched by fifteen days on terms granted to investment-grade buyers, inventory built ahead of Vera Rubin, and cash taxes landed together. Management then guided above consensus and attached a preliminary full-year growth figure near 70% to a Street sitting in the mid forties, calling it supply constrained.</p>
+
+          <div class="qtr-kicker">Q1 FY2027 · reported 20 May 2026</div>
+          <p>This was the quarter the reporting changed. Management retired the five-market scoreboard investors had used for a decade, replaced it with Data Center and Edge Computing, and split Data Center into hyperscale and everything else for the first time. In the same release, stock-based compensation entered the non-GAAP definition, pulling the adjusted line down and severing comparability with everything reported before it. Both changes were defensible. Both made the quarter harder to read. Underneath, the print was clean: revenue and adjusted earnings ahead of consensus, networking growing at triple-digit rates inside Data Center, and free cash flow at a record the company immediately committed to a twenty-five-fold dividend increase and a fresh repurchase authorisation. The GAAP line again carried an outsized portfolio gain, larger in dollars than the following quarter's. China Data Center compute contributed nothing against a prior-year base that had included Hopper. Shares fell anyway, the fourth consecutive negative reaction to a beat and raise.</p>
+
+          <div class="qtr-kicker">Q4 FY2026 · reported 25 February 2026</div>
+          <p>Gross margin was the number that mattered and it recovered, rising from the third-quarter level as Blackwell mix improved, cost structure settled and inventory provisions eased. Networking was the standout inside Data Center, growing more than threefold from a year earlier on the NVLink fabric shipping with GB200 and GB300 racks. The mix shift toward complete systems rather than loose accelerators starts here, and it is the reason the margin recovery held. Gaming fell sequentially as channel inventory normalised after the holiday season. Reported earnings exceeded the adjusted figure because unrealised gains on the Intel position ran through other income. Total supply commitments nearly doubled in a single quarter, framed as securing capacity well beyond the visible order book. Guidance came in far above consensus. None of it helped. The stock had its worst session since the prior April, with the stalled OpenAI arrangement cited as the specific irritant rather than anything in the release itself.</p>
+
+          <div class="qtr-kicker">Q3 FY2026 · reported 19 November 2025</div>
+          <p>The low point for margin in this window, and the only quarter where reported and adjusted earnings landed identically, an artefact of the old non-GAAP convention in which compensation charges and portfolio gains happened to offset. Revenue, earnings and the forward guide all cleared consensus. Huang spent the call arguing against the bubble framing directly rather than deflecting it, walking through the bear cases in sequence, and the notes that followed were near-uniformly positive on substance while divided on price. Shares rose as much as five percent intraday. They closed lower, dragging the index with them, after a stronger than expected September payrolls print pushed December rate-cut odds sharply down and the whole AI complex sold off through the afternoon. The print was not the problem. This is the quarter that established the pattern the following three repeated: the operating result and the share price reaction had very little to do with each other.</p>
+        </div>
+      </section>
+
+      <!-- ============ BLOCK D ============ -->
+      <section id="d-patterns" class="animate">
+        <div class="block-head">
+          <span class="eyebrow"><span class="lt">D</span> · Patterns and watch list</span>
+          <h2 class="block-title">What holds across four quarters</h2>
+        </div>
+
+        <h3 class="sub-title">Structural patterns</h3>
+        <ul class="obs">
+          <li><span class="claim">Beating is no longer a catalyst.</span><span class="ev">Four consecutive quarters cleared revenue, adjusted earnings and the forward guide, and three of the four next sessions were negative.</span></li>
+          <li><span class="claim">Growth is accelerating in dollars and decelerating in percent.</span><span class="ev">Sequential additions rose through the window, then the guided step came in below the step just delivered.</span></li>
+          <li><span class="claim">Reported profit is increasingly a portfolio outcome.</span><span class="ev">GAAP earnings exceeded the adjusted figure in three of four quarters, each time on equity gains rather than compute.</span></li>
+          <li><span class="claim">Cash conversion has detached from earnings.</span><span class="ev">Operating margin held inside a four-point band while free cash flow swung by more than half between consecutive quarters.</span></li>
+        </ul>
+
+        <h3 class="sub-title">Watch list for the next print</h3>
+        <ul class="obs">
+          <li><span class="claim">Days sales outstanding <span class="sig dn">↓ deteriorating</span></span><span class="ev">Confirms if it retraces toward the prior level. Breaks if it extends again alongside more multi-quarter agreements.</span></li>
+          <li><span class="claim">Gross margin <span class="sig dn">↓ deteriorating</span></span><span class="ev">Guided lower for the coming quarter and to a trough after that on memory cost. Confirms if the trough holds. Breaks on any guide beneath the stated floor.</span></li>
+          <li><span class="claim">AI clouds, industrial and enterprise growth <span class="sig flat">→ stable</span></span><span class="ev">Management expects this line to carry the sequential step. Confirms with another quarter above hyperscale growth. Breaks on a second consecutive consensus miss.</span></li>
+          <li><span class="claim">Guarantee and financing exposure <span class="sig dn">↓ deteriorating</span></span><span class="ev">Confirms if exposure stays flat while the customer base widens. Breaks if new structures outpace the revenue they underwrite.</span></li>
+        </ul>
+      </section>
+
+      <!-- ============ BLOCK E ============ -->
+      <section id="e-architecture" class="animate">
+        <div class="block-head">
+          <span class="eyebrow"><span class="lt">E</span> · Strategic architecture</span>
+          <h2 class="block-title">How the machine is built</h2>
+        </div>
+
+        <h3 class="sub-title">E.1 · Business model and revenue architecture</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Market platform, FY2026</th><th class="num">Revenue</th><th class="num">Share of total</th><th class="num">Year on year</th><th>Margin profile</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Data Center</td><td class="num">$193,737M</td><td class="num">89.7%</td><td class="num">+68%</td><td>Sets the blended margin; systems mix</td></tr>
+              <tr><td>Gaming</td><td class="num">$16,042M</td><td class="num">7.4%</td><td class="num">+41%</td><td>Consumer pricing, memory-cost exposed</td></tr>
+              <tr><td>Professional Visualization</td><td class="num">$3,191M</td><td class="num">1.5%</td><td class="num">+70%</td><td>Workstation pricing</td></tr>
+              <tr><td>Automotive</td><td class="num">$2,349M</td><td class="num">1.1%</td><td class="num">+39%</td><td>Design-win economics, long cycle</td></tr>
+              <tr><td>OEM and other</td><td class="num">$619M</td><td class="num">0.3%</td><td class="num">+59%</td><td>n.d.</td></tr>
+              <tr><td><b>Total</b></td><td class="num"><b>$215,938M</b></td><td class="num"><b>100.0%</b></td><td class="num"><b>+65%</b></td><td>71.1% GAAP gross margin, full year</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Source: NVIDIA CFO Commentary on Fourth Quarter and Fiscal 2026 Results, 8-K Ex-99.2, SEC, 25 February 2026. Platform-level operating margins are not disclosed; the margin profile column is qualitative. This platform taxonomy was replaced in Q1 FY2027 by a two-platform structure, Data Center and Edge Computing.</p>
+
+        <div class="prose">
+          <p>The table above describes a company that no longer has segments in any meaningful sense. It has one business and four residues. Everything outside Data Center exists because it existed before, and its combined contribution is now smaller than a single sequential increment in the accelerated computing line.</p>
+          <p>That concentration is less fragile than it looks, because the composition of Data Center has been changing faster than its size. Two things happened inside it. First, networking went from an attachment to a co-equal product line, growing several times faster than compute as the NVLink fabric shipped with rack-scale systems. That is where the operating leverage now originates: a rack sells at a systems price with systems content, and the incremental gross profit on a full configuration is materially higher than on a tray of accelerators. Second, management split the customer base, and the disclosure revealed that roughly half of Data Center revenue now comes from AI clouds, industrial buyers, enterprises and sovereign programmes rather than the five hyperscalers.</p>
+          <p>The funding logic runs one way. Hyperscale pays for the platform. Its purchase orders are large, contractually clean, and settle on ordinary terms, and they underwrite the research spend that produces the next architecture. The newer customer group is the growth engine and the credit risk simultaneously: it buys at similar prices but frequently needs help arriving at the capital to do so, whether through extended payment terms, land and power guarantees, or equity from NVIDIA's own balance sheet. The residual platforms, gaming above all, contribute something more useful than revenue. They keep CUDA installed on millions of developer machines that will never sit in a data centre, which is the top of the funnel that makes the enterprise sale possible at all.</p>
+        </div>
+
+        <h3 class="sub-title">E.2 · Competitive moat</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Pillar</th><th>Mechanism</th><th>Strength</th><th>Erosion risk</th><th class="num">Rating</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>CUDA and the software layer</td><td>Switching cost, developer habit</td><td>High</td><td>Medium</td><td class="num"><span class="stars">★★★★★</span></td></tr>
+              <tr><td>Rack-scale systems integration</td><td>Interconnect, CPU and fabric co-design</td><td>High</td><td>Low</td><td class="num"><span class="stars">★★★★★</span></td></tr>
+              <tr><td>Supply pre-emption</td><td>Forward-bought memory and packaging capacity</td><td>High</td><td>Medium</td><td class="num"><span class="stars">★★★★<span class="off">★</span></span></td></tr>
+              <tr><td>Open-model distribution</td><td>Where open weights are published and served</td><td>Medium</td><td>Medium</td><td class="num"><span class="stars">★★★<span class="off">★★</span></span></td></tr>
+              <tr><td>Customer credit architecture</td><td>Guarantees, terms and equity that create demand</td><td>Medium</td><td>High</td><td class="num"><span class="stars">★★<span class="off">★★★</span></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Source: PGS assessment, constructed from NVIDIA Q2 FY2027 CFO Commentary and earnings call transcript (26 August 2026), Q4 FY2026 CFO Commentary (25 February 2026), and reporting by CNBC, The Information, TechCrunch and Business Insider (26 to 28 August 2026). Ratings are analytical judgements, not disclosed figures.</p>
+
+        <div class="prose">
+          <p>Rate the mechanism, not the brand. CUDA is the most durable pillar here because it is not a product decision, it is an accumulated stock of code that other people wrote. Every framework, kernel and fine-tuning script written against it raises the cost of moving, and that cost is borne by the customer rather than the vendor. The erosion path is real but slow: compilers that target multiple back ends, and hyperscalers with enough internal engineering to absorb a port for their own inference fleets. It takes years and it only works for workloads a single company controls end to end.</p>
+          <p>Systems integration is the pillar the market still undervalues. Once the unit of sale is a rack with a proprietary fabric, a matched CPU and a validated thermal design, a competitor is no longer selling against a chip. It is selling against a specification the customer's data centre has already been built around. That is why the networking line compounds faster than compute and why the guided margin trough is shallow: content per gigawatt keeps rising even when the silicon itself faces price pressure.</p>
+          <p>The bottom two pillars are where the rating falls, and the reasons differ. Open-model distribution is a genuine strategic idea, and buying the place where open weights are published would put NVIDIA at the point where a developer chooses which model to run and on what. It is rated three because the acquisition has been reported rather than confirmed, and because a hub whose value derives from neutrality is diminished by being owned. The credit architecture is rated lowest because it is not a moat at all. It is a subsidy that manufactures demand from customers who could not otherwise buy, and its strength is a function of the credit cycle rather than of anything NVIDIA controls.</p>
+        </div>
+
+        <h3 class="sub-title">E.3 · Long-term growth architecture</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Driver</th><th>Timeline</th><th>Current state</th><th>Potential</th><th class="num">Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Vera Rubin platform</td><td>FY2027 to FY2028</td><td>Introduction in the coming quarter; inventory staged</td><td>Raises content per gigawatt of installed capacity</td><td class="num"><span class="status ok">on track</span></td></tr>
+              <tr><td>Customer base beyond hyperscale</td><td>FY2027 to FY2029</td><td>Roughly half of Data Center revenue</td><td>Removes the single-buyer failure mode</td><td class="num"><span class="status ok">on track</span></td></tr>
+              <tr><td>Networking attach</td><td>FY2027 to FY2029</td><td>Record quarter; fastest-growing line inside Data Center</td><td>Converts chip sales into systems pricing</td><td class="num"><span class="status ok">on track</span></td></tr>
+              <tr><td>Open-model distribution</td><td>FY2027 to FY2030</td><td>Hugging Face agreement reported, not confirmed</td><td>Owns the shelf where open weights are served</td><td class="num"><span class="status em">emerging</span></td></tr>
+              <tr><td>Physical AI and robotics</td><td>FY2028 to FY2031</td><td>Full stack adopted by a first large logistics buyer</td><td>Demand pool outside the data centre entirely</td><td class="num"><span class="status em">emerging</span></td></tr>
+              <tr><td>China Data Center compute</td><td>n.d.</td><td>Below one percent of Data Center; excluded from guidance</td><td>Pure optionality, currently valued at nothing</td><td class="num"><span class="status rk">at risk</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="src">Source: PGS assessment, built on NVIDIA Q2 FY2027 CFO Commentary and earnings call transcript (26 August 2026) and contemporaneous reporting by CNBC, Bloomberg and TechCrunch (26 to 28 August 2026). Timelines are analytical estimates against NVIDIA's fiscal calendar.</p>
+
+        <div class="prose">
+          <p>Sequencing decides which of these matter. Vera Rubin has to work first, and not because of the revenue it carries. The margin guide already assumes memory costs compress the blended figure into next year, and the only offset available on that timescale is more NVIDIA content inside each gigawatt of capacity a customer builds. If Rubin delivers that step, the trough is a dip. If it slips or if the content uplift disappoints, the margin story becomes a trend rather than a cycle, and every multiple in the panel above is being applied to the wrong earnings base.</p>
+          <p>The second gate is the broadening of the customer base, and it is the one to watch most closely, because it is being reported as a success while behaving ambiguously. That line grew fastest in the anchor quarter and still missed what analysts expected of it. More importantly, its growth is entangled with NVIDIA's own credit support, so the disclosure does not yet separate genuine third-party demand from demand the company underwrote. Until it does, the diversification argument remains an assertion.</p>
+          <p>Everything below those two is optionality that only pays if the first two hold. Open-model distribution is a defensive play against closed labs building their own silicon, and it protects the installed base rather than expanding it. Physical AI is the only driver here with a genuinely new demand pool, and it is at least two fiscal years from mattering to a revenue line of this size. China is a call option the company has already marked to zero, which is the right accounting and leaves the upside free.</p>
+        </div>
+      </section>
+
+      <!-- ============ BLOCK F ============ -->
+      <section id="f-risks" class="animate">
+        <div class="block-head">
+          <span class="eyebrow"><span class="lt">F</span> · Risk register</span>
+          <h2 class="block-title">Three ways this breaks</h2>
+        </div>
+
+        <div class="risk">
+          <div class="risk-head"><h4>F1 · Vendor financing and guarantee exposure</h4><span class="badge">High</span></div>
+          <div class="risk-body">
+            <p>NVIDIA now guarantees lease obligations, secures land and power for customers, takes equity in the buyers of its own systems, and shares revenue with the clouds that resell its capacity. The August structure supporting a single Ohio campus alone carries capped guarantee obligations exceeding a hundred billion dollars, phased in as sites come into service. The mechanism of failure is straightforward: if an AI cloud or model maker cannot service its leases, NVIDIA absorbs an obligation it booked no revenue against, and does so precisely when the demand that justified the guarantee is also weakening. The timeline is medium term, since the first guarantee phases do not become effective until fiscal 2029, but the market prices the exposure today. Two observables would signal it materialising: guarantee exposure growing faster than the revenue underwritten by those same customers, and any decision to pause or unwind revenue-sharing arrangements, which the company reportedly began doing in the days after the anchor print.</p>
+          </div>
+        </div>
+
+        <div class="risk med">
+          <div class="risk-head"><h4>F2 · Cash conversion and working capital</h4><span class="badge">Medium</span></div>
+          <div class="risk-body">
+            <p>Free cash flow in the anchor quarter fell to less than half the prior quarter's level while operating margin barely moved. Three things caused it: receivables stretched by fifteen days on extended terms for large multi-quarter agreements, inventory built ahead of a platform transition, and cash taxes. Two of those are one-off in character. The receivables extension is not, because it is a competitive concession to buyers with weaker balance sheets, and concessions of that kind rarely reverse voluntarily. The company also raised twenty-five billion dollars of senior notes in the same quarter, a first for a business that has historically funded itself entirely from operations. Timeline is immediate: the next print either shows days sales outstanding retracing or it does not. The observable to watch is the gap between reported net income and cash from operations. If that gap widens for a second consecutive quarter, the earnings quality question stops being technical.</p>
+          </div>
+        </div>
+
+        <div class="risk med">
+          <div class="risk-head"><h4>F3 · In-house accelerator substitution</h4><span class="badge">Medium</span></div>
+          <div class="risk-body">
+            <p>Every large closed-model lab and every hyperscaler is now designing its own inference silicon, and the economics favour them for stable, high-volume workloads they control end to end. The substitution does not need to be complete to hurt. It only needs to remove the inference tier, which is the larger and faster-growing half of the compute market, and leave NVIDIA with training. The mechanism is gradual displacement at the margin rather than a single lost account, which makes it hard to detect in a quarter where total revenue doubles. Timeline is three to five years. The observable is the hyperscale line specifically: it grew at roughly half the sequential rate of the rest of the book in the anchor quarter, and management attributed that to supply allocation rather than to substitution. A second and third quarter of hyperscale trailing the rest of Data Center would make that explanation harder to sustain.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ BLOCK G ============ -->
+      <section id="g-scenarios" class="animate">
+        <div class="block-head">
+          <span class="eyebrow"><span class="lt">G</span> · Scenarios</span>
+          <h2 class="block-title">Two paths from here</h2>
+        </div>
+
+        <div class="scenario-grid">
+          <div class="scn bull">
+            <div class="scn-head">Bull case</div>
+            <div class="scn-body">
+              <ul>
+                <li>Vera Rubin lifts content per gigawatt enough that the guided margin trough proves shallow and reverses within the fiscal year.</li>
+                <li>The broadening customer base keeps growing at triple-digit rates without NVIDIA adding new credit support to sustain it.</li>
+                <li>The supply-constrained growth guide turns out to be conservative, as the last four guides were.</li>
+              </ul>
+              <p>These hold only if memory pricing peaks on the schedule management assumes and if the receivables extension described in F2 reverses once the current wave of multi-quarter agreements is signed. None of it requires NVIDIA to defeat in-house silicon. It requires the systems layer to stay indispensable while F1 stops growing, which the moat table above rates as the most durable pillar here. The market would be repricing earnings it already believes in, and the multiple does most of the work.</p>
+              <span class="delta">+56% to the bull target</span>
+            </div>
+          </div>
+          <div class="scn bear">
+            <div class="scn-head">Bear case</div>
+            <div class="scn-body">
+              <ul>
+                <li>Memory cost compresses margin past the guided floor and the compression proves structural rather than cyclical.</li>
+                <li>Credit conditions tighten for the AI clouds, converting F1 from a contingent exposure into a realised one.</li>
+                <li>Hyperscale growth continues trailing the rest of the book as internal accelerators absorb inference volume.</li>
+              </ul>
+              <p>This path does not require demand to fall, which is what makes it plausible. It requires only that the marginal buyer be one NVIDIA financed and the marginal workload move to silicon NVIDIA did not build. Both are visible today at small scale. The result is a business still growing quickly and valued as a cyclical supplier rather than a platform, with portfolio gains reversing as the credit exposure crystallises. The sell-side low target in the panel sits above this level, so this case assumes a de-rating the Street has not contemplated.</p>
+              <span class="delta">-24% to the bear case</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ BLOCK H ============ -->
+      <section id="h-verdict" class="animate">
+        <div class="block-head">
+          <span class="eyebrow"><span class="lt">H</span> · PGS verdict</span>
+          <h2 class="block-title">Verdict</h2>
+        </div>
+
+        <div class="verdict">
+          <span class="rating-pill">🟢 BUY</span>
+          <div class="metrics-strip">
+            <div><span>Bull target</span><b>$340</b></div>
+            <div><span>Bear case</span><b>$165</b></div>
+            <div><span>Horizon</span><b>18 to 24 months</b></div>
+            <div><span>Risk / reward</span><b>Favourable</b></div>
+          </div>
+          <div class="prose">
+            <p><b>Price dislocation.</b> The panel shows a forward multiple at the bottom of its six-year band attached to a company guiding growth at roughly two-thirds again what the sell side had modelled. That gap exists because the market has spent four quarters refusing to reward beats, and because two of the last three sessions repriced the stock on financing news rather than on operating news. The dislocation is a disagreement about earnings quality, not about earnings.</p>
+            <p><b>Fundamental quality.</b> The operating business is in better condition than the reported numbers suggest, and the reported numbers are flattered by something unrelated to it. Strip the portfolio gains and margin has held inside a narrow band while revenue doubled, which is the harder achievement. The systems transition described in E.1 is the durable part: selling racks rather than chips raises both the price and the switching cost, and it is why the moat ratings hold at the top even as the credit pillar deteriorates.</p>
+            <p><b>Primary risk.</b> F1 is the one that decides the outcome. Everything else in the register is a question of degree. Guarantees, equity stakes and extended terms have turned a supplier into a counterparty to its own customers, and the market is right to demand a discount for it. What would change the assessment is not a smaller number but a slower one: exposure flat while the customer base widens.</p>
+            <p><b>Near-term catalysts.</b> The Vera Rubin introduction lands inside the coming quarter and shows up in gross margin before it shows up in revenue. The reported open-model acquisition either signs or lapses. The November print settles F2 with a single line item. Risk and reward are favourable here because the bear path needs two independent things to go wrong at once, while the bull path needs only that the last four guides continue to prove conservative.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ DISCLAIMER ============ -->
+      <section id="disclaimer" class="animate">
+        <div class="disclaimer">
+          <p>"This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice."</p>
+          <p>This report was produced with the assistance of artificial intelligence. Generative model: Anthropic · Claude Opus · version Opus 5, accessed via the Claude app (claude.ai). All figures were sourced from live web search within the same session and cross-checked against the anchoring protocol in Step 1; the model's role was data synthesis, formatting and drafting, not the origination of financial estimates. Human review by the internal analyst precedes publication.</p>
+          <p class="ref">Report Reference: PGS-NVDA-202608 · Date: 29 August 2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: NVDA · Exchange: NASDAQ · AI Model: Anthropic Opus 5</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry, i){
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '';
+          entry.target.style.animationDelay = (i * 0.06) + 's';
+          entry.target.style.animationPlayState = 'running';
+          animObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+
+    animateEls.forEach(function(el){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      animObserver.observe(el);
+    });
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var targets = links.map(function(l){ return document.querySelector(l.getAttribute('href')); }).filter(Boolean);
+
+  function setActive(){
+    var pos = window.scrollY + (window.innerHeight * 0.3);
+    var current = targets[0];
+    targets.forEach(function(t){ if (t.offsetTop <= pos) current = t; });
+    links.forEach(function(l){
+      l.classList.toggle('active', current && l.getAttribute('href') === '#' + current.id);
+    });
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking) { window.requestAnimationFrame(function(){ setActive(); ticking = false; }); ticking = true; }
+  }, { passive: true });
+  setActive();
+})();
+</script>
+</body>
+</html>

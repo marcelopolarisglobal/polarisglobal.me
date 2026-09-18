@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PGS-BE-202608 · Bloom Energy Corporation · Polaris Global Strategies Ltd.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#FFFFFF;
+  --surface:#F9FAFB;
+  --card:#F3F4F6;
+  --text:#111827;
+  --text-mute:#6B7280;
+  --pos:#16A34A;
+  --neg:#DC2626;
+  --caution:#D97706;
+  --pos-tint:#F0FDF4;
+  --neg-tint:#FEE2E2;
+  --caution-tint:#FFFBEB;
+  --pill-pos-bg:#DCFCE7; --pill-pos-fg:#15803D;
+  --pill-neg-bg:#FEE2E2; --pill-neg-fg:#B91C1C;
+  --border:#E5E7EB;
+  --accent:#0B6E3F;
+  --font-display:'Playfair Display','EB Garamond',Georgia,'Times New Roman',serif;
+  --font-body:'DM Sans','Barlow',system-ui,-apple-system,sans-serif;
+  --font-data:'JetBrains Mono','Roboto Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--canvas);color:var(--text);
+  font-family:var(--font-body);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.layout{display:grid;grid-template-columns:220px 1fr;align-items:start;}
+
+/* ---------- sidebar ---------- */
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--surface);border-right:1px solid var(--border);
+  padding:28px 0;
+}
+.sidebar .brand{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar .brand .mark{font-family:var(--font-display);font-size:19px;font-weight:700;color:var(--accent);letter-spacing:.01em;}
+.sidebar .brand .sub{font-family:var(--font-data);font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:.12em;margin-top:6px;}
+.nav-link{
+  display:block;padding:9px 20px 9px 17px;border-left:3px solid transparent;
+  color:var(--text-mute);text-decoration:none;font-size:13.5px;line-height:1.35;
+  transition:background .18s ease,color .18s ease,border-color .18s ease;
+}
+.nav-link .kick{font-family:var(--font-data);font-size:10px;letter-spacing:.1em;display:block;opacity:.75;}
+.nav-link:hover{color:var(--text);background:var(--card);}
+.nav-link.active{color:var(--accent);border-left-color:var(--accent);background:var(--card);font-weight:500;}
+
+/* ---------- content ---------- */
+.main-content{min-width:0;}
+.wrap{max-width:920px;margin:0 auto;padding:0 40px;}
+.prose{max-width:68ch;}
+p{margin:0 0 18px;}
+
+/* ---------- cover ---------- */
+.cover{
+  min-height:96vh;background:var(--surface);
+  background-image:radial-gradient(var(--border) 1.2px,transparent 1.2px);
+  background-size:22px 22px;
+  border-bottom:1px solid var(--border);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 40px;
+}
+.cover-inner{max-width:920px;margin:0 auto;width:100%;}
+.cover .eyebrow{font-family:var(--font-data);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-mute);}
+.cover h1{
+  font-family:var(--font-display);font-weight:700;color:var(--accent);
+  font-size:clamp(44px,7vw,86px);line-height:1.02;margin:22px 0 0;letter-spacing:-.015em;
+}
+.cover .tick{
+  font-family:var(--font-data);font-size:clamp(16px,2.4vw,22px);font-weight:500;
+  margin-top:18px;color:var(--text);
+}
+.cover .rule{height:3px;width:96px;background:var(--accent);margin:34px 0 26px;}
+.cover .meta{font-family:var(--font-data);font-size:12.5px;color:var(--text-mute);line-height:2;}
+.cover .meta b{color:var(--text);font-weight:500;}
+
+/* ---------- section headers ---------- */
+section{padding:64px 0 8px;}
+.block-head{margin-bottom:26px;}
+.block-head .kicker{
+  font-family:var(--font-data);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);display:block;margin-bottom:8px;
+}
+.block-head h2{
+  font-family:var(--font-display);font-size:clamp(26px,3.4vw,36px);font-weight:600;
+  margin:0;letter-spacing:-.01em;line-height:1.15;
+}
+h3{font-family:var(--font-body);font-size:15px;font-weight:700;letter-spacing:.02em;margin:34px 0 12px;}
+
+/* ---------- panel (block A) ---------- */
+.panel{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--accent);}
+.panel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+.panel-col{padding:22px 20px;border-right:1px solid var(--border);}
+.panel-col:last-child{border-right:none;}
+.panel-col .glabel{
+  font-family:var(--font-body);font-size:10.5px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--text-mute);margin-bottom:14px;
+}
+.row{display:flex;justify-content:space-between;gap:10px;padding:5px 0;align-items:baseline;}
+.row .k{font-size:12px;color:var(--text-mute);line-height:1.35;}
+.row .v{font-family:var(--font-data);font-size:12.5px;font-weight:500;text-align:right;white-space:nowrap;}
+.v.pos{color:var(--pos);} .v.neg{color:var(--neg);}
+
+/* ---------- tables ---------- */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{
+  background:var(--card);text-align:left;padding:11px 12px;font-size:10.5px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--text-mute);font-weight:700;
+  border-bottom:1px solid var(--border);white-space:nowrap;
+}
+tbody td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+tbody tr:nth-child(odd){background:var(--canvas);}
+tbody tr:nth-child(even){background:var(--surface);}
+tbody tr:hover{background:var(--card);transition:background .2s ease;}
+tbody tr:last-child td{border-bottom:none;}
+td.num,th.num{font-family:var(--font-data);white-space:nowrap;}
+td.qlabel{font-family:var(--font-data);font-weight:700;white-space:nowrap;}
+.pos-cell{color:var(--pos);font-family:var(--font-data);font-weight:500;}
+.neg-cell{color:var(--neg);font-family:var(--font-data);font-weight:500;}
+.pill{
+  display:inline-block;font-family:var(--font-data);font-size:10px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-left:6px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.pill-beat{background:var(--pill-pos-bg);color:var(--pill-pos-fg);}
+.pill-miss{background:var(--pill-neg-bg);color:var(--pill-neg-fg);}
+.stars{font-family:var(--font-data);letter-spacing:.05em;color:var(--accent);white-space:nowrap;}
+.sig{font-family:var(--font-data);font-weight:700;}
+.sig-up{color:var(--pos);} .sig-flat{color:var(--text-mute);} .sig-down{color:var(--neg);}
+caption,.src{
+  display:block;font-family:var(--font-data);font-size:10.5px;color:var(--text-mute);
+  padding:9px 2px 0;line-height:1.6;text-align:left;
+}
+
+/* ---------- block C ---------- */
+.quarters{border-left:3px solid var(--accent);padding-left:22px;}
+.qtr{margin-bottom:30px;}
+.qtr:last-child{margin-bottom:0;}
+.qtr .kick{
+  font-family:var(--font-data);font-size:11.5px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);display:block;margin-bottom:7px;
+}
+
+/* ---------- block D ---------- */
+.obs{margin:0;padding:0;list-style:none;}
+.obs li{padding:13px 0;border-bottom:1px solid var(--border);font-size:14.5px;}
+.obs li:last-child{border-bottom:none;}
+.obs b{font-weight:700;}
+
+/* ---------- block F ---------- */
+.risk{border:1px solid var(--border);border-left:3px solid var(--neg);margin-bottom:20px;}
+.risk.med{border-left-color:var(--caution);}
+.risk .rhead{background:var(--neg-tint);padding:12px 18px;display:flex;justify-content:space-between;
+  align-items:center;gap:14px;flex-wrap:wrap;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.risk.med .rhead{background:var(--caution-tint);}
+.risk .rhead .rtitle{font-weight:700;font-size:14.5px;}
+.badge{
+  font-family:var(--font-data);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:2px;color:#FFFFFF;background:var(--neg);white-space:nowrap;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.badge.med{background:var(--caution);}
+.risk .rbody{background:var(--canvas);padding:18px;font-size:14.5px;}
+.risk .rbody p{margin:0 0 14px;}
+.risk .rbody p:last-child{margin:0;}
+
+/* ---------- block G ---------- */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.scn{border:1px solid var(--border);}
+.scn .shead{padding:13px 18px;font-weight:700;font-size:14.5px;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+.scn.bull{border-top:3px solid var(--pos);}
+.scn.bull .shead{background:var(--pos-tint);color:var(--pill-pos-fg);}
+.scn.bear{border-top:3px solid var(--neg);}
+.scn.bear .shead{background:var(--neg-tint);color:var(--pill-neg-fg);}
+.scn .sbody{background:var(--canvas);padding:18px;font-size:14px;}
+.scn .sbody p{margin:0 0 13px;}
+.scn .sbody p:last-child{margin:0;}
+.delta{font-family:var(--font-data);font-weight:700;}
+
+/* ---------- block H ---------- */
+.verdict{background:var(--surface);border:1px solid var(--border);padding:26px;}
+.rating-pill{
+  display:inline-block;background:var(--accent);color:#FFFFFF;font-family:var(--font-data);
+  font-size:13px;font-weight:700;letter-spacing:.1em;padding:8px 16px;border-radius:2px;
+  print-color-adjust:exact;-webkit-print-color-adjust:exact;
+}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);
+  border:1px solid var(--border);margin:22px 0 26px;}
+.metrics div{background:var(--card);padding:15px 16px;}
+.metrics .ml{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-mute);}
+.metrics .mv{font-family:var(--font-data);font-size:17px;font-weight:700;margin-top:6px;}
+
+/* ---------- anchor check + disclaimer ---------- */
+.check{
+  background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent);
+  font-family:var(--font-data);font-size:11.5px;line-height:1.9;padding:16px 18px;color:var(--text);
+}
+.disclaimer{border-top:1px solid var(--border);margin-top:70px;padding:34px 0 80px;}
+.disclaimer p{font-size:11.5px;line-height:1.75;color:var(--text-mute);max-width:78ch;}
+.disclaimer .ref{font-family:var(--font-data);font-size:10.5px;color:var(--text-mute);}
+
+/* ---------- animation (default visible for print) ---------- */
+.animate{opacity:1;animation:fadeUp .6s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@media (prefers-reduced-motion:reduce){
+  .animate{opacity:1!important;transform:none!important;animation:none!important;}
+  html{scroll-behavior:auto;}
+}
+a:focus-visible,.nav-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+/* ---------- responsive ---------- */
+@media (max-width:1024px){
+  .panel-grid{grid-template-columns:repeat(2,1fr);}
+  .panel-col:nth-child(2){border-right:none;}
+  .panel-col:nth-child(1),.panel-col:nth-child(2){border-bottom:1px solid var(--border);}
+}
+@media (max-width:768px){
+  body{font-size:15px;}
+  .layout{display:block;}
+  .sidebar{
+    position:sticky;top:0;height:auto;z-index:20;
+    border-right:none;border-bottom:1px solid var(--border);
+    display:flex;overflow-x:auto;padding:0;white-space:nowrap;
+  }
+  .sidebar .brand{display:none;}
+  .nav-link{border-left:none;border-bottom:3px solid transparent;padding:12px 14px;flex:0 0 auto;}
+  .nav-link.active{border-left:none;border-bottom-color:var(--accent);}
+  .nav-link .kick{display:inline;margin-right:6px;}
+  .wrap{padding:0 20px;}
+  .cover{padding:60px 20px;}
+  .panel-grid{grid-template-columns:1fr;}
+  .panel-col{border-right:none;border-bottom:1px solid var(--border);}
+  .panel-col:last-child{border-bottom:none;}
+  .scenario-grid{grid-template-columns:1fr;}
+  .metrics{grid-template-columns:1fr;}
+  section{padding:44px 0 8px;}
+}
+
+/* ---------- print ---------- */
+@media print{
+  @page{margin:0;}
+  body{background-color:#FFFFFF;color:#111827;font-size:10.5pt;line-height:1.5;}
+  .layout{display:block!important;}
+  .sidebar,.nav-link{display:none!important;}
+  .main-content{display:block!important;width:100%!important;}
+  .wrap{max-width:100%!important;padding:0!important;}
+  .prose{max-width:100%!important;}
+  .cover{
+    min-height:auto!important;height:auto!important;display:block!important;
+    background-color:#FFFFFF!important;background-image:none!important;
+    padding:0 0 24pt!important;border-bottom:1pt solid #E5E7EB!important;
+    page-break-after:always;
+  }
+  .cover-inner{max-width:100%!important;}
+  .cover h1{font-size:40pt!important;}
+  section{padding:16pt 0 4pt!important;page-break-inside:auto;}
+  .block-head{page-break-after:avoid;}
+  h3{page-break-after:avoid;}
+  p,.prose{orphans:3;widows:3;}
+  .panel,.panel-col,.verdict,.check,.risk .rbody,.scn .sbody,
+  table,thead th,tbody td,.metrics div{background-color:#FFFFFF!important;color:#111827!important;}
+  .panel-grid{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:0!important;}
+  .scenario-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12pt!important;}
+  .metrics{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:1px!important;}
+  .table-wrap{overflow:visible!important;page-break-inside:auto;}
+  table{word-break:break-word;}
+  tbody tr{page-break-inside:avoid;}
+  .risk,.scn,.qtr{page-break-inside:avoid;}
+  .pill,.badge,.rating-pill,.risk .rhead,.scn .shead{
+    print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important;
+  }
+  .risk .rhead{background-color:#FEE2E2!important;}
+  .risk.med .rhead{background-color:#FFFBEB!important;}
+  .scn.bull .shead{background-color:#F0FDF4!important;}
+  .scn.bear .shead{background-color:#FEE2E2!important;}
+  .rating-pill{background-color:#0B6E3F!important;color:#FFFFFF!important;}
+  .badge{background-color:#DC2626!important;color:#FFFFFF!important;}
+  .badge.med{background-color:#D97706!important;color:#FFFFFF!important;}
+  .animate{opacity:1!important;transform:none!important;animation:none!important;}
+  *{box-shadow:none!important;backdrop-filter:none!important;}
+  .disclaimer{margin-top:20pt;padding-bottom:0;page-break-inside:avoid;}
+}
+.pgs-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 24px; background: #07090F;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-family: system-ui, sans-serif; font-size: 12px;
+}
+.pgs-topbar a { color: #94A3B8; text-decoration: none; }
+.pgs-topbar a:hover { color: #F1F5F9; }
+.pgs-topbar .pgs-brand { color: #60A5FA; font-weight: 700; letter-spacing: 0.12em; font-size: 11px; }
+.pgs-topbar .pgs-sep { color: #334155; }
+@media print { .pgs-topbar { display: none !important; } }
+</style>
+</head>
+<body>
+<div class="pgs-topbar">
+  <a href="../../index.html" class="pgs-brand">✦ POLARIS GLOBAL</a>
+  <span class="pgs-sep">/</span>
+  <a href="../../research.html">Research</a>
+  <span class="pgs-sep">/</span>
+  <span style="color:#475569;">PGS-BE-202608</span>
+</div>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Report sections">
+    <div class="brand">
+      <div class="mark">Polaris</div>
+      <div class="sub">PGS-BE-202608</div>
+    </div>
+    <a class="nav-link" href="#cover"><span class="kick">00</span>Cover</a>
+    <a class="nav-link" href="#block-a"><span class="kick">A</span>Consolidated panel</a>
+    <a class="nav-link" href="#block-b"><span class="kick">B</span>Quarterly record</a>
+    <a class="nav-link" href="#block-c"><span class="kick">C</span>Reading the quarters</a>
+    <a class="nav-link" href="#block-d"><span class="kick">D</span>Patterns and watch list</a>
+    <a class="nav-link" href="#block-e"><span class="kick">E</span>Strategic architecture</a>
+    <a class="nav-link" href="#block-f"><span class="kick">F</span>Risk register</a>
+    <a class="nav-link" href="#block-g"><span class="kick">G</span>Scenarios</a>
+    <a class="nav-link" href="#block-h"><span class="kick">H</span>PGS verdict</a>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- ============ COVER ============ -->
+    <header class="cover" id="cover">
+      <div class="cover-inner">
+        <div class="eyebrow">Polaris Global Strategies Ltd. · Internal Research</div>
+        <h1>Bloom Energy<br>Corporation</h1>
+        <div class="tick">BE · New York Stock Exchange</div>
+        <div class="rule"></div>
+        <div class="meta">
+          Reference <b>PGS-BE-202608</b><br>
+          Publication date <b>23 August 2026</b>
+        </div>
+      </div>
+    </header>
+
+    <div class="wrap">
+
+      <!-- ============ ANCHOR CHECK ============ -->
+      <section id="anchor" style="padding-top:56px;">
+        <div class="check animate">
+          &#10003; Anchor confirmed: Q2 2026 (published July 28, 2026)<br>
+          &#10003; Coverage sequence: Q2 2026 &rarr; Q1 2026 &rarr; Q4 2025 &rarr; Q3 2025<br>
+          &#10003; No gaps. Continuous quarterly sequence confirmed.
+        </div>
+      </section>
+
+      <!-- ============ BLOCK A ============ -->
+      <section id="block-a">
+        <div class="block-head animate">
+          <span class="kicker">Block A</span>
+          <h2>Consolidated instrument panel</h2>
+        </div>
+
+        <div class="panel animate">
+          <div class="panel-grid">
+
+            <div class="panel-col">
+              <div class="glabel">Market</div>
+              <div class="row"><span class="k">Price at analysis</span><span class="v">$201.45</span></div>
+              <div class="row"><span class="k">Market capitalisation</span><span class="v">$59.33B</span></div>
+              <div class="row"><span class="k">52-week high</span><span class="v">$351.28</span></div>
+              <div class="row"><span class="k">vs. 52-week high</span><span class="v neg">-42.7%</span></div>
+              <div class="row"><span class="k">52-week low</span><span class="v">$44.64</span></div>
+              <div class="row"><span class="k">vs. 52-week low</span><span class="v pos">+351.3%</span></div>
+            </div>
+
+            <div class="panel-col">
+              <div class="glabel">Fundamentals TTM</div>
+              <div class="row"><span class="k">Revenue</span><span class="v">$3,113.2M</span></div>
+              <div class="row"><span class="k">EPS, GAAP diluted</span><span class="v">$0.89</span></div>
+              <div class="row"><span class="k">EPS, adjusted diluted</span><span class="v">$1.82 (est.)</span></div>
+              <div class="row"><span class="k">Operating margin, GAAP</span><span class="v">11.7%</span></div>
+              <div class="row"><span class="k">Free cash flow</span><span class="v">$624.7M</span></div>
+              <div class="row"><span class="k">FCF yield</span><span class="v">1.1%</span></div>
+            </div>
+
+            <div class="panel-col">
+              <div class="glabel">Valuation</div>
+              <div class="row"><span class="k">P/E TTM</span><span class="v">227.0x</span></div>
+              <div class="row"><span class="k">Forward P/E</span><span class="v">57.8x</span></div>
+              <div class="row"><span class="k">EV / Revenue</span><span class="v">19.1x</span></div>
+              <div class="row"><span class="k">PEG</span><span class="v">n.d.</span></div>
+              <div class="row"><span class="k">Fwd P/E range FY21-26</span><span class="v">51.8x &ndash; 296.0x</span></div>
+              <div class="row"><span class="k">Beta, 5 year</span><span class="v">3.83</span></div>
+            </div>
+
+            <div class="panel-col">
+              <div class="glabel">Consensus</div>
+              <div class="row"><span class="k">Analysts covering</span><span class="v">29</span></div>
+              <div class="row"><span class="k">Buy / Hold / Sell</span><span class="v">15 / 12 / 2</span></div>
+              <div class="row"><span class="k">Average target</span><span class="v">$275.08</span></div>
+              <div class="row"><span class="k">High target</span><span class="v pos">$390.00</span></div>
+              <div class="row"><span class="k">Low target</span><span class="v neg">$97.00</span></div>
+              <div class="row"><span class="k">Next earnings</span><span class="v">late Oct 2026 (est.)</span></div>
+            </div>
+
+          </div>
+        </div>
+        <span class="src">Sources: StockAnalysis.com / S&amp;P Global Market Intelligence, statistics and forecast pages, last updated 23 Aug 2026 (price at close 21 Aug 2026) · Robinhood quote page, 23 Aug 2026 (52-week range) · Bloom Energy 8-K Ex-99.1 filings, 28 Jul 2026 and 5 Feb 2026 (adjusted EPS components) · Buy column aggregates Strong Buy and Buy; Sell column aggregates Sell and Strong Sell · Adjusted EPS TTM is the sum of four reported non-GAAP diluted quarterly figures and is tagged (est.) because Bloom does not publish a trailing non-GAAP EPS · Next earnings date not yet announced by the company.</span>
+
+        <div class="prose animate" style="margin-top:26px;">
+          <p>The forward multiple sits toward the lower end of the range shown in the panel, a range the market has assigned this name across five fiscal years of wildly different profitability. The trailing multiple carries almost no information, since it capitalises a window in which two of four quarters absorbed large non-operating charges that the adjusted figures exclude.</p>
+        </div>
+      </section>
+
+      <!-- ============ BLOCK B ============ -->
+      <section id="block-b">
+        <div class="block-head animate">
+          <span class="kicker">Block B</span>
+          <h2>Four-quarter record</h2>
+        </div>
+
+        <div class="table-wrap animate">
+          <table>
+            <thead>
+              <tr>
+                <th>Quarter</th>
+                <th class="num">Revenue vs. consensus</th>
+                <th class="num">GAAP EPS vs. cons.</th>
+                <th class="num">Adj. EPS vs. cons.</th>
+                <th class="num">Op. margin GAAP / adj.</th>
+                <th class="num">Free cash flow</th>
+                <th class="num">Next session</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="qlabel">Q2 2026<br><span style="font-weight:400;color:var(--text-mute);font-size:11px;">30 Jun 2026</span></td>
+                <td class="num">$1,065.4M vs. $827.6M<span class="pill pill-beat">Beat</span></td>
+                <td class="num">$0.62 vs. n.d.</td>
+                <td class="num">$0.78 vs. $0.41<span class="pill pill-beat">Beat</span></td>
+                <td class="num">17.1% / 22.5%</td>
+                <td class="num">$174.8M</td>
+                <td class="pos-cell">+10.0%</td>
+              </tr>
+              <tr>
+                <td class="qlabel">Q1 2026<br><span style="font-weight:400;color:var(--text-mute);font-size:11px;">31 Mar 2026</span></td>
+                <td class="num">$751.1M vs. $530.4M<span class="pill pill-beat">Beat</span></td>
+                <td class="num">$0.23 vs. n.d.</td>
+                <td class="num">$0.44 vs. $0.13<span class="pill pill-beat">Beat</span></td>
+                <td class="num">9.6% / 17.3%</td>
+                <td class="num">$47.4M</td>
+                <td class="pos-cell">+22.5% (est.)</td>
+              </tr>
+              <tr>
+                <td class="qlabel">Q4 2025<br><span style="font-weight:400;color:var(--text-mute);font-size:11px;">31 Dec 2025</span></td>
+                <td class="num">$777.7M vs. $652.1M<span class="pill pill-beat">Beat</span></td>
+                <td class="num">$0.00 vs. n.d.</td>
+                <td class="num">$0.45 vs. $0.31<span class="pill pill-beat">Beat</span></td>
+                <td class="num">11.3% / 17.1%</td>
+                <td class="num">$395.1M (est.)</td>
+                <td class="pos-cell">+7.3% (est.)</td>
+              </tr>
+              <tr>
+                <td class="qlabel">Q3 2025<br><span style="font-weight:400;color:var(--text-mute);font-size:11px;">30 Sep 2025</span></td>
+                <td class="num">$519.0M vs. $425.0M<span class="pill pill-beat">Beat</span></td>
+                <td class="num">-$0.10 vs. $0.00<span class="pill pill-miss">Miss</span></td>
+                <td class="num">$0.15 vs. $0.09<span class="pill pill-beat">Beat</span></td>
+                <td class="num">1.5% / 8.9%</td>
+                <td class="num">$7.4M (est.)</td>
+                <td class="pos-cell">+18.0% (est.)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <span class="src">Sources: Bloom Energy 8-K Ex-99.1, 28 Jul 2026 (Q2 2026, Q1 2026) and 5 Feb 2026 (Q4 2025, Q3 2025), via SEC EDGAR and BusinessWire · Consensus: LSEG/IBES via TheStreet (Q2 2026), Motley Fool (Q1 2026), Benzinga Pro (Q4 2025, Q3 2025), GuruFocus (Q3 2025 GAAP EPS) · EPS figures are diluted · Free cash flow is operating cash flow less purchases of property, plant and equipment, computed from the cash flow statements; Q2 2026 and Q1 2026 figures corroborated by Timothy Sykes and Motley Fool respectively, Q4 2025 and Q3 2025 tagged (est.) as PGS-derived · Next-session reactions: Quiver Quantitative (Q2 2026), Motley Fool intraday 29 Apr 2026 (Q1 2026), StockStory via Barchart intraday 6 Feb 2026 (Q4 2025), Motley Fool 29 Oct 2025 (Q3 2025); the three tagged (est.) are intraday rather than close-to-close · GAAP EPS consensus not separately published for three of the four quarters, marked n.d.</span>
+      </section>
+
+      <!-- ============ BLOCK C ============ -->
+      <section id="block-c">
+        <div class="block-head animate">
+          <span class="kicker">Block C</span>
+          <h2>Reading the quarters</h2>
+        </div>
+
+        <div class="quarters prose animate">
+
+          <div class="qtr">
+            <span class="kick">Q2 2026 · Anchor</span>
+            <p>The first billion-dollar quarter in Bloom's history, and the composition matters more than the headline. Hardware did the work: product revenue more than tripled year over year and accounted for close to seven-eighths of the total, with service, installation and electricity splitting the remainder. Margin expansion came from two places. Product gross margin improved on throughput and unit cost reduction as factories ran closer to capacity, and service gross margin crossed into the low twenties on a non-GAAP basis, a line that was structurally loss-making at the 2018 listing. Operating expenses grew roughly 48% against revenue growth of 165%, and that spread is where most of the operating margin gain originated rather than in gross profit alone. Management raised full-year revenue guidance to $3.9 billion to $4.2 billion from $3.4 billion to $3.8 billion, took non-GAAP operating income guidance to $800 million to $900 million, and set non-GAAP EPS at $2.55 to $2.85. The print landed on a day the stock had already fallen hard with the wider AI complex, which is why the reaction reads as recovery rather than re-rating.</p>
+          </div>
+
+          <div class="qtr">
+            <span class="kick">Q1 2026</span>
+            <p>The quarter that reset the market's model of the company. Consensus had been anchored to a business growing in the fifty percent range. Bloom delivered revenue growth above 130% and an adjusted result several times the forecast. Two things produced the gap. Product volumes converted out of backlog faster than the sell side had modelled, and a related-party shipment to the Brookfield joint ventures worth $373.3 million landed inside the quarter, which flattered the reported top line relative to third-party demand. Installation ran at a deeply negative gross margin, a recurring drag whenever deployment volumes step up and site costs front-load ahead of revenue recognition. Free cash flow turned positive in a seasonally weak quarter for the first time. Management raised guidance by a wide margin and lifted the full-year adjusted EPS range sharply. The market's first reaction was hesitant in the after-hours session before turning decisively positive the next morning, a pattern that recurs with this name: the first move prices the headline, the second prices the guidance.</p>
+          </div>
+
+          <div class="qtr">
+            <span class="kick">Q4 2025</span>
+            <p>A quarter where the GAAP and adjusted lines told opposite stories. Reported net income to common stockholders was effectively nil because of a $66.2 million debt conversion inducement expense tied to the convertible restructuring, plus a $12.7 million asset impairment. Strip those out and the adjusted result was the strongest of the 2025 fiscal year. Gross margin fell sharply against the prior-year fourth quarter, which had carried an unusually favourable product mix; measured sequentially it improved. The operating cash flow figure was the standout, driven by a large receivable collection and a deferred revenue build rather than by earnings quality. Management disclosed a product backlog near $6 billion, up roughly 2.5 times year over year, inside a total backlog near $20 billion, and guided 2026 revenue to $3.1 billion to $3.3 billion. That guide looked aggressive at the time and has since been raised twice. The stock rose on the print and carried the gain into the following session.</p>
+          </div>
+
+          <div class="qtr">
+            <span class="kick">Q3 2025</span>
+            <p>The weakest quarter of the sequence on reported profitability, and the one that best shows how far the operating model has travelled since. GAAP operating margin was barely positive and the company posted a net loss to common stockholders, driven by equity losses on the newly formed Brookfield joint ventures and a $21.8 million inventory reserve. Adjusted profitability held up because both items sit outside the non-GAAP definition, which is precisely the kind of gap that invites scrutiny of adjusted reporting. Revenue cleared consensus by a wide margin on a fourth consecutive quarterly record, and service posted a second straight quarter of double-digit margin. Operating cash flow barely cleared break-even as contract assets ballooned, a working capital pattern that reappears whenever deployments accelerate ahead of billing milestones. The $5 billion Brookfield partnership announced alongside the quarter did more for the share price than the numbers did.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ BLOCK D ============ -->
+      <section id="block-d">
+        <div class="block-head animate">
+          <span class="kicker">Block D</span>
+          <h2>Patterns and watch list</h2>
+        </div>
+
+        <h3>Structural patterns across the four quarters</h3>
+        <ul class="obs prose animate">
+          <li><b>Beat magnitude is widening faster than the business is growing.</b> Consensus has trailed the revenue print by a larger dollar gap in every successive quarter, which says the sell side is modelling a conversion rate rather than the demand.</li>
+          <li><b>Operating leverage is structural.</b> Operating expenses grew at roughly a third the rate of revenue across the sequence while gross margin also rose, so margin expansion is no artefact of one favourable mix quarter.</li>
+          <li><b>The GAAP to adjusted gap is wide and persistent.</b> Stock compensation alone ran above $50 million in each of the last three quarters, and every quarter carried at least one further exclusion.</li>
+          <li><b>Cash generation is lumpy and working-capital driven.</b> Two quarters produced heavy operating cash flow on receivable and deferred revenue swings; the other two barely cleared break-even on the same earnings trajectory.</li>
+        </ul>
+
+        <h3>Watch list for the next print</h3>
+        <ul class="obs prose animate">
+          <li><span class="sig sig-up">&uarr;</span> <b>Product gross margin.</b> Holding above the Q2 level without a favourable one-off mix confirms the cost-reduction story; a step back toward the low thirties breaks it.</li>
+          <li><span class="sig sig-down">&darr;</span> <b>Related-party revenue share.</b> A falling contribution from the Brookfield vehicles confirms third-party demand breadth; a renewed spike reopens the circular financing question.</li>
+          <li><span class="sig sig-flat">&rarr;</span> <b>Free cash flow conversion.</b> A third consecutive positive quarter through the ramp confirms the model; another near break-even shows growth still funded by working capital timing.</li>
+          <li><span class="sig sig-up">&uarr;</span> <b>Backlog disclosure quality.</b> Publishing binding performance obligations alongside the headline backlog would settle the short thesis; continued silence keeps it alive.</li>
+        </ul>
+      </section>
+
+      <!-- ============ BLOCK E ============ -->
+      <section id="block-e">
+        <div class="block-head animate">
+          <span class="kicker">Block E</span>
+          <h2>Strategic architecture</h2>
+        </div>
+
+        <h3>E.1 · Business model and revenue architecture</h3>
+        <div class="table-wrap animate">
+          <table>
+            <thead>
+              <tr>
+                <th>Segment</th>
+                <th class="num">FY2025 revenue</th>
+                <th class="num">% of total</th>
+                <th class="num">YoY</th>
+                <th class="num">GAAP margin</th>
+                <th class="num">Non-GAAP margin</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Product</td><td class="num">$1,531.3M</td><td class="num">75.7%</td><td class="pos-cell">+41.1%</td><td class="num">35.2%</td><td class="num">36.1%</td></tr>
+              <tr><td>Service</td><td class="num">$228.3M</td><td class="num">11.3%</td><td class="pos-cell">+6.9%</td><td class="num">10.0%</td><td class="num">13.0%</td></tr>
+              <tr><td>Installation</td><td class="num">$204.1M</td><td class="num">10.1%</td><td class="pos-cell">+66.8%</td><td class="neg-cell">-0.9%</td><td class="num">0.8%</td></tr>
+              <tr><td>Electricity</td><td class="num">$60.4M</td><td class="num">3.0%</td><td class="pos-cell">+14.2%</td><td class="num">46.3%</td><td class="num">46.3%</td></tr>
+              <tr><td><b>Total</b></td><td class="num"><b>$2,024.0M</b></td><td class="num"><b>100.0%</b></td><td class="pos-cell"><b>+37.3%</b></td><td class="num"><b>29.0%</b></td><td class="num"><b>30.3%</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <span class="src">Source: Bloom Energy 8-K Ex-99.1, 5 Feb 2026, consolidated statements of operations and GAAP to non-GAAP gross profit reconciliation, fiscal year ended 31 Dec 2025 · Percentage of total and year-over-year change computed by PGS from the reported FY2025 and FY2024 segment lines.</span>
+
+        <div class="prose animate" style="margin-top:24px;">
+          <p>Bloom sells solid oxide fuel cell systems, marketed as Energy Servers, that convert natural gas, biogas or hydrogen into electricity electrochemically instead of by combustion. Four revenue lines fall out of that single product: the box, its installation, a long-dated operations and maintenance contract attached to it, and electricity sold directly under legacy managed-services arrangements.</p>
+          <p>The economics are lopsided by design. Product carries the margin and three-quarters of revenue. Installation runs at or below break-even and functions as a cost of winning the product sale, which is why management has moved toward a consult-only model at large load sites. Service is the annuity: contracts run five to twenty years, attach to every box shipped, and compound with the installed base. Electricity is a shrinking legacy line the company has been buying out and repowering.</p>
+          <p>The funding relationship between segments is direct. Product gross profit pays for research and development and for the sales organisation that wins the next order. Service was a structural loss centre for the first six years after listing and has swung roughly 43 percentage points since, converting the installed base from a warranty liability into a second profit engine. Because service scales with cumulative shipments and not with quarterly bookings, it is the line that will eventually smooth the results of a business whose product revenue is inherently lumpy.</p>
+          <p>Operating leverage originates in the fixed cost base. Research and development and general and administrative expense are close to fixed against volume, so each incremental gigawatt of deliveries carries little added overhead. That is why operating margin has expanded faster than gross margin across the sequence. The binding constraint is manufacturing capacity and the cost of adding it, which is why capital expenditure has roughly doubled sequentially in each of the last two quarters.</p>
+        </div>
+
+        <h3>E.2 · Competitive moat</h3>
+        <div class="table-wrap animate">
+          <table>
+            <thead>
+              <tr><th>Pillar</th><th>Mechanism</th><th class="num">Strength</th><th class="num">Erosion risk</th><th class="num">Rating</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Permitting asymmetry</td><td>Near-zero NOx output keeps sites classed as minor sources, avoiding multi-year federal review</td><td class="num">High</td><td class="num">Medium</td><td class="stars">&#9733;&#9733;&#9733;&#9733;</td></tr>
+              <tr><td>Service annuity</td><td>Five to twenty year O&amp;M contracts attached to hardware that cannot be serviced by a third party</td><td class="num">High</td><td class="num">Low</td><td class="stars">&#9733;&#9733;&#9733;&#9733;</td></tr>
+              <tr><td>Hyperscaler qualification</td><td>Multi-quarter validation cycles already cleared with every major US operator</td><td class="num">Medium</td><td class="num">Medium</td><td class="stars">&#9733;&#9733;&#9733;</td></tr>
+              <tr><td>Financing ecosystem</td><td>Committed third-party project capital that removes the customer balance sheet constraint</td><td class="num">Medium</td><td class="num">Medium</td><td class="stars">&#9733;&#9733;&#9733;</td></tr>
+              <tr><td>Manufacturing scale</td><td>US-sited solid oxide cell production at gigawatt volume with proprietary materials recovery</td><td class="num">Medium</td><td class="num">High</td><td class="stars">&#9733;&#9733;</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <span class="src">Source: PGS assessment · Inputs: Bloom Energy Q2 2026 earnings call transcript, 28 Jul 2026 (Yahoo Finance, Investing.com) · Bloom Energy 8-K Ex-99.1, 28 Jul 2026 and 5 Feb 2026 · TechTimes analysis of Clean Air Act permitting treatment, 17 Aug 2026 · Ratings are PGS judgement on a 1 to 5 scale and are not sourced figures.</span>
+
+        <div class="prose animate" style="margin-top:24px;">
+          <p>Rate the mechanism, not the brand. Bloom's strongest asset is a regulatory asymmetry that its technology happens to create. A large natural gas turbine at data centre scale almost always trips the major stationary source threshold under the Clean Air Act, which triggers Prevention of Significant Deterioration review: public notice, a mandatory comment period, best available control technology analysis, and often an environmental justice review. That runs one to three years and hands organised local opposition a legally guaranteed seat. Electrochemical conversion produces near-zero nitrogen oxides, so Bloom's systems typically qualify as minor sources and clear a streamlined state permit with no public comment stage. Time to power is the scarce good in AI infrastructure, and Bloom sells eighteen months of it. That holds as long as the rules hold, and a single regulatory revision could damage it.</p>
+          <p>The service annuity is the second pillar and the more durable of the two. Every unit shipped carries a maintenance contract of five to twenty years, the margin on that line has swung from deeply negative to the low twenties, and a customer cannot change servicer without replacing hardware. That is genuine switching cost, and it strengthens with every quarter of shipments.</p>
+          <p>The financing ecosystem rates lower than it looks. A $25 billion Brookfield shelf and a $2.6 billion consortium led by Industrial Development Funding, Oaktree, MUFG Bank and Morgan Stanley matter in a business where gigawatt demand requires gigadollar balance sheets. Capital is also the most replicable input in the stack. Qualification with every major US hyperscaler is meaningful and slow to displace, though it attaches to the product rather than to an ecosystem, so it decays the moment a rival passes the same tests. Manufacturing scale earns the lowest rating because the binding input sits upstream, in a critical-materials market Bloom does not control.</p>
+        </div>
+
+        <h3>E.3 · Long-term growth architecture</h3>
+        <div class="table-wrap animate">
+          <table>
+            <thead>
+              <tr><th>Driver</th><th class="num">Timeline</th><th>Current state</th><th class="num">Potential</th><th class="num">Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>AI data centre on-site power</td><td class="num">0 to 2 years</td><td>Primary revenue engine, every major US hyperscaler validated</td><td class="num">High</td><td class="num">on track</td></tr>
+              <tr><td>Service margin scaling</td><td class="num">0 to 3 years</td><td>Low-twenties non-GAAP margin, seventh consecutive profitable quarter</td><td class="num">Medium</td><td class="num">on track</td></tr>
+              <tr><td>Inference power at the distribution edge</td><td class="num">2 to 4 years</td><td>Named as strategic priority, no disclosed bookings</td><td class="num">High</td><td class="num">emerging</td></tr>
+              <tr><td>International deployment</td><td class="num">2 to 5 years</td><td>Korean joint venture plus early European activity</td><td class="num">Medium</td><td class="num">emerging</td></tr>
+              <tr><td>Electrolysers and hydrogen</td><td class="num">4 years plus</td><td>Minimal disclosed revenue, capacity absorbed by fuel cells</td><td class="num">Medium</td><td class="num">at risk</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <span class="src">Source: PGS assessment · Inputs: Bloom Energy Q2 2026 and Q3 2025 earnings call transcripts (Yahoo Finance, Motley Fool, Investing.com) · Bloom Energy 8-K Ex-99.1, 28 Jul 2026 · Timeline, potential and status are PGS judgement using the controlled vocabulary and are not sourced figures.</span>
+
+        <div class="prose animate" style="margin-top:24px;">
+          <p>Sequencing matters more than the list. Nothing else here works unless the first line works, because AI data centre demand funds the capacity expansion, the financing partnerships and the research budget every remaining driver depends on. It is also the only driver currently producing revenue at scale.</p>
+          <p>Service margin scaling is second in sequence and second in dependency. It needs cumulative shipments, which makes it a lagged function of the first driver rather than an independent lever. It is the driver that most changes the quality of the earnings stream, converting a lumpy capital equipment business into something with a recurring base underneath it.</p>
+          <p>The inference argument is the most interesting item here and the least proven. Management's case: transmission constraints already bind, distribution constraints will bind harder because upgrading surface-street distribution is slower and more contested, and inference workloads sit at the edge where distribution is the limit. If that holds, the addressable market is far larger than the hyperscaler campus market driving the numbers today. As of the anchor quarter it remains an assertion with no disclosed bookings behind it.</p>
+          <p>International and hydrogen sit furthest out. The Korean joint venture is the only material non-US contribution, and the electrolyser line has effectively vanished from disclosure while fuel cells absorb every available unit of capacity. Hydrogen is rated at risk on that allocation, rather than because the technology failed.</p>
+        </div>
+      </section>
+
+      <!-- ============ BLOCK F ============ -->
+      <section id="block-f">
+        <div class="block-head animate">
+          <span class="kicker">Block F</span>
+          <h2>Risk register</h2>
+        </div>
+
+        <div class="risk animate">
+          <div class="rhead">
+            <span class="rtitle">R1 · Critical material concentration and disclosure litigation</span>
+            <span class="badge">High</span>
+          </div>
+          <div class="rbody">
+            <p><b>Mechanism.</b> Scandium oxide is a performance-critical dopant in Bloom's cells and the market for it is tiny, with annual global consumption put by the US Geological Survey at 30 to 40 metric tons. Hunan Oriental Scandium claims more than half of fuel-cell-grade supply, and Beijing has added scandium to its export licence list. Hunterbrook's report of 8 July 2026 traced four China-linked routes into Bloom's supply chain and argued a 5 gigawatt target would need roughly 220 tons against projected global supply near 240 tons. Bloom rejected it in an 8-K on 9 July 2026, stating supply is sufficient for current demand and backlog, is not dependent on China, and supports visibility to 25 gigawatts of annual production.</p>
+            <p><b>Timeline.</b> The class action, Nevins v. Bloom Energy Corporation in the Northern District of California, covers purchases from 27 February 2025 to 8 July 2026, lead plaintiff deadline 28 September 2026. Litigation of this type runs for years.</p>
+            <p><b>Observable.</b> Disclosure of a named non-Chinese source, a scandium supply agreement filed as a material contract, or changed supply chain wording in the next 10-Q.</p>
+          </div>
+        </div>
+
+        <div class="risk animate">
+          <div class="rhead">
+            <span class="rtitle">R2 · Backlog conversion and counterparty concentration</span>
+            <span class="badge">High</span>
+          </div>
+          <div class="rbody">
+            <p><b>Mechanism.</b> The headline backlog is a demand indicator rather than a contractual obligation. Hunterbrook set the total backlog cited in the Q4 2025 reading against approximately $492 million in binding remaining performance obligations, and Bloom has published no reconciliation. A large share of recent revenue has run through related-party joint ventures with Brookfield, so the counterparty absorbing delivery risk is a financing vehicle Bloom part-owns. Management's answer is that financiers are contractually obliged to take delivery, equipment is fungible across sites, and guidance already assumes slippage.</p>
+            <p><b>Timeline.</b> Resolves across the next two to four quarters as the 2026 delivery schedule lands and the second-half weighting is tested.</p>
+            <p><b>Observable.</b> The related-party revenue line in each 10-Q, the spread between headline backlog and any disclosed performance obligation, and site-level failures of the kind Vineland surfaced in August 2026, when officials found Bloom fuel cells and an LNG tank going in at the Nebius site without permits.</p>
+          </div>
+        </div>
+
+        <div class="risk med animate">
+          <div class="rhead">
+            <span class="rtitle">R3 · Multiple compression on an AI capital expenditure de-rating</span>
+            <span class="badge med">Medium</span>
+          </div>
+          <div class="rbody">
+            <p><b>Mechanism.</b> The shares carry a forward multiple that assumes the current growth rate persists and margins hold at guidance. Nothing inside the business needs to break for the stock to fall by 40%; a repricing of AI infrastructure capital expenditure expectations is enough. The name has already demonstrated that, roughly halving from its June 2026 high while every reported operating metric improved. The five-year beta in the panel means Bloom moves several times the market on such news.</p>
+            <p><b>Timeline.</b> Continuous, with sensitivity concentrated around hyperscaler capital expenditure guidance rather than Bloom's own reporting dates.</p>
+            <p><b>Observable.</b> Hyperscaler capital expenditure commentary through the third-quarter season, the forward multiple against the historical range in the panel, and the dispersion of the analyst target range, whose low end sits far below the current price.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ BLOCK G ============ -->
+      <section id="block-g">
+        <div class="block-head animate">
+          <span class="kicker">Block G</span>
+          <h2>Scenarios</h2>
+        </div>
+
+        <div class="scenario-grid animate">
+
+          <div class="scn bull">
+            <div class="shead">Bull case &middot; <span class="delta">+68.8% to the bull target</span></div>
+            <div class="sbody">
+              <p><b>Assumptions.</b> Fiscal 2027 revenue reaches the consensus trajectory of roughly two-thirds growth on 2026 as the current backlog converts on schedule. Non-GAAP gross margin holds near the guided level, with product cost reduction offsetting the cost of adding capacity. The scandium question resolves with no supply interruption and no restatement.</p>
+              <p><b>Conditions required.</b> Hyperscaler capital expenditure plans hold through 2027. Bloom adds manufacturing capacity on schedule and at budget. At least one non-Chinese scandium source is publicly qualified, which removes the ceiling argument from the bear thesis.</p>
+              <p><b>Target.</b> Set on an 18 to 24 month horizon at roughly 70 times the midpoint of current-year adjusted EPS guidance. The market has paid that premium for this name repeatedly, and sustaining it requires the growth rate to stay above 60%. The level itself is carried in the verdict panel.</p>
+            </div>
+          </div>
+
+          <div class="scn bear">
+            <div class="shead">Bear case &middot; <span class="delta">-42.9% to the bear target</span></div>
+            <div class="sbody">
+              <p><b>Assumptions.</b> Revenue growth decelerates sharply through 2027 as the first hyperscaler wave completes and follow-on orders arrive more slowly than the backlog implies. The gap between headline backlog and binding obligations proves material, forcing a reset of the demand narrative. Litigation produces a disclosure change management has to explain.</p>
+              <p><b>Conditions required.</b> Any single one of a hyperscaler capital expenditure pause, a scandium supply disruption, or an adverse development in the securities case. R1 and R2 are the operative risks; R3 is the transmission mechanism.</p>
+              <p><b>Target.</b> Set on the same horizon, still above 40 times current-year guided adjusted EPS. The bear case here is a growth stock de-rating to a lower growth multiple. It does not require the business to fail. The level is carried in the verdict panel.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ BLOCK H ============ -->
+      <section id="block-h">
+        <div class="block-head animate">
+          <span class="kicker">Block H</span>
+          <h2>PGS verdict</h2>
+        </div>
+
+        <div class="verdict animate">
+          <span class="rating-pill">&#128993; NEUTRAL</span>
+
+          <div class="metrics">
+            <div><div class="ml">Bull target · 18 to 24m</div><div class="mv" style="color:var(--pos);">$340</div></div>
+            <div><div class="ml">Bear downside</div><div class="mv" style="color:var(--neg);">$115</div></div>
+            <div><div class="ml">Risk / reward</div><div class="mv">Balanced</div></div>
+          </div>
+
+          <div class="prose">
+            <p><b>Price dislocation.</b> The shares sit well below the June high while every reported operating metric improved across the same window. That is the dislocation and it is real. The market repriced the whole AI infrastructure complex, then repriced Bloom harder for its beta and for an unresolved short thesis. Neither is a statement about the operating business, which delivered a fourth consecutive beat and a second consecutive guidance raise. The forward multiple in the panel sits nearer the bottom of its own historical range than at any point since the AI narrative attached to this name.</p>
+            <p><b>Fundamental quality.</b> The business has improved materially and the disclosure has not kept pace. Operating leverage is structural, service has crossed into sustained profitability, and cash generation has been positive across a full year. Against that, the GAAP to adjusted gap is wide, related-party revenue through the Brookfield vehicles clouds the read on third-party demand, and the company keeps headlining a backlog figure it declines to reconcile to contracted obligations.</p>
+            <p><b>Primary risk.</b> R1 decides the outcome. R2 decides the next four quarters. R3 is already partly realised in the current price. If the scandium allegations prove materially correct, the growth model breaks at the capacity ceiling rather than at the demand ceiling, and no quantity of AI demand repairs that.</p>
+            <p><b>Near-term catalysts.</b> Third-quarter results, expected late October 2026 and not yet confirmed by the company, are the immediate one. Before then: the 28 September lead plaintiff deadline, hyperscaler capital expenditure commentary through the third-quarter reporting season, and any substantive disclosure on scandium sourcing. Favourable risk and reward here requires a resolution of the supply chain question. Balanced is the honest label until one arrives.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ DISCLAIMER ============ -->
+      <footer class="disclaimer">
+        <p>"This report has been produced exclusively for the internal use of Polaris Global Strategies Ltd. (PGS), a company incorporated in the British Virgin Islands (BVI), operating as a private vehicle for investment research and analysis on behalf of its partners. This document does not constitute an investment recommendation for any third party, whether individuals or legal entities, and must not be interpreted as such. PGS does not provide asset management, advisory or investment consulting services to any external client, has no client base, and offers no products or services to third parties. Any eventual access to this document by unauthorised parties does not confer validity as investment advice or recommendation. The information and analysis contained herein are based on public sources considered reliable, but PGS makes no warranty as to their completeness or accuracy. Investments in variable income instruments involve risks, including the possibility of total loss of invested capital. The opinions expressed reflect internal analytical judgement as of the publication date and are subject to change without notice."</p>
+
+        <p>This report was produced with the assistance of artificial intelligence. Generative model: Anthropic · Claude Opus 5 · version claude-opus-5, accessed via the Claude app (claude.ai). All figures were sourced from live web search within the same session and cross-checked against the anchoring protocol in Step 1; the model's role was data synthesis, formatting and drafting, not the origination of financial estimates. Human review by the internal analyst precedes publication.</p>
+
+        <p class="ref">Report Reference: PGS-BE-202608 · Date: 23 August 2026 · Internal Analyst: Polaris Global Strategies Ltd. · Ticker: BE · Exchange: NYSE · AI Model: Anthropic claude-opus-5</p>
+      </footer>
+
+    </div><!-- /wrap -->
+  </main>
+</div><!-- /layout -->
+
+<script>
+(function(){
+  var animateEls = document.querySelectorAll('.animate');
+  var sections = document.querySelectorAll('section, header.cover');
+  var links = document.querySelectorAll('.nav-link');
+
+  if ('IntersectionObserver' in window) {
+    var animObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry, i){
+        if (entry.isIntersecting) {
+          entry.target.style.transitionDelay = (i * 60) + 'ms';
+          entry.target.style.animationDelay = (i * 60) + 'ms';
+          entry.target.style.opacity = '';
+          entry.target.style.animationPlayState = 'running';
+          animObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    animateEls.forEach(function(el){
+      el.style.opacity = '0';
+      el.style.animationPlayState = 'paused';
+      animObserver.observe(el);
+    });
+
+    var navObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          var id = entry.target.getAttribute('id');
+          links.forEach(function(l){
+            l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { threshold: 0.02, rootMargin: '-15% 0px -70% 0px' });
+
+    sections.forEach(function(s){ if (s.id) navObserver.observe(s); });
+  }
+
+  links.forEach(function(l){
+    l.addEventListener('click', function(){
+      links.forEach(function(x){ x.classList.remove('active'); });
+      l.classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
