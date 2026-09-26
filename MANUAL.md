@@ -27,7 +27,7 @@ O site é composto por três camadas de páginas:
 | Research | `research.html` | Listagem de todos os relatórios de investimento |
 | Relatório | `reports/PGS-XXX-YYYYMM.html` | Relatório individual de tese de investimento |
 
-> **Sub-sites independentes:** `crypto/` e `consulting/` são publicados por este mesmo repositório, mas sua documentação é mantida em projetos separados (ver `consulting/manual-website-ai.md`). Este manual não cobre a estrutura interna deles.
+> **Sub-sites independentes:** `crypto/`, `consulting/` e `retro-lofi/` são publicados por este mesmo repositório, mas sua documentação é mantida em projetos separados (ver `consulting/manual-website-ai.md` e, para o Retro Lo-fi, o repositório `marcelopolarisglobal/retro-lofi`). Este manual não cobre a estrutura interna deles.
 
 A navegação superior é fixa (*sticky*) em todas as páginas e inclui links para About, Letters, Snapshot, Research e Crypto — nessa ordem. O link About nas páginas internas redireciona para `index.html#about`. O link Crypto aponta para `/crypto/`, subdiretório deste repositório. O rodapé repete exatamente o mesmo conjunto de links.
 
@@ -157,6 +157,7 @@ polarisglobal.me/
 │       └── market-data.yml ← workflow: roda o script seg–sex às 22:30 UTC
 ├── crypto/                ← sub-site — projeto independente
 ├── consulting/            ← sub-site — projeto independente
+├── retro-lofi/            ← sub-site — cópia do repo retro-lofi (ver 5.7)
 ├── letters/               ← cartas HTML individuais (usam styles.css)
 │   └── PGS-LETTER-202606.html
 └── reports/               ← relatórios HTML individuais
@@ -477,6 +478,27 @@ git push
 1. Deletar o arquivo em `reports/`
 2. Remover o `<article class="report-card">` correspondente em `research.html`
 3. Commitar e fazer push
+
+### 5.7 Atualizar o Retro Lo-fi
+
+O Retro Lo-fi (`https://polarisglobal.me/retro-lofi/`) é desenvolvido no repositório `marcelopolarisglobal/retro-lofi` (pasta local `~/Projects/retro-lofi`). A pasta `retro-lofi/` deste site é uma **cópia** e não se atualiza sozinha: após cada mudança publicada lá, refazer a cópia aqui.
+
+```bash
+# 1. Trazer os commits automáticos do Snapshot antes de mexer
+git pull --ff-only
+
+# 2. Substituir a cópia (só index.html, css/ e js/ — sem CLAUDE.md nem o plano)
+rm -rf retro-lofi/css retro-lofi/js
+cp ~/Projects/retro-lofi/index.html retro-lofi/
+cp -R ~/Projects/retro-lofi/css ~/Projects/retro-lofi/js retro-lofi/
+
+# 3. Publicar
+git add retro-lofi
+git commit -m "feat(retro-lofi): atualiza para a versão <descrição>"
+git push
+```
+
+O `rm -rf` antes da cópia garante que arquivos apagados no projeto original também saiam daqui. Os caminhos do Retro Lo-fi são relativos, por isso funcionam na subpasta sem ajustes.
 
 ---
 
