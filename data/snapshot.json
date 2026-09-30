@@ -1,40 +1,40 @@
 {
-  "updated": "2026-09-29T02:06:01Z",
+  "updated": "2026-09-30T01:21:40Z",
   "assets": {
     "SPY": {
       "name": "SPDR S&P 500 ETF",
       "price": 765.61,
       "d24": -0.74,
       "ytd": 13.15,
-      "y5": 88.42
+      "y5": 90.75
     },
     "QQQ": {
       "name": "Invesco Nasdaq-100 ETF",
       "price": 736.53,
       "d24": -1.07,
       "ytd": 20.3,
-      "y5": 111.22
+      "y5": 112.0
     },
     "EWZ": {
       "name": "iShares MSCI Brazil ETF",
       "price": 36.21,
       "d24": -1.66,
       "ytd": 15.06,
-      "y5": 65.39
+      "y5": 66.42
     },
     "BTC": {
       "name": "Bitcoin / USD",
-      "price": 82945.85,
-      "d24": -1.79,
-      "ytd": -5.21,
-      "y5": 99.56
+      "price": 83375.17,
+      "d24": -0.15,
+      "ytd": -4.72,
+      "y5": 90.39
     },
     "GOLD": {
       "name": "Gold Futures (GC=F)",
-      "price": 4166.4,
-      "d24": -3.58,
-      "ytd": -4.02,
-      "y5": 139.79
+      "price": 4206.2,
+      "d24": -2.66,
+      "ytd": -3.11,
+      "y5": 144.13
     }
   }
 }
